@@ -54,18 +54,18 @@ for (const customOption of customOptions) {
 
             // 當選項被新增 -> 隱藏Text Input，並取消選取其他選項，藉以擬仿radio的特性
             if (input.textContent.length != 0) {
-                target.value = ""; // !-- 尚未檢查 target所鍵入value是否殘存
                 target.classList.remove('js_toggle_display');
                 otherOption.classList.remove('w--redirected-checked');
             }
 
             // 當選項被移除 -> 重新顯示Text Input，並清除原本已新增的選項
             function reset() {
+                target.value = ""; // !-- 尚未檢查 target所鍵入value是否殘存
                 target.classList.add('js_toggle_display');
                 label.remove();
             }
-            input.addEventListener('click', reset) // ??? reset what
-            otherOption.parentElement.addEventListener('click', reset) // ??? reset what
+            label.addEventListener('click', reset)
+            otherOption.parentElement.addEventListener('click', reset)
 
         }
     })
