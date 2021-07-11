@@ -173,7 +173,7 @@ for (const fBlock of fBlocks) {
                     tAnch.classList.add('unclickable');
                     //window.location.hash= currentBlock.id; // ??? 與當前推進視窗的方法，差別待釐清
                     currentBlock.scrollIntoView({ behavior: 'smooth' });
-                    //lert('請確認本頁皆已作答'); // ??? alert尚未測試
+                    alert('太著急囉！請先確認本頁作答'); //  alert
                 }
 
                 let checked = currentBlock.querySelectorAll('.w--redirected-checked');
