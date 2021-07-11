@@ -145,6 +145,11 @@ for (const fBlock of fBlocks) {
         fBlock.style.display = 'none';
         fBlocks[0].style.display = 'flex';
 
+        // 定義alertBox
+        let alertBox = document.querySelector('.a-alert[data-alert]');
+        let removeAlert = document.querySelector('.js_remove_alert');
+        removeAlert.addEventListener('click', () => { alertBox.classList.add('js_hide'); })
+
         // 點選「下一步」-> 前往下一個fBlock & anchor 外觀改變(+WD 利用.w--current記號性class)
         let nextBTNs = document.querySelectorAll('a[data-next]');
         for (const nextBTN of nextBTNs) {
@@ -173,6 +178,7 @@ for (const fBlock of fBlocks) {
                     tAnch.classList.add('unclickable');
                     //window.location.hash= currentBlock.id; // ??? 與當前推進視窗的方法，差別待釐清
                     currentBlock.scrollIntoView({ behavior: 'smooth' });
+                    alertBox.classList.remove('js_hide');
                     //alert('太著急囉！請先確認本頁作答'); // !-- for loop 當中的alert，觸發後會一直重複出現數次？待釐清
                 }
 
@@ -193,7 +199,6 @@ for (const fBlock of fBlocks) {
                 }
             })
         }
-
     })
 };
 
