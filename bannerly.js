@@ -125,3 +125,93 @@ callers.forEach((caller) => {
 
 
 // ----------------------------------------------------------------------------------------------------
+
+// @Detail-Entries
+// #Copywrighting 多項文案區塊切換時的縮放互動
+let cpCards = document.querySelectorAll('[data-card=copywright]');
+for (const cpCard of cpCards) {
+
+    let expandArrows = document.querySelectorAll('.js_expand');
+    for (const expandArrow of expandArrows) {
+        expandArrow.addEventListener('click', (e) => {
+                let target = e.target;
+                let targetBlock = target.parentElement.querySelector('.js_copywright');
+                let cardContent = target.parentElement;
+                let currentCard = cardContent.parentElement;
+
+                let cpTxtInput = cpCard.querySelector('.js_copywright');
+                let cpCardContent = cpCard.firstElementChild;
+                let cpExpandArrow = cpCard.querySelector('.js_expand');
+
+                // 縮小的card -> 1)不顯示txt input  2)card尺寸較窄小  3)顯現“expand”箭頭
+                if (cpCard == currentCard) {
+                    target.classList.add("js_hide");
+                    targetBlock.classList.add("js_show");
+                    cardContent.classList.remove("js_resize");
+                } else {
+                    cpExpandArrow.classList.remove("js_hide");
+                    cpTxtInput.classList.remove("js_show");
+                    cpCardContent.classList.add("js_resize");
+                }
+            })
+            // 卡片小標更換：僅有在場的card才會被依序標上版本數字
+        let cpBlock = document.querySelector("#Copywrighting");
+        cpBlock.addEventListener('click', (e) => {
+            //以數字標示card，最大值為3
+            let shownCards = [...cpCards].filter(element => element.classList.contains('js_show'));
+            let nums = [0, 1, 2];
+            for (const num of nums) {
+                let numValue = num + 1;
+
+                let cardTitle = shownCards[num].querySelector(".field_title");
+                cardTitle.textContent = "文案 " + numValue;
+                if (cardTitle.parentElement.classList.contains("js_resize") == true) {
+                    cardTitle.textContent = "文案 " + numValue + ", 套用至"; // 被縮小的card，其標題在閱讀上接續"套用通路"
+                } else if (cardTitle.parentElement.classList.contains("js_resize") == false) {
+                    cardTitle.textContent = "文案 " + numValue; // 放大檢視的card，其標題簡短敘述"
+                } else {
+                    cardTitle.textContent = "";
+                }
+            }
+        })
+
+    }
+}
+
+// #Copywrighting 新增文案：最初顯示1版本，最多新增至3版本
+let addVR = document.querySelector(".js_add_copywright");
+addVR.addEventListener('click', (e) => {
+    let hiddenDiv = document.querySelectorAll("[data-card=copywright]:not(.js_show)");
+    if (hiddenDiv.length > 0) {
+        hiddenDiv[0].classList.add("js_show");
+    } else {
+        alert("文案版本上限為3種");
+    }
+})
+
+// #Copywrighting 刪除文案版本，但第1版因txt input為required，不放置delete圖示亦無法刪除
+let removes = document.querySelectorAll(".js_remove");
+for (const remove of removes) {
+    remove.addEventListener('click', (e) => {
+        let c = e.target;
+        let cCard = c.parentElement.parentElement;
+        let cCardContent = c.parentElement;
+        let cCardArrow = cCard.querySelector('.js_expand');
+        let cTxtInput = cCard.querySelector('.js_copywright');
+
+        let aCard = cpCards[0];
+        let aCardContent = aCard.firstElementChild;
+        let aCardArrow = aCard.querySelector('.js_expand');
+        let aTxtInput = aCard.querySelector('.js_copywright');
+        cCard.classList.remove("js_show");
+        if (!cCardContent.classList.contains('js_resize')) {
+            aCardArrow.classList.add("js_hide");
+            aTxtInput.classList.add("js_show");
+            aCardContent.classList.remove("js_resize");
+
+            cCardArrow.classList.remove("js_hide");
+            cTxtInput.classList.remove("js_show");
+            cCardContent.classList.add("js_resize");
+        }
+    })
+}
