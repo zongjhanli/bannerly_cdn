@@ -122,62 +122,6 @@ callers.forEach((caller) => {
 
 // ----------------------------------------------------------------------------------------------------
 
-// @Basic-Entries
-// datepicker.js function (區間日期選項)
-$('#date-exposure_range').daterangepicker({
-    ranges: {
-        '今天': [moment(), moment()],
-        '下一週': [moment().add(1, 'week').startOf('week'), moment().add(1, 'week').endOf('week')],
-        '下一月份': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')],
-    },
-    "alwaysShowCalendars": true,
-    "startDate": moment(),
-    "endDate": moment().add(0, 'week').endOf('week'),
-    "minDate": moment(),
-    "opens": "center",
-}, function(start, end, label) {});
 
-// datepicker.js function (單一日期選項)            
-$('#date-deadline').daterangepicker({
-    "singleDatePicker": true,
-    "alwaysShowCalendars": true,
-    "startDate": moment(),
-    "endDate": moment(),
-    "minDate": moment(),
-    "opens": "center",
-    "drops": "up"
-}, function(start, label) {});
-
-// @Basic-Entries date-input placeholder被按下後即隱藏
-let dateInputEmbeds = document.querySelectorAll('.date-input-embed');
-for (const dateInputEmbed of dateInputEmbeds) {
-    dateInputEmbed.addEventListener('click', (e) => {
-        let target = e.target;
-        let dateInputPlaceholder = dateInputEmbed.nextElementSibling;
-        //let dateInputPlaceholder = target.nextElementSibling;
-        //let dateInputPlaceholder = document.querySelector('.date-input-2.js_placeholder');
-        dateInputEmbed.classList.remove('js_default');
-        dateInputPlaceholder.style.display = "none";
-    })
-}
-
-// GLOBAL/@Basic-Entries 跨區叫喚
-let brandType = document.querySelector('.js_brand_type');
-let calledShowns = brandType.querySelectorAll('.js_called');
-for (const calledShown of calledShowns) {
-    brandType.addEventListener('click', () => {
-        let tempObject = brandType.querySelector('.js_temp');
-        tempObject.style.display = "none";
-
-        let inputShowns = calledShown.querySelectorAll('input');
-        for (const inputShown of inputShowns) {
-            if (calledShown.classList.contains('js_toggle_display') == false) {
-                inputShown.required = true;
-            } else {
-                inputShown.required = false;
-            }
-        }
-    })
-}
 
 // ----------------------------------------------------------------------------------------------------
