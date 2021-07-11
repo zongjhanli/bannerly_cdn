@@ -173,7 +173,7 @@ for (const fBlock of fBlocks) {
                     tAnch.classList.add('unclickable');
                     //window.location.hash= currentBlock.id; // ??? 與當前推進視窗的方法，差別待釐清
                     currentBlock.scrollIntoView({ behavior: 'smooth' });
-                    alert('太著急囉！請先確認本頁作答'); //  alert
+                    //alert('太著急囉！請先確認本頁作答'); // !-- for loop 當中的alert，觸發後會一直重複出現數次？待釐清
                 }
 
                 let checked = currentBlock.querySelectorAll('.w--redirected-checked');
@@ -187,9 +187,9 @@ for (const fBlock of fBlocks) {
                 } else {
                     stop();
                     // function showAlert() {
-                    //     alert('請確認本頁皆已作答');
+                    //     alert('太著急囉！請先確認本頁作答');
                     // }
-                    // ??? alert若放置此處，觸發後會一直重複出現數次，待釐清
+                    // !-- for loop 當中的alert，觸發後會一直重複出現數次？待釐清
                 }
             })
         }
