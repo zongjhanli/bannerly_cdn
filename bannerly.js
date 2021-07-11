@@ -148,4 +148,36 @@ $('#date-deadline').daterangepicker({
     "drops": "up"
 }, function(start, label) {});
 
+// @Basic-Entries date-input placeholder被按下後即隱藏
+let dateInputEmbeds = document.querySelectorAll('.date-input-embed');
+for (const dateInputEmbed of dateInputEmbeds) {
+    dateInputEmbed.addEventListener('click', (e) => {
+        let target = e.target;
+        let dateInputPlaceholder = dateInputEmbed.nextElementSibling;
+        //let dateInputPlaceholder = target.nextElementSibling;
+        //let dateInputPlaceholder = document.querySelector('.date-input-2.js_placeholder');
+        dateInputEmbed.classList.remove('js_default');
+        dateInputPlaceholder.style.display = "none";
+    })
+}
+
+// GLOBAL/@Basic-Entries 跨區叫喚
+let brandType = document.querySelector('.js_brand_type');
+let calledShowns = brandType.querySelectorAll('.js_called');
+for (const calledShown of calledShowns) {
+    brandType.addEventListener('click', () => {
+        let tempObject = brandType.querySelector('.js_temp');
+        tempObject.style.display = "none";
+
+        let inputShowns = calledShown.querySelectorAll('input');
+        for (const inputShown of inputShowns) {
+            if (calledShown.classList.contains('js_toggle_display') == false) {
+                inputShown.required = true;
+            } else {
+                inputShown.required = false;
+            }
+        }
+    })
+}
+
 // ----------------------------------------------------------------------------------------------------
