@@ -8,8 +8,8 @@
     font-weight: normal;
     border-radius: 20px;
     border: 1px solid #673ab7!important;
-    min-width: 244px;
-    max-width: 244px;
+    min-width: 256px;
+    /* max-width: 244px; */
     /* width: fit-content; */
     text-align: center;
     /* outline阻擋browser default for input */
