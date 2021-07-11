@@ -1,4 +1,8 @@
-/* -------------此文件加上無法在Webflow Designer設定的css屬性 */
+/* -------------此文件加上無法在Webflow Designer設定的css屬性
+comment前綴說明:
+"GLOBAL" -> 應用於全站所有相關物件
+"@pagename" -> 只應用於某特定頁面的相關物件
+*/
 
 
 /* GLOBAL ----- form input 選取後的外觀變化 */
@@ -46,7 +50,7 @@
 /* ------------------------------------------------------------------------------------------------------------------ */
 
 
-/* Detail-Entries --- 調整 Iro Color Picker 的Luminance bar位置（position已預設為absolute） */
+/* @Detail-Entries --- 調整 Iro Color Picker 的Luminance bar位置（position已預設為absolute） */
 
 .IroSlider {
     left: 162px;
@@ -54,7 +58,7 @@
 }
 
 
-/* Detail-Entries --- 若anchor對應當前location.hash，呈現特定動畫 */
+/* @Detail-Entries --- 若anchor對應當前location.hash，呈現特定動畫 */
 
 .anch-inner_circ {
     transform-origin: 50% 50%;
@@ -98,7 +102,7 @@
 }
 
 
-/* Detail-Entries --- 設定anchor兩種狀態下之外觀：visited & current */
+/* @Detail-Entries --- 設定anchor兩種狀態下之外觀：visited & current */
 
 .a-anchor.visited {
     opacity: 1;
