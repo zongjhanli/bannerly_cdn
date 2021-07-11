@@ -39,8 +39,9 @@ comment前綴說明:
 
 
 /* GLOBAL ----- 無法點選的標的物, Use Cases: 
-    1) 日期選項上方需要placeholder遮蓋  
-    2) 避免eventListener點錯target */
+    1) @Basic-Entries 日期選項上方需要placeholder遮蓋  
+    2) GLOBAL 避免eventListener點錯target
+    3) @Detail-Entries 還沒解鎖的anchor不可點選 */
 
 .unclickable {
     pointer-events: none;

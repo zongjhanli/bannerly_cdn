@@ -120,13 +120,83 @@ callers.forEach((caller) => {
     })
 })
 
+// GLOBAL txt input文字題輸入時(placeholder消失時)，跳出輔助文字
+let txtInputs = document.querySelectorAll('input[type=text]');
+for (const txtInput of txtInputs) {
+    txtInput.addEventListener('input', (e) => {
+        let target = e.target;
+        target.previousElementSibling.style.display = "block";
+    })
+}
+
 // ----------------------------------------------------------------------------------------------------
 
 
 
 // ----------------------------------------------------------------------------------------------------
 
-// @Detail-Entries
+///// @Detail-Entries /////
+// 設定視窗位置切換
+let anchors = document.querySelectorAll('.a-anchor');
+let fBlocks = document.querySelectorAll('.f-block'); // .f-block height = 100vh
+for (const fBlock of fBlocks) {
+    // 除了第1個fBlock，其他預設隱藏
+    window.addEventListener('load', () => {
+        fBlock.style.display = 'none';
+        fBlocks[0].style.display = 'flex';
+
+        // 點選「下一步」-> 前往下一個fBlock & anchor 外觀改變(+WD 利用.w--current記號性class)
+        let nextBTNs = document.querySelectorAll('a[data-next]');
+        for (const nextBTN of nextBTNs) {
+            nextBTN.addEventListener('click', (e) => {
+                let target = e.target
+
+                // 定義「當前」以及「下一個」fBlock
+                let currentBlock = target.parentElement.parentElement;
+                let tBlcok = target.parentElement.parentElement.nextElementSibling;
+                // 定義「當前」以及「下一個」anchor
+                let currentAnch = document.querySelector('.w--current');
+                let tAnch = currentAnch.nextElementSibling;
+
+                // 放行
+                function pass() {
+                    tBlcok.style.display = 'flex';
+                    tAnch.classList.add('visited');
+                    tAnch.classList.remove('unclickable');
+                    //window.location.hash= tBlcok.id; // ??? 與當前推進視窗的方法，差別待釐清
+                    tBlcok.scrollIntoView({ behavior: 'smooth' });
+                }
+                // 阻止，並顯示alert
+                function stop() {
+                    tBlcok.style.display = 'none';
+                    tAnch.classList.remove('visited');
+                    tAnch.classList.add('unclickable');
+                    //window.location.hash= currentBlock.id; // ??? 與當前推進視窗的方法，差別待釐清
+                    currentBlock.scrollIntoView({ behavior: 'smooth' });
+                    //lert('請確認本頁皆已作答'); // ??? alert尚未測試
+                }
+
+                let checked = currentBlock.querySelectorAll('.w--redirected-checked');
+                let txtInput = currentBlock.querySelector('[type=text][required]');
+                if (checked.length > 0) {
+                    pass();
+                } else if (txtInput != null) {
+                    if (txtInput.value.length > 0) {
+                        pass();
+                    }
+                } else {
+                    stop();
+                    // function showAlert() {
+                    //     alert('請確認本頁皆已作答');
+                    // }
+                    // ??? alert若放置此處，觸發後會一直重複出現數次，待釐清
+                }
+            })
+        }
+
+    })
+};
+
 // #Copywrighting 多項文案區塊切換時的縮放互動
 let cpCards = document.querySelectorAll('[data-card=copywright]');
 for (const cpCard of cpCards) {
@@ -215,3 +285,95 @@ for (const remove of removes) {
         }
     })
 }
+
+// #EC 隨著#EC通路的點選（checkbox）跨區觸發#Sizes, #Notes通路選項的顯示or隱藏
+let ecPickeds = document.querySelectorAll(".as_tab[data-ec], .as_apply[data-ec]");
+let tabContents = document.querySelectorAll('.tab_content[data-ec]');
+let ecPickers = document.querySelectorAll('.f-block[id=EC] .custom_check');
+for (const ecPicked of ecPickeds) {
+
+    ecPicked.classList.remove('js_show');
+
+    for (const ecPicker of ecPickers) {
+        ecPicker.addEventListener('click', (e) => {
+                let target = e.target;
+                let tBTN = target.parentElement;
+                let dataPicker = tBTN.dataset.ec;
+                let dataPicked = ecPicked.dataset.ec;
+                //let dataContent = tabContent.dataset.ec;
+
+                if (dataPicked == dataPicker) {
+                    ecPicked.classList.toggle('js_show');
+                }
+
+                let tabContents = document.querySelectorAll('.tab_content');
+                for (const tabContent of tabContents) {
+                    let tabIndicator = tabContent.parentElement.querySelector(".js_tab_indicator");
+                    if (!ecPicked.classList.contains('js_show')) {
+                        tabContent.classList.remove('js_show');
+                        tabContents[0].classList.add('js_show');
+                        tabContents[9].classList.add('js_show');
+                        tabIndicator.style.backgroundColor = 'transparent';
+                    }
+
+
+                    let dataContent = tabContent.dataset.ec;
+                    let checkeds = tabContent.querySelectorAll('.w--redirected-checked');
+                    for (const checked of checkeds) {
+                        if (dataContent == dataPicker) {
+                            if (!ecPicked.classList.contains('js_show')) {
+                                checked.classList.remove('w--redirected-checked');
+                            }
+                        }
+                    }
+                }
+
+                let pickedBTN = ecPicked.querySelector('.custom_check');
+                if (!ecPicked.classList.contains('js_show') && pickedBTN.classList.contains('w--redirected-checked')) {
+                    pickedBTN.classList.remove('w--redirected-checked');
+                }
+
+            }, false) // !++ 注意event bubbling與event capturing的區別
+    }
+}
+
+// #Sizes, #Notes Tab控制 -> 1)indicator chip隨所選而移動  2)相應的tab_content顯現＆其他隱藏
+const ecCheck = document.querySelector('.f-block[id=EC]');
+ecCheck.addEventListener('click', () => {
+    let tabbings = document.querySelectorAll("#Sizes, #Notes");
+    for (const tabbing of tabbings) {
+        let tabIndicator = tabbing.querySelector(".js_tab_indicator");
+        let tabs = tabbing.querySelectorAll(".as_tab.js_show:not(.js_tab_indicator)")
+            //let shownTabs = [...tabs].filter(element => element.classList.contains('js_show'));
+        let tLength = tabs.length;
+        tabIndicator.style.width = 100 / tLength + "%";
+        tabIndicator.style.left = "0%";
+        for (const tab of tabs) {
+            tab.addEventListener('click', (e) => {
+                let target = e.target;
+
+                tabIndicator.style.backgroundColor = '#e7d4ff';
+
+                //tab 切換 -> indicator移動
+                for (i = 0; i < tLength; i++) {
+                    let leftV = 100 / tLength * i + "%";
+                    if (tabs[i] == target) {
+                        tabIndicator.style.left = leftV;
+                    }
+                }
+
+                //tab切換 -> tab_content響應
+                let tabEc = target.dataset.ec;
+                let tabContents = target.parentElement.parentElement.querySelectorAll('.tab_content');
+                for (const tabContent of tabContents) {
+                    let tabContentEc = tabContent.dataset.ec;
+                    if (tabEc == tabContentEc) {
+                        tabContent.classList.add('js_show');
+                    } else {
+                        tabContent.classList.remove('js_show');
+                    }
+                }
+            })
+        }
+    }
+})
