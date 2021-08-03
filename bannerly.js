@@ -319,6 +319,7 @@ for (const ecPicked of ecPickeds) {
                         tabContents[0].classList.add('js_show');
                         tabContents[9].classList.add('js_show');
                         tabIndicator.style.backgroundColor = 'transparent';
+                        tabIndicator.style.borderColor = 'transparent';
                     }
 
 
@@ -357,7 +358,8 @@ ecCheck.addEventListener('click', () => {
             tab.addEventListener('click', (e) => {
                 let target = e.target;
 
-                // tabIndicator.style.display = 'block';
+                tabIndicator.style.backgroundColor = 'rgba(255,234,0,0.2)';
+                tabIndicator.style.borderColor = 'rgba(47, 90, 58, 0.5)';
 
                 //tab 切換 -> indicator移動
                 for (i = 0; i < tLength; i++) {
