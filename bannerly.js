@@ -357,7 +357,7 @@ ecCheck.addEventListener('click', () => {
             tab.addEventListener('click', (e) => {
                 let target = e.target;
 
-                tabIndicator.style.backgroundColor = '#e7d4ff';
+                tabIndicator.style.backgroundColor = 'rgba(255,234,0,0.2)';
 
                 //tab 切換 -> indicator移動
                 for (i = 0; i < tLength; i++) {
