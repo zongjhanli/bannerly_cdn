@@ -238,7 +238,7 @@
 
 .daterangepicker td.available:hover,
 .daterangepicker th.available:hover {
-    background-color: rgba(104, 58, 183, 0.1);
+    background-color: rgba(47, 90, 58, 0.1);
     border-color: transparent;
     color: inherit;
 }
@@ -258,7 +258,7 @@
 .daterangepicker td.off.end-date {
     background-color: transparent;
     border-color: transparent;
-    color: rgba(104, 58, 183, 0.4);
+    color: rgba(47, 90, 58, 0.4);
 }
 
 
@@ -321,15 +321,17 @@
 
 
 /* 承上的替代方案，在start date, end date當中放置圓形svg檔案 */
+/* 用單色圓形取代圓形svg */
 
 .daterangepicker td.active,
 .daterangepicker td.off.ends.active,
 .daterangepicker td.active:hover,
 .daterangepicker td.off.ends.active:hover {
-    background-color: rgba(104, 58, 183, 0.1);
-    background-image: url("https://uploads-ssl.webflow.com/60bc818be298b4b1c993eb01/60c6b9fc305b593f02e57a9a_circle.svg");
+    background-color: rgba(47, 90, 58, 0.1);
+    background-image: rgb(47, 90, 58);
     background-size: cover;
     background-repeat: no-repeat;
+    border-radius: 100%;
     /* border-color: transparent; */
     color: #fff;
 }
@@ -341,7 +343,7 @@
 
 .daterangepicker td.disabled,
 .daterangepicker option.disabled {
-    color: rgba(104, 58, 183, 0.5);
+    color: rgba(47, 90, 58, 0.5);
     cursor: not-allowed;
     text-decoration: line-through;
 }
@@ -352,7 +354,7 @@
 .daterangepicker td.disabled:hover,
 .daterangepicker option.disabled:hover {
     background-color: transparent;
-    color: rgba(104, 58, 183, 0.5);
+    color: rgba(47, 90, 58, 0.5);
 }
 
 .daterangepicker select.monthselect,
@@ -451,7 +453,7 @@
 
 .daterangepicker .drp-buttons .btn.btn-sm.btn-primary {
     border: 1px solid #2F5A3A!important;
-    background: linear-gradient(180deg, rgba(128, 83, 208, 1) 0%, rgba(79, 41, 148, 1) 100%);
+    background: #2F5A3A;
     color: #fff;
 }
 
@@ -517,7 +519,7 @@
 /* branded styling: range 所選項目的背景顏色 */
 
 .daterangepicker .ranges li.active {
-    background: #e7d4ff;
+    background: rgba(255, 234, 0, 0.2);
     color: #2F5A3A;
 }
 
