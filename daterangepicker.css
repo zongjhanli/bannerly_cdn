@@ -321,17 +321,16 @@
 
 
 /* 承上的替代方案，在start date, end date當中放置圓形svg檔案 */
-/* 用單色圓形取代圓形svg */
 
 .daterangepicker td.active,
 .daterangepicker td.off.ends.active,
 .daterangepicker td.active:hover,
 .daterangepicker td.off.ends.active:hover {
-    background-color: rgba(47, 90, 58, 0.1);
-    background-image: rgb(47, 90, 58);
+    /* background-color: rgba(47, 90, 58, 0.1); */
+    background-color: rgba(255, 234, 0, 0.2);
+    background-image: url(https://uploads-ssl.webflow.com/60bc818be298b4b1c993eb01/610972693a7ddc347e68d590_datepicker_circ.svg);
     background-size: cover;
     background-repeat: no-repeat;
-    border-radius: 100%;
     /* border-color: transparent; */
     color: #fff;
 }
