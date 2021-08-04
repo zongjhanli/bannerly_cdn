@@ -7,7 +7,7 @@
     line-height: 38px;
     font-weight: normal;
     border-radius: 20px;
-    border: 1px solid rgba(103, 58, 183, 0.5)!important;
+    border: 1px solid rgba(47, 90, 58, 0.5)!important;
     min-width: 256px;
     /* max-width: 244px; */
     /* width: fit-content; */
@@ -31,7 +31,7 @@
     color: inherit;
     background-color: rgba(255, 255, 255, 0);
     border-radius: 20px;
-    border: 1px solid #673ab7;
+    border: 1px solid #2F5A3A;
     width: 278px;
     max-width: none;
     padding: 0;
@@ -61,7 +61,7 @@
     top: -7px;
     border-right: 7px solid transparent;
     border-left: 7px solid transparent;
-    border-bottom: 7px solid #673ab7;
+    border-bottom: 7px solid #2F5A3A;
 }
 
 .daterangepicker:after {
@@ -169,7 +169,7 @@
 .daterangepicker .calendar-table .next span,
 .daterangepicker .calendar-table .prev span {
     color: #fff;
-    border: solid rgba(103, 58, 183, 0.5);
+    border: solid rgba(47, 90, 58, 0.5);
     border-width: 0 1px 1px 0;
     border-radius: 0;
     display: inline-block;
@@ -212,7 +212,7 @@
     border: 0px solid transparent;
     white-space: nowrap;
     cursor: pointer;
-    color: #673ab7;
+    color: #2F5A3A;
 }
 
 .daterangepicker .calendar-table th {
@@ -268,24 +268,24 @@
 .daterangepicker td.off.in-range:hover,
 .daterangepicker td.off.start-date:hover,
 .daterangepicker td.off.end-date:hover {
-    background-color: rgba(103, 58, 183, 0.1);
-    color: #673ab7;
+    background-color: rgba(47, 90, 58, 0.1);
+    color: #2F5A3A;
 }
 
 
 /* branded styling: 已選中的日期區間 */
 
 .daterangepicker td.in-range {
-    background-color: rgba(103, 58, 183, 0.1);
+    background-color: rgba(47, 90, 58, 0.1);
     border-color: transparent;
-    color: #673ab7;
+    color: #2F5A3A;
     border-radius: 0;
 }
 
 .daterangepicker td.off.ends.in-range {
-    background-color: rgba(103, 58, 183, 0.1);
+    background-color: rgba(47, 90, 58, 0.1);
     border-color: transparent;
-    color: rgba(103, 58, 183, 0.6);
+    color: rgba(47, 90, 58, 0.6);
     border-radius: 0;
 }
 
@@ -336,7 +336,7 @@
 
 .daterangepicker th.month {
     width: auto;
-    color: #673ab7;
+    color: #2F5A3A;
 }
 
 .daterangepicker td.disabled,
@@ -405,7 +405,7 @@
     clear: both;
     text-align: center;
     padding: 0px;
-    border-top: 1px solid rgba(103, 58, 183, 0.1);
+    border-top: 1px solid rgba(47, 90, 58, 0.1);
     line-height: 12px;
     vertical-align: middle;
 }
@@ -420,7 +420,7 @@
     padding: 10px 8px;
     /* width: 100%; */
     text-align: left;
-    color: #673ab7;
+    color: #2F5A3A;
     line-height: 24px;
     margin-right: 28px;
 }
@@ -441,26 +441,26 @@
 /* 選項按鈕: Cancel */
 
 .daterangepicker .drp-buttons .btn.btn-sm.btn-default {
-    border: 1px solid #673ab7!important;
+    border: 1px solid #2F5A3A!important;
     background-color: rgba(255, 255, 255, 0.5);
-    color: #673ab7;
+    color: #2F5A3A;
 }
 
 
 /* 選項按鈕: Apply */
 
 .daterangepicker .drp-buttons .btn.btn-sm.btn-primary {
-    border: 1px solid #673ab7!important;
+    border: 1px solid #2F5A3A!important;
     background: linear-gradient(180deg, rgba(128, 83, 208, 1) 0%, rgba(79, 41, 148, 1) 100%);
     color: #fff;
 }
 
 .daterangepicker.show-ranges.single.rtl .drp-calendar.left {
-    border-left: 1px solid #673ab7;
+    border-left: 1px solid #2F5A3A;
 }
 
 .daterangepicker.show-ranges.single.ltr .drp-calendar.left {
-    border-left: 1px solid #673ab7;
+    border-left: 1px solid #2F5A3A;
 }
 
 
@@ -468,14 +468,14 @@
 
 
 /* .daterangepicker.show-ranges.rtl .drp-calendar.right {
-  border-right: 1px solid #673ab7;
+  border-right: 1px solid #2F5A3A;
 } */
 
 
 /* branded styling: left calendar 的左側邊線 */
 
 .daterangepicker.show-ranges.ltr .drp-calendar.left {
-    border-left: 1px solid rgba(103, 58, 183, 0.1);
+    border-left: 1px solid rgba(47, 90, 58, 0.1);
 }
 
 .daterangepicker .ranges {
@@ -502,7 +502,7 @@
     font-size: 12px;
     padding: 8px 16px;
     cursor: pointer;
-    color: #673ab7;
+    color: #2F5A3A;
     position: relative;
 }
 
@@ -510,7 +510,7 @@
 /* branded styling: range 所選項目:HOVER的背景顏色 */
 
 .daterangepicker .ranges li:hover {
-    background-color: rgba(103, 58, 183, 0.1);
+    background-color: rgba(47, 90, 58, 0.1);
 }
 
 
@@ -518,7 +518,7 @@
 
 .daterangepicker .ranges li.active {
     background: #e7d4ff;
-    color: #673ab7;
+    color: #2F5A3A;
 }
 
 
@@ -530,7 +530,7 @@
   position: absolute;
   top: 8px;
   left: 16px;
-  background-color: #673ab7;
+  background-color: #2F5A3A;
   color: #fff;
 } */
 
