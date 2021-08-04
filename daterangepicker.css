@@ -238,7 +238,7 @@
 
 .daterangepicker td.available:hover,
 .daterangepicker th.available:hover {
-    background-color: rgba(47, 90, 58, 0.1);
+    background-color: rgba(255, 234, 0, 0.2);
     border-color: transparent;
     color: inherit;
 }
@@ -276,7 +276,7 @@
 /* branded styling: 已選中的日期區間 */
 
 .daterangepicker td.in-range {
-    background-color: rgba(47, 90, 58, 0.1);
+    background-color: rgba(255, 234, 0, 0.2);
     border-color: transparent;
     color: #2F5A3A;
     border-radius: 0;
