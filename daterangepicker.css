@@ -6,8 +6,10 @@
     font-size: 14px;
     line-height: 36px;
     font-weight: medium;
+    width: 100%;
     outline: none;
     background-color: transparent;
+    border: 0px solid transparent;
 }
 
 
