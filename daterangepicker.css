@@ -413,11 +413,13 @@
 .daterangepicker .drp-selected {
     display: inline-block;
     font-size: 16px;
-    padding: 10px 14px;
+    padding: 10px 16px;
     text-align: left;
     color: #2F5A3A;
     line-height: 24px;
-    margin-right: 32px;
+    position: absolute;
+    left: 0px;
+    bottom: 8px;
 }
 
 
