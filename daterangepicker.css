@@ -36,7 +36,7 @@
     left: 20px;
     z-index: 3001;
     display: none;
-    font-family: arial;
+    /* font-family: arial; */
     font-size: 15px;
     line-height: 1em;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.76) 0%, rgba(255, 255, 255, 0.72) 100%);
@@ -400,7 +400,7 @@
 
 .daterangepicker .drp-buttons {
     clear: both;
-    text-align: center;
+    text-align: right;
     padding: 0px;
     border-top: 1px solid rgba(47, 90, 58, 0.1);
     line-height: 12px;
@@ -412,14 +412,12 @@
 
 .daterangepicker .drp-selected {
     display: inline-block;
-    /* display:none; */
-    font-size: 18px;
-    padding: 10px 8px;
-    /* width: 100%; */
+    font-size: 16px;
+    padding: 10px 14px;
     text-align: left;
     color: #2F5A3A;
     line-height: 24px;
-    margin-right: 28px;
+    margin-right: 32px;
 }
 
 
