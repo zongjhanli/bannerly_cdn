@@ -1,26 +1,21 @@
 /* branded styling */
 
-.date-input {
-    height: 40px;
-    padding: 0px 16px;
-    font-size: 18px;
-    line-height: 38px;
+/* .date-input {
+    height: 36px;
+    padding: 12px 0px;
+    font-size: 14px;
+    line-height: 36px;
     font-weight: normal;
-    border-radius: 20px;
-    border: 1px solid rgba(47, 90, 58, 0.5)!important;
-    min-width: 256px;
-    /* max-width: 244px; */
-    /* width: fit-content; */
-    text-align: center;
-    /* outline阻擋browser default for input */
+    border-radius: 8px;
+    border: 1px solid #dcdcdc!important;
     outline: none;
     background-color: transparent;
-}
+} */
 
-.date-input.single {
+/* .date-input.single {
     min-width: 130px;
     max-width: 134px;
-}
+} */
 
 
 /* branded styling: 整體外框線＋圓角＋overflow */
