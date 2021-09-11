@@ -427,8 +427,8 @@
 
 .daterangepicker .drp-buttons .btn {
     display: inline-block;
-    font-size: 14px;
-    padding: 0px 12px;
+    font-size: 16px;
+    padding: 0px 14px;
     line-height: 36px;
     border-radius: 8px;
     margin: 12px 4px 12px 6px;
@@ -438,8 +438,8 @@
 /* 選項按鈕: Cancel */
 
 .daterangepicker .drp-buttons .btn.btn-sm.btn-default {
-    border: 1px solid #2F5A3A!important;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: #fff;
+    background: rgba(59, 122, 71, 0.1);
     color: #2F5A3A;
 }
 
@@ -447,8 +447,7 @@
 /* 選項按鈕: Apply */
 
 .daterangepicker .drp-buttons .btn.btn-sm.btn-primary {
-    border: 1px solid #2F5A3A!important;
-    background: #2F5A3A;
+    background-color: #3B7A47;
     color: #fff;
 }
 
