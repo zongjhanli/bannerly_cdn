@@ -61,8 +61,9 @@ for (const customInput of customInputs) {
 
         // 新增子元素之attribute隨user key-in變化
         let keyInText = target.value;
-        span.textContent = keyInText;
+        span.innerText = keyInText;
         input.value = keyInText;
+        input.id = keyInText;
         checker.classList.add('w--redirected-checked');
 
         // 新增自定義選項後，相關DOM元素的反應
@@ -70,7 +71,7 @@ for (const customInput of customInputs) {
         for (const otherOption of otherOptions) {
 
             // 當選項被新增 -> 隱藏Text Input，並取消選取其他選項，藉以擬仿radio的特性
-            if (span.textContent.length != 0) {
+            if (span.innerText.length != 0) {
                 target.classList.add('js-toggle');
                 customRadio.classList.remove('js-toggle');
                 otherOption.classList.remove('w--redirected-checked');
