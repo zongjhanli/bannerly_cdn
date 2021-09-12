@@ -70,8 +70,9 @@ for (const customInput of customInputs) {
         for (const otherOption of otherOptions) {
 
             // 當選項被新增 -> 隱藏Text Input，並取消選取其他選項，藉以擬仿radio的特性
-            if (keyInText.length != 0) {
+            if (span.textContent.length != 0) {
                 target.classList.add('js-toggle');
+                customRadio.classList.remove('js-toggle');
                 otherOption.classList.remove('w--redirected-checked');
             }
 
