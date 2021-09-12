@@ -11,7 +11,20 @@
 // "credit" -> 參考來源 
 // test
 
-
+// // GLOBAL 全域input選擇後改變外觀
+// let checkers = document.querySelectorAll('.custom-check');
+// checkers.forEach((checker) => {
+//     checker.addEventListener('click', (e) => {
+//     		e.preventDefault();
+//         let target = e.target;
+//         let Parent = target.parentElement;
+//         if (target.classList.contains('w--redirected-checked')) {
+//             Parent.classList.add('js-selected');
+//         } else {
+//             Parent.classList.remove('js-selected');
+//         }
+//     })
+// })
 
 // GLOBAL 跨區叫喚
 let calleds = document.querySelectorAll('[data-called]');
@@ -34,48 +47,29 @@ callers.forEach((caller) => {
 })
 
 // GLOBAL 新增自定義選項（適用於radio select）
-const customOptions = document.querySelectorAll('input[type="text"].js-custom-input:not(.dropdown)');
-for (const customOption of customOptions) {
-    customOption.addEventListener('change', (e) => {
+const customInputs = document.querySelectorAll('input[type="text"].js-custom-input:not(.dropdown)');
+for (const customInput of customInputs) {
+    customInput.addEventListener('change', (e) => {
         // 避免 refresh
         e.preventDefault();
         let target = e.target;
-
-        // 新增母元素與子元素
-        // !++ 與webflow預設的input結構不相同
-        let input = document.createElement('input');
-        let label = document.createElement('label');
-        let span = document.createElement('span');
-        label.appendChild(input);
-        label.appendChild(span);
-
-        // 新增元素的外觀設定
-        span.classList.add('label');
-        input.style.display = "none";
-        label.classList.add('input', 'as_chip', 'js-selected');
-
-        // 新增母元素的指定位置
-        let parentDiv = target.parentElement;
-        parentDiv.appendChild(label);
+        let customRadio = target.previousElementSibling;
+        let span = customRadio.querySelector('span');
+        let input = customRadio.querySelector('input');
+        let checker = customRadio.querySelector('div.custom-check');
 
         // 新增子元素之attribute隨user key-in變化
         let keyInText = target.value;
         span.textContent = keyInText;
         input.value = keyInText;
-        input.textContent = keyInText;
-        let groupName = target.previousElementSibling.querySelector("input").name //webflow radio select 需設置群體名稱
-        input.name = groupName;
-        input.dataset.name = groupName;
-        input.type = "radio";
-        input.classList.add('w--redirected-checked');
-        input.checked = true; // ??? 與上一行取捨
+        checker.classList.add('w--redirected-checked');
 
         // 新增自定義選項後，相關DOM元素的反應
         let otherOptions = parentDiv.querySelectorAll(".custom_check");
         for (const otherOption of otherOptions) {
 
             // 當選項被新增 -> 隱藏Text Input，並取消選取其他選項，藉以擬仿radio的特性
-            if (input.textContent.length != 0) {
+            if (keyInText.length != 0) {
                 target.classList.add('js-toggle');
                 otherOption.classList.remove('w--redirected-checked');
             }
@@ -84,9 +78,9 @@ for (const customOption of customOptions) {
             function reset() {
                 target.value = ""; // !-- 尚未檢查 target所鍵入value是否殘存
                 target.classList.remove('js-toggle');
-                label.remove();
+                customRadio.classList.add('js-toggle');
             }
-            label.addEventListener('click', reset)
+            customRadio.addEventListener('click', reset)
             otherOption.parentElement.addEventListener('click', reset)
 
         }
