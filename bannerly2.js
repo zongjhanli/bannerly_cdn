@@ -67,7 +67,7 @@ for (const customInput of customInputs) {
         checker.classList.add('w--redirected-checked');
 
         // 新增自定義選項後，相關DOM元素的反應
-        let otherOptions = parentDiv.querySelectorAll(".custom_check");
+        let otherOptions = parentDiv.querySelectorAll(".custom-check");
         for (const otherOption of otherOptions) {
 
             // 當選項被新增 -> 隱藏Text Input，並取消選取其他選項，藉以擬仿radio的特性
