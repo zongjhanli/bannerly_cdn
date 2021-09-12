@@ -11,19 +11,7 @@
 // "credit" -> 參考來源 
 // test
 
-// GLOBAL 全域input選擇後改變外觀
-let inputs = document.querySelectorAll('.input');
-inputs.forEach((input) => {
-    input.addEventListener('click', (e) => {
-        let target = e.target;
-        let check = target.firstElementChild;
-        if (check.classList.contains('w--redirected-checked')) {
-            target.classList.add('js-selected');
-        } else {
-            target.classList.remove('js-selected');
-        }
-    })
-})
+
 
 // GLOBAL 跨區叫喚
 let calleds = document.querySelectorAll('[data-called]');
