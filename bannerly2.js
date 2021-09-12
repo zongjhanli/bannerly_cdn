@@ -11,40 +11,33 @@
 // "credit" -> 參考來源 
 // test
 
-// Global
-// datepicker.js function (區間日期選項)
-$('#date-exposure_range').daterangepicker({
-    ranges: {
-        '今天': [moment(), moment()],
-        '下一週': [moment().add(1, 'week').startOf('week'), moment().add(1, 'week').endOf('week')],
-        '下一月份': [moment().add(1, 'month').startOf('month'), moment().add(1, 'month').endOf('month')],
-    },
-    "alwaysShowCalendars": true,
-    "startDate": moment(),
-    "endDate": moment().add(0, 'week').endOf('week'),
-    "minDate": moment(),
-    "opens": "center",
-}, function(start, end, label) {});
-
-// datepicker.js function (單一日期選項)            
-$('#date-deadline').daterangepicker({
-    "singleDatePicker": true,
-    "alwaysShowCalendars": true,
-    "startDate": moment(),
-    "endDate": moment(),
-    "minDate": moment(),
-    "opens": "center",
-    "drops": "up"
-}, function(start, label) {});
-
-// @Basic-Entries date-input placeholder被按下後即隱藏
-let dateInputEmbeds = document.querySelectorAll('.date-input-embed');
-for (const dateInputEmbed of dateInputEmbeds) {
-    dateInputEmbed.addEventListener('click', (e) => {
+// GLOBAL 跨區叫喚
+let calleds = document.querySelectorAll('[data-called]');
+let callers = document.querySelectorAll('[data-caller]');
+callers.forEach((caller) => {
+    caller.addEventListener('click', (e) => {
         let target = e.target;
-        let dateInputPlaceholder = dateInputEmbed.nextElementSibling;
+        let dataCaller = target.dataset.caller;
 
-        dateInputEmbed.style.opacity = "1.0"; //default: 0
-        dateInputPlaceholder.style.display = "none"; // default: block, unclickable
+        calleds.forEach((called) => {
+            let dataCalled = called.dataset.called;
+            if (dataCalled == dataCaller) { // !++ condition等式兩端不可互換
+                called.classList.remove('js-toggle');
+            } else {
+                called.classList.add('js-toggle');
+            }
+        })
+
+    })
+})
+
+// GLOBAL txt input文字題輸入時(placeholder消失時)，跳出輔助文字
+let txtInputs = document.querySelectorAll('input[type=text]');
+for (const txtInput of txtInputs) {
+    txtInput.addEventListener('input', (e) => {
+        let target = e.target;
+        target.previousElementSibling.style.display = "block";
     })
 }
+
+// ----------------------------------------------------------------------------------------------------
