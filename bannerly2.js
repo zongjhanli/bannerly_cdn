@@ -11,6 +11,20 @@
 // "credit" -> 參考來源 
 // test
 
+// GLOBAL 全域input選擇後改變外觀
+let inputs = document.querySelectorAll('.input');
+inputs.forEach((input) => {
+    input.addEventListener('click', (e) => {
+        let target = e.target;
+        let check = target.firstElementChild;
+        if (check.classList.contains('w--redirected-checked')) {
+            target.classList.add('js-selected');
+        } else {
+            target.classList.remove('js-selected');
+        }
+    })
+})
+
 // GLOBAL 跨區叫喚
 let calleds = document.querySelectorAll('[data-called]');
 let callers = document.querySelectorAll('[data-caller]');
@@ -31,13 +45,93 @@ callers.forEach((caller) => {
     })
 })
 
-// GLOBAL txt input文字題輸入時(placeholder消失時)，跳出輔助文字
-let txtInputs = document.querySelectorAll('input[type=text]');
-for (const txtInput of txtInputs) {
-    txtInput.addEventListener('input', (e) => {
+// GLOBAL 新增自定義選項（適用於radio select）
+const customOptions = document.querySelectorAll('input[type="text"].js-custom-input:not(.dropdown)');
+for (const customOption of customOptions) {
+    customOption.addEventListener('change', (e) => {
+        // 避免 refresh
+        e.preventDefault();
         let target = e.target;
-        target.previousElementSibling.style.display = "block";
+
+        // 新增母元素與子元素
+        // !++ 與webflow預設的input結構不相同
+        let input = document.createElement('input');
+        let label = document.createElement('label');
+        let span = document.createElement('span');
+        label.appendChild(input);
+        label.appendChild(span);
+
+        // 新增元素的外觀設定
+        span.classList.add('label');
+        input.style.display = "none";
+        label.classList.add('input', 'as_chip', 'js-selected');
+
+        // 新增母元素的指定位置
+        let parentDiv = target.parentElement;
+        parentDiv.appendChild(label);
+
+        // 新增子元素之attribute隨user key-in變化
+        let keyInText = target.value;
+        span.textContent = keyInText;
+        input.value = keyInText;
+        input.textContent = keyInText;
+        let groupName = target.previousElementSibling.querySelector("input").name //webflow radio select 需設置群體名稱
+        input.name = groupName;
+        input.dataset.name = groupName;
+        input.type = "radio";
+        input.classList.add('w--redirected-checked');
+        input.checked = true; // ??? 與上一行取捨
+
+        // 新增自定義選項後，相關DOM元素的反應
+        let otherOptions = parentDiv.querySelectorAll(".custom_check");
+        for (const otherOption of otherOptions) {
+
+            // 當選項被新增 -> 隱藏Text Input，並取消選取其他選項，藉以擬仿radio的特性
+            if (input.textContent.length != 0) {
+                target.classList.add('js-toggle');
+                otherOption.classList.remove('w--redirected-checked');
+            }
+
+            // 當選項被移除 -> 重新顯示Text Input，並清除原本已新增的選項
+            function reset() {
+                target.value = ""; // !-- 尚未檢查 target所鍵入value是否殘存
+                target.classList.remove('js-toggle');
+                label.remove();
+            }
+            label.addEventListener('click', reset)
+            otherOption.parentElement.addEventListener('click', reset)
+
+        }
     })
 }
+
+
+// GLOBAL 新增選項字數限制
+// crefit 待補上
+$('.js_lengthlimit').on('input', function(e) {
+    var $that = $(this),
+        limit = 10; //調整字元數限制
+    $that.attr('maxlength', limit);
+    setTimeout(function() {
+        var value = $that.val(),
+            reg = /[\u4e00-\u9fa5]{1}/g,
+            notReg = /\w{1}/g;
+        var Cn = value.match(reg);
+        var En = value.match(notReg);
+        if (Cn) {
+            limit = limit - (Cn.length * 2);
+        }
+        if (En) {
+
+            limit = limit - En.length;
+        }
+        if (limit <= 0) {
+            var finalLen = value.length + limit;
+            value = value.substring(0, finalLen);
+            $that.attr('maxlength', limit);
+            $that[0].value = value;
+        }
+    }, 0);
+});
 
 // ----------------------------------------------------------------------------------------------------
