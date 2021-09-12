@@ -64,7 +64,6 @@ for (const customInput of customInputs) {
         span.innerText = keyInText;
         input.value = keyInText;
         input.id = keyInText;
-        checker.classList.add('w--redirected-checked');
 
         // 新增自定義選項後，相關DOM元素的反應
         let otherOptions = parentDiv.querySelectorAll(".custom-check");
@@ -75,6 +74,7 @@ for (const customInput of customInputs) {
                 target.classList.add('js-toggle');
                 customRadio.classList.remove('js-toggle');
                 otherOption.classList.remove('w--redirected-checked');
+                checker.classList.add('w--redirected-checked');
             }
 
             // 當選項被移除 -> 重新顯示Text Input，並清除原本已新增的選項
