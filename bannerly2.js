@@ -91,7 +91,7 @@ for (const customInput of customInputs) {
 
 // GLOBAL 新增選項字數限制
 // crefit 待補上
-$('.js_lengthlimit').on('input', function(e) {
+$('.js-length-10').on('input', function(e) {
     var $that = $(this),
         limit = 10; //調整字元數限制
     $that.attr('maxlength', limit);
