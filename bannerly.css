@@ -58,6 +58,10 @@ comment前綴說明:
     bottom: 60px;
 }
 
+.IroWheelHue {
+    border-radius: 16px;
+}
+
 
 /* @Detail-Entries --- 若anchor對應當前location.hash，呈現特定動畫 */
 
