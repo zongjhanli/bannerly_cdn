@@ -56,7 +56,7 @@ for (const customInput of customInputs) {
         let customRadio = target.previousElementSibling;
         let span = customRadio.querySelector('span');
         let input = customRadio.querySelector('input');
-        let checker = customRadio.querySelector('div.custom-check');
+        let checker = customRadio.querySelector('.custom-check');
         let parentDiv = target.parentElement;
 
         // 新增子元素之attribute隨user key-in變化
