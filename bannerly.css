@@ -58,8 +58,9 @@ comment前綴說明:
 /* @Detail-Entries --- 調整 Iro Color Picker 的Luminance bar位置（position已預設為absolute） */
 
 .IroSlider {
-    left: 162px;
-    bottom: 60px;
+    left: 154px;
+    bottom: 86px;
+    max-width: 136px;
 }
 
 .IroWheelHue {
