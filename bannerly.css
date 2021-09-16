@@ -60,7 +60,6 @@ comment前綴說明:
 .IroSlider {
     left: 156px;
     bottom: 86px;
-    max-width: 128px;
 }
 
 .IroHandle.IroHandle--0.IroHandle--isActive {
