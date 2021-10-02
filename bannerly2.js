@@ -355,11 +355,12 @@ for (const dropInput of dropInputs) {
 } //end of dropInput loop !!!
 
 //dropdown假選項點擊響應
-let fakeBtns = document.querySelectorAll('.label.full-touch:not(.js-exclude)');
+let fakeBtns = document.querySelectorAll('.label.full-touch:not(.js-exclude):not(.empty-alert)');
 for (const fakeBtn of fakeBtns) {
     fakeBtn.addEventListener('click', (e) => {
             let target = e.target;
-            let checker = target.parentElement.querySelector('.custom-check');
+            //let checker = target.parentElement.querySelector('.custom-check');
+            let checker = target.nextElementSibling;
             let tGroup = target.parentElement.parentElement;
             let tDPBox = target.parentElement.parentElement.parentElement.parentElement;
             let tInput = tDPBox.querySelector('.input.dropdown');
@@ -368,10 +369,10 @@ for (const fakeBtn of fakeBtns) {
             //多選選項 (預設)
             if (!checker.classList.contains('js-selected')) {
                 checker.classList.add('js-selected');
-                target.dataset.select = 'true';
+                //target.dataset.select = 'true';
             } else {
                 checker.classList.remove('js-selected');
-                target.dataset.select = '';
+                //target.dataset.select = '';
             }
 
             //多選選項value同步至textarea
@@ -427,7 +428,7 @@ for (const fakeBtn of fakeBtns) {
         }) //end of fakeButton click event
 } //end of fakeButton loop
 
-//tab + indicator 響應
+//tab Col 區域內響應
 let ecTabsCols = document.querySelectorAll('[data-col=ec-tab]');
 for (const ecTabsCol of ecTabsCols) {
     ecTabsCol.addEventListener('click', (e) => {
