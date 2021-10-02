@@ -422,9 +422,10 @@ for (const dropInput of dropInputs) {
                 if (target.dataset.custom == 'pending') {
                     confirmAppended();
                     revealAll();
-                    tChecker.classList.add('js-selected');
                     if (tDropCard.dataset.drop == 'single' && otherChecked.classList.contains('js-selected')) {
                         otherChecked.classList.remove('js-selected');
+                    } else if (tDropCard.dataset.drop == 'multi') {
+                        tChecker.classList.add('js-selected');
                     }
                 } else if (target.dataset.custom != 'pending') {
                     if (tDropCard.dataset.drop == 'single') {
