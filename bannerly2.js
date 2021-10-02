@@ -300,7 +300,7 @@ for (const dropInput of dropInputs) {
                     target.dataset.custom = 'confirmed';
                 }
 
-                if (target.classList.contains('label') && !tChecker.classList.contains('js-selected')) {
+                if (target.dataset.custom == 'pending' && !tChecker.classList.contains('js-selected')) {
                     confirmAppended();
                     revealAll();
                     if (tDropCard.dataset.drop == 'single' &&
