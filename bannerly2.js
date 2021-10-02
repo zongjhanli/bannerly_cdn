@@ -374,14 +374,19 @@ for (const dropInput of dropInputs) {
                 textAreaBox.appendChild(newTextArea);
             }
 
-            let otherChecked = tDropCard.querySelector('.js-selected'); //for single
             if (target.dataset.custom == 'pending') {
                 confirmAppended();
                 revealAll();
-                if (tDropCard.dataset.drop == 'single' && otherChecked.classList.contains('js-selected')) {
-                    otherChecked.classList.remove('js-selected');
-                    tChecker.classList.add('js-selected');
+                if (tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'single') {
+                    let allCheckers = tDropCard.querySelectorAll('.custom-check');
+                    for (const allChecker of allCheckers) {
+                        if (tDropCard.dataset.drop == 'single' && allChecker.classList.contains('js-selected')) {
+                            allChecker.classList.remove('js-selected');
+                        }
+                        tChecker.classList.add('js-selected');
+                    }
                 }
+
                 if (tDropCard.dataset.drop = 'multi') {
                     tChecker.classList.add('js-selected');
                 }
@@ -390,8 +395,13 @@ for (const dropInput of dropInputs) {
             if (target.dataset.custom != 'pending') {
                 // 單選選項專用響應 -> 模擬radio input
                 if (tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'single') {
-                    otherChecked.classList.remove('js-selected');
-                    tChecker.classList.add('js-selected');
+                    let allCheckers = tDropCard.querySelectorAll('.custom-check');
+                    for (const allChecker of allCheckers) {
+                        if (tDropCard.dataset.drop == 'single' && allChecker.classList.contains('js-selected')) {
+                            allChecker.classList.remove('js-selected');
+                        }
+                        tChecker.classList.add('js-selected');
+                    }
                 }
 
                 //多選選項 (預設)
