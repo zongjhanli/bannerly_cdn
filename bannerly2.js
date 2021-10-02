@@ -394,7 +394,7 @@ for (const dropInput of dropInputs) {
                     let tabCounter = document.createElement('div');
 
                     //新增 new tab
-                    tabBtn.classList.add('a-button', 'as-tab', 'js-hide');
+                    tabBtn.classList.add('a-button', 'as-tab', 'js-hide', 'js-show');
                     tabLabel.classList.add('label', 'full-touch', 'js-exclude');
                     tabCounter.classList.add('_12px-500', 'as-counts', 'in-tab');
                     tabBtn.appendChild(tabLabel);
