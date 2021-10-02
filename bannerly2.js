@@ -453,17 +453,13 @@ for (const dropInput of dropInputs) {
                 }
 
 
-                if (target.dataset.custom == 'pending') {
+                if (target.dataset.custom != '') {
                     confirmAppended();
                     revealAll();
-
                     if (tDropCard.dataset.drop == 'single') {
                         otherChecker.classList.remove('js-selected');
                     }
-                } //else if (target.dataset.custom = 'pending') {
-
-
-                //}
+                }
 
                 //清除殘存的「未選選選項」
                 if (document.querySelector('[data-custom=pending]') != null) {
