@@ -460,7 +460,8 @@ for (const dropCard of dropCards) {
     //dropCard 範圍外收合下拉選單
     document.addEventListener('click', (e) => {
         let target = e.target;
-        let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow');
+        let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow'); // for global collapse
+        let dropCard = target.parentElement.parentElement.parentElement; // for expandByLabel
 
         function globalCollapse() {
             dropCard.classList.add('js-collapsed');
@@ -471,15 +472,22 @@ for (const dropCard of dropCards) {
             globalCollapse();
         }; //無論點選何處，dropCard預設全數收回
 
-        function expand() {
+        function expandByInput() {
             target.parentElement.querySelector('.drop-card').classList.remove('js-collapsed');
             target.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
             target.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
         };
+
+        function expandByLabel() {
+            dropCard.classList.remove('js-collapsed');
+            dropCard.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
+            dropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
+        };
+
         if (target.classList.contains('input', 'dropdown')) {
-            expand(); //點選input時 -> dropdown開啟
-        } else if (target.parentElement.querySelector('.drop-card').dataset.drop == 'multi') {
-            expand(); //點選multi dropCard時 -> dropdown開啟
+            expandByInput(); //點選input時 -> dropdown開啟
+        } else if (target.classList.contains('label', 'full-touch') && dropCard.dataset.drop == 'multi') {
+            expandByLabel(); //點選multi dropCard中的label時 -> dropdown開啟
         }
     })
 
