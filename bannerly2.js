@@ -456,7 +456,7 @@ for (const dropInput of dropInputs) {
                 if (target.dataset.custom == 'pending') {
                     confirmAppended();
                     revealAll();
-                    if (tDropCard.dataset.drop == 'single') {
+                    if (tDropCard.dataset.drop == 'single' && otherChecked.classList.contains('js-selected')) {
                         otherChecked.classList.remove('js-selected');
                     }
                 } else if (target.dataset.custom != 'pending') {
