@@ -412,6 +412,7 @@ for (const dropInput of dropInputs) {
                     //新增 new textArea
                     let newTextArea = document.createElement('textarea');
                     newTextArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'js-show');
+                    newTextArea.placeholder = '↑點按以選擇' + dropInput.value + '尺寸';
                     let textAreaBox = colR.querySelector('[data-box=textarea]');
                     textAreaBox.appendChild(newTextArea);
                 }
