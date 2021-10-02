@@ -171,7 +171,8 @@ document.addEventListener('click', (e) => {
 var dropCards = document.querySelectorAll('.drop-card');
 for (const dropCard of dropCards) {
     //dropCard 範圍外收合下拉選單
-    document.addEventListener('click', () => {
+    document.addEventListener('click', (e) => {
+        let target = e.target;
         let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow');
 
         function globalCollapse() {
