@@ -399,6 +399,9 @@ for (const dropInput of dropInputs) {
                         otherChecked.classList.remove('js-selected');
                         tChecker.classList.add('js-selected');
                     } else if (tDropCard.dataset.drop == 'multi') {
+                        tDropCard.classList.remove('js-collapsed');
+                        tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
+                        tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
                         if (!tChecker.classList.contains('js-selected')) {
                             tChecker.classList.add('js-selected');
                         } else if (tChecker.classList.contains('js-selected')) {
