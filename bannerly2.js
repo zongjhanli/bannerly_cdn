@@ -168,65 +168,57 @@ document.addEventListener('click', (e) => {
     }
 });
 
-
-//Global general dropdown behaviours
+//dropCard 範圍內點擊響應
 document.addEventListener('click', (e) => {
-    let target = e.target;
-    let dropCards = document.querySelectorAll('.drop-card');
-    for (const dropCard of dropCards) {
-        let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow');
+        let dropCards = document.querySelectorAll('.drop-card');
+        for (const dropCard of dropCards) {
 
-        function globalCollapse() {
-            dropCard.classList.add('js-collapsed');
-            dropArrow.classList.remove('js-rotated');
-            dropArrow.classList.add('unclickable');
-        };
+            let target = e.target;
+            let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow');
 
-        function expand() {
-            target.parentElement.querySelector('.drop-card').classList.remove('js-collapsed');
-            target.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
-            target.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
-        };
+            function globalCollapse() {
+                dropCard.classList.add('js-collapsed');
+                dropArrow.classList.remove('js-rotated');
+                dropArrow.classList.add('unclickable');
+            };
+            if (!dropCard.classList.contains('js-collapsed')) {
+                globalCollapse();
+            }; //無論點選何處，dropCard預設全數收回
 
-        function expand2() {
-            target.parentElement.parentElement.parentElement.classList.remove('js-collapsed');
-            target.parentElement.parentElement.parentElement.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
-            target.parentElement.parentElement.parentElement.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
-        };
+            function expand() {
+                target.parentElement.querySelector('.drop-card').classList.remove('js-collapsed');
+                target.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
+                target.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
+            };
+            if (target.classList.contains('input', 'dropdown')) {
+                expand(); //點選input時 -> dropdown開啟
+            }
 
-        if (!dropCard.classList.contains('js-collapsed')) {
-            globalCollapse();
-        }; //無論點選何處，dropCard預設全數收回
+            function keepExpand() {
+                target.parentElement.parentElement.parentElement.classList.remove('js-collapsed');
+                target.parentElement.parentElement.parentElement.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
+                target.parentElement.parentElement.parentElement.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
+            };
+            if (target.parentElement.parentElement.classList.contains('drop-group')) {
+                if (target.parentElement.parentElement.parentElement.dataset.drop == 'single') { globalCollapse(); } //在single dropCard點按選項時一按即收合
+                if (target.parentElement.parentElement.parentElement.dataset.drop == 'multi') { keepExpand(); } //在multi dropCard點按選項時保持開啟
+            } //!-- 尚未考慮使用tab切換選項的使用情境
 
-        if (target.classList.contains('input', 'dropdown')) {
-            expand(); //點選input時 -> dropdown開啟
-        }
+            //若dropCard 無任何選項，顯現empty alert
+            // if (dropCard.querySelectorAll('.a-button.as-list').length == 0 && dropCard.querySelector('.empty-alert') == null) {
+            //     function emptyAlert() {
+            //         let labelAlert = document.createElement('div');
+            //         labelAlert.textContent = '尚未加入任何選項';
+            //         labelAlert.classList.add('label', 'full-touch', 'empty-alert');
+            //         dropCard.appendChild(labelAlert);
+            //     }
+            //     emptyAlert;
+            // } else if (dropCard.querySelectorAll('.a-button.as-list').length != 0 && dropCard.querySelector('.empty-alert') != null) {
+            //     dropCard.querySelector('.empty-alert').remove();
+            // }
 
-        if (dropCard.dataset.drop == 'multi' &&
-            target.classList.contains('full-touch') &&
-            !target.classList.contains('js-exclude')) {
-            expand2();
-        } else if (dropCard.dataset.drop == 'single' &&
-            target.classList.contains('full-touch') &&
-            !target.classList.contains('js-exclude')) {
-            globalCollapse(); //!-- 尚未考慮使用tab切換選項的使用情境
-        }
-
-        // if (dropCard.querySelectorAll('.a-button.as-list').length == 0 && dropCard.querySelector('.empty-alert') == null) {
-        //     function emptyAlert() {
-        //         let labelAlert = document.createElement('div');
-        //         labelAlert.textContent = '尚未加入任何選項';
-        //         labelAlert.classList.add('label', 'full-touch', 'empty-alert');
-        //         dropCard.appendChild(labelAlert);
-        //     }
-        //     emptyAlert;
-        // } else if (dropCard.querySelectorAll('.a-button.as-list').length != 0 && dropCard.querySelector('.empty-alert') != null) {
-        //     dropCard.querySelector('.empty-alert').remove();
-        // }
-
-    } //end of dropCard loop
-});
-
+        } //end of dropCard loop
+    }) //end of dropCard click event
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
@@ -300,7 +292,7 @@ for (const dropInput of dropInputs) {
                     target.dataset.custom = 'confirmed';
                 }
 
-                if (target.dataset.custom == 'pending' && !tChecker.classList.contains('js-selected')) {
+                if (!tChecker.classList.contains('js-selected')) {
                     confirmAppended();
                     revealAll();
                     if (tDropCard.dataset.drop == 'single' &&
@@ -353,6 +345,7 @@ for (const dropInput of dropInputs) {
     })
 
 } //end of dropInput loop !!!
+
 
 //dropdown假選項點擊響應
 let fakeBtns = document.querySelectorAll('.label.full-touch:not(.js-exclude):not(.empty-alert)');
