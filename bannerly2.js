@@ -364,7 +364,7 @@ for (const dropCard of dropCards) {
                     collapse();
                 } else if (tDropCard.dataset.drop == 'multi') {
                     console.log('2');
-                    keepExpand();
+                    return;
                 } //single dropCard點按選項時一按即收合 / multi dropCard點按選項時保持開啟
             } //!-- 尚未考慮使用tab切換選項的使用情境
 
