@@ -231,6 +231,7 @@ for (const dropCard of dropCards) {
         }) //end of dropCard click event
 } //end of dropCard loop
 
+
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
 for (const dropInput of dropInputs) {
