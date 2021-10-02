@@ -461,7 +461,7 @@ for (const dropCard of dropCards) {
     document.addEventListener('click', (e) => {
         let target = e.target;
         let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow'); // for global collapse
-        let dropCard = target.parentElement.parentElement.parentElement; // for expandByLabel
+        let tDropCard = target.parentElement.parentElement.parentElement; // for expandByLabel
 
         function globalCollapse() {
             dropCard.classList.add('js-collapsed');
@@ -479,9 +479,9 @@ for (const dropCard of dropCards) {
         };
 
         function expandByLabel() {
-            dropCard.classList.remove('js-collapsed');
-            dropCard.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
-            dropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
+            tDropCard.classList.remove('js-collapsed');
+            tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
+            tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
         };
 
         if (target.classList.contains('input', 'dropdown')) {
