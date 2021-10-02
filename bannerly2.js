@@ -397,6 +397,8 @@ for (const dropInput of dropInputs) {
                     tabBtn.classList.add('a-button', 'as-tab', 'js-hide', 'js-show');
                     tabLabel.classList.add('label', 'full-touch', 'js-exclude');
                     tabCounter.classList.add('_12px-500', 'as-counts', 'in-tab');
+                    tabLabel.textContent = dropInput.value;
+                    tabCounter.textContent = '0';
                     tabBtn.appendChild(tabLabel);
                     tabBtn.appendChild(tabCounter);
                     let tabGroup = colL.querySelector('[data-box=tab]');
