@@ -394,11 +394,11 @@ for (const dropInput of dropInputs) {
                 }
 
                 //多選選項 (預設)
-                if (!checker.classList.contains('js-selected') && tDropCard.dataset.drop == 'multi') {
-                    checker.classList.add('js-selected');
+                if (!tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'multi') {
+                    tChecker.classList.add('js-selected');
                     target.dataset.select = 'true'; //for textarea文字同步
-                } else if (checker.classList.contains('js-selected')) {
-                    checker.classList.remove('js-selected');
+                } else if (tChecker.classList.contains('js-selected')) {
+                    tChecker.classList.remove('js-selected');
                     target.dataset.select = ''; //for textarea文字同步
                 }
 
@@ -414,7 +414,7 @@ for (const dropInput of dropInputs) {
                 }
 
                 // 單選input專用響應 -> input value 不累加
-                if (checker.classList.contains('js-selected') && tInput.dataset.drop == 'single') {
+                if (tChecker.classList.contains('js-selected') && tInput.dataset.drop == 'single') {
                     tInput.value = target.textContent;
                 } else {
                     tInput.value = '';
@@ -437,9 +437,9 @@ for (const dropInput of dropInputs) {
             let tTabs = tDPBox.parentElement.parentElement.querySelectorAll('.label[data-tab]');
             for (const tTab of tTabs) {
                 if (target.dataset.ec === tTab.dataset.tab) {
-                    if (checker.classList.contains('js-selected')) {
+                    if (tChecker.classList.contains('js-selected')) {
                         tTab.parentElement.classList.add('js-show');
-                    } else if (!checker.classList.contains('js-selected')) {
+                    } else if (!tChecker.classList.contains('js-selected')) {
                         tTab.parentElement.classList.remove('js-show');
                     }
                 }
