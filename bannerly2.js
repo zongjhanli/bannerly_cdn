@@ -118,6 +118,31 @@ $('.js-length-10').on('input', function(e) {
         }
     }, 0);
 });
+$('.js-length-6').on('input', function(e) {
+    var $that = $(this),
+        limit = 6; //調整字元數限制
+    $that.attr('maxlength', limit);
+    setTimeout(function() {
+        var value = $that.val(),
+            reg = /[\u4e00-\u9fa5]{1}/g,
+            notReg = /\w{1}/g;
+        var Cn = value.match(reg);
+        var En = value.match(notReg);
+        if (Cn) {
+            limit = 0;
+        }
+        if (En) {
+
+            limit = limit - En.length;
+        }
+        if (limit <= 0) {
+            var finalLen = value.length + limit;
+            value = value.substring(0, finalLen);
+            $that.attr('maxlength', limit);
+            $that[0].value = value;
+        }
+    }, 0);
+});
 
 // ----------------------------------------------------------------------------------------------------
 
@@ -460,30 +485,5 @@ for (const ecTabsCol of ecTabsCols) {
             } // end of shownTab loop
         }) //end of ecTabsCol click event
 } //end of ecTabsCol loop
-$('.js-length-6').on('input', function(e) {
-    var $that = $(this),
-        limit = 6; //調整字元數限制
-    $that.attr('maxlength', limit);
-    setTimeout(function() {
-        var value = $that.val(),
-            reg = /[\u4e00-\u9fa5]{1}/g,
-            notReg = /\w{1}/g;
-        var Cn = value.match(reg);
-        var En = value.match(notReg);
-        if (Cn) {
-            limit = 0;
-        }
-        if (En) {
-
-            limit = limit - En.length;
-        }
-        if (limit <= 0) {
-            var finalLen = value.length + limit;
-            value = value.substring(0, finalLen);
-            $that.attr('maxlength', limit);
-            $that[0].value = value;
-        }
-    }, 0);
-});
 
 // ----------------------------------------------------------------------------------------------------
