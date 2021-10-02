@@ -146,219 +146,6 @@ $('.js-length-6').on('input', function(e) {
 
 // ----------------------------------------------------------------------------------------------------
 
-//Global multi-dropdown input value
-document.addEventListener('click', (e) => {
-    let target = e.target;
-    e.preventDefault();
-    let multiDropCards = document.querySelectorAll('.drop-card[data-drop=multi]');
-    for (const multiDropCard of multiDropCards) {
-        let shownGroup = multiDropCard.querySelector('.drop-group.js-show');
-        let checkCount = shownGroup.querySelectorAll('.js-selected').length;
-        let input = multiDropCard.parentElement.querySelector('.input.dropdown');
-
-        if (target.dataset.drop == 'multi' && input == document.activeElement) {
-            input.value = '';
-        } else if (input != document.activeElement) {
-            if (checkCount == '0') {
-                input.value = '';
-            } else {
-                input.value = '已選' + checkCount + '項';
-            }
-        }
-    }
-});
-
-var dropCards = document.querySelectorAll('.drop-card');
-for (const dropCard of dropCards) {
-    //dropCard 範圍外收合下拉選單
-    document.addEventListener('click', (e) => {
-        let target = e.target;
-        let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow');
-
-        function globalCollapse() {
-            dropCard.classList.add('js-collapsed');
-            dropArrow.classList.remove('js-rotated');
-            dropArrow.classList.add('unclickable');
-        };
-        if (!dropCard.classList.contains('js-collapsed')) {
-            globalCollapse();
-        }; //無論點選何處，dropCard預設全數收回
-
-        function expand() {
-            target.parentElement.querySelector('.drop-card').classList.remove('js-collapsed');
-            target.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
-            target.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
-        };
-        if (target.classList.contains('input', 'dropdown')) {
-            expand(); //點選input時 -> dropdown開啟
-        }
-    })
-
-    //dropCard 範圍內點擊響應
-    dropCard.addEventListener('click', (e) => {
-            let target = e.target;
-            let tDropCard = target.parentElement.parentElement.parentElement;
-
-            function keepExpand() {
-                tDropCard.classList.remove('js-collapsed');
-                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
-                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
-            };
-
-            function collapse() {
-                tDropCard.classList.add('js-collapsed');
-                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('js-rotated');
-                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('unclickable');
-            };
-            if (target.classList.contains('label')) {
-                if (tDropCard.dataset.drop == 'single') { collapse(); } //在single dropCard點按選項時一按即收合
-                if (tDropCard.dataset.drop == 'multi') { keepExpand(); } //在multi dropCard點按選項時保持開啟
-            } //!-- 尚未考慮使用tab切換選項的使用情境
-
-            //若dropCard 無任何選項，顯現empty alert
-            // if (dropCard.querySelectorAll('.a-button.as-list').length == 0 && dropCard.querySelector('.empty-alert') == null) {
-            //     function emptyAlert() {
-            //         let labelAlert = document.createElement('div');
-            //         labelAlert.textContent = '尚未加入任何選項';
-            //         labelAlert.classList.add('label', 'full-touch', 'empty-alert');
-            //         dropCard.appendChild(labelAlert);
-            //     }
-            //     emptyAlert;
-            // } else if (dropCard.querySelectorAll('.a-button.as-list').length != 0 && dropCard.querySelector('.empty-alert') != null) {
-            //     dropCard.querySelector('.empty-alert').remove();
-            // }
-
-        }) //end of dropCard click event
-} //end of dropCard loop
-
-
-//input輸入時/輸入後響應
-let dropInputs = document.querySelectorAll('.input.dropdown');
-for (const dropInput of dropInputs) {
-    let dropCard = dropInput.parentElement.querySelector('.drop-card');
-    dropInput.addEventListener('input', (e) => {
-        //e.preventDefault();
-        let target = e.target;
-        let capInput = target.value.toUpperCase();
-
-        //選項隨著輸入值對照而進一步顯示or隱藏
-        let dropOptions = dropCard.querySelectorAll('.a-button.as-list');
-        for (const dropOption of dropOptions) {
-            let label = dropOption.querySelector('div.label');
-            let capLabel = label.textContent.toUpperCase();
-
-            dropOption.classList.add('js-hide');
-
-            if (capLabel.includes(capInput)) {
-                dropOption.classList.remove('js-hide');
-            }
-        }
-    })
-
-    //輸入後若無match字符 -> 新增選項
-    let timer,
-        timeoutVal = 0; // time it takes to wait for user to stop typing in ms
-
-    // detects when the user is actively typing
-    //dropInput.addEventListener('keypress', handleKeyPress);
-    // triggers a check to see if the user is actually done typing
-    dropInput.addEventListener('keyup', handleKeyUp);
-
-    function newOption() {
-        let keyInText = dropInput.value;
-        let dropGroup = dropCard.querySelector('.drop-group.js-show');
-        let button = document.createElement('div');
-        let label = document.createElement('div');
-        let checker = document.createElement('div');
-
-        button.appendChild(label);
-        button.appendChild(checker);
-        button.classList.add('a-button', 'as-list');
-        label.classList.add('label', 'full-touch');
-        checker.classList.add('custom-check', 'tick-right');
-        label.textContent = '新增' + '「' + keyInText + '」';
-        dropGroup.insertBefore(button, dropGroup.children[0]);
-        label.dataset.custom = 'pending';
-
-
-        //新增於document的選項需要重新設定點按響應
-        document.addEventListener('click', (e) => {
-                let target = e.target;
-                let tChecker = target.nextElementSibling;
-                let tDropCard = target.parentElement.parentElement.parentElement;
-                let otherChecker = tDropCard.querySelector('.js-selected'); //for single
-
-
-                function revealAll() {
-                    let tOptions = dropInput.parentElement.querySelector('.drop-group.js-show').querySelectorAll('.a-button.as-list');
-                    for (const tOption of tOptions) {
-                        tOption.classList.remove('js-hide');
-                    }
-                }
-
-                function confirmAppended() {
-                    tChecker.classList.add('js-selected');
-                    let tNewStr = target.textContent.replace('新增「', '').replace('」', '');
-                    target.textContent = tNewStr;
-                    dropInput.value = tNewStr;
-                    target.dataset.custom = 'confirmed';
-                }
-
-                if (!tChecker.classList.contains('js-selected')) {
-                    confirmAppended();
-                    revealAll();
-                    if (tDropCard.dataset.drop == 'single' &&
-                        otherChecker.classList.contains('js-selected')) {
-                        otherChecker.classList.remove('js-selected');
-                    } else {
-                        return;
-                    }
-                }
-
-                //清除殘存的「未選選選項」
-                if (document.querySelector('[data-custom=pending]') != null) {
-                    document.querySelector('[data-custom=pending]').parentElement.remove();
-                }
-            }) //end of document click event
-
-    } //end of newOption()
-
-    function handleKeyUp(e) {
-        window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
-        timer = window.setTimeout(() => {
-            if (dropInput.value != '') {
-                newOption();
-            }
-            let dropInputConcated = dropInput.value.replace(dropInput.value, '').concat('新增「', dropInput.value, '」');
-            let pendingOptions = dropCard.querySelectorAll('[data-custom=pending]');
-            let existingOptions = dropCard.querySelectorAll('.label:not([data-custom=pending])');
-            existingOptions.forEach((existingOption) => {
-                pendingOptions.forEach((pendingOption) => {
-                    let pendingOptionText = pendingOption.textContent;
-                    if (dropInput.value == '') {
-                        pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
-                    } else if (pendingOptionText.indexOf(dropInputConcated) == -1) {
-                        pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
-                    } else if (existingOption.textContent.includes(dropInput.value)) {
-                        pendingOption.parentElement.remove(); //與既存選項同名者->刪
-                    }
-                })
-            })
-        }, timeoutVal);
-    } //end of handleKeyUp()
-
-    dropInput.addEventListener('focus', (e) => {
-        let target = e.target;
-        target.select();
-        let tOptions = dropInput.parentElement.querySelector('.drop-group.js-show').querySelectorAll('.a-button.as-list');
-        for (const tOption of tOptions) {
-            tOption.classList.remove('js-hide');
-        }
-    })
-
-} //end of dropInput loop !!!
-
-
 //dropdown假選項點擊響應
 let fakeBtns = document.querySelectorAll('.label.full-touch:not(.js-exclude):not(.empty-alert)');
 for (const fakeBtn of fakeBtns) {
@@ -504,5 +291,217 @@ for (const ecTabsCol of ecTabsCols) {
             } // end of shownTab loop
         }) //end of ecTabsCol click event
 } //end of ecTabsCol loop
+
+//Global multi-dropdown input value
+document.addEventListener('click', (e) => {
+    let target = e.target;
+    e.preventDefault();
+    let multiDropCards = document.querySelectorAll('.drop-card[data-drop=multi]');
+    for (const multiDropCard of multiDropCards) {
+        let shownGroup = multiDropCard.querySelector('.drop-group.js-show');
+        let checkCount = shownGroup.querySelectorAll('.js-selected').length;
+        let input = multiDropCard.parentElement.querySelector('.input.dropdown');
+
+        if (target.dataset.drop == 'multi' && input == document.activeElement) {
+            input.value = '';
+        } else if (input != document.activeElement) {
+            if (checkCount == '0') {
+                input.value = '';
+            } else {
+                input.value = '已選' + checkCount + '項';
+            }
+        }
+    }
+});
+
+//改良global general dropdown
+var dropCards = document.querySelectorAll('.drop-card');
+for (const dropCard of dropCards) {
+    //dropCard 範圍外收合下拉選單
+    document.addEventListener('click', (e) => {
+        let target = e.target;
+        let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow');
+
+        function globalCollapse() {
+            dropCard.classList.add('js-collapsed');
+            dropArrow.classList.remove('js-rotated');
+            dropArrow.classList.add('unclickable');
+        };
+        if (!dropCard.classList.contains('js-collapsed')) {
+            globalCollapse();
+        }; //無論點選何處，dropCard預設全數收回
+
+        function expand() {
+            target.parentElement.querySelector('.drop-card').classList.remove('js-collapsed');
+            target.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
+            target.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
+        };
+        if (target.classList.contains('input', 'dropdown')) {
+            expand(); //點選input時 -> dropdown開啟
+        }
+    })
+
+    //dropCard 範圍內點擊響應
+    dropCard.addEventListener('click', (e) => {
+            let target = e.target;
+            let tDropCard = target.parentElement.parentElement.parentElement;
+
+            function keepExpand() {
+                tDropCard.classList.remove('js-collapsed');
+                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
+                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
+            };
+
+            function collapse() {
+                tDropCard.classList.add('js-collapsed');
+                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('js-rotated');
+                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('unclickable');
+            };
+            if (target.classList.contains('label')) {
+                if (tDropCard.dataset.drop == 'single') { collapse(); } //在single dropCard點按選項時一按即收合
+                if (tDropCard.dataset.drop == 'multi') { keepExpand(); } //在multi dropCard點按選項時保持開啟
+            } //!-- 尚未考慮使用tab切換選項的使用情境
+
+            //若dropCard 無任何選項，顯現empty alert
+            // if (dropCard.querySelectorAll('.a-button.as-list').length == 0 && dropCard.querySelector('.empty-alert') == null) {
+            //     function emptyAlert() {
+            //         let labelAlert = document.createElement('div');
+            //         labelAlert.textContent = '尚未加入任何選項';
+            //         labelAlert.classList.add('label', 'full-touch', 'empty-alert');
+            //         dropCard.appendChild(labelAlert);
+            //     }
+            //     emptyAlert;
+            // } else if (dropCard.querySelectorAll('.a-button.as-list').length != 0 && dropCard.querySelector('.empty-alert') != null) {
+            //     dropCard.querySelector('.empty-alert').remove();
+            // }
+
+        }) //end of dropCard click event
+} //end of dropCard loop
+
+//input輸入時/輸入後響應
+let dropInputs = document.querySelectorAll('.input.dropdown');
+for (const dropInput of dropInputs) {
+    let dropCard = dropInput.parentElement.querySelector('.drop-card');
+    dropInput.addEventListener('input', (e) => {
+        //e.preventDefault();
+        let target = e.target;
+        let capInput = target.value.toUpperCase();
+
+        //選項隨著輸入值對照而進一步顯示or隱藏
+        let dropOptions = dropCard.querySelectorAll('.a-button.as-list');
+        for (const dropOption of dropOptions) {
+            let label = dropOption.querySelector('div.label');
+            let capLabel = label.textContent.toUpperCase();
+
+            dropOption.classList.add('js-hide');
+
+            if (capLabel.includes(capInput)) {
+                dropOption.classList.remove('js-hide');
+            }
+        }
+    })
+
+    //輸入後若無match字符 -> 新增選項
+    let timer,
+        timeoutVal = 0; // time it takes to wait for user to stop typing in ms
+
+    // detects when the user is actively typing
+    //dropInput.addEventListener('keypress', handleKeyPress);
+    // triggers a check to see if the user is actually done typing
+    dropInput.addEventListener('keyup', handleKeyUp);
+
+    function newOption() {
+        let keyInText = dropInput.value;
+        let dropGroup = dropCard.querySelector('.drop-group.js-show');
+        let button = document.createElement('div');
+        let label = document.createElement('div');
+        let checker = document.createElement('div');
+
+        button.appendChild(label);
+        button.appendChild(checker);
+        button.classList.add('a-button', 'as-list');
+        label.classList.add('label', 'full-touch');
+        checker.classList.add('custom-check', 'tick-right');
+        label.textContent = '新增' + '「' + keyInText + '」';
+        dropGroup.insertBefore(button, dropGroup.children[0]);
+        label.dataset.custom = 'pending';
+
+
+        //新增於document的選項需要重新設定點按響應
+        document.addEventListener('click', (e) => {
+                let target = e.target;
+                let tChecker = target.nextElementSibling;
+                let tDropCard = target.parentElement.parentElement.parentElement;
+                let otherChecker = tDropCard.querySelector('.js-selected'); //for single
+
+
+                function revealAll() {
+                    let tOptions = dropInput.parentElement.querySelector('.drop-group.js-show').querySelectorAll('.a-button.as-list');
+                    for (const tOption of tOptions) {
+                        tOption.classList.remove('js-hide');
+                    }
+                }
+
+                function confirmAppended() {
+                    tChecker.classList.add('js-selected');
+                    let tNewStr = target.textContent.replace('新增「', '').replace('」', '');
+                    target.textContent = tNewStr;
+                    dropInput.value = tNewStr;
+                    target.dataset.custom = 'confirmed';
+                }
+
+                if (!tChecker.classList.contains('js-selected')) {
+                    confirmAppended();
+                    revealAll();
+                    if (tDropCard.dataset.drop == 'single' &&
+                        otherChecker.classList.contains('js-selected')) {
+                        otherChecker.classList.remove('js-selected');
+                    } else {
+                        return;
+                    }
+                }
+
+                //清除殘存的「未選選選項」
+                if (document.querySelector('[data-custom=pending]') != null) {
+                    document.querySelector('[data-custom=pending]').parentElement.remove();
+                }
+            }) //end of document click event
+
+    } //end of newOption()
+
+    function handleKeyUp(e) {
+        window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
+        timer = window.setTimeout(() => {
+            if (dropInput.value != '') {
+                newOption();
+            }
+            let dropInputConcated = dropInput.value.replace(dropInput.value, '').concat('新增「', dropInput.value, '」');
+            let pendingOptions = dropCard.querySelectorAll('[data-custom=pending]');
+            let existingOptions = dropCard.querySelectorAll('.label:not([data-custom=pending])');
+            existingOptions.forEach((existingOption) => {
+                pendingOptions.forEach((pendingOption) => {
+                    let pendingOptionText = pendingOption.textContent;
+                    if (dropInput.value == '') {
+                        pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
+                    } else if (pendingOptionText.indexOf(dropInputConcated) == -1) {
+                        pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
+                    } else if (existingOption.textContent.includes(dropInput.value)) {
+                        pendingOption.parentElement.remove(); //與既存選項同名者->刪
+                    }
+                })
+            })
+        }, timeoutVal);
+    } //end of handleKeyUp()
+
+    dropInput.addEventListener('focus', (e) => {
+        let target = e.target;
+        target.select();
+        let tOptions = dropInput.parentElement.querySelector('.drop-group.js-show').querySelectorAll('.a-button.as-list');
+        for (const tOption of tOptions) {
+            tOption.classList.remove('js-hide');
+        }
+    })
+
+} //end of dropInput loop !!!
 
 // ----------------------------------------------------------------------------------------------------
