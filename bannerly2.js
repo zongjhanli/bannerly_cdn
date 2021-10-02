@@ -160,10 +160,10 @@ for (const fakeBtn of fakeBtns) {
             //多選選項 (預設)
             if (!checker.classList.contains('js-selected')) {
                 checker.classList.add('js-selected');
-                target.dataset.select = 'true';
-            } else {
+                //target.dataset.select = 'true';
+            } else if (checker.classList.contains('js-selected')) {
                 checker.classList.remove('js-selected');
-                target.dataset.select = '';
+                //target.dataset.select = '';
             }
 
             //多選選項value同步至textarea
