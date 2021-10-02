@@ -169,10 +169,9 @@ document.addEventListener('click', (e) => {
 });
 
 //dropCard 範圍內點擊響應
-document.addEventListener('click', (e) => {
-        let dropCards = document.querySelectorAll('.drop-card');
-        for (const dropCard of dropCards) {
-
+let dropCards = document.querySelectorAll('.drop-card');
+for (const dropCard of dropCards) {
+    document.addEventListener('click', (e) => {
             let target = e.target;
             let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow');
 
@@ -217,8 +216,8 @@ document.addEventListener('click', (e) => {
             //     dropCard.querySelector('.empty-alert').remove();
             // }
 
-        } //end of dropCard loop
-    }) //end of dropCard click event
+        }) //end of dropCard click event
+} //end of dropCard loop
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
