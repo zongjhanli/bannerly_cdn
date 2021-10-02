@@ -419,19 +419,19 @@ for (const dropInput of dropInputs) {
                     textAreaBox.appendChild(newTextArea);
                 }
 
-                if (target.dataset.custom === 'pending') {
+                if (target.dataset.custom = 'pending') {
                     confirmAppended();
                     revealAll();
-                    if (tDropCard.dataset.drop === 'single' && otherChecked.classList.contains('js-selected')) {
+                    if (tDropCard.dataset.drop = 'single' && otherChecked.classList.contains('js-selected')) {
                         otherChecked.classList.remove('js-selected');
-                    } else if (tDropCard.dataset.drop === 'multi') {
+                    } else if (tDropCard.dataset.drop = 'multi') {
                         tChecker.classList.add('js-selected');
                     }
                 } else if (target.dataset.custom != 'pending') {
-                    if (tDropCard.dataset.drop === 'single') {
+                    if (tDropCard.dataset.drop = 'single') {
                         otherChecked.classList.remove('js-selected');
                         tChecker.classList.add('js-selected');
-                    } else if (tDropCard.dataset.drop === 'multi') {
+                    } else if (tDropCard.dataset.drop = 'multi') {
                         if (!tChecker.classList.contains('js-selected')) {
                             tChecker.classList.add('js-selected');
                         } else if (tChecker.classList.contains('js-selected')) {
