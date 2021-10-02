@@ -211,6 +211,18 @@ document.addEventListener('click', (e) => {
             !target.classList.contains('js-exclude')) {
             globalCollapse(); //!-- 尚未考慮使用tab切換選項的使用情境
         }
+
+        if (dropCard.querySelectorAll('.label.full-touch').length == 0) {
+            function emptyAlert() {
+                let labelAlert = document.createElement('div');
+                labelAlert.textContent = '尚未加入任何選項';
+                labelAlert.classList.add('label', 'full-touch', 'empty-alert');
+                dropCard.appendChild(labelAlert);
+            }
+            emptyAlert;
+        } else if (dropCard.querySelectorAll('.label.full-touch').length != 0 && dropCard.querySelector('.empty-alert') != null) {
+            dropCard.querySelector('.empty-alert').remove();
+        }
     }
 });
 
