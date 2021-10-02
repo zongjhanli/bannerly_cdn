@@ -147,12 +147,11 @@ $('.js-length-6').on('input', function(e) {
 // ----------------------------------------------------------------------------------------------------
 
 //dropdown假選項點擊響應
-let fakeBtns = document.querySelectorAll('.label.full-touch:not(.js-exclude):not(.empty-alert)');
+let fakeBtns = document.querySelectorAll('.label.full-touch:not(.js-exclude)');
 for (const fakeBtn of fakeBtns) {
     fakeBtn.addEventListener('click', (e) => {
             let target = e.target;
-            //let checker = target.parentElement.querySelector('.custom-check');
-            let checker = target.nextElementSibling;
+            let checker = target.parentElement.querySelector('.custom-check');
             let tGroup = target.parentElement.parentElement;
             let tDPBox = target.parentElement.parentElement.parentElement.parentElement;
             let tInput = tDPBox.querySelector('.input.dropdown');
@@ -161,10 +160,10 @@ for (const fakeBtn of fakeBtns) {
             //多選選項 (預設)
             if (!checker.classList.contains('js-selected')) {
                 checker.classList.add('js-selected');
-                //target.dataset.select = 'true';
+                target.dataset.select = 'true';
             } else {
                 checker.classList.remove('js-selected');
-                //target.dataset.select = '';
+                target.dataset.select = '';
             }
 
             //多選選項value同步至textarea
@@ -220,7 +219,7 @@ for (const fakeBtn of fakeBtns) {
         }) //end of fakeButton click event
 } //end of fakeButton loop
 
-//tab Col 區域內響應
+//tab + indicator 響應
 let ecTabsCols = document.querySelectorAll('[data-col=ec-tab]');
 for (const ecTabsCol of ecTabsCols) {
     ecTabsCol.addEventListener('click', (e) => {
@@ -292,7 +291,8 @@ for (const ecTabsCol of ecTabsCols) {
         }) //end of ecTabsCol click event
 } //end of ecTabsCol loop
 
-//Global multi-dropdown input value
+
+//multi-dropdown input value
 document.addEventListener('click', (e) => {
     let target = e.target;
     e.preventDefault();
@@ -314,12 +314,12 @@ document.addEventListener('click', (e) => {
     }
 });
 
-//改良global general dropdown
-var dropCards = document.querySelectorAll('.drop-card');
-for (const dropCard of dropCards) {
-    //dropCard 範圍外收合下拉選單
-    document.addEventListener('click', (e) => {
-        let target = e.target;
+
+// Global general dropdown behaviours
+document.addEventListener('click', (e) => {
+    let target = e.target;
+    let dropCards = document.querySelectorAll('.drop-card');
+    for (const dropCard of dropCards) {
         let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow');
 
         function globalCollapse() {
@@ -327,79 +327,62 @@ for (const dropCard of dropCards) {
             dropArrow.classList.remove('js-rotated');
             dropArrow.classList.add('unclickable');
         };
-        if (!dropCard.classList.contains('js-collapsed')) {
-            globalCollapse();
-        }; //無論點選何處，dropCard預設全數收回
 
         function expand() {
             target.parentElement.querySelector('.drop-card').classList.remove('js-collapsed');
             target.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
             target.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
         };
+
+        function expand2() {
+            target.parentElement.parentElement.parentElement.classList.remove('js-collapsed');
+            target.parentElement.parentElement.parentElement.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
+            target.parentElement.parentElement.parentElement.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
+        };
+
+        if (!dropCard.classList.contains('js-collapsed')) {
+            globalCollapse();
+        }; //無論點選何處，dropCard預設全數收回
+
         if (target.classList.contains('input', 'dropdown')) {
             expand(); //點選input時 -> dropdown開啟
         }
-    })
 
-    //dropCard 範圍內點擊響應
-    dropCard.addEventListener('click', (e) => {
-            let target = e.target;
-            let tDropCard = target.parentElement.parentElement.parentElement;
+        if (dropCard.dataset.drop == 'multi' &&
+            target.classList.contains('full-touch') &&
+            !target.classList.contains('js-exclude')) {
+            expand2();
+        } else if (dropCard.dataset.drop == 'single' &&
+            target.classList.contains('full-touch') &&
+            !target.classList.contains('js-exclude')) {
+            globalCollapse(); //!-- 尚未考慮使用tab切換選項的使用情境
+        }
+    }
+});
 
-            function keepExpand() {
-                tDropCard.classList.remove('js-collapsed');
-                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
-                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
-            };
-
-            function collapse() {
-                tDropCard.classList.add('js-collapsed');
-                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('js-rotated');
-                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('unclickable');
-            };
-            if (target.classList.contains('label')) {
-                if (tDropCard.dataset.drop == 'single') { collapse(); } //在single dropCard點按選項時一按即收合
-                if (tDropCard.dataset.drop == 'multi') { keepExpand(); } //在multi dropCard點按選項時保持開啟
-            } //!-- 尚未考慮使用tab切換選項的使用情境
-
-            //若dropCard 無任何選項，顯現empty alert
-            // if (dropCard.querySelectorAll('.a-button.as-list').length == 0 && dropCard.querySelector('.empty-alert') == null) {
-            //     function emptyAlert() {
-            //         let labelAlert = document.createElement('div');
-            //         labelAlert.textContent = '尚未加入任何選項';
-            //         labelAlert.classList.add('label', 'full-touch', 'empty-alert');
-            //         dropCard.appendChild(labelAlert);
-            //     }
-            //     emptyAlert;
-            // } else if (dropCard.querySelectorAll('.a-button.as-list').length != 0 && dropCard.querySelector('.empty-alert') != null) {
-            //     dropCard.querySelector('.empty-alert').remove();
-            // }
-
-        }) //end of dropCard click event
-} //end of dropCard loop
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
 for (const dropInput of dropInputs) {
     let dropCard = dropInput.parentElement.querySelector('.drop-card');
     dropInput.addEventListener('input', (e) => {
-        //e.preventDefault();
-        let target = e.target;
-        let capInput = target.value.toUpperCase();
+            //e.preventDefault();
+            let target = e.target;
+            let capInput = target.value.toUpperCase();
 
-        //選項隨著輸入值對照而進一步顯示or隱藏
-        let dropOptions = dropCard.querySelectorAll('.a-button.as-list');
-        for (const dropOption of dropOptions) {
-            let label = dropOption.querySelector('div.label');
-            let capLabel = label.textContent.toUpperCase();
+            //選項隨著輸入值對照而進一步顯示or隱藏
+            let dropOptions = dropCard.querySelectorAll('div.label');
+            for (const dropOption of dropOptions) {
+                //let label = dropOption.querySelector('div.label');
+                let capLabel = dropOption.textContent.toUpperCase();
 
-            dropOption.classList.add('js-hide');
+                dropOption.parentElement.classList.add('js-hide');
 
-            if (capLabel.includes(capInput)) {
-                dropOption.classList.remove('js-hide');
+                if (capLabel.includes(capInput)) {
+                    dropOption.parentElement.classList.remove('js-hide');
+                }
             }
-        }
-    })
+        }) //end of dropInput input event
 
     //輸入後若無match字符 -> 新增選項
     let timer,
@@ -450,7 +433,7 @@ for (const dropInput of dropInputs) {
                     target.dataset.custom = 'confirmed';
                 }
 
-                if (!tChecker.classList.contains('js-selected')) {
+                if (target.classList.contains('label') && !tChecker.classList.contains('js-selected')) {
                     confirmAppended();
                     revealAll();
                     if (tDropCard.dataset.drop == 'single' &&
@@ -475,20 +458,17 @@ for (const dropInput of dropInputs) {
             if (dropInput.value != '') {
                 newOption();
             }
-            let dropInputConcated = dropInput.value.replace(dropInput.value, '').concat('新增「', dropInput.value, '」');
+            let dropInputVal = dropInput.value.replace(dropInput.value, '').concat('新增「', dropInput.value, '」');
             let pendingOptions = dropCard.querySelectorAll('[data-custom=pending]');
-            let existingOptions = dropCard.querySelectorAll('.label:not([data-custom=pending])');
-            existingOptions.forEach((existingOption) => {
-                pendingOptions.forEach((pendingOption) => {
-                    let pendingOptionText = pendingOption.textContent;
-                    if (dropInput.value == '') {
-                        pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
-                    } else if (pendingOptionText.indexOf(dropInputConcated) == -1) {
-                        pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
-                    } else if (existingOption.textContent.includes(dropInput.value)) {
-                        pendingOption.parentElement.remove(); //與既存選項同名者->刪
-                    }
-                })
+            pendingOptions.forEach((pendingOption) => {
+                let pendingOptionText = pendingOption.textContent;
+                if (dropInput.value == '') {
+                    pendingOption.parentElement.remove();
+                } else if (pendingOptionText.indexOf(dropInputVal) == -1) {
+                    pendingOption.parentElement.remove();
+                } //else if (pendingOptionText.indexOf(dropInput.value) == -1) {
+                //pendingOption.parentElement.remove();
+                //}
             })
         }, timeoutVal);
     } //end of handleKeyUp()
