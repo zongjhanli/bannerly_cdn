@@ -146,7 +146,124 @@ $('.js-length-6').on('input', function(e) {
 
 // ----------------------------------------------------------------------------------------------------
 
+//自dropdown input新增的選項需要重新設定點按響應
+document.addEventListener('click', (e) => {
+        let target = e.target; //以下宣告皆假設target為.label.full-touch
+        let tChecker = target.parentElement.querySelector('.custom-check');
+        let tGroup = target.parentElement.parentElement;
+        let tDPBox = target.parentElement.parentElement.parentElement.parentElement;
+        let tInput = tDPBox.querySelector('.input.dropdown');
+        let tDropCard = target.parentElement.parentElement.parentElement;
 
+        function revealAll() {
+            let tOptions = dropInput.parentElement.querySelector('.drop-group.js-show').querySelectorAll('.a-button.as-list');
+            for (const tOption of tOptions) {
+                tOption.classList.remove('js-hide');
+            }
+        }
+
+        function confirmAppended() {
+            tChecker.classList.add('js-selected');
+            let tNewStr = target.textContent.replace('新增「', '').replace('」', '');
+            target.textContent = tNewStr;
+            dropInput.value = tNewStr;
+            target.dataset.custom = 'confirmed';
+        }
+
+        function newTab() {
+            let colL = tDropCard.parentElement.parentElement.parentElement;
+            let colR = colL.nextElementSibling;
+            let tabBtn = document.createElement('div');
+            let tabLabel = document.createElement('div');
+            let tabCounter = document.createElement('div');
+
+            //新增 new tab
+            tabBtn.classList.add('a-button', 'as-tab', 'js-hide', 'js-show');
+            tabLabel.classList.add('label', 'full-touch', 'js-exclude');
+            tabCounter.classList.add('_12px-500', 'as-counts', 'in-tab');
+            tabLabel.textContent = dropInput.value;
+            tabCounter.textContent = '0';
+            tabBtn.appendChild(tabLabel);
+            tabBtn.appendChild(tabCounter);
+            let tabGroup = colL.querySelector('[data-box=tab]');
+            tabGroup.appendChild(tabBtn);
+
+            //新增 new dropGroup
+            let newDropGroup = document.createElement('div');
+            newDropGroup.classList.add('drop-group', 'js-hide', 'js-show');
+            newDropGroup.dataset.group = dropInput.value;
+            let dropBox = colR.querySelector('.drop-card');
+            dropBox.appendChild(newDropGroup);
+
+            //新增 new textArea
+            let newTextArea = document.createElement('textarea');
+            newTextArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'js-show');
+            newTextArea.placeholder = '↑點按以選擇' + dropInput.value + '尺寸';
+            let textAreaBox = colR.querySelector('[data-box=textarea]');
+            textAreaBox.appendChild(newTextArea);
+        }
+
+        //多選選項 (預設)
+        if (!tChecker.classList.contains('js-selected')) {
+            tChecker.classList.add('js-selected');
+            target.dataset.select = 'true'; //for textarea文字同步
+        } else if (tChecker.classList.contains('js-selected')) {
+            tChecker.classList.remove('js-selected');
+            target.dataset.select = ''; //for textarea文字同步
+        }
+
+        //多選選項value同步至textarea
+        let tTextAreas = tDPBox.parentElement.parentElement.querySelectorAll('textarea');
+        for (const tTextArea of tTextAreas) {
+            if (tDropCard.dataset.drop == 'multi' && tGroup.dataset.group === tTextArea.dataset.name &&
+                tInput.dataset.drop != 'ec') {
+                let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
+                let TextStr = Array.from(multiSelecteds, x => x.textContent);
+                tTextArea.value = TextStr.join('\n');
+            }
+        }
+
+        // 單選選項專用響應 -> 模擬radio input
+        if (tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'single') {
+            let allCheckers = tDropCard.querySelectorAll('.custom-check');
+            for (const allChecker of allCheckers) {
+                allChecker.classList.remove('js-selected');
+            }
+            tChecker.classList.add('js-selected');
+        }
+
+        // 單選input專用響應 -> input value 不累加
+        if (tChecker.classList.contains('js-selected') && tInput.dataset.drop == 'single') {
+            tInput.value = target.textContent;
+        } else {
+            tInput.value = '';
+        }
+
+        // ec 尺寸數量同步
+        let sizeCount = tGroup.querySelectorAll('.js-selected').length;
+        let ecTabs = document.querySelectorAll('.label[data-tab]');
+        for (const ecTab of ecTabs) {
+            let countResult = ecTab.nextElementSibling;
+            if (target.dataset.ec == null) {
+                if (tGroup.dataset.group === ecTab.dataset.tab) {
+                    countResult.textContent = sizeCount;
+                }
+            }
+        }
+
+        //ec tab 多選專用響應
+        let tTabs = tDPBox.parentElement.parentElement.querySelectorAll('.label[data-tab]');
+        for (const tTab of tTabs) {
+            if (target.dataset.ec === tTab.dataset.tab) {
+                if (tChecker.classList.contains('js-selected')) {
+                    tTab.parentElement.classList.add('js-show');
+                } else if (!tChecker.classList.contains('js-selected')) {
+                    tTab.parentElement.classList.remove('js-show');
+                }
+            }
+        }
+
+    }) //end of document click event
 
 //tab + indicator 響應
 let ecTabsCols = document.querySelectorAll('[data-col=ec-tab]');
@@ -316,125 +433,6 @@ for (const dropInput of dropInputs) {
         }, timeoutVal);
     } //end of handleKeyUp()
 
-    //自dropdown input新增的選項需要重新設定點按響應
-    document.addEventListener('click', (e) => {
-            let target = e.target; //以下宣告皆假設target為.label.full-touch
-            let tChecker = target.parentElement.querySelector('.custom-check');
-            let tGroup = target.parentElement.parentElement;
-            let tDPBox = target.parentElement.parentElement.parentElement.parentElement;
-            let tInput = tDPBox.querySelector('.input.dropdown');
-            let tDropCard = target.parentElement.parentElement.parentElement;
-
-            function revealAll() {
-                let tOptions = dropInput.parentElement.querySelector('.drop-group.js-show').querySelectorAll('.a-button.as-list');
-                for (const tOption of tOptions) {
-                    tOption.classList.remove('js-hide');
-                }
-            }
-
-            function confirmAppended() {
-                tChecker.classList.add('js-selected');
-                let tNewStr = target.textContent.replace('新增「', '').replace('」', '');
-                target.textContent = tNewStr;
-                dropInput.value = tNewStr;
-                target.dataset.custom = 'confirmed';
-            }
-
-            function newTab() {
-                let colL = tDropCard.parentElement.parentElement.parentElement;
-                let colR = colL.nextElementSibling;
-                let tabBtn = document.createElement('div');
-                let tabLabel = document.createElement('div');
-                let tabCounter = document.createElement('div');
-
-                //新增 new tab
-                tabBtn.classList.add('a-button', 'as-tab', 'js-hide', 'js-show');
-                tabLabel.classList.add('label', 'full-touch', 'js-exclude');
-                tabCounter.classList.add('_12px-500', 'as-counts', 'in-tab');
-                tabLabel.textContent = dropInput.value;
-                tabCounter.textContent = '0';
-                tabBtn.appendChild(tabLabel);
-                tabBtn.appendChild(tabCounter);
-                let tabGroup = colL.querySelector('[data-box=tab]');
-                tabGroup.appendChild(tabBtn);
-
-                //新增 new dropGroup
-                let newDropGroup = document.createElement('div');
-                newDropGroup.classList.add('drop-group', 'js-hide', 'js-show');
-                newDropGroup.dataset.group = dropInput.value;
-                let dropBox = colR.querySelector('.drop-card');
-                dropBox.appendChild(newDropGroup);
-
-                //新增 new textArea
-                let newTextArea = document.createElement('textarea');
-                newTextArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'js-show');
-                newTextArea.placeholder = '↑點按以選擇' + dropInput.value + '尺寸';
-                let textAreaBox = colR.querySelector('[data-box=textarea]');
-                textAreaBox.appendChild(newTextArea);
-            }
-
-            //多選選項 (預設)
-            if (!tChecker.classList.contains('js-selected')) {
-                tChecker.classList.add('js-selected');
-                target.dataset.select = 'true'; //for textarea文字同步
-            } else if (tChecker.classList.contains('js-selected')) {
-                tChecker.classList.remove('js-selected');
-                target.dataset.select = ''; //for textarea文字同步
-            }
-
-            //多選選項value同步至textarea
-            let tTextAreas = tDPBox.parentElement.parentElement.querySelectorAll('textarea');
-            for (const tTextArea of tTextAreas) {
-                if (tDropCard.dataset.drop == 'multi' && tGroup.dataset.group === tTextArea.dataset.name &&
-                    tInput.dataset.drop != 'ec') {
-                    let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
-                    let TextStr = Array.from(multiSelecteds, x => x.textContent);
-                    tTextArea.value = TextStr.join('\n');
-                }
-            }
-
-            // 單選選項專用響應 -> 模擬radio input
-            if (tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'single') {
-                let allCheckers = tDropCard.querySelectorAll('.custom-check');
-                for (const allChecker of allCheckers) {
-                    allChecker.classList.remove('js-selected');
-                }
-                tChecker.classList.add('js-selected');
-            }
-
-            // 單選input專用響應 -> input value 不累加
-            if (tChecker.classList.contains('js-selected') && tInput.dataset.drop == 'single') {
-                tInput.value = target.textContent;
-            } else {
-                tInput.value = '';
-            }
-
-            // ec 尺寸數量同步
-            let sizeCount = tGroup.querySelectorAll('.js-selected').length;
-            let ecTabs = document.querySelectorAll('.label[data-tab]');
-            for (const ecTab of ecTabs) {
-                let countResult = ecTab.nextElementSibling;
-                if (target.dataset.ec == null) {
-                    if (tGroup.dataset.group === ecTab.dataset.tab) {
-                        countResult.textContent = sizeCount;
-                    }
-                }
-            }
-
-            //ec 多選專用響應
-            let tTabs = tDPBox.parentElement.parentElement.querySelectorAll('.label[data-tab]');
-            for (const tTab of tTabs) {
-                if (target.dataset.ec === tTab.dataset.tab) {
-                    if (tChecker.classList.contains('js-selected')) {
-                        tTab.parentElement.classList.add('js-show');
-                    } else if (!tChecker.classList.contains('js-selected')) {
-                        tTab.parentElement.classList.remove('js-show');
-                    }
-                }
-            }
-
-        }) //end of document click event
-
     dropInput.addEventListener('focus', (e) => {
         let target = e.target;
         target.select(); //全選文字
@@ -443,7 +441,6 @@ for (const dropInput of dropInputs) {
             tOption.classList.remove('js-hide');
         }
     })
-
 } //end of dropInput loop !!!
 
 //Global general dropdown behaviours
