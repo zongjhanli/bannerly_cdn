@@ -433,7 +433,9 @@ for (const dropInput of dropInputs) {
                     } else if (tDropCard.dataset.drop == 'multi') {
                         if (!tChecker.classList.contains('js-selected')) {
                             tChecker.classList.add('js-selected');
-                            newTab();
+                            if (tDropCard.previousElementSibling.previousElementSibling.dataset.drop == 'ec') {
+                                newTab();
+                            }
                         } else if (tChecker.classList.contains('js-selected')) {
                             tChecker.classList.remove('js-selected');
                         }
