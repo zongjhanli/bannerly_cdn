@@ -453,13 +453,13 @@ for (const dropInput of dropInputs) {
                 }
 
 
-                if (target.dataset.custom == pending) {
+                if (target.dataset.custom == 'pending') {
                     confirmAppended();
                     revealAll();
                     if (tDropCard.dataset.drop == 'single') {
                         otherChecked.classList.remove('js-selected');
                     }
-                } else if (target.dataset.custom != pending) {
+                } else if (target.dataset.custom != 'pending') {
                     if (tDropCard.dataset.drop == 'single') {
                         otherChecked.classList.remove('js-selected');
                         tChecker.classList.add('js-selected');
