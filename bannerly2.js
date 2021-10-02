@@ -212,7 +212,7 @@ document.addEventListener('click', (e) => {
             globalCollapse(); //!-- 尚未考慮使用tab切換選項的使用情境
         }
 
-        if (dropCard.querySelectorAll('.label.full-touch').length == 0) {
+        if (dropCard.querySelectorAll('.a-button.as-list').length == 0 && dropCard.querySelector('.empty-alert') == null) {
             function emptyAlert() {
                 let labelAlert = document.createElement('div');
                 labelAlert.textContent = '尚未加入任何選項';
@@ -220,7 +220,7 @@ document.addEventListener('click', (e) => {
                 dropCard.appendChild(labelAlert);
             }
             emptyAlert;
-        } else if (dropCard.querySelectorAll('.label.full-touch').length != 0 && dropCard.querySelector('.empty-alert') != null) {
+        } else if (dropCard.querySelectorAll('.a-button.as-list').length != 0 && dropCard.querySelector('.empty-alert') != null) {
             dropCard.querySelector('.empty-alert').remove();
         }
     }
