@@ -445,6 +445,7 @@ for (const dropInput of dropInputs) {
                 }
 
                 function confirmAppended() {
+                    tChecker.classList.add('js-selected');
                     let tNewStr = target.textContent.replace('新增「', '').replace('」', '');
                     target.textContent = tNewStr;
                     dropInput.value = tNewStr;
@@ -453,9 +454,9 @@ for (const dropInput of dropInputs) {
 
 
                 if (target.dataset.custom == 'pending') {
-                    tChecker.classList.add('js-selected');
                     confirmAppended();
                     revealAll();
+                    tChecker.classList.add('js-selected');
                     if (tDropCard.dataset.drop == 'single' && otherChecked.classList.contains('js-selected')) {
                         otherChecked.classList.remove('js-selected');
                     }
