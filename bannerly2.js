@@ -467,14 +467,7 @@ for (const dropInput of dropInputs) {
                         otherChecked.classList.remove('js-selected');
                         tChecker.classList.add('js-selected');
                     } else if (tDropCard.dataset.drop == 'multi') {
-                        // let tTextAreas = tDropCard.parentElement.parentElement.parentElement.querySelectorAll('.as-textarea');
-                        // for (const tTextArea of tTextAreas) {
-                        //     if (tGroup.dataset.group === tTextArea.dataset.name &&
-                        //     tInput.dataset.drop != 'ec') {
-                        //     let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
-                        //     let TextStr = Array.from(multiSelecteds, x => x.textContent);
-                        //     tTextArea.value = TextStr.join('\n');
-                        // }
+
                         if (!tChecker.classList.contains('js-selected')) {
                             tChecker.classList.add('js-selected');
                         } else if (tChecker.classList.contains('js-selected')) {
@@ -482,51 +475,51 @@ for (const dropInput of dropInputs) {
                         }
                     }
                 }
-            }
 
 
 
-            //清除殘存的「未選選選項」
-            if (document.querySelector('[data-custom=pending]') != null) {
-                document.querySelector('[data-custom=pending]').parentElement.remove();
-            }
-        }) //end of document click event
 
-} //end of newOption()
-
-function handleKeyUp(e) {
-    window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
-    timer = window.setTimeout(() => {
-        if (dropInput.value != '') {
-            newOption();
-        }
-        let dropInputConcated = dropInput.value.replace(dropInput.value, '').concat('新增「', dropInput.value, '」');
-        let pendingOptions = dropCard.querySelectorAll('[data-custom=pending]');
-        let existingOptions = dropCard.querySelectorAll('.label:not([data-custom=pending])');
-        existingOptions.forEach((existingOption) => {
-            pendingOptions.forEach((pendingOption) => {
-                let pendingOptionText = pendingOption.textContent;
-                if (dropInput.value == '') {
-                    pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
-                } else if (pendingOptionText.indexOf(dropInputConcated) == -1) {
-                    pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
-                } else if (existingOption.textContent.includes(dropInput.value)) {
-                    pendingOption.parentElement.remove(); //與既存選項同名者->刪
+                //清除殘存的「未選選選項」
+                if (document.querySelector('[data-custom=pending]') != null) {
+                    document.querySelector('[data-custom=pending]').parentElement.remove();
                 }
+            }) //end of document click event
+
+    } //end of newOption()
+
+    function handleKeyUp(e) {
+        window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
+        timer = window.setTimeout(() => {
+            if (dropInput.value != '') {
+                newOption();
+            }
+            let dropInputConcated = dropInput.value.replace(dropInput.value, '').concat('新增「', dropInput.value, '」');
+            let pendingOptions = dropCard.querySelectorAll('[data-custom=pending]');
+            let existingOptions = dropCard.querySelectorAll('.label:not([data-custom=pending])');
+            existingOptions.forEach((existingOption) => {
+                pendingOptions.forEach((pendingOption) => {
+                    let pendingOptionText = pendingOption.textContent;
+                    if (dropInput.value == '') {
+                        pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
+                    } else if (pendingOptionText.indexOf(dropInputConcated) == -1) {
+                        pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
+                    } else if (existingOption.textContent.includes(dropInput.value)) {
+                        pendingOption.parentElement.remove(); //與既存選項同名者->刪
+                    }
+                })
             })
-        })
-    }, timeoutVal);
-} //end of handleKeyUp()
+        }, timeoutVal);
+    } //end of handleKeyUp()
 
 
-dropInput.addEventListener('focus', (e) => {
-    let target = e.target;
-    target.select();
-    let tOptions = dropInput.parentElement.querySelector('.drop-group.js-show').querySelectorAll('.a-button.as-list');
-    for (const tOption of tOptions) {
-        tOption.classList.remove('js-hide');
-    }
-})
+    dropInput.addEventListener('focus', (e) => {
+        let target = e.target;
+        target.select();
+        let tOptions = dropInput.parentElement.querySelector('.drop-group.js-show').querySelectorAll('.a-button.as-list');
+        for (const tOption of tOptions) {
+            tOption.classList.remove('js-hide');
+        }
+    })
 
 } //end of dropInput loop !!!
 
