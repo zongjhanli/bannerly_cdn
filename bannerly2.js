@@ -399,9 +399,6 @@ for (const dropInput of dropInputs) {
                         otherChecked.classList.remove('js-selected');
                         tChecker.classList.add('js-selected');
                     } else if (tDropCard.dataset.drop == 'multi') {
-                        tDropCard.classList.remove('js-collapsed');
-                        tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
-                        tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
                         if (!tChecker.classList.contains('js-selected')) {
                             tChecker.classList.add('js-selected');
                         } else if (tChecker.classList.contains('js-selected')) {
@@ -448,7 +445,7 @@ for (const dropInput of dropInputs) {
 
     dropInput.addEventListener('focus', (e) => {
         let target = e.target;
-        target.select();
+        target.select(); //全選文字
         let tOptions = dropInput.parentElement.querySelector('.drop-group.js-show').querySelectorAll('.a-button.as-list');
         for (const tOption of tOptions) {
             tOption.classList.remove('js-hide');
@@ -481,6 +478,8 @@ for (const dropCard of dropCards) {
         };
         if (target.classList.contains('input', 'dropdown')) {
             expand(); //點選input時 -> dropdown開啟
+        } else if (target.parentElement.querySelector('.drop-card').dataset.drop == 'multi') {
+            expand(); //點選multi dropCard時 -> dropdown開啟
         }
     })
 
