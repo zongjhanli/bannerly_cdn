@@ -363,7 +363,7 @@ for (const dropInput of dropInputs) {
         label.dataset.custom = 'pending';
 
 
-        //新增於document的選項需要重新設定點按響應
+        //自dropdown input新增的選項需要重新設定點按響應
         document.addEventListener('click', (e) => {
                 let target = e.target;
                 let tChecker = target.nextElementSibling;
@@ -386,6 +386,35 @@ for (const dropInput of dropInputs) {
                     target.dataset.custom = 'confirmed';
                 }
 
+                function newTab() {
+                    let colL = tDropCard.parentElement.parentElement.parentElement;
+                    let colR = ColL.nextElementSibling;
+                    let tabBtn = document.createElement('div');
+                    let tabLabel = document.createElement('div');
+                    let tabCounter = document.createElement('div');
+
+                    //新增 new tab
+                    tabBtn.classList.add('a-button', 'as-tab', 'js-hide');
+                    tabLabel.classList.add('label', 'full-touch', 'js-exclude');
+                    tabCounter.classList.add('_12px-500', 'as-counts', 'in-tab');
+                    tabBtn.appendChild(tabLabel);
+                    tabBtn.appendChild(tabCounter);
+                    let tabGroup = colL.querySelector('[data-box=tab]');
+                    tabGroup.appendChild(tabBtn);
+
+                    //新增 new dropGroup
+                    let newDropGroup = document.createElement('div');
+                    newDropGroup.classList.add('drop-group', 'js-hide', 'js-show');
+                    newDropGroup.dataset.group = dropInput.value;
+                    let dropBox = colR.querySelector('.drop-card');
+                    dropBox.appendChild(newDropGroup);
+
+                    //新增 new textArea
+                    let newTextArea = document.createElement('textarea');
+                    newTextArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'js-show');
+                    let textAreaBox = colR.querySelector('[data-box=textarea]');
+                    textAreaBox.appendChild(newTextArea);
+                }
 
                 if (target.dataset.custom == 'pending') {
                     confirmAppended();
@@ -401,6 +430,7 @@ for (const dropInput of dropInputs) {
                     } else if (tDropCard.dataset.drop == 'multi') {
                         if (!tChecker.classList.contains('js-selected')) {
                             tChecker.classList.add('js-selected');
+                            newTab();
                         } else if (tChecker.classList.contains('js-selected')) {
                             tChecker.classList.remove('js-selected');
                         }
