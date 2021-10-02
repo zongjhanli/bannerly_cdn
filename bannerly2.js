@@ -439,9 +439,9 @@ for (const dropInput of dropInputs) {
                     }
                 }
 
-                if (tDropCard.previousElementSibling.previousElementSibling.dataset.drop == 'ec') {
-                    newTab();
-                }
+                // if (tDropCard.previousElementSibling.previousElementSibling.dataset.drop == 'ec') {
+                //     newTab();
+                // }
 
                 //清除殘存的「未選選選項」
                 if (document.querySelector('[data-custom=pending]') != null) {
