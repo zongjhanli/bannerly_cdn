@@ -360,11 +360,12 @@ for (const dropCard of dropCards) {
             };
             if (target.classList.contains('label')) {
                 if (tDropCard.dataset.drop == 'single') {
-                    console.log('1');
                     collapse();
                 } else if (tDropCard.dataset.drop == 'multi') {
-                    console.log('2');
-                    return;
+                    keepExpand();
+                    tDropCard.classList.remove('js-collapsed');
+                    tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
+                    tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
                 } //single dropCard點按選項時一按即收合 / multi dropCard點按選項時保持開啟
             } //!-- 尚未考慮使用tab切換選項的使用情境
 
