@@ -168,38 +168,48 @@ document.addEventListener('click', (e) => {
     }
 });
 
-//dropCard 範圍內點擊響應
-let dropCards = document.querySelectorAll('.drop-card');
+var dropCards = document.querySelectorAll('.drop-card');
 for (const dropCard of dropCards) {
-    document.addEventListener('click', (e) => {
+    //dropCard 範圍外收合下拉選單
+    document.addEventListener('click', () => {
+        let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow');
+
+        function globalCollapse() {
+            dropCard.classList.add('js-collapsed');
+            dropArrow.classList.remove('js-rotated');
+            dropArrow.classList.add('unclickable');
+        };
+        if (!dropCard.classList.contains('js-collapsed')) {
+            globalCollapse();
+        }; //無論點選何處，dropCard預設全數收回
+
+        function expand() {
+            target.parentElement.querySelector('.drop-card').classList.remove('js-collapsed');
+            target.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
+            target.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
+        };
+        if (target.classList.contains('input', 'dropdown')) {
+            expand(); //點選input時 -> dropdown開啟
+        }
+    })
+
+    //dropCard 範圍內點擊響應
+    dropCard.addEventListener('click', (e) => {
             let target = e.target;
-            let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow');
 
-            function globalCollapse() {
-                dropCard.classList.add('js-collapsed');
-                dropArrow.classList.remove('js-rotated');
-                dropArrow.classList.add('unclickable');
-            };
-            if (!dropCard.classList.contains('js-collapsed')) {
-                globalCollapse();
-            }; //無論點選何處，dropCard預設全數收回
-
-            function expand() {
-                target.parentElement.querySelector('.drop-card').classList.remove('js-collapsed');
+            function keepExpand() {
+                target.classList.remove('js-collapsed');
                 target.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
                 target.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
             };
-            if (target.classList.contains('input', 'dropdown')) {
-                expand(); //點選input時 -> dropdown開啟
-            }
 
-            function keepExpand() {
-                target.parentElement.parentElement.parentElement.classList.remove('js-collapsed');
-                target.parentElement.parentElement.parentElement.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
-                target.parentElement.parentElement.parentElement.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
+            function collapse() {
+                target.classList.add('js-collapsed');
+                target.parentElement.querySelector('.dropdown-arrow').classList.remove('js-rotated');
+                target.parentElement.querySelector('.dropdown-arrow').classList.add('unclickable');
             };
-            if (target.parentElement.parentElement.classList.contains('drop-group')) {
-                if (target.parentElement.parentElement.parentElement.dataset.drop == 'single') { globalCollapse(); } //在single dropCard點按選項時一按即收合
+            if (target.classList.contains('label')) {
+                if (target.parentElement.parentElement.parentElement.dataset.drop == 'single') { collapse(); } //在single dropCard點按選項時一按即收合
                 if (target.parentElement.parentElement.parentElement.dataset.drop == 'multi') { keepExpand(); } //在multi dropCard點按選項時保持開啟
             } //!-- 尚未考慮使用tab切換選項的使用情境
 
