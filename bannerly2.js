@@ -325,7 +325,6 @@ for (const dropInput of dropInputs) {
             let tInput = tDPBox.querySelector('.input.dropdown');
             let tDropCard = target.parentElement.parentElement.parentElement;
 
-
             function revealAll() {
                 let tOptions = dropInput.parentElement.querySelector('.drop-group.js-show').querySelectorAll('.a-button.as-list');
                 for (const tOption of tOptions) {
@@ -374,62 +373,40 @@ for (const dropInput of dropInputs) {
                 textAreaBox.appendChild(newTextArea);
             }
 
-            if (target.dataset.custom == 'pending') {
-                confirmAppended();
-                revealAll();
-                if (tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'single') {
-                    let allCheckers = tDropCard.querySelectorAll('.custom-check');
-                    for (const allChecker of allCheckers) {
-                        if (tDropCard.dataset.drop == 'single' && allChecker.classList.contains('js-selected')) {
-                            allChecker.classList.remove('js-selected');
-                        }
-                        tChecker.classList.add('js-selected');
-                    }
-                }
+            //多選選項 (預設)
+            if (!tChecker.classList.contains('js-selected')) {
+                tChecker.classList.add('js-selected');
+                target.dataset.select = 'true'; //for textarea文字同步
+            } else if (tChecker.classList.contains('js-selected')) {
+                tChecker.classList.remove('js-selected');
+                target.dataset.select = ''; //for textarea文字同步
+            }
 
-                if (tDropCard.dataset.drop = 'multi') {
-                    tChecker.classList.add('js-selected');
+            //多選選項value同步至textarea
+            let tTextAreas = tDPBox.parentElement.parentElement.querySelectorAll('textarea');
+            for (const tTextArea of tTextAreas) {
+                if (tDropCard.dataset.drop == 'multi' && tGroup.dataset.group === tTextArea.dataset.name &&
+                    tInput.dataset.drop != 'ec') {
+                    let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
+                    let TextStr = Array.from(multiSelecteds, x => x.textContent);
+                    tTextArea.value = TextStr.join('\n');
                 }
             }
 
-            if (target.dataset.custom != 'pending') {
-                // 單選選項專用響應 -> 模擬radio input
-                if (tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'single') {
-                    let allCheckers = tDropCard.querySelectorAll('.custom-check');
-                    for (const allChecker of allCheckers) {
-                        if (tDropCard.dataset.drop == 'single' && allChecker.classList.contains('js-selected')) {
-                            allChecker.classList.remove('js-selected');
-                        }
-                        tChecker.classList.add('js-selected');
-                    }
+            // 單選選項專用響應 -> 模擬radio input
+            if (tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'single') {
+                let allCheckers = tDropCard.querySelectorAll('.custom-check');
+                for (const allChecker of allCheckers) {
+                    allChecker.classList.remove('js-selected');
                 }
+                tChecker.classList.add('js-selected');
+            }
 
-                //多選選項 (預設)
-                if (!tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'multi') {
-                    tChecker.classList.add('js-selected');
-                    target.dataset.select = 'true'; //for textarea文字同步
-                } else if (tChecker.classList.contains('js-selected')) {
-                    tChecker.classList.remove('js-selected');
-                    target.dataset.select = ''; //for textarea文字同步
-                }
-
-                //多選選項value同步至textarea
-                let tTextAreas = tDPBox.parentElement.parentElement.querySelectorAll('textarea');
-                for (const tTextArea of tTextAreas) {
-                    if (tDropCard.dataset.drop == 'multi' && tGroup.dataset.group === tTextArea.dataset.name &&
-                        tInput.dataset.drop != 'ec') {
-                        let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
-                        let TextStr = Array.from(multiSelecteds, x => x.textContent);
-                        tTextArea.value = TextStr.join('\n');
-                    }
-                }
-
-                // 單選input專用響應 -> input value 不累加
-                if (tChecker.classList.contains('js-selected') && tInput.dataset.drop == 'single') {
-                    tInput.value = target.textContent;
-                } else {
-                    tInput.value = '';
-                }
+            // 單選input專用響應 -> input value 不累加
+            if (tChecker.classList.contains('js-selected') && tInput.dataset.drop == 'single') {
+                tInput.value = target.textContent;
+            } else {
+                tInput.value = '';
             }
 
             // ec 尺寸數量同步
@@ -456,14 +433,6 @@ for (const dropInput of dropInputs) {
                 }
             }
 
-            // if (tDropCard.previousElementSibling.previousElementSibling.dataset.drop == 'ec') {
-            //     newTab();
-            // }
-
-            //清除殘存的「未選選選項」
-            if (document.querySelector('[data-custom=pending]') != null) {
-                document.querySelector('[data-custom=pending]').parentElement.remove();
-            }
         }) //end of document click event
 
     dropInput.addEventListener('focus', (e) => {
