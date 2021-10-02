@@ -359,8 +359,13 @@ for (const dropCard of dropCards) {
                 tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('unclickable');
             };
             if (target.classList.contains('label')) {
-                if (tDropCard.dataset.drop == 'single') { collapse(); } //在single dropCard點按選項時一按即收合
-                if (tDropCard.dataset.drop == 'multi') { keepExpand(); } //在multi dropCard點按選項時保持開啟
+                if (tDropCard.dataset.drop == 'single') {
+                    console.log('1');
+                    collapse();
+                } else if (tDropCard.dataset.drop == 'multi') {
+                    console.log('2');
+                    keepExpand();
+                } //single dropCard點按選項時一按即收合 / multi dropCard點按選項時保持開啟
             } //!-- 尚未考慮使用tab切換選項的使用情境
 
             //若dropCard 無任何選項，顯現empty alert
@@ -433,9 +438,7 @@ for (const dropInput of dropInputs) {
         document.addEventListener('click', (e) => {
                 let target = e.target;
                 let tChecker = target.nextElementSibling;
-                let tGroup = target.parentElement.parentElement;
                 let tDropCard = target.parentElement.parentElement.parentElement;
-                let tInput = tDropCard.querySelector('.input.dropdown');
                 let otherChecked = tDropCard.querySelector('.js-selected'); //for single
 
 
@@ -467,7 +470,6 @@ for (const dropInput of dropInputs) {
                         otherChecked.classList.remove('js-selected');
                         tChecker.classList.add('js-selected');
                     } else if (tDropCard.dataset.drop == 'multi') {
-
                         if (!tChecker.classList.contains('js-selected')) {
                             tChecker.classList.add('js-selected');
                         } else if (tChecker.classList.contains('js-selected')) {
