@@ -456,7 +456,7 @@ for (const dropInput of dropInputs) {
                 if (target.dataset.custom != '') {
                     confirmAppended();
                     revealAll();
-                    if (tDropCard.dataset.drop == 'single') {
+                    if (tDropCard.dataset.drop == 'single' && otherChecker != null) {
                         otherChecker.classList.remove('js-selected');
                     }
                 }
