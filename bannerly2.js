@@ -434,7 +434,7 @@ for (const dropInput of dropInputs) {
                 let target = e.target;
                 let tChecker = target.nextElementSibling;
                 let tDropCard = target.parentElement.parentElement.parentElement;
-                let otherChecker = tDropCard.querySelector('.js-selected'); //for single
+                let otherChecked = tDropCard.querySelector('.js-selected'); //for single
 
 
                 function revealAll() {
@@ -453,86 +453,26 @@ for (const dropInput of dropInputs) {
                 }
 
 
-                if (target.dataset.custom != '') {
+                if (target.dataset.custom == pending) {
                     confirmAppended();
                     revealAll();
-                    if (tDropCard.dataset.drop == 'single' && otherChecker != null) {
-                        otherChecker.classList.remove('js-selected');
+                    if (tDropCard.dataset.drop == 'single') {
+                        otherChecked.classList.remove('js-selected');
+                    }
+                } else if (target.dataset.custom != pending) {
+                    if (tDropCard.dataset.drop == 'single') {
+                        otherChecked.classList.remove('js-selected');
+                        tChecker.classList.add('js-selected');
+                    } else if (tDropCard.dataset.drop == 'multi') {
+                        if (!tChecker.classList.contains('js-selected')) {
+                            tChecker.classList.add('js-selected');
+                        } else if (tChecker.classList.contains('js-selected')) {
+                            tChecker.classList.remove('js-selected');
+                        }
                     }
                 }
 
-                //以下重新定義input過後的fakeBtn點擊響應
-                let fakeBtns = document.querySelectorAll('.label.full-touch:not(.js-exclude)');
-                for (const fakeBtn of fakeBtns) {
-                    fakeBtn.addEventListener('click', (e) => {
-                            let target = e.target;
-                            let checker = target.parentElement.querySelector('.custom-check');
-                            let tGroup = target.parentElement.parentElement;
-                            let tDPBox = target.parentElement.parentElement.parentElement.parentElement;
-                            let tInput = tDPBox.querySelector('.input.dropdown');
-                            let tDropCard = tInput.parentElement.querySelector('.drop-card');
 
-                            //多選選項 (預設)
-                            if (!checker.classList.contains('js-selected')) {
-                                checker.classList.add('js-selected');
-                                //target.dataset.select = 'true';
-                            } else if (checker.classList.contains('js-selected')) {
-                                checker.classList.remove('js-selected');
-                                //target.dataset.select = '';
-                            }
-
-                            //多選選項value同步至textarea
-                            let tTextAreas = tDPBox.parentElement.parentElement.querySelectorAll('textarea');
-                            for (const tTextArea of tTextAreas) {
-                                if (tDropCard.dataset.drop == 'multi' && tGroup.dataset.group === tTextArea.dataset.name &&
-                                    tInput.dataset.drop != 'ec') {
-                                    let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
-                                    let TextStr = Array.from(multiSelecteds, x => x.textContent);
-                                    tTextArea.value = TextStr.join('\n');
-                                }
-                            }
-
-                            // 單選選項專用響應 -> 模擬radio input
-                            if (checker.classList.contains('js-selected') && tDropCard.dataset.drop == 'single') {
-                                let allCheckers = tDropCard.querySelectorAll('.custom-check');
-                                for (const allChecker of allCheckers) {
-                                    allChecker.classList.remove('js-selected');
-                                }
-                                checker.classList.add('js-selected');
-                            }
-
-                            // 單選input專用響應 -> input value 不累加
-                            if (checker.classList.contains('js-selected') && tInput.dataset.drop == 'single') {
-                                tInput.value = target.textContent;
-                            } else {
-                                tInput.value = '';
-                            }
-
-                            // ec 尺寸數量同步
-                            let sizeCount = tGroup.querySelectorAll('.js-selected').length;
-                            let ecTabs = document.querySelectorAll('.label[data-tab]');
-                            for (const ecTab of ecTabs) {
-                                let countResult = ecTab.nextElementSibling;
-                                if (target.dataset.ec == null) {
-                                    if (tGroup.dataset.group === ecTab.dataset.tab) {
-                                        countResult.textContent = sizeCount;
-                                    }
-                                }
-                            }
-
-                            //ec 多選專用響應
-                            let tTabs = tDPBox.parentElement.parentElement.querySelectorAll('.label[data-tab]');
-                            for (const tTab of tTabs) {
-                                if (target.dataset.ec === tTab.dataset.tab) {
-                                    if (checker.classList.contains('js-selected')) {
-                                        tTab.parentElement.classList.add('js-show');
-                                    } else if (!checker.classList.contains('js-selected')) {
-                                        tTab.parentElement.classList.remove('js-show');
-                                    }
-                                }
-                            }
-                        }) //end of fakeButton click event
-                } //end of fakeButton loop
 
                 //清除殘存的「未選選選項」
                 if (document.querySelector('[data-custom=pending]') != null) {
