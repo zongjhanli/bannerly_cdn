@@ -388,7 +388,7 @@ for (const dropInput of dropInputs) {
 
                 function newTab() {
                     let colL = tDropCard.parentElement.parentElement.parentElement;
-                    let colR = ColL.nextElementSibling;
+                    let colR = colL.nextElementSibling;
                     let tabBtn = document.createElement('div');
                     let tabLabel = document.createElement('div');
                     let tabCounter = document.createElement('div');
