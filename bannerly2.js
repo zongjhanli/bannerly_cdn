@@ -430,19 +430,21 @@ for (const dropInput of dropInputs) {
                     if (tDropCard.dataset.drop == 'single') {
                         otherChecked.classList.remove('js-selected');
                         tChecker.classList.add('js-selected');
-                    } else if (tDropCard.dataset.drop == 'multi') {
+                    } else if (tDropCard.dataset.drop == 'multi' && tDropCard.previousElementSibling.previousElementSibling.dataset.drop != 'ec') {
                         if (!tChecker.classList.contains('js-selected')) {
                             tChecker.classList.add('js-selected');
-                            if (tDropCard.previousElementSibling.previousElementSibling.dataset.drop == 'ec') {
-                                newTab();
-                            }
+                        } else if (tChecker.classList.contains('js-selected')) {
+                            tChecker.classList.remove('js-selected');
+                        }
+                    } else if (tDropCard.previousElementSibling.previousElementSibling.dataset.drop == 'ec') {
+                        if (!tChecker.classList.contains('js-selected')) {
+                            tChecker.classList.add('js-selected');
+                            newTab();
                         } else if (tChecker.classList.contains('js-selected')) {
                             tChecker.classList.remove('js-selected');
                         }
                     }
                 }
-
-
 
 
                 //清除殘存的「未選選選項」
