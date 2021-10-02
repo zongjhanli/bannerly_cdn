@@ -486,7 +486,7 @@ for (const dropCard of dropCards) {
 
         if (target.classList.contains('input', 'dropdown')) {
             expandByInput(); //點選input時 -> dropdown開啟
-        } else if (target.classList.contains('label', 'full-touch') && dropCard.dataset.drop == 'multi') {
+        } else if (target.classList.contains('label', 'full-touch') && tDropCard.dataset.drop == 'multi') {
             expandByLabel(); //點選multi dropCard中的label時 -> dropdown開啟
         }
     })
