@@ -318,10 +318,12 @@ for (const dropInput of dropInputs) {
 
     //自dropdown input新增的選項需要重新設定點按響應
     document.addEventListener('click', (e) => {
-            let target = e.target;
-            let tChecker = target.nextElementSibling;
+            let target = e.target; //以下宣告皆假設target為.label.full-touch
+            let tChecker = target.parentElement.querySelector('.custom-check');
+            let tGroup = target.parentElement.parentElement;
+            let tDPBox = target.parentElement.parentElement.parentElement.parentElement;
+            let tInput = tDPBox.querySelector('.input.dropdown');
             let tDropCard = target.parentElement.parentElement.parentElement;
-            let otherChecked = tDropCard.querySelector('.js-selected'); //for single
 
 
             function revealAll() {
@@ -381,15 +383,64 @@ for (const dropInput of dropInputs) {
                 if (tDropCard.dataset.drop = 'multi') {
                     tChecker.classList.add('js-selected');
                 }
-            } else if (target.dataset.custom != 'pending') {
-                if (tDropCard.dataset.drop == 'single') {
+            }
+
+            if (target.dataset.custom != 'pending') {
+                // 單選選項專用響應 -> 模擬radio input
+                if (tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'single') {
+                    let otherChecked = tDropCard.querySelector('.js-selected'); //for single
                     otherChecked.classList.remove('js-selected');
                     tChecker.classList.add('js-selected');
-                } else if (tDropCard.dataset.drop == 'multi') {
-                    if (!tChecker.classList.contains('js-selected')) {
-                        tChecker.classList.add('js-selected');
-                    } else if (tChecker.classList.contains('js-selected')) {
-                        tChecker.classList.remove('js-selected');
+                }
+
+                //多選選項 (預設)
+                if (!checker.classList.contains('js-selected') && tDropCard.dataset.drop == 'multi') {
+                    checker.classList.add('js-selected');
+                    target.dataset.select = 'true'; //for textarea文字同步
+                } else if (checker.classList.contains('js-selected')) {
+                    checker.classList.remove('js-selected');
+                    target.dataset.select = ''; //for textarea文字同步
+                }
+
+                //多選選項value同步至textarea
+                let tTextAreas = tDPBox.parentElement.parentElement.querySelectorAll('textarea');
+                for (const tTextArea of tTextAreas) {
+                    if (tDropCard.dataset.drop == 'multi' && tGroup.dataset.group === tTextArea.dataset.name &&
+                        tInput.dataset.drop != 'ec') {
+                        let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
+                        let TextStr = Array.from(multiSelecteds, x => x.textContent);
+                        tTextArea.value = TextStr.join('\n');
+                    }
+                }
+
+                // 單選input專用響應 -> input value 不累加
+                if (checker.classList.contains('js-selected') && tInput.dataset.drop == 'single') {
+                    tInput.value = target.textContent;
+                } else {
+                    tInput.value = '';
+                }
+            }
+
+            // ec 尺寸數量同步
+            let sizeCount = tGroup.querySelectorAll('.js-selected').length;
+            let ecTabs = document.querySelectorAll('.label[data-tab]');
+            for (const ecTab of ecTabs) {
+                let countResult = ecTab.nextElementSibling;
+                if (target.dataset.ec == null) {
+                    if (tGroup.dataset.group === ecTab.dataset.tab) {
+                        countResult.textContent = sizeCount;
+                    }
+                }
+            }
+
+            //ec 多選專用響應
+            let tTabs = tDPBox.parentElement.parentElement.querySelectorAll('.label[data-tab]');
+            for (const tTab of tTabs) {
+                if (target.dataset.ec === tTab.dataset.tab) {
+                    if (checker.classList.contains('js-selected')) {
+                        tTab.parentElement.classList.add('js-show');
+                    } else if (!checker.classList.contains('js-selected')) {
+                        tTab.parentElement.classList.remove('js-show');
                     }
                 }
             }
