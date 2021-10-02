@@ -197,21 +197,22 @@ for (const dropCard of dropCards) {
     //dropCard 範圍內點擊響應
     dropCard.addEventListener('click', (e) => {
             let target = e.target;
+            let tDropCard = target.parentElement.parentElement.parentElement;
 
             function keepExpand() {
-                target.classList.remove('js-collapsed');
-                target.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
-                target.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
+                tDropCard.classList.remove('js-collapsed');
+                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('js-rotated');
+                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('unclickable');
             };
 
             function collapse() {
-                target.classList.add('js-collapsed');
-                target.parentElement.querySelector('.dropdown-arrow').classList.remove('js-rotated');
-                target.parentElement.querySelector('.dropdown-arrow').classList.add('unclickable');
+                tDropCard.classList.add('js-collapsed');
+                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.remove('js-rotated');
+                tDropCard.parentElement.querySelector('.dropdown-arrow').classList.add('unclickable');
             };
             if (target.classList.contains('label')) {
-                if (target.parentElement.parentElement.parentElement.dataset.drop == 'single') { collapse(); } //在single dropCard點按選項時一按即收合
-                if (target.parentElement.parentElement.parentElement.dataset.drop == 'multi') { keepExpand(); } //在multi dropCard點按選項時保持開啟
+                if (tDropCard.dataset.drop == 'single') { collapse(); } //在single dropCard點按選項時一按即收合
+                if (tDropCard.dataset.drop == 'multi') { keepExpand(); } //在multi dropCard點按選項時保持開啟
             } //!-- 尚未考慮使用tab切換選項的使用情境
 
             //若dropCard 無任何選項，顯現empty alert
