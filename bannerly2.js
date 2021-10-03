@@ -251,7 +251,7 @@ document.addEventListener('click', (e) => {
                 tabBtn.appendChild(tabLabel);
                 tabBtn.appendChild(tabCounter);
                 let tabGroup = colL.querySelector('[data-box=tab]');
-                tabGroup.appendChild(tabBtn);
+                tabGroup.insertBefore(tabBtn, tabGroup.children[0]);
 
                 //新增 new dropGroup
                 let newDropGroup = document.createElement('div');
