@@ -150,6 +150,7 @@ $('.js-length-6').on('input', function(e) {
 document.addEventListener('click', (e) => {
         let target = e.target; //以下宣告皆假設target為.label.full-touch
         let tChecker = target.parentElement.querySelector('.custom-check');
+        let tBtn = target.parentElement;
         let tGroup = target.parentElement.parentElement;
         let tDPBox = target.parentElement.parentElement.parentElement.parentElement;
         let tInput = tDPBox.querySelector('.input.dropdown');
@@ -272,7 +273,7 @@ document.addEventListener('click', (e) => {
                 textAreaBox.appendChild(newTextArea);
             }
 
-            if (target.dataset.ec != null) {
+            if (tBtn.nextElementSibling.querySelector('[data-ec]') != null) {
                 newTab();
             }
         } //end of if statement : target is a label of a fakeButton
