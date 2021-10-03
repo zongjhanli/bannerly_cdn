@@ -398,22 +398,18 @@ for (const dropInput of dropInputs) {
             let dropInputConcated = dropInput.value.replace(dropInput.value, '').concat('新增「', dropInput.value, '」');
             let pendingOptions = dropCard.querySelectorAll('[data-custom=pending]');
             let existingOptions = dropCard.querySelectorAll('.label:not([data-custom=pending])');
-            existingOptions.forEach((existingOption) => {
-                pendingOptions.forEach((pendingOption) => {
-                    let inputConcatedUpper = dropInputConcated.toUpperCase();
-                    let pendingTextUpper = pendingOption.textContent.toUpperCase();
-                    let existingTextUpper = existingOption.textContent.toUpperCase();
-                    let dropInputUpper = dropInput.value.toUpperCase();
-                    if (dropInput.value == '') {
-                        pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
-                    } else if (pendingOption.textContent.indexOf(dropInputConcated) != -1) {
-                        pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
-                    } else if (existingTextUpper.indexOf(dropInputUpper) != -1) {
-                        console.log('same');
-                        pendingOption.parentElement.remove(); //與既存選項同名者->刪
-                    }
-                })
-            })
+            let pendingStrUpper = Array.from(pendingOptions, p => p.textContent.toUpperCase());
+            let existingStrUpper = Array.from(existingOptions, e => e.textContent.toUpperCase());
+            let inputConcatedUpper = dropInputConcated.toUpperCase();
+            let dropInputUpper = dropInput.value.toUpperCase();
+            if (dropInput.value == '') {
+                pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
+            } else if (pendingStrUpper.textContent.indexOf(inputConcatedUpper) != -1) {
+                pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
+            } else if (existingStrUpper.indexOf(dropInputUpper) != -1) {
+                console.log('same');
+                pendingOption.parentElement.remove(); //與既存選項同名者->刪
+            }
         }, timeoutVal);
     } //end of handleKeyUp()
 
