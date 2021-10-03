@@ -406,9 +406,10 @@ for (const dropInput of dropInputs) {
             if (dropInput.value == '') {
                 pendingOptions[0].parentElement.remove(); //刪掉所有input字符後->刪
             } else if (pendingStrUpper.indexOf(inputConcatedUpper) != -1) {
+                console.log('a');
                 pendingOptions[0].parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
             } else if (existingStrUpper.indexOf(dropInputUpper) != -1) {
-                console.log('same');
+                console.log('b');
                 pendingOptions[0].parentElement.remove(); //與既存選項同名者->刪
             }
             //}
