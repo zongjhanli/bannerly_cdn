@@ -402,7 +402,7 @@ for (const dropInput of dropInputs) {
                 pendingOptions.forEach((pendingOption) => {
                     let inputConcatedUpper = dropInputConcated.toUpperCase();
                     let pendingTextUpper = pendingOption.textContent.toUpperCase();
-                    let existingTextUpper = pendingOption.textContent.toUpperCase();
+                    let existingTextUpper = existingOption.textContent.toUpperCase();
                     let dropInputUpper = dropInput.value.toUpperCase();
                     if (dropInput.value == '') {
                         pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
