@@ -233,11 +233,6 @@ document.addEventListener('click', (e) => {
                 target.dataset.custom = 'confirmed';
             } //將 >>> 新增「」<<< 字樣刪除，並切換data-custom狀態
 
-            if (target.dataset.custom == 'pending') {
-                revealAll();
-                confirmAppended();
-            }
-
             function newTab() {
                 let colL = tDropCard.parentElement.parentElement.parentElement;
                 let colR = colL.nextElementSibling;
@@ -273,9 +268,15 @@ document.addEventListener('click', (e) => {
                 textAreaBox.appendChild(newTextArea);
             }
 
-            if (tBtn.nextElementSibling.querySelector('[data-ec]') != null) {
-                newTab();
+            if (target.dataset.custom == 'pending') {
+                revealAll();
+                confirmAppended();
+                if (tBtn.nextElementSibling.querySelector('[data-ec]') != null) {
+                    newTab();
+                }
             }
+
+
         } //end of if statement : target is a label of a fakeButton
 
 
