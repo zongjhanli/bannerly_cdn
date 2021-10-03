@@ -234,7 +234,7 @@ document.addEventListener('click', (e) => {
             function confirmAppended() {
                 tChecker.classList.add('js-selected');
                 let tNewStr = target.textContent.replace('新增「', '').replace('」', '');
-                target.textContent = tNewStr;
+                //target.textContent = tNewStr;
                 tInput.value = tNewStr;
                 target.dataset.custom = 'confirmed';
             } //將 >>> 新增「」<<< 字樣刪除，並切換data-custom狀態
