@@ -175,6 +175,9 @@ document.addEventListener('click', (e) => {
                     let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
                     let TextStr = Array.from(multiSelecteds, x => x.textContent);
                     tTextArea.value = TextStr.join('\n');
+                    if (target.dataset.custom == 'pending') {
+                        tTextArea.value = TextStr.join('\n');
+                    }
                 }
             }
 
@@ -316,9 +319,6 @@ document.addEventListener('click', (e) => {
             }
 
         } //end of if statement : for labels in dropCards
-
-        // //for labels in tabs
-        // if (target.parentElement.parentElement.dataset.box == 'tab') {
 
         // } //end of if statement : for labels in tabs
 
