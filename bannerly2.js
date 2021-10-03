@@ -175,11 +175,11 @@ document.addEventListener('click', (e) => {
                     let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
                     let TextStr = Array.from(multiSelecteds, x => x.textContent);
                     tTextArea.value = TextStr.join('\n');
-                }
-                //檢查textArea value有無>>>新增「」<<<字樣
-                if (tTextArea.value.includes('新增「') && tTextArea.value.includes('」')) {
-                    tTextArea.value.replace('新增「', '');
-                    tTextArea.value.replace('」', '');
+                    //檢查textArea value有無>>>新增「」<<<字樣
+                    if (tTextArea.value.includes('新增「') && tTextArea.value.includes('」')) {
+                        tTextArea.value.replace('新增「', '');
+                        tTextArea.value.replace('」', '');
+                    }
                 }
             }
 
@@ -234,7 +234,7 @@ document.addEventListener('click', (e) => {
             function confirmAppended() {
                 tChecker.classList.add('js-selected');
                 let tNewStr = target.textContent.replace('新增「', '').replace('」', '');
-                //target.textContent = tNewStr;
+                target.textContent = tNewStr;
                 tInput.value = tNewStr;
                 target.dataset.custom = 'confirmed';
             } //將 >>> 新增「」<<< 字樣刪除，並切換data-custom狀態
