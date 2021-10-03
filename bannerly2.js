@@ -373,6 +373,10 @@ for (const dropInput of dropInputs) {
     dropInput.addEventListener('keyup', handleKeyUp);
 
     function newOption() {
+        let pendingOptions = dropCard.querySelectorAll('[data-custom=pending]');
+        for (const pendingOption of pendingOptions) {
+            pendingOption.parentElement.remove();
+        } //在新增建議選項前，便已刪除其他未選的建議選項
         let keyInText = dropInput.value;
         let dropGroup = dropCard.querySelector('.drop-group.js-show');
         let button = document.createElement('div');
@@ -399,16 +403,13 @@ for (const dropInput of dropInputs) {
             let dropInputConcated = dropInput.value.replace(dropInput.value, '').concat('新增「', dropInput.value, '」');
             let pendingOptions = dropCard.querySelectorAll('[data-custom=pending]');
             let existingOptions = dropCard.querySelectorAll('.label:not([data-custom=pending])');
-            let pendingStrUpper = Array.from(pendingOptions, p => p.textContent.toUpperCase());
             let existingStrUpper = Array.from(existingOptions, e => e.textContent.toUpperCase());
-            let inputConcatedUpper = dropInputConcated.toUpperCase();
             let dropInputUpper = dropInput.value.toUpperCase();
             //for (const pendingOption of pendingOptions) {
             if (dropInput.value == '') {
                 pendingOptions[0].parentElement.remove(); //刪掉所有input字符後->刪
-            } else if (e.keyCode == 8) {
-                console.log('delete');
-                pendingOptions[0].parentElement.remove(); //只要按下清除鍵->刪
+                //} else if (e.keyCode == 8) {
+                //pendingOptions[0].parentElement.remove(); //只要按下清除鍵->刪
             } else if (existingStrUpper.indexOf(dropInputUpper) != -1) {
                 pendingOptions[0].parentElement.remove(); //與既存選項同名者->刪
             }
