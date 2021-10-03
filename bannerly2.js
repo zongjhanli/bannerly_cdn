@@ -298,28 +298,27 @@ for (const ecTabsCol of ecTabsCols) {
                 indicator.style.display = 'none';
             }
 
-            for (const shownTab of shownTabs) {
-
-                // ec drop option 點擊響應 -> 預設第一個tab以及相關右欄顯現
-                if (target.nextElementSibling.classList.contains('custom-check')) {
-                    shownTabs[0].style.opacity = '1';
-                    let tCol = target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
-                    let tDropGroups = tCol.nextElementSibling.querySelectorAll('.drop-group');
-                    for (const tDropGroup of tDropGroups) {
-                        tDropGroup.classList.remove('js-show');
-                        if (tDropGroup.dataset.group === shownTabs[0].firstElementChild.dataset.tab) {
-                            tDropGroup.classList.add('js-show');
-                        }
-                    }
-                    let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
-                    for (const tTextArea of tTextAreas) {
-                        tTextArea.classList.remove('js-show');
-                        if (tTextArea.dataset.name === shownTabs[0].firstElementChild.dataset.tab) {
-                            tTextArea.classList.add('js-show');
-                        }
+            // ec drop option 點擊響應 -> 預設第一個tab以及相關右欄顯現
+            if (target.nextElementSibling.classList.contains('custom-check')) {
+                shownTabs[0].style.opacity = '1';
+                let tCol = target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                let tDropGroups = tCol.nextElementSibling.querySelectorAll('.drop-group');
+                for (const tDropGroup of tDropGroups) {
+                    tDropGroup.classList.remove('js-show');
+                    if (tDropGroup.dataset.group === shownTabs[0].firstElementChild.dataset.tab) {
+                        tDropGroup.classList.add('js-show');
                     }
                 }
+                let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
+                for (const tTextArea of tTextAreas) {
+                    tTextArea.classList.remove('js-show');
+                    if (tTextArea.dataset.name === shownTabs[0].firstElementChild.dataset.tab) {
+                        tTextArea.classList.add('js-show');
+                    }
+                }
+            }
 
+            for (const shownTab of shownTabs) {
                 // ec tab 點擊響應
                 if (target.dataset.tab != null) {
                     shownTab.style.opacity = '0.5';
