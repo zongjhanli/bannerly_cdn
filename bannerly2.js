@@ -215,22 +215,27 @@ document.addEventListener('click', (e) => {
                     }
                 }
             }
-        } //end of if statement : target is a label of a fakeButton
 
-        function revealAll() {
-            let tOptions = dropInput.parentElement.querySelector('.drop-group.js-show').querySelectorAll('.a-button.as-list');
-            for (const tOption of tOptions) {
-                tOption.classList.remove('js-hide');
+            function revealAll() {
+                let tOptions = tGroup.querySelectorAll('.a-button.as-list');
+                for (const tOption of tOptions) {
+                    tOption.classList.remove('js-hide');
+                }
             }
-        }
 
-        function confirmAppended() {
-            tChecker.classList.add('js-selected');
-            let tNewStr = target.textContent.replace('新增「', '').replace('」', '');
-            target.textContent = tNewStr;
-            dropInput.value = tNewStr;
-            target.dataset.custom = 'confirmed';
-        }
+            function confirmAppended() {
+                tChecker.classList.add('js-selected');
+                let tNewStr = target.textContent.replace('新增「', '').replace('」', '');
+                target.textContent = tNewStr;
+                tInput.value = tNewStr;
+                target.dataset.custom = 'confirmed';
+            }
+
+            if (target.dataset.custom == 'pending') {
+                revealAll();
+                confirmAppended();
+            }
+        } //end of if statement : target is a label of a fakeButton
 
         function newTab() {
             let colL = tDropCard.parentElement.parentElement.parentElement;
