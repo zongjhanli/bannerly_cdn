@@ -261,7 +261,7 @@ document.addEventListener('click', (e) => {
                 //新增 new dropGroup
                 let newDropGroup = document.createElement('div');
                 newDropGroup.classList.add('drop-group', 'js-hide', 'js-show');
-                newDropGroup.dataset.group = dropInput.value;
+                newDropGroup.dataset.group = tInput.value;
                 let dropBox = colR.querySelector('.drop-card');
                 dropBox.appendChild(newDropGroup);
 
