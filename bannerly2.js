@@ -311,20 +311,11 @@ document.addEventListener('click', (e) => {
                     tInput.dataset.drop != 'ec') {
                     let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
                     let TextStr = Array.from(multiSelecteds, x => x.textContent);
-                    //if (TextStr.includes('新增「')) {
-                    // TextStr.replace('新增「', '');
-                    // TextStr.replace('」', '');
                     tTextArea.value = TextStr.join('\n');
-                    //} else {
-                    //tTextArea.value = TextStr.join('\n');
-                    //}
                 }
-            }
+            } //!!!此段必須放在confirmAppended();執行之後，否則新增的選項將會讀取到未replace前的>>>新增「」字樣<<<
 
         } //end of if statement : for labels in dropCards
-
-        // } //end of if statement : for labels in tabs
-
     }) //end of document click event
 
 //multi-dropdown input value
@@ -409,12 +400,15 @@ for (const dropInput of dropInputs) {
             let existingOptions = dropCard.querySelectorAll('.label:not([data-custom=pending])');
             existingOptions.forEach((existingOption) => {
                 pendingOptions.forEach((pendingOption) => {
-                    let pendingOptionText = pendingOption.textContent;
+                    let inputConcatedUpper = dropInputConcated.toUpperCase();
+                    let pendingTextUpper = pendingOption.textContent.toUpperCase();
+                    let existingTextUpper = pendingOption.textContent.toUpperCase();
+                    let dropInputUpper = dropInput.value.toUpperCase();
                     if (dropInput.value == '') {
                         pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
-                    } else if (pendingOptionText.indexOf(dropInputConcated) == -1) {
+                    } else if (pendingTextUpper.indexOf(inputConcatedUpper) == -1) {
                         pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
-                    } else if (existingOption.textContent.includes(dropInput.value)) {
+                    } else if (existingTextUpper.includes(dropInputUpper)) {
                         pendingOption.parentElement.remove(); //與既存選項同名者->刪
                     }
                 })
