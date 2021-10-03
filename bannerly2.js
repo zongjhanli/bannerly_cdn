@@ -175,9 +175,11 @@ document.addEventListener('click', (e) => {
                     let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
                     let TextStr = Array.from(multiSelecteds, x => x.textContent);
                     tTextArea.value = TextStr.join('\n');
-                    if (target.dataset.custom == 'pending') {
-                        tTextArea.value = TextStr.join('\n');
-                    }
+                }
+                //檢查textArea value有無>>>新增「」<<<字樣
+                if (tTextArea.value.includes('新增「') && tTextArea.value.includes('」')) {
+                    tTextArea.value.replace('新增「', '');
+                    tTextArea.value.replace('」', '');
                 }
             }
 
