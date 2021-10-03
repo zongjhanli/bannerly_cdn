@@ -285,12 +285,16 @@ document.addEventListener('click', (e) => {
                 let indicator = tDPBox.querySelector('.indicator');
                 let shownTabs = colL.querySelectorAll('.a-button.as-tab.js-show');
                 for (const shownTab of shownTabs) {
+
                     //ec tab indicator 顯示/隱藏條件
+                    let tabLength = shownTabs.length;
                     if (tabLength > 0) {
                         indicator.style.display = 'block';
                     } else {
                         indicator.style.display = 'none';
                     }
+
+                    //每次選取/取消選取，tabBox重新更新「第一個」tab以及相關dropGroup, textArea顯現
                     shownTab.style.opacity = '0.5';
                     shownTabs[0].style.opacity = '1';
                     let tDropGroups = colL.nextElementSibling.querySelectorAll('.drop-group');
@@ -510,8 +514,6 @@ for (const tabBox of tabBoxs) {
             let indicator = tBox.querySelector('.indicator'); //! 不需要使用target.querySelector
             let shownTabs = tBox.querySelectorAll('.a-button.js-show');
             let tabLength = shownTabs.length;
-
-
 
             for (const shownTab of shownTabs) {
                 // ec tab 點擊響應
