@@ -251,7 +251,7 @@ document.addEventListener('click', (e) => {
                 tabBtn.classList.add('a-button', 'as-tab', 'js-hide', 'js-show');
                 tabLabel.classList.add('label', 'full-touch', 'js-exclude');
                 tabCounter.classList.add('_12px-500', 'as-counts', 'in-tab');
-                tabLabel.textContent = dropInput.value;
+                tabLabel.textContent = tInput.value;
                 tabCounter.textContent = '0';
                 tabBtn.appendChild(tabLabel);
                 tabBtn.appendChild(tabCounter);
@@ -268,7 +268,7 @@ document.addEventListener('click', (e) => {
                 //新增 new textArea
                 let newTextArea = document.createElement('textarea');
                 newTextArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'js-show');
-                newTextArea.placeholder = '↑點按以選擇' + dropInput.value + '尺寸';
+                newTextArea.placeholder = '↑點按以選擇' + tInput.value + '尺寸';
                 let textAreaBox = colR.querySelector('[data-box=textarea]');
                 textAreaBox.appendChild(newTextArea);
             }
