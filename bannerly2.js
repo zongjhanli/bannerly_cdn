@@ -282,7 +282,7 @@ document.addEventListener('click', (e) => {
             // ec drop option 點擊響應 -> 預設第一個tab以及相關dropGroup, textArea顯現
             if (tBtn.nextElementSibling.querySelector('[data-ec]') != null) {
                 let colL = tDPBox.parentElement.parentElement;
-                let indicator = tDPBox.querySelector('.indicator');
+                let indicator = colL.querySelector('.indicator');
                 let shownTabs = colL.querySelectorAll('.a-button.as-tab.js-show');
                 for (const shownTab of shownTabs) {
 
