@@ -324,27 +324,27 @@ document.addEventListener('click', (e) => {
 
     }) //end of document click event
 
-// //multi-dropdown input value
-// document.addEventListener('click', (e) => {
-//     let target = e.target;
-//     e.preventDefault();
-//     let multiDropCards = document.querySelectorAll('.drop-card[data-drop=multi]');
-//     for (const multiDropCard of multiDropCards) {
-//         let shownGroup = multiDropCard.querySelector('.drop-group.js-show');
-//         let checkCount = shownGroup.querySelectorAll('.js-selected').length;
-//         let input = multiDropCard.parentElement.querySelector('.input.dropdown');
+//multi-dropdown input value
+document.addEventListener('click', (e) => {
+    let target = e.target;
+    e.preventDefault();
+    let multiDropCards = document.querySelectorAll('.drop-card[data-drop=multi]');
+    for (const multiDropCard of multiDropCards) {
+        let shownGroup = multiDropCard.querySelector('.drop-group.js-show');
+        let checkCount = shownGroup.querySelectorAll('.js-selected').length;
+        let input = multiDropCard.parentElement.querySelector('.input.dropdown');
 
-//         if (target.dataset.drop == 'multi' && input == document.activeElement) {
-//             input.value = '';
-//         } else if (input != document.activeElement) {
-//             if (checkCount == '0') {
-//                 input.value = '';
-//             } else {
-//                 input.value = '已選' + checkCount + '項';
-//             }
-//         }
-//     }
-// });
+        if (target.dataset.drop == 'multi' && input == document.activeElement) {
+            input.value = '';
+        } else if (input != document.activeElement) {
+            if (checkCount == '0') {
+                input.value = '';
+            } else {
+                input.value = '已選' + checkCount + '項';
+            }
+        }
+    }
+});
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
