@@ -282,78 +282,6 @@ document.addEventListener('click', (e) => {
 
     }) //end of document click event
 
-//tab + indicator 響應
-let ecTabsCols = document.querySelectorAll('[data-col=ec-tab]');
-for (const ecTabsCol of ecTabsCols) {
-    ecTabsCol.addEventListener('click', (e) => {
-            let target = e.target;
-            let indicator = ecTabsCol.querySelector('.indicator'); //! 不需要使用target.querySelector
-            let shownTabs = ecTabsCol.querySelectorAll('.a-button.js-show');
-            let tabLength = shownTabs.length;
-
-            //ec tab indicator 顯示/隱藏條件
-            if (tabLength > 0) {
-                indicator.style.display = 'block';
-            } else {
-                indicator.style.display = 'none';
-            }
-
-            // ec drop option 點擊響應 -> 預設第一個tab以及相關右欄顯現
-            if (target.nextElementSibling.classList.contains('custom-check')) {
-                shownTabs[0].style.opacity = '1';
-                let tCol = target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
-                let tDropGroups = tCol.nextElementSibling.querySelectorAll('.drop-group');
-                for (const tDropGroup of tDropGroups) {
-                    tDropGroup.classList.remove('js-show');
-                    if (tDropGroup.dataset.group === shownTabs[0].firstElementChild.dataset.tab) {
-                        tDropGroup.classList.add('js-show');
-                    }
-                }
-                let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
-                for (const tTextArea of tTextAreas) {
-                    tTextArea.classList.remove('js-show');
-                    if (tTextArea.dataset.name === shownTabs[0].firstElementChild.dataset.tab) {
-                        tTextArea.classList.add('js-show');
-                    }
-                }
-            }
-
-            for (const shownTab of shownTabs) {
-                // ec tab 點擊響應
-                if (target.dataset.tab != null) {
-                    shownTab.style.opacity = '0.5';
-                    target.parentElement.style.opacity = '1';
-
-                    let tCol = target.parentElement.parentElement.parentElement;
-                    let tDropGroups = tCol.nextElementSibling.querySelectorAll('.drop-group');
-                    for (const tDropGroup of tDropGroups) {
-                        tDropGroup.classList.remove('js-show');
-                        if (tDropGroup.dataset.group === target.dataset.tab) {
-                            tDropGroup.classList.add('js-show');
-                        }
-                    }
-                    let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
-                    for (const tTextArea of tTextAreas) {
-                        tTextArea.classList.remove('js-show');
-                        if (tTextArea.dataset.name === target.dataset.tab) {
-                            tTextArea.classList.add('js-show');
-                        }
-                    }
-
-                    //tab 切換 -> indicator移動
-                    for (i = 0; i < tabLength; i++) {
-                        let topV = i * 36 + "px";
-                        if (shownTabs[i] == target.parentElement) {
-                            indicator.style.top = topV;
-                        }
-                    }
-                }
-
-            } // end of shownTab loop
-        }) //end of ecTabsCol click event
-} //end of ecTabsCol loop
-
-
 //multi-dropdown input value
 document.addEventListener('click', (e) => {
     let target = e.target;
@@ -535,5 +463,77 @@ for (const dropCard of dropCards) {
 
         }) //end of dropCard click event
 } //end of dropCard loop
+
+//tab + indicator 響應
+let ecTabsCols = document.querySelectorAll('[data-col=ec-tab]');
+for (const ecTabsCol of ecTabsCols) {
+    ecTabsCol.addEventListener('click', (e) => {
+            let target = e.target;
+            let indicator = ecTabsCol.querySelector('.indicator'); //! 不需要使用target.querySelector
+            let shownTabs = ecTabsCol.querySelectorAll('.a-button.js-show');
+            let tabLength = shownTabs.length;
+
+            //ec tab indicator 顯示/隱藏條件
+            if (tabLength > 0) {
+                indicator.style.display = 'block';
+            } else {
+                indicator.style.display = 'none';
+            }
+
+            for (const shownTab of shownTabs) {
+
+                // ec drop option 點擊響應 -> 預設第一個tab以及相關右欄顯現
+                if (target.nextElementSibling.classList.contains('custom-check')) {
+                    shownTabs[0].style.opacity = '1';
+                    let tCol = target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+                    let tDropGroups = tCol.nextElementSibling.querySelectorAll('.drop-group');
+                    for (const tDropGroup of tDropGroups) {
+                        tDropGroup.classList.remove('js-show');
+                        if (tDropGroup.dataset.group === shownTabs[0].firstElementChild.dataset.tab) {
+                            tDropGroup.classList.add('js-show');
+                        }
+                    }
+                    let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
+                    for (const tTextArea of tTextAreas) {
+                        tTextArea.classList.remove('js-show');
+                        if (tTextArea.dataset.name === shownTabs[0].firstElementChild.dataset.tab) {
+                            tTextArea.classList.add('js-show');
+                        }
+                    }
+                }
+
+                // ec tab 點擊響應
+                if (target.dataset.tab != null) {
+                    shownTab.style.opacity = '0.5';
+                    target.parentElement.style.opacity = '1';
+
+                    let tCol = target.parentElement.parentElement.parentElement;
+                    let tDropGroups = tCol.nextElementSibling.querySelectorAll('.drop-group');
+                    for (const tDropGroup of tDropGroups) {
+                        tDropGroup.classList.remove('js-show');
+                        if (tDropGroup.dataset.group === target.dataset.tab) {
+                            tDropGroup.classList.add('js-show');
+                        }
+                    }
+                    let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
+                    for (const tTextArea of tTextAreas) {
+                        tTextArea.classList.remove('js-show');
+                        if (tTextArea.dataset.name === target.dataset.tab) {
+                            tTextArea.classList.add('js-show');
+                        }
+                    }
+
+                    //tab 切換 -> indicator移動
+                    for (i = 0; i < tabLength; i++) {
+                        let topV = i * 36 + "px";
+                        if (shownTabs[i] == target.parentElement) {
+                            indicator.style.top = topV;
+                        }
+                    }
+                }
+
+            } // end of shownTab loop
+        }) //end of ecTabsCol click event
+} //end of ecTabsCol loop
 
 // ----------------------------------------------------------------------------------------------------
