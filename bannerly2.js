@@ -174,9 +174,9 @@ document.addEventListener('click', (e) => {
                     tInput.dataset.drop != 'ec') {
                     let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
                     let TextStr = Array.from(multiSelecteds, x => x.textContent);
-                    if (TextStr.value.includes('新增「')) {
-                        TextStr.value.replace('新增「', '');
-                        TextStr.value.replace('」', '');
+                    if (TextStr.includes('新增「')) {
+                        TextStr.replace('新增「', '');
+                        TextStr.replace('」', '');
                         tTextArea.value = TextStr.join('\n');
                     } else {
                         tTextArea.value = TextStr.join('\n');
