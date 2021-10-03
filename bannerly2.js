@@ -11,20 +11,6 @@
 // "credit" -> 參考來源 
 // test
 
-// // GLOBAL 全域input選擇後改變外觀
-// let checkers = document.querySelectorAll('.custom-check');
-// checkers.forEach((checker) => {
-//     checker.addEventListener('click', (e) => {
-//     		e.preventDefault();
-//         let target = e.target;
-//         let Parent = target.parentElement;
-//         if (target.classList.contains('w--redirected-checked')) {
-//             Parent.classList.add('js-selected');
-//         } else {
-//             Parent.classList.remove('js-selected');
-//         }
-//     })
-// })
 
 // GLOBAL 跨區叫喚
 let calleds = document.querySelectorAll('[data-called]');
@@ -146,7 +132,7 @@ $('.js-length-6').on('input', function(e) {
 
 // ----------------------------------------------------------------------------------------------------
 
-//.label 點按響應
+//.label 點按響應 (含dropCard、tabBox)
 document.addEventListener('click', (e) => {
         let target = e.target; //以下宣告皆假設target為.label.full-touch
         let tChecker = target.parentElement.querySelector('.custom-check');
@@ -318,27 +304,7 @@ document.addEventListener('click', (e) => {
         } //end of if statement : for labels in dropCards
     }) //end of document click event
 
-//multi-dropdown input value
-document.addEventListener('click', (e) => {
-    let target = e.target;
-    e.preventDefault();
-    let multiDropCards = document.querySelectorAll('.drop-card[data-drop=multi]');
-    for (const multiDropCard of multiDropCards) {
-        let shownGroup = multiDropCard.querySelector('.drop-group.js-show');
-        let checkCount = shownGroup.querySelectorAll('.js-selected').length;
-        let input = multiDropCard.parentElement.querySelector('.input.dropdown');
 
-        if (target.dataset.drop == 'multi' && input == document.activeElement) {
-            input.value = '';
-        } else if (input != document.activeElement) {
-            if (checkCount == '0') {
-                input.value = '';
-            } else {
-                input.value = '已選' + checkCount + '項';
-            }
-        }
-    }
-});
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
@@ -376,7 +342,7 @@ for (const dropInput of dropInputs) {
         let pendingOptions = dropCard.querySelectorAll('[data-custom=pending]');
         for (const pendingOption of pendingOptions) {
             pendingOption.parentElement.remove();
-        } //在新增建議選項前，便已刪除其他未選的建議選項
+        } //在新增建議選項前，便已刪除其他未選的建議選項 -> 每次輸入時都只有1個建議選項存在
         let keyInText = dropInput.value;
         let dropGroup = dropCard.querySelector('.drop-group.js-show');
         let button = document.createElement('div');
@@ -430,6 +396,29 @@ for (const dropInput of dropInputs) {
 //Global general dropdown behaviours
 var dropCards = document.querySelectorAll('.drop-card');
 for (const dropCard of dropCards) {
+
+    //multi-dropdown input value 顯現>>>已選N項<<<
+    document.addEventListener('click', (e) => {
+        let target = e.target;
+        e.preventDefault();
+        let multiDropCards = document.querySelectorAll('.drop-card[data-drop=multi]');
+        for (const multiDropCard of multiDropCards) {
+            let shownGroup = multiDropCard.querySelector('.drop-group.js-show');
+            let checkCount = shownGroup.querySelectorAll('.js-selected').length;
+            let input = multiDropCard.parentElement.querySelector('.input.dropdown');
+
+            if (target.dataset.drop == 'multi' && input == document.activeElement) {
+                input.value = '';
+            } else if (input != document.activeElement) {
+                if (checkCount == '0') {
+                    input.value = '';
+                } else {
+                    input.value = '已選' + checkCount + '項';
+                }
+            }
+        }
+    });
+
     //dropCard 範圍外收合下拉選單
     document.addEventListener('click', (e) => {
         let target = e.target;
