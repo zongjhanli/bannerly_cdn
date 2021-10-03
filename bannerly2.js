@@ -390,6 +390,7 @@ for (const dropInput of dropInputs) {
     } //end of newOption()
 
     function handleKeyUp(e) {
+        e.preventDefault();
         window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
         timer = window.setTimeout(() => {
             if (dropInput.value != '') {
@@ -406,6 +407,7 @@ for (const dropInput of dropInputs) {
             if (dropInput.value == '') {
                 pendingOptions[0].parentElement.remove(); //刪掉所有input字符後->刪
             } else if (e.keyCode == 8) {
+                console.log('delete');
                 pendingOptions[0].parentElement.remove(); //只要按下清除鍵->刪
             } else if (existingStrUpper.indexOf(dropInputUpper) != -1) {
                 pendingOptions[0].parentElement.remove(); //與既存選項同名者->刪
