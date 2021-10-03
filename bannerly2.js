@@ -307,50 +307,7 @@ document.addEventListener('click', (e) => {
 
         //for labels in tabs
         if (target.parentElement.parentElement.dataset.box == 'tab') {
-            let tabBox = target.parentElement.parentElement;
-            let indicator = tabBox.querySelector('.indicator'); //! 不需要使用target.querySelector
-            let shownTabs = tabBox.querySelectorAll('.a-button.js-show');
-            let tabLength = shownTabs.length;
 
-            //ec tab indicator 顯示/隱藏條件
-            if (tabLength > 0) {
-                indicator.style.display = 'block';
-            } else {
-                indicator.style.display = 'none';
-            }
-
-            for (const shownTab of shownTabs) {
-                // ec tab 點擊響應
-                if (target.dataset.tab != null) {
-                    shownTab.style.opacity = '0.5';
-                    target.parentElement.style.opacity = '1';
-
-                    let tCol = target.parentElement.parentElement.parentElement;
-                    let tDropGroups = tCol.nextElementSibling.querySelectorAll('.drop-group');
-                    for (const tDropGroup of tDropGroups) {
-                        tDropGroup.classList.remove('js-show');
-                        if (tDropGroup.dataset.group === target.dataset.tab) {
-                            tDropGroup.classList.add('js-show');
-                        }
-                    }
-                    let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
-                    for (const tTextArea of tTextAreas) {
-                        tTextArea.classList.remove('js-show');
-                        if (tTextArea.dataset.name === target.dataset.tab) {
-                            tTextArea.classList.add('js-show');
-                        }
-                    }
-
-                    //tab 切換 -> indicator移動
-                    for (i = 0; i < tabLength; i++) {
-                        let topV = i * 36 + "px";
-                        if (shownTabs[i] == target.parentElement) {
-                            indicator.style.top = topV;
-                        }
-                    }
-                }
-
-            } // end of shownTab loop
         } //end of if statement : for labels in tabs
 
     }) //end of document click event
@@ -537,6 +494,55 @@ for (const dropCard of dropCards) {
         }) //end of dropCard click event
 } //end of dropCard loop
 
+//tab + indicator 響應
+let tabBoxes = document.querySelectorAll('[data-box=tab]');
+for (const tabBox of tabBoxes) {
+    tabBox.addEventListener('click', (e) => {
+            let target = e.target;
+            let indicator = tabBox.querySelector('.indicator'); //! 不需要使用target.querySelector
+            let shownTabs = tabBox.querySelectorAll('.a-button.js-show');
+            let tabLength = shownTabs.length;
 
+            //ec tab indicator 顯示/隱藏條件
+            if (tabLength > 0) {
+                indicator.style.display = 'block';
+            } else {
+                indicator.style.display = 'none';
+            }
+
+            for (const shownTab of shownTabs) {
+                // ec tab 點擊響應
+                if (target.dataset.tab != null) {
+                    shownTab.style.opacity = '0.5';
+                    target.parentElement.style.opacity = '1';
+
+                    let tCol = target.parentElement.parentElement.parentElement;
+                    let tDropGroups = tCol.nextElementSibling.querySelectorAll('.drop-group');
+                    for (const tDropGroup of tDropGroups) {
+                        tDropGroup.classList.remove('js-show');
+                        if (tDropGroup.dataset.group === target.dataset.tab) {
+                            tDropGroup.classList.add('js-show');
+                        }
+                    }
+                    let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
+                    for (const tTextArea of tTextAreas) {
+                        tTextArea.classList.remove('js-show');
+                        if (tTextArea.dataset.name === target.dataset.tab) {
+                            tTextArea.classList.add('js-show');
+                        }
+                    }
+
+                    //tab 切換 -> indicator移動
+                    for (i = 0; i < tabLength; i++) {
+                        let topV = i * 36 + "px";
+                        if (shownTabs[i] == target.parentElement) {
+                            indicator.style.top = topV;
+                        }
+                    }
+                }
+
+            } // end of shownTab loop
+        }) //end of ecTabsCol click event
+} //end of ecTabsCol loop
 
 // ----------------------------------------------------------------------------------------------------
