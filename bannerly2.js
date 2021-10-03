@@ -279,7 +279,7 @@ document.addEventListener('click', (e) => {
             // ec drop option 點擊響應 -> 預設第一個tab以及相關dropGroup, textArea顯現
             if (tBtn.nextElementSibling.querySelector('[data-ec]') != null) {
                 let colL = tDPBox.parentElement.parentElement;
-                let shownTabs = colL.querySelectorAll('.a-button.as-tab');
+                let shownTabs = colL.querySelectorAll('.a-button.as-tab.js-show');
                 shownTabs[0].style.opacity = '1';
                 let tDropGroups = colL.nextElementSibling.querySelectorAll('.drop-group');
                 for (const tDropGroup of tDropGroups) {
