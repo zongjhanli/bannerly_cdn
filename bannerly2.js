@@ -404,7 +404,7 @@ for (const dropInput of dropInputs) {
             let dropInputUpper = dropInput.value.toUpperCase();
             if (dropInput.value == '') {
                 pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
-            } else if (pendingStrUpper.textContent.indexOf(inputConcatedUpper) != -1) {
+            } else if (pendingStrUpper.indexOf(inputConcatedUpper) != -1) {
                 pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
             } else if (existingStrUpper.indexOf(dropInputUpper) != -1) {
                 console.log('same');
