@@ -281,14 +281,14 @@ document.addEventListener('click', (e) => {
                 let colL = tDPBox.parentElement.parentElement;
                 let shownTabs = colL.querySelectorAll('.a-button.as-tab');
                 shownTabs[0].style.opacity = '1';
-                let tDropGroups = tCol.nextElementSibling.querySelectorAll('.drop-group');
+                let tDropGroups = colL.nextElementSibling.querySelectorAll('.drop-group');
                 for (const tDropGroup of tDropGroups) {
                     tDropGroup.classList.remove('js-show');
                     if (tDropGroup.dataset.group === shownTabs[0].firstElementChild.dataset.tab) {
                         tDropGroup.classList.add('js-show');
                     }
                 }
-                let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
+                let tTextAreas = colL.nextElementSibling.querySelectorAll('.as-textarea');
                 for (const tTextArea of tTextAreas) {
                     tTextArea.classList.remove('js-show');
                     if (tTextArea.dataset.name === shownTabs[0].firstElementChild.dataset.tab) {
