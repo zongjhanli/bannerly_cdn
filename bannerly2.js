@@ -495,12 +495,13 @@ for (const dropCard of dropCards) {
 } //end of dropCard loop
 
 //tab + indicator 響應
-let tabBoxes = document.querySelectorAll('[data-box=tab]');
-for (const tabBox of tabBoxes) {
+let tabBoxs = document.querySelectorAll('[data-box=tab]');
+for (const tabBox of tabBoxs) {
     tabBox.addEventListener('click', (e) => {
             let target = e.target;
-            let indicator = tabBox.querySelector('.indicator'); //! 不需要使用target.querySelector
-            let shownTabs = tabBox.querySelectorAll('.a-button.js-show');
+            let tBox = target.parentElement.parentElement;
+            let indicator = tBox.querySelector('.indicator'); //! 不需要使用target.querySelector
+            let shownTabs = tBox.querySelectorAll('.a-button.js-show');
             let tabLength = shownTabs.length;
 
             //ec tab indicator 顯示/隱藏條件
