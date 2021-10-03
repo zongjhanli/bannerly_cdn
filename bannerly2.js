@@ -402,13 +402,15 @@ for (const dropInput of dropInputs) {
             let existingStrUpper = Array.from(existingOptions, e => e.textContent.toUpperCase());
             let inputConcatedUpper = dropInputConcated.toUpperCase();
             let dropInputUpper = dropInput.value.toUpperCase();
-            if (dropInput.value == '') {
-                pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
-            } else if (pendingStrUpper.indexOf(inputConcatedUpper) != -1) {
-                pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
-            } else if (existingStrUpper.indexOf(dropInputUpper) != -1) {
-                console.log('same');
-                pendingOption.parentElement.remove(); //與既存選項同名者->刪
+            for (const pendingOption of pendingOptions) {
+                if (dropInput.value == '') {
+                    pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
+                } else if (pendingStrUpper.indexOf(inputConcatedUpper) != -1) {
+                    pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
+                } else if (existingStrUpper.indexOf(dropInputUpper) != -1) {
+                    console.log('same');
+                    pendingOption.parentElement.remove(); //與既存選項同名者->刪
+                }
             }
         }, timeoutVal);
     } //end of handleKeyUp()
