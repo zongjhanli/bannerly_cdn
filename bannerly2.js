@@ -146,7 +146,7 @@ $('.js-length-6').on('input', function(e) {
 
 // ----------------------------------------------------------------------------------------------------
 
-//自dropdown input新增的選項需要重新設定點按響應
+//.label 點按響應
 document.addEventListener('click', (e) => {
         let target = e.target; //以下宣告皆假設target為.label.full-touch
         let tChecker = target.parentElement.querySelector('.custom-check');
@@ -156,6 +156,7 @@ document.addEventListener('click', (e) => {
         let tInput = tDPBox.querySelector('.input.dropdown');
         let tDropCard = target.parentElement.parentElement.parentElement;
 
+        //for labels in dropCards
         if (target.classList.contains('label') && !target.classList.contains('js-exclude')) {
             //多選選項 (預設)
             if (!tChecker.classList.contains('js-selected')) {
@@ -264,6 +265,8 @@ document.addEventListener('click', (e) => {
                 let newTextArea = document.createElement('textarea');
                 newTextArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'js-show');
                 newTextArea.placeholder = '↑點按以選擇' + tInput.value + '尺寸';
+                newTextArea.dataset.name = tInput.value;
+                newTextArea.id = tInput.value;
                 let textAreaBox = colR.querySelector('[data-box=textarea]');
                 textAreaBox.appendChild(newTextArea);
             }
@@ -300,7 +303,55 @@ document.addEventListener('click', (e) => {
                 }
             }
 
-        } //end of if statement : target is a label of a fakeButton
+        } //end of if statement : for labels in dropCards
+
+        //for labels in tabs
+        if (target.parentElement.parentElement.dataset.box == 'tab') {
+            let tabBox = target.parentElement.parentElement;
+            let indicator = tabBox.querySelector('.indicator'); //! 不需要使用target.querySelector
+            let shownTabs = tabBox.querySelectorAll('.a-button.js-show');
+            let tabLength = shownTabs.length;
+
+            //ec tab indicator 顯示/隱藏條件
+            if (tabLength > 0) {
+                indicator.style.display = 'block';
+            } else {
+                indicator.style.display = 'none';
+            }
+
+            for (const shownTab of shownTabs) {
+                // ec tab 點擊響應
+                if (target.dataset.tab != null) {
+                    shownTab.style.opacity = '0.5';
+                    target.parentElement.style.opacity = '1';
+
+                    let tCol = target.parentElement.parentElement.parentElement;
+                    let tDropGroups = tCol.nextElementSibling.querySelectorAll('.drop-group');
+                    for (const tDropGroup of tDropGroups) {
+                        tDropGroup.classList.remove('js-show');
+                        if (tDropGroup.dataset.group === target.dataset.tab) {
+                            tDropGroup.classList.add('js-show');
+                        }
+                    }
+                    let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
+                    for (const tTextArea of tTextAreas) {
+                        tTextArea.classList.remove('js-show');
+                        if (tTextArea.dataset.name === target.dataset.tab) {
+                            tTextArea.classList.add('js-show');
+                        }
+                    }
+
+                    //tab 切換 -> indicator移動
+                    for (i = 0; i < tabLength; i++) {
+                        let topV = i * 36 + "px";
+                        if (shownTabs[i] == target.parentElement) {
+                            indicator.style.top = topV;
+                        }
+                    }
+                }
+
+            } // end of shownTab loop
+        } //end of if statement : for labels in tabs
 
     }) //end of document click event
 
@@ -486,55 +537,6 @@ for (const dropCard of dropCards) {
         }) //end of dropCard click event
 } //end of dropCard loop
 
-//tab + indicator 響應
-let ecTabsCols = document.querySelectorAll('[data-col=ec-tab]');
-for (const ecTabsCol of ecTabsCols) {
-    ecTabsCol.addEventListener('click', (e) => {
-            let target = e.target;
-            let indicator = ecTabsCol.querySelector('.indicator'); //! 不需要使用target.querySelector
-            let shownTabs = ecTabsCol.querySelectorAll('.a-button.js-show');
-            let tabLength = shownTabs.length;
 
-            //ec tab indicator 顯示/隱藏條件
-            if (tabLength > 0) {
-                indicator.style.display = 'block';
-            } else {
-                indicator.style.display = 'none';
-            }
-
-            for (const shownTab of shownTabs) {
-                // ec tab 點擊響應
-                if (target.dataset.tab != null) {
-                    shownTab.style.opacity = '0.5';
-                    target.parentElement.style.opacity = '1';
-
-                    let tCol = target.parentElement.parentElement.parentElement;
-                    let tDropGroups = tCol.nextElementSibling.querySelectorAll('.drop-group');
-                    for (const tDropGroup of tDropGroups) {
-                        tDropGroup.classList.remove('js-show');
-                        if (tDropGroup.dataset.group === target.dataset.tab) {
-                            tDropGroup.classList.add('js-show');
-                        }
-                    }
-                    let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
-                    for (const tTextArea of tTextAreas) {
-                        tTextArea.classList.remove('js-show');
-                        if (tTextArea.dataset.name === target.dataset.tab) {
-                            tTextArea.classList.add('js-show');
-                        }
-                    }
-
-                    //tab 切換 -> indicator移動
-                    for (i = 0; i < tabLength; i++) {
-                        let topV = i * 36 + "px";
-                        if (shownTabs[i] == target.parentElement) {
-                            indicator.style.top = topV;
-                        }
-                    }
-                }
-
-            } // end of shownTab loop
-        }) //end of ecTabsCol click event
-} //end of ecTabsCol loop
 
 // ----------------------------------------------------------------------------------------------------
