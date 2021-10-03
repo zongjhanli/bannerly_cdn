@@ -248,6 +248,7 @@ document.addEventListener('click', (e) => {
                 tabLabel.classList.add('label', 'full-touch', 'js-exclude');
                 tabCounter.classList.add('_12px-500', 'as-counts', 'in-tab');
                 tabLabel.textContent = tInput.value;
+                tabLabel.dataset.tab = tInput.value;
                 tabCounter.textContent = '0';
                 tabBtn.appendChild(tabLabel);
                 tabBtn.appendChild(tabCounter);
