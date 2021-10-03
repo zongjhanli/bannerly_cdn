@@ -174,14 +174,16 @@ document.addEventListener('click', (e) => {
                     tInput.dataset.drop != 'ec') {
                     let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
                     let TextStr = Array.from(multiSelecteds, x => x.textContent);
-                    tTextArea.value = TextStr.join('\n');
-                    //檢查textArea value有無>>>新增「」<<<字樣
-                    if (tTextArea.value.includes('新增「') && tTextArea.value.includes('」')) {
-                        tTextArea.value.replace('新增「', '');
-                        tTextArea.value.replace('」', '');
+                    if (TextStr.value.includes('新增「')) {
+                        TextStr.value.replace('新增「', '');
+                        TextStr.value.replace('」', '');
+                        tTextArea.value = TextStr.join('\n');
+                    } else {
+                        tTextArea.value = TextStr.join('\n');
                     }
                 }
             }
+
 
             // 單選選項專用響應 -> 模擬radio input
             if (tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'single') {
