@@ -216,12 +216,13 @@ document.addEventListener('click', (e) => {
                 }
             }
 
+            //針對自dropdown input甫新增的選項
             function revealAll() {
                 let tOptions = tGroup.querySelectorAll('.a-button.as-list');
                 for (const tOption of tOptions) {
                     tOption.classList.remove('js-hide');
                 }
-            }
+            } //將filter後的其他選項取消隱藏
 
             function confirmAppended() {
                 tChecker.classList.add('js-selected');
@@ -229,46 +230,54 @@ document.addEventListener('click', (e) => {
                 target.textContent = tNewStr;
                 tInput.value = tNewStr;
                 target.dataset.custom = 'confirmed';
-            }
+            } //將 >>> 新增「」<<< 字樣刪除，並切換data-custom狀態
 
             if (target.dataset.custom == 'pending') {
                 revealAll();
                 confirmAppended();
             }
+
+            function newTab() {
+                let colL = tDropCard.parentElement.parentElement.parentElement;
+                let colR = colL.nextElementSibling;
+                let tabBtn = document.createElement('div');
+                let tabLabel = document.createElement('div');
+                let tabCounter = document.createElement('div');
+
+                target.dataset.ec = target.textContent;
+
+                //新增 new tab
+                tabBtn.classList.add('a-button', 'as-tab', 'js-hide', 'js-show');
+                tabLabel.classList.add('label', 'full-touch', 'js-exclude');
+                tabCounter.classList.add('_12px-500', 'as-counts', 'in-tab');
+                tabLabel.textContent = dropInput.value;
+                tabCounter.textContent = '0';
+                tabBtn.appendChild(tabLabel);
+                tabBtn.appendChild(tabCounter);
+                let tabGroup = colL.querySelector('[data-box=tab]');
+                tabGroup.appendChild(tabBtn);
+
+                //新增 new dropGroup
+                let newDropGroup = document.createElement('div');
+                newDropGroup.classList.add('drop-group', 'js-hide', 'js-show');
+                newDropGroup.dataset.group = dropInput.value;
+                let dropBox = colR.querySelector('.drop-card');
+                dropBox.appendChild(newDropGroup);
+
+                //新增 new textArea
+                let newTextArea = document.createElement('textarea');
+                newTextArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'js-show');
+                newTextArea.placeholder = '↑點按以選擇' + dropInput.value + '尺寸';
+                let textAreaBox = colR.querySelector('[data-box=textarea]');
+                textAreaBox.appendChild(newTextArea);
+            }
+
+            if (target.dataset.ec != null) {
+                newTab();
+            }
         } //end of if statement : target is a label of a fakeButton
 
-        function newTab() {
-            let colL = tDropCard.parentElement.parentElement.parentElement;
-            let colR = colL.nextElementSibling;
-            let tabBtn = document.createElement('div');
-            let tabLabel = document.createElement('div');
-            let tabCounter = document.createElement('div');
 
-            //新增 new tab
-            tabBtn.classList.add('a-button', 'as-tab', 'js-hide', 'js-show');
-            tabLabel.classList.add('label', 'full-touch', 'js-exclude');
-            tabCounter.classList.add('_12px-500', 'as-counts', 'in-tab');
-            tabLabel.textContent = dropInput.value;
-            tabCounter.textContent = '0';
-            tabBtn.appendChild(tabLabel);
-            tabBtn.appendChild(tabCounter);
-            let tabGroup = colL.querySelector('[data-box=tab]');
-            tabGroup.appendChild(tabBtn);
-
-            //新增 new dropGroup
-            let newDropGroup = document.createElement('div');
-            newDropGroup.classList.add('drop-group', 'js-hide', 'js-show');
-            newDropGroup.dataset.group = dropInput.value;
-            let dropBox = colR.querySelector('.drop-card');
-            dropBox.appendChild(newDropGroup);
-
-            //新增 new textArea
-            let newTextArea = document.createElement('textarea');
-            newTextArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'js-show');
-            newTextArea.placeholder = '↑點按以選擇' + dropInput.value + '尺寸';
-            let textAreaBox = colR.querySelector('[data-box=textarea]');
-            textAreaBox.appendChild(newTextArea);
-        }
     }) //end of document click event
 
 //tab + indicator 響應
