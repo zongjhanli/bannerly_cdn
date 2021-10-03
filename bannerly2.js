@@ -405,8 +405,9 @@ for (const dropInput of dropInputs) {
             //for (const pendingOption of pendingOptions) {
             if (dropInput.value == '') {
                 pendingOptions[0].parentElement.remove(); //刪掉所有input字符後->刪
+            } else if (e.keyCode === 'Backspace') {
+                pendingOptions[0].parentElement.remove(); //只要按下清除鍵->刪
             } else if (existingStrUpper.indexOf(dropInputUpper) != -1) {
-                console.log('b');
                 pendingOptions[0].parentElement.remove(); //與既存選項同名者->刪
             }
             //}
