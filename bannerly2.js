@@ -167,24 +167,6 @@ document.addEventListener('click', (e) => {
                 target.dataset.select = ''; //for textarea文字同步
             }
 
-            //多選選項value同步至textarea
-            let tTextAreas = tDPBox.parentElement.parentElement.querySelectorAll('textarea');
-            for (const tTextArea of tTextAreas) {
-                if (tDropCard.dataset.drop == 'multi' && tGroup.dataset.group === tTextArea.dataset.name &&
-                    tInput.dataset.drop != 'ec') {
-                    let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
-                    let TextStr = Array.from(multiSelecteds, x => x.textContent);
-                    //if (TextStr.includes('新增「')) {
-                    TextStr.replace('新增「', '');
-                    TextStr.replace('」', '');
-                    tTextArea.value = TextStr.join('\n');
-                    //} else {
-                    //tTextArea.value = TextStr.join('\n');
-                    //}
-                }
-            }
-
-
             // 單選選項專用響應 -> 模擬radio input
             if (tChecker.classList.contains('js-selected') && tDropCard.dataset.drop == 'single') {
                 let allCheckers = tDropCard.querySelectorAll('.custom-check');
@@ -319,6 +301,23 @@ document.addEventListener('click', (e) => {
                             tTextArea.classList.add('js-show');
                         }
                     }
+                }
+            }
+
+            //多選選項value同步至textarea
+            let tTextAreas = tDPBox.parentElement.parentElement.querySelectorAll('textarea');
+            for (const tTextArea of tTextAreas) {
+                if (tDropCard.dataset.drop == 'multi' && tGroup.dataset.group === tTextArea.dataset.name &&
+                    tInput.dataset.drop != 'ec') {
+                    let multiSelecteds = tGroup.querySelectorAll('[data-select=true]');
+                    let TextStr = Array.from(multiSelecteds, x => x.textContent);
+                    //if (TextStr.includes('新增「')) {
+                    // TextStr.replace('新增「', '');
+                    // TextStr.replace('」', '');
+                    tTextArea.value = TextStr.join('\n');
+                    //} else {
+                    //tTextArea.value = TextStr.join('\n');
+                    //}
                 }
             }
 
