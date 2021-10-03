@@ -406,9 +406,9 @@ for (const dropInput of dropInputs) {
                     let dropInputUpper = dropInput.value.toUpperCase();
                     if (dropInput.value == '') {
                         pendingOption.parentElement.remove(); //刪掉所有input字符後->刪
-                    } else if (pendingTextUpper === inputConcatedUpper) {
+                    } else if (pendingTextUpper == inputConcatedUpper) {
                         pendingOption.parentElement.remove(); //刪刪改改後還是與新增建議同名者->刪
-                    } else if (existingTextUpper === dropInputUpper) {
+                    } else if (existingTextUpper == dropInputUpper) {
                         pendingOption.parentElement.remove(); //與既存選項同名者->刪
                     }
                 })
