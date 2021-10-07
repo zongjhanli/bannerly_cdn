@@ -250,7 +250,7 @@ document.addEventListener('click', (e) => {
             if (target.dataset.custom == 'pending') {
                 revealAll();
                 confirmAppended();
-                if (tBtn.nextElementSibling.querySelector('[data-ec]') != null) {
+                if (tInput.dataset.drop == 'ec') {
                     newTab();
                 }
             }
