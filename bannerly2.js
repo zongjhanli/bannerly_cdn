@@ -256,7 +256,7 @@ document.addEventListener('click', (e) => {
             }
 
             // ec drop option 點擊響應 -> 預設第一個tab以及相關dropGroup, textArea顯現
-            if (tInput.dataset.drop == 'size') {
+            if (tInput.dataset.drop == 'ec') {
                 let colL = tDPBox.parentElement.parentElement;
                 let indicator = colL.querySelector('.indicator');
                 let shownTabs = colL.querySelectorAll('.a-button.as-tab.js-show');
