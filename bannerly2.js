@@ -433,7 +433,9 @@ for (const dropCard of dropCards) {
         };
         if (!dropCard.classList.contains('js-collapsed')) {
             globalCollapse();
-            pendingOption.parentElement.remove();
+            if (pendingOption != null) {
+                pendingOption.parentElement.remove();
+            }
         }; //無論點選何處，dropCard預設全數收回
 
         function expandByInput() {
