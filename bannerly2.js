@@ -313,13 +313,13 @@ for (const dropInput of dropInputs) {
     dropInput.addEventListener('input', (e) => {
             //e.preventDefault();
             let target = e.target;
-            let capInput = target.value.toUpperCase();
+            let capInput = target.value.toLowerCase();
 
             //選項隨著輸入值對照而進一步顯示or隱藏
             let dropOptions = dropCard.querySelectorAll('div.label');
             for (const dropOption of dropOptions) {
                 //let label = dropOption.querySelector('div.label');
-                let capLabel = dropOption.textContent.toUpperCase();
+                let capLabel = dropOption.textContent.toLowerCase();
 
                 dropOption.parentElement.classList.add('js-hide');
 
@@ -369,8 +369,8 @@ for (const dropInput of dropInputs) {
             let dropInputConcated = dropInput.value.replace(dropInput.value, '').concat('新增「', dropInput.value, '」');
             let pendingOptions = dropCard.querySelectorAll('[data-custom=pending]');
             let existingOptions = dropCard.querySelectorAll('.label:not([data-custom=pending])');
-            let existingStrUpper = Array.from(existingOptions, e => e.textContent.toUpperCase());
-            let dropInputUpper = dropInput.value.toUpperCase();
+            let existingStrUpper = Array.from(existingOptions, e => e.textContent.toLowerCase());
+            let dropInputUpper = dropInput.value.toLowerCase();
             //for (const pendingOption of pendingOptions) {
             if (dropInput.value == '') {
                 pendingOptions[0].parentElement.remove(); //刪掉所有input字符後->刪
@@ -424,6 +424,7 @@ for (const dropCard of dropCards) {
         let target = e.target;
         let dropArrow = dropCard.parentElement.querySelector('.dropdown-arrow'); // for global collapse
         let tDropCard = target.parentElement.parentElement.parentElement; // for expandByLabel
+        let pendingOption = document.querySelector('[data-custom=pending]');
 
         function globalCollapse() {
             dropCard.classList.add('js-collapsed');
@@ -432,6 +433,7 @@ for (const dropCard of dropCards) {
         };
         if (!dropCard.classList.contains('js-collapsed')) {
             globalCollapse();
+            pendingOption.parentElement.remove();
         }; //無論點選何處，dropCard預設全數收回
 
         function expandByInput() {
