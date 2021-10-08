@@ -312,7 +312,7 @@ resized.addEventListener('click', (e)=>{
     console.log('resized-clicked');
     //if ()
 })
-,false}//end of card resize
+}//end of card resize
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
