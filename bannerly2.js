@@ -304,7 +304,15 @@ document.addEventListener('click', (e) => {
         } //end of if statement : for labels in dropCards
     }) //end of document click event
 
-
+//card resize
+let resizeds = document.querySelectorAll('.card-box.js-resize');
+//for (const resized of resizeds) {
+resizeds.addEventListener('click', (e)=>{
+    let target = e.target;
+    console.log('resized-clicked');
+    if ()
+})
+//}//end of card resize
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
