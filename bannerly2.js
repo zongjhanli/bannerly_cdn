@@ -310,7 +310,7 @@ let resizeds = document.querySelectorAll('.card-box.js-resize');
 resizeds.addEventListener('click', (e)=>{
     let target = e.target;
     console.log('resized-clicked');
-    if ()
+    //if ()
 })
 //}//end of card resize
 
