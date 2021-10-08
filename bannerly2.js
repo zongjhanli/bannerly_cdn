@@ -315,7 +315,7 @@ for (const resizeBox of resizeBoxes) {
         let tInnerCard = target.parentElement.querySelector('._318h');
 
         resizeBox.classList.add('js-resize');
-        target.classList.remove('.js-resize');
+        target.classList.remove('js-resize');
         card.classList.add('js-resize');
         tCard.classList.remove('js-resize');
         innerCard.classList.remove('js-show');
