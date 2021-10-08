@@ -306,7 +306,7 @@ document.addEventListener('click', (e) => {
 
 //card resize
 let resizeBoxes = document.querySelectorAll('[data-resize]');
-for (const resizeBox of resizeBoxess) {
+for (const resizeBox of resizeBoxes) {
 resizeBox.addEventListener('click', (e)=>{
     let target = e.target;
     resizeBox.classList.add('js-resize');
