@@ -309,8 +309,8 @@ let resizeBoxes = document.querySelectorAll('[data-resize]');
 for (const resizeBox of resizeBoxes) {
 resizeBox.addEventListener('click', (e)=>{
     let target = e.target;
-    let card = resizeBox.parentElement.querySelector('.card');
-    let tCard = target.parentElement.querySelector('.card');
+    let card = resizeBox.parentElement;
+    let tCard = target.parentElement;
     let innerCard = resizeBox.parentElement.querySelector('._318h');
     let tInnerCard = target.parentElement.querySelector('._318h');
 
