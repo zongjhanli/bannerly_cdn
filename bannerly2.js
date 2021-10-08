@@ -309,9 +309,17 @@ let resizeBoxes = document.querySelectorAll('[data-resize]');
 for (const resizeBox of resizeBoxes) {
 resizeBox.addEventListener('click', (e)=>{
     let target = e.target;
+    let card = resizeBox.querySelector('.card');
+    let tCard = target.querySelector('.card');
+    let innerCard = resizeBox.querySelector('._318h');
+    let tInnerCard = target.querySelector('._318h');
+
     resizeBox.classList.add('js-resize');
     target.classList.remove('.js-resize');
-    //if ()
+    card.classList.add('js-resize');
+    tCard.classList.remove('js-resize');
+    innerCard.classList.remove('js-show');
+    tInnerCard.classList.add('js-show');
 })
 }//end of card resize
 
