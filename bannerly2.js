@@ -305,11 +305,12 @@ document.addEventListener('click', (e) => {
     }) //end of document click event
 
 //card resize
-let resizeds = document.querySelectorAll('.card-box.js-resize');
-for (const resized of resizeds) {
-resized.addEventListener('click', (e)=>{
+let resizeBoxes = document.querySelectorAll('[data-resize]');
+for (const resizeBox of resizeBoxess) {
+resizeBox.addEventListener('click', (e)=>{
     let target = e.target;
-    console.log('resized-clicked');
+    resizeBox.classList.add('js-resize');
+    target.classList.remove('.js-resize');
     //if ()
 })
 }//end of card resize
