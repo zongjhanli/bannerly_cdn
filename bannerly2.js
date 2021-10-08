@@ -306,13 +306,13 @@ document.addEventListener('click', (e) => {
 
 //card resize
 let resizeds = document.querySelectorAll('.card-box.js-resize');
-//for (const resized of resizeds) {
-resizeds.addEventListener('click', (e)=>{
+for (const resized of resizeds) {
+resized.addEventListener('click', (e)=>{
     let target = e.target;
     console.log('resized-clicked');
     //if ()
 })
-//}//end of card resize
+,false}//end of card resize
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
