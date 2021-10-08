@@ -314,12 +314,15 @@ for (const resizeBox of resizeBoxes) {
         let innerCard = resizeBox.parentElement.querySelector('._318h');
         let tInnerCard = target.parentElement.querySelector('._318h');
 
-        resizeBox.classList.add('js-resize');
-        target.classList.remove('js-resize');
-        card.classList.add('js-resize');
-        tCard.classList.remove('js-resize');
-        innerCard.classList.remove('js-show');
-        tInnerCard.classList.add('js-show');
+        // resizeBox.classList.add('js-resize');
+        // target.classList.remove('js-resize');
+        // card.classList.add('js-resize');
+        // tCard.classList.remove('js-resize');
+        // innerCard.classList.remove('js-show');
+        // tInnerCard.classList.add('js-show');
+        if (target.dataset.resize == 'true') {
+            console.log('resize');
+        }
     })
 } //end of card resize
 
