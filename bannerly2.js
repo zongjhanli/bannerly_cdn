@@ -305,26 +305,31 @@ document.addEventListener('click', (e) => {
     }) //end of document click event
 
 //card resize
-let resizeBoxes = document.querySelectorAll('[data-resize]');
-for (const resizeBox of resizeBoxes) {
-    resizeBox.addEventListener('click', (e) => {
-        let target = e.target;
-        let card = resizeBox.firstElementChild;
+document.addEventListener('click', (e) => {
+        let target = e.target; //.card-cap
         let tCard = target.parentElement;
-        let innerCard = resizeBox.parentElement.querySelector('._318h');
-        let tInnerCard = target.parentElement.querySelector('._318h');
+        let tSection = target.parentElement.parentElement.parentElement;
+        let cards = tSection.querySelectorAll('.card');
+        for (const card of cards) {
+            let innerCard = card.querySelector('._318h');
+            let tInnerCard = tCard.querySelector('._318h');
+            let cardBox = card.parentElement;
+            let tCardBox = tCard.parentElement;
 
-        // resizeBox.classList.add('js-resize');
-        // target.classList.remove('js-resize');
-        // card.classList.add('js-resize');
-        // tCard.classList.remove('js-resize');
-        // innerCard.classList.remove('js-show');
-        // tInnerCard.classList.add('js-show');
-        if (target.dataset.resize == 'true') {
-            console.log('resize');
+            if (target.classList.contains('card-cap')) {
+                card.classList.add('js-resize');
+                innerCard.classList.remove('js-show');
+                cardBox.classList.add('js-resize');
+
+                if (target.parentElement.classList.contains('card', 'js-resize')) {
+                    // console.log('s');
+                    target.parentElement.classList.remove('js-resize');
+                    tInnerCard.classList.add('js-show');
+                    tCardBox.classList.remove('js-resize');
+                }
+            }
         }
-    })
-} //end of card resize
+    }) //end of card resize
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
