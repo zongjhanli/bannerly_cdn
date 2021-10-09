@@ -335,7 +335,7 @@ document.addEventListener('click', (e) => {
 
                     if (target.parentElement.classList.contains('card', 'js-resize')) {
                         target.parentElement.classList.remove('js-resize');
-                        tCa
+                        tCardBox.classList.remove('js-resize');
                     }
                     rdBox.classList.remove('js-resize');
                 }
