@@ -312,10 +312,12 @@ window.onload = function() {
     }
 }
 
-let sections = document.querySelectorAll('#Copywright, #Product, #Size');
-for (const section of sections) {
-    section.addEventListener('click', (e) => {
-            let target = e.target;
+
+document.addEventListener('click', (e) => {
+        let target = e.target;
+
+        let sections = document.querySelectorAll('#Copywright, #Product, #Size');
+        for (const section of sections) {
 
             // 新增案型
             if (target.classList.contains('js-add')) {
@@ -343,9 +345,9 @@ for (const section of sections) {
                     }
                 }
             } //end of card resize
-        }) //end of section click
-}
-//end of 案型增減區
+        }
+    }) //end of section click
+    //end of 案型增減區
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
