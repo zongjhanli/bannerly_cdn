@@ -143,7 +143,7 @@ document.addEventListener('click', (e) => {
         let tDropCard = target.parentElement.parentElement.parentElement;
 
         //for labels in dropCards
-        if (target.classList.contains('label') && !target.parentElement.parentElement.classList.contains('f-block')) {
+        if (target.classList.contains('label') && !target.parentElement.parentElement.classList.contains('js-exclude')) {
             //多選選項 (預設)
             if (!tChecker.classList.contains('js-selected')) {
                 tChecker.classList.add('js-selected');
@@ -304,9 +304,23 @@ document.addEventListener('click', (e) => {
         } //end of if statement : for labels in dropCards
     }) //end of document click event
 
-//card resize
+//案型增減區
+// window.onload = function() {
+//     let resizedBoxes = document.querySelectorAll('.card-box.js-resize');
+//     for (const resizedBox of resizedBoxes) {
+//         resizedBox.style.display = 'none';
+
+//         let add = document.querySelector('.js-add');
+//         add.addEventListener('click', () => {
+//             resizedBoxes[0].style.display = 'none';
+//         })
+//     }
+// };
+
 document.addEventListener('click', (e) => {
-        let target = e.target; //.card-cap
+        let target = e.target;
+
+        // card resize -> target=.card-cap
         let tCard = target.parentElement;
         let tSection = target.parentElement.parentElement.parentElement;
         let cards = tSection.querySelectorAll('.card');
@@ -314,17 +328,21 @@ document.addEventListener('click', (e) => {
             let cardBox = card.parentElement;
             let tCardBox = tCard.parentElement;
 
-            if (target.classList.contains('card-cap')) {
-                card.classList.add('js-resize');
-                cardBox.classList.add('js-resize');
+            if (target.classList.contains('card-cap') || target.parentElement.classList.contains('card-cap')) {
+                if (!target.classList.contains('js-remove')) { //排除「刪除案型」按鈕
+                    card.classList.add('js-resize');
+                    cardBox.classList.add('js-resize');
 
-                if (target.parentElement.classList.contains('card', 'js-resize')) {
-                    target.parentElement.classList.remove('js-resize');
-                    tCardBox.classList.remove('js-resize');
+                    if (target.parentElement.classList.contains('card', 'js-resize')) {
+                        target.parentElement.classList.remove('js-resize');
+                        tCa
+                    }
+                    rdBox.classList.remove('js-resize');
                 }
             }
-        }
-    }) //end of card resize
+        } //end of card resize
+
+    }) //end of 案型增減區
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
