@@ -143,7 +143,7 @@ document.addEventListener('click', (e) => {
         let tDropCard = target.parentElement.parentElement.parentElement;
 
         //for labels in dropCards
-        if (target.classList.contains('label') && !target.classList.contains('js-exclude')) {
+        if (target.classList.contains('label') && !target.parentElement.parentElement.classList.contains('f-block')) {
             //多選選項 (預設)
             if (!tChecker.classList.contains('js-selected')) {
                 tChecker.classList.add('js-selected');
@@ -311,20 +311,15 @@ document.addEventListener('click', (e) => {
         let tSection = target.parentElement.parentElement.parentElement;
         let cards = tSection.querySelectorAll('.card');
         for (const card of cards) {
-            let innerCard = card.querySelector('._318h');
-            let tInnerCard = tCard.querySelector('._318h');
             let cardBox = card.parentElement;
             let tCardBox = tCard.parentElement;
 
             if (target.classList.contains('card-cap')) {
                 card.classList.add('js-resize');
-                innerCard.classList.remove('js-show');
                 cardBox.classList.add('js-resize');
 
                 if (target.parentElement.classList.contains('card', 'js-resize')) {
-                    // console.log('s');
                     target.parentElement.classList.remove('js-resize');
-                    tInnerCard.classList.add('js-show');
                     tCardBox.classList.remove('js-resize');
                 }
             }
