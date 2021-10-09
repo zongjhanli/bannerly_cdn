@@ -306,9 +306,9 @@ document.addEventListener('click', (e) => {
 
 //案型增減響應
 window.onload = function() {
-    let resizedBoxes = document.querySelectorAll('.card-box.js-resize.js-hide');
+    let resizedBoxes = document.querySelectorAll('.card-box.js-resize');
     for (const resizedBox of resizedBoxes) {
-        resizedBox.style.display = 'none';
+        resizedBox.classList.add('js-hide');
     }
 }
 
