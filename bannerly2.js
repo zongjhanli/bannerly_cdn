@@ -306,7 +306,7 @@ document.addEventListener('click', (e) => {
 
 //案型增減響應
 window.onload = function() {
-    let resizedBoxes = document.querySelectorAll('.card-box.js-resize');
+    let resizedBoxes = document.querySelectorAll('.card-box.js-resize.js-hide');
     for (const resizedBox of resizedBoxes) {
         resizedBox.style.display = 'none';
     }
@@ -320,11 +320,11 @@ document.addEventListener('click', (e) => {
         for (const section of sections) {
 
             // 新增案型
-            if (target.classList.contains('js-add')) {
-                let hiddenBoxes = section.querySelectorAll('.card-box.js-resize');
+            if (target.classList.contains('js-add') && !target.classList.contains('js-disabled')) {
+                let hiddenBoxes = section.querySelectorAll('.card-box.js-resize.js-hide');
                 hiddenBoxes[0].style.display = 'block';
                 if (hiddenBoxes == null) {
-                    console.log('no-more');
+                    target.classList.add('js-disabled');
                 }
             }
 
