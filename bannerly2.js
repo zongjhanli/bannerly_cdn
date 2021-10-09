@@ -304,49 +304,48 @@ document.addEventListener('click', (e) => {
         } //end of if statement : for labels in dropCards
     }) //end of document click event
 
-//案型增減區
-
-let sections = document.querySelectorAll('#Copywright, #Product, #Size');
-for (const section of sections) {
-    window.onload = function() {
-        let resizedBoxes = section.querySelectorAll('.card-box.js-resize');
-        for (const resizedBox of resizedBoxes) {
-            resizedBox.style.display = 'none';
-        }
-    }
-
-    section.addEventListener('click', (e) => {
-            let target = e.target;
-
-            // 新增案型
-            if (target.classList.contains('js-add')) {
-                let hiddenBoxes = section.querySelectorAll('.card-box.js-resize');
-                hiddenBoxes[0].style.display = 'block';
-                if (hiddenBoxes == null) {
-                    console.log('no-more');
-                }
+//案型增減響應
+window.onload = function() {
+        let sections = document.querySelectorAll('#Copywright, #Product, #Size');
+        for (const section of sections) {
+            let resizedBoxes = section.querySelectorAll('.card-box.js-resize');
+            for (const resizedBox of resizedBoxes) {
+                resizedBox.style.display = 'none';
             }
 
-            // card resize -> target=.card-cap
-            if (target.classList.contains('card-cap')) {
-                let tCard = target.parentElement;
-                let tSection = target.parentElement.parentElement.parentElement;
-                let cards = tSection.querySelectorAll('.card');
-                for (const card of cards) {
-                    let cardBox = card.parentElement;
-                    let tCardBox = tCard.parentElement;
-                    card.classList.add('js-resize');
-                    cardBox.classList.add('js-resize');
+            section.addEventListener('click', (e) => {
+                    let target = e.target;
 
-                    if (target.parentElement.classList.contains('card', 'js-resize')) {
-                        target.parentElement.classList.remove('js-resize');
-                        tCardBox.classList.remove('js-resize');
+                    // 新增案型
+                    if (target.classList.contains('js-add')) {
+                        let hiddenBoxes = section.querySelectorAll('.card-box.js-resize');
+                        hiddenBoxes[0].style.display = 'block';
+                        if (hiddenBoxes == null) {
+                            console.log('no-more');
+                        }
                     }
-                }
-            } //end of card resize
-        }) //end of section click
-}
-//end of 案型增減區
+
+                    // card resize -> target=.card-cap
+                    if (target.classList.contains('card-cap')) {
+                        let tCard = target.parentElement;
+                        let tSection = target.parentElement.parentElement.parentElement;
+                        let cards = tSection.querySelectorAll('.card');
+                        for (const card of cards) {
+                            let cardBox = card.parentElement;
+                            let tCardBox = tCard.parentElement;
+                            card.classList.add('js-resize');
+                            cardBox.classList.add('js-resize');
+
+                            if (target.parentElement.classList.contains('card', 'js-resize')) {
+                                target.parentElement.classList.remove('js-resize');
+                                tCardBox.classList.remove('js-resize');
+                            }
+                        }
+                    } //end of card resize
+                }) //end of section click
+        }
+    }
+    //end of 案型增減區
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
