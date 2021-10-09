@@ -337,7 +337,6 @@ document.addEventListener('click', (e) => {
                         target.parentElement.classList.remove('js-resize');
                         tCardBox.classList.remove('js-resize');
                     }
-                    rdBox.classList.remove('js-resize');
                 }
             }
         } //end of card resize
