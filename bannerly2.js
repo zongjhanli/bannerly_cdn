@@ -306,46 +306,46 @@ document.addEventListener('click', (e) => {
 
 //案型增減響應
 window.onload = function() {
-        let sections = document.querySelectorAll('#Copywright, #Product, #Size');
-        for (const section of sections) {
-            let resizedBoxes = section.querySelectorAll('.card-box.js-resize');
-            for (const resizedBox of resizedBoxes) {
-                resizedBox.style.display = 'none';
+    let resizedBoxes = document.querySelectorAll('.card-box.js-resize');
+    for (const resizedBox of resizedBoxes) {
+        resizedBox.style.display = 'none';
+    }
+}
+
+let sections = document.querySelectorAll('#Copywright, #Product, #Size');
+for (const section of sections) {
+    section.addEventListener('click', (e) => {
+            let target = e.target;
+
+            // 新增案型
+            if (target.classList.contains('js-add')) {
+                let hiddenBoxes = section.querySelectorAll('.card-box.js-resize');
+                hiddenBoxes[0].style.display = 'block';
+                if (hiddenBoxes == null) {
+                    console.log('no-more');
+                }
             }
 
-            section.addEventListener('click', (e) => {
-                    let target = e.target;
+            // card resize -> target=.card-cap
+            if (target.classList.contains('card-cap')) {
+                let tCard = target.parentElement;
+                let tSection = target.parentElement.parentElement.parentElement;
+                let cards = tSection.querySelectorAll('.card');
+                for (const card of cards) {
+                    let cardBox = card.parentElement;
+                    let tCardBox = tCard.parentElement;
+                    card.classList.add('js-resize');
+                    cardBox.classList.add('js-resize');
 
-                    // 新增案型
-                    if (target.classList.contains('js-add')) {
-                        let hiddenBoxes = section.querySelectorAll('.card-box.js-resize');
-                        hiddenBoxes[0].style.display = 'block';
-                        if (hiddenBoxes == null) {
-                            console.log('no-more');
-                        }
+                    if (target.parentElement.classList.contains('card', 'js-resize')) {
+                        target.parentElement.classList.remove('js-resize');
+                        tCardBox.classList.remove('js-resize');
                     }
-
-                    // card resize -> target=.card-cap
-                    if (target.classList.contains('card-cap')) {
-                        let tCard = target.parentElement;
-                        let tSection = target.parentElement.parentElement.parentElement;
-                        let cards = tSection.querySelectorAll('.card');
-                        for (const card of cards) {
-                            let cardBox = card.parentElement;
-                            let tCardBox = tCard.parentElement;
-                            card.classList.add('js-resize');
-                            cardBox.classList.add('js-resize');
-
-                            if (target.parentElement.classList.contains('card', 'js-resize')) {
-                                target.parentElement.classList.remove('js-resize');
-                                tCardBox.classList.remove('js-resize');
-                            }
-                        }
-                    } //end of card resize
-                }) //end of section click
-        }
-    }
-    //end of 案型增減區
+                }
+            } //end of card resize
+        }) //end of section click
+}
+//end of 案型增減區
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
