@@ -306,48 +306,123 @@ document.addEventListener('click', (e) => {
 
 //案型增減響應
 window.onload = function() {
-    let resizedBoxes = document.querySelectorAll('.card-box.js-resize');
-    for (const resizedBox of resizedBoxes) {
-        resizedBox.classList.add('js-hide');
+    let unhandleds = document.querySelectorAll('[data-handle=false]');
+    for (const unhandled of unhandleds) {
+        unhandled.classList.add('js-hide');
     }
 }
 
 
 document.addEventListener('click', (e) => {
         let target = e.target;
-
+        let handle = document.querySelector('div.handle');
+        let handleIcon = handle.querySelector('.for-handle');
+        let handleOptions = handle.querySelectorAll('.a-button.as-handle');
         let sections = document.querySelectorAll('#Copywright, #Product, #Size');
-        for (const section of sections) {
 
-            // 新增案型
-            if (target.classList.contains('js-add') && !target.classList.contains('js-disabled')) {
-                let hiddenBoxes = section.querySelectorAll('.card-box.js-resize.js-hide');
-                hiddenBoxes[0].style.display = 'block';
-                if (hiddenBoxes == null) {
-                    target.classList.add('js-disabled');
-                }
+        //案型增減
+        let hiddenHandles = handle.querySelectorAll('.a-button[data-handle=false]');
+        for (const section of sections) {
+            let hiddenBoxes = section.querySelectorAll('.card-box[data-handle=false]');
+
+            //新增案型（將隱藏的案型轉換為「可操作」的案型）
+            if (target.classList.contains('js-add')) {
+                hiddenHandles[0].classList.remove('js-hide');
+                hiddenHandles[0].dataset.handle = 'true';
+
+                hiddenBoxes[0].classList.remove('js-hide');
+                hiddenBoxes[0].dataset.handle = 'true';
             }
 
-            // card resize -> target=.card-cap
-            if (target.classList.contains('card-cap')) {
-                let tCard = target.parentElement;
-                let tSection = target.parentElement.parentElement.parentElement;
-                let cards = tSection.querySelectorAll('.card');
-                for (const card of cards) {
-                    let cardBox = card.parentElement;
-                    let tCardBox = tCard.parentElement;
-                    card.classList.add('js-resize');
-                    cardBox.classList.add('js-resize');
+            //刪除案型 (將指定刪除的案型及其相聯的card-box隱藏起來)
+            if (target.classList.contains('js-remove')) {
+                let serial = target.previousElementSibling.previousElementSibling.textContent.charAt(3);
+                serial -= 1;
+                section.querySelectorAll('.card-box')[serial].classList.add('js-hide');
+                section.querySelectorAll('.card-box')[serial].dataset.handle = 'false';
+                target.parentElement.classList.add('js-hide');
+                target.parentElement.dataset.handle = 'false';
+            }
 
-                    if (target.parentElement.classList.contains('card', 'js-resize')) {
-                        target.parentElement.classList.remove('js-resize');
-                        tCardBox.classList.remove('js-resize');
-                    }
-                }
-            } //end of card resize
+            let shownHandles = document.querySelectorAll('.a-button[data-handle=true]');
+            let i;
+            for (i = 0; i < shownHandles.length; i++) {
+                let n = i + 1;
+                shownHandles[i].firstElementChild.textContent = '案型 ' + n;
+                // !!無法同步數值
+                // let shownBoxes = section.querySelectorAll('.card-box[data-handle=true]');
+                // let m = shownHandles[i].firstElementChild.textContent.charAt(3);
+                // let capTitle = shownBoxes[i].querySelector('.cap-title');
+                // if (capTitle.textContent.length < 5) {
+                //     capTitle.textContent = '案型 ' + m + '\xa0\xa0' + capTitle.textContent;
+                // } else {
+                //     capTitle.textContent.replace(4, m);
+                // }
+            }
         }
-    }) //end of section click
-    //end of 案型增減區
+
+        //點按handle -> handle-indicator + 全頁handle-boxes移動
+        if (target.parentElement.classList.contains('a-button', 'as-handle') && !target.classList.contains('js-remove')) {
+            for (const section of sections) {
+                let handleBox = section.querySelector('.handle-boxes');
+                let serial = target.textContent.charAt(3);
+                serial -= 1;
+                handleBox.style.marginLeft = '-' + 688 * 2 * serial + 'px';
+            }
+        }
+
+        //handle edit mode基本切換
+        if (target.classList.contains('js-edit') || target.classList.contains('js-add')) {
+            editMode();
+            // setTimeout(returnEdit, 3000);
+        } else {
+            returnEdit();
+        }
+
+        function editMode() {
+            handleIcon.classList.remove('js-edit');
+            handleIcon.classList.add('js-add');
+            for (const handleOption of handleOptions) {
+                let remove = handleOption.querySelector('.js-remove');
+                remove.style.display = 'block';
+                handleOption.style.backgroundColor = 'rgba(59,122,71,0.2)';
+            }
+        }
+
+        function returnEdit() {
+            handleIcon.classList.add('js-edit');
+            handleIcon.classList.remove('js-add');
+            for (const handleOption of handleOptions) {
+                let remove = handleOption.querySelector('.js-remove');
+                remove.style.display = 'none';
+                handleOption.style.backgroundColor = 'transparent';
+            }
+        }
+
+
+
+    }) //end of document click
+
+//新增or刪除案型「之後」產生案型編號
+// document.addEventListener('click', (e) => {
+//     let sections = document.querySelectorAll('#Copywright, #Product, #Size');
+//     for (const section of sections) {
+//         let shownBoxes = section.querySelectorAll('.card-box[data-handle=true]');
+//         let shownHandles = document.querySelectorAll('.a-button[data-handle=true]');
+//         let i;
+//         for (i = 0; i < shownHandles.length; i++) {
+//             let n = i + 1;
+//             shownHandles[i].firstElementChild.textContent = '案型 ' + n;
+//             let capTitle = shownBoxes[i].querySelector('.cap-title');
+//             if (capTitle.textContent.length < 5) {
+//                 capTitle.textContent = '案型 ' + n + '\xa0\xa0' + capTitle.textContent;
+//             } else {
+//                 capTitle.textContent.replace(4, n);
+//             }
+//         }
+//     }
+// });
+//end of 案型增減區
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll('.input.dropdown');
