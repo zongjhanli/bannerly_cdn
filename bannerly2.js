@@ -362,7 +362,13 @@ document.addEventListener('click', (e) => {
         }
 
         //點按handle -> handle-indicator + 全頁handle-boxes移動
-        if (target.parentElement.classList.contains('a-button', 'as-handle') && !target.classList.contains('js-remove')) {
+        if (target.classList.contains('a-button', 'as-handle') && !target.classList.contains('js-remove')) {
+            for (const handleOption of handleOptions) {
+                handleOption.classList.remove('js-active');
+                handleOption.querySelector('.handle-indicator').style.height = '0px';
+                target.classList.add('js-active');
+                target.querySelector('.handle-indicator').style.height = '4px';
+            }
             for (const section of sections) {
                 let handleBox = section.querySelector('.handle-boxes');
                 let serial = target.textContent.charAt(3);
