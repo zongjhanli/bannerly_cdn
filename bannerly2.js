@@ -371,7 +371,7 @@ document.addEventListener('click', (e) => {
             }
             for (const section of sections) {
                 let handleBox = section.querySelector('.handle-boxes');
-                let serial = target.textContent.charAt(3);
+                let serial = target.firstElementChild.textContent.charAt(3);
                 serial -= 1;
                 handleBox.style.marginLeft = '-' + 688 * 2 * serial + 'px';
             }
