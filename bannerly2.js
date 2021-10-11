@@ -324,27 +324,66 @@ document.addEventListener('click', (e) => {
         let hiddenHandles = handle.querySelectorAll('.a-button[data-handle=false]');
         for (const section of sections) {
             let hiddenBoxes = section.querySelectorAll('.card-box[data-handle=false]');
+            let shownHandles = handle.querySelectorAll('.a-button[data-handle=true]');
+
+            function disableAllHandles() {
+                for (const shownHandle of shownHandles) {
+                    shownHandle.classList.remove('js-active');
+                    shownHandle.querySelector('.handle-indicator').style.height = '0px';
+                }
+            }
 
             //新增案型（將隱藏的案型轉換為「可操作」的案型）
             if (target.classList.contains('js-add')) {
+                disableAllHandles();
                 hiddenHandles[0].classList.remove('js-hide');
                 hiddenHandles[0].dataset.handle = 'true';
-
                 hiddenBoxes[0].classList.remove('js-hide');
                 hiddenBoxes[0].dataset.handle = 'true';
+
+                let shownHandles = handle.querySelectorAll('.a-button[data-handle=true]'); //!!需重新定義一次shownHandles
+                let n = shownHandles.length;
+                n -= 1;
+                shownHandles[n].classList.add('js-active');
+                shownHandles[n].querySelector('.handle-indicator').style.height = '4px';
+
+                let handleBox = section.querySelector('.handle-boxes');
+                handleBox.style.marginLeft = '-' + 688 * 2 * n + 'px'; //handleBox視窗推至最右邊
+                let shownCards = section.querySelectorAll('.card-box[data-handle=true]');
+                shownCards[n].style.transform = 'rotateY(0deg)';
+                shownCards[n].style.opacity = '1';
+                shownCards[n].classList.remove('js-hide');
+                shownCards[n].dataset.handle = 'true';
             }
 
             //刪除案型 (將指定刪除的案型及其相聯的card-box隱藏起來)
             if (target.classList.contains('js-remove')) {
                 let serial = target.previousElementSibling.previousElementSibling.textContent.charAt(3);
                 serial -= 1;
-                section.querySelectorAll('.card-box')[serial].classList.add('js-hide');
-                section.querySelectorAll('.card-box')[serial].dataset.handle = 'false';
+                let shownCards = section.querySelectorAll('.card-box');
+                shownCards[serial].classList.add('js-hide');
+                shownCards[serial].dataset.handle = 'false';
+                shownCards[0].style.transform = 'rotateY(0deg)';
+                shownCards[0].style.opacity = '1';
+                shownCards[0].classList.remove('js-hide');
+                shownCards[0].dataset.handle = 'true';
+
+                disableAllHandles();
+                shownHandles[0].classList.add('js-active');
+                shownHandles[0].querySelector('.handle-indicator').style.height = '4px';
+                shownHandles[0].classList.remove('js-hide');
+                shownHandles[0].dataset.handle = 'true';
+
+                target.parentElement.classList.remove('js-active');
+                target.parentElement.querySelector('.handle-indicator').style.height = '0px';
                 target.parentElement.classList.add('js-hide');
                 target.parentElement.dataset.handle = 'false';
+
+                let handleBox = section.querySelector('.handle-boxes');
+                handleBox.style.marginLeft = '0px'; //handleBox視窗推至最左邊
             }
 
-            let shownHandles = document.querySelectorAll('.a-button[data-handle=true]');
+            //新增or刪除案型「之後」產生案型編號
             let i;
             for (i = 0; i < shownHandles.length; i++) {
                 let n = i + 1;
@@ -374,6 +413,47 @@ document.addEventListener('click', (e) => {
                 let serial = target.firstElementChild.textContent.charAt(3);
                 serial -= 1;
                 handleBox.style.marginLeft = '-' + 688 * 2 * serial + 'px';
+                let cardBoxes = section.querySelectorAll('.card-box[data-handle=true]');
+
+                function selfTransform() {
+                    cardBoxes[serial].style.transform = 'rotateY(0deg)';
+                    cardBoxes[serial].style.opacity = '1';
+                }
+
+                function nextTransform() {
+                    cardBoxes[serial + 1].style.transform = 'rotateY(-80deg)';
+                    cardBoxes[serial + 1].style.opacity = '0';
+                }
+
+                function prevTransform() {
+                    cardBoxes[serial - 1].style.transform = 'rotateY(80deg)';
+                    cardBoxes[serial - 1].style.opacity = '0';
+                }
+
+                if (cardBoxes.length == 3) {
+                    if (serial == 1) {
+                        selfTransform();
+                        prevTransform();
+                        nextTransform();
+                    }
+                    if (serial == 0) {
+                        selfTransform();
+                        nextTransform();
+                    }
+                    if (serial == 2) {
+                        selfTransform();
+                        prevTransform();
+                    }
+                } else if (cardBoxes.length == 2) {
+                    if (serial == 0) {
+                        selfTransform();
+                        nextTransform();
+                    }
+                    if (serial == 1) {
+                        selfTransform();
+                        prevTransform();
+                    }
+                }
             }
         }
 
@@ -404,9 +484,6 @@ document.addEventListener('click', (e) => {
                 handleOption.style.backgroundColor = 'transparent';
             }
         }
-
-
-
     }) //end of document click
 
 //新增or刪除案型「之後」產生案型編號
