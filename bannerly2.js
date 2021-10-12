@@ -143,7 +143,7 @@ document.addEventListener('click', (e) => {
         let tDropCard = target.parentElement.parentElement.parentElement;
 
         //for labels in dropCards
-        if (target.classList.contains('label') && !target.parentElement.parentElement.classList.contains('js-exclude')) {
+        if (target.classList.contains('label') && !target.parentElement.parentElement.classList.contains('f-block')) {
             //多選選項 (預設)
             if (!tChecker.classList.contains('js-selected')) {
                 tChecker.classList.add('js-selected');
@@ -304,18 +304,43 @@ document.addEventListener('click', (e) => {
         } //end of if statement : for labels in dropCards
     }) //end of document click event
 
-//案型增減響應
+//@form-apply 案型增減響應
+let handle = document.querySelector('div.handle');
+
+//handle只有在特定範圍內才會出現
+document.addEventListener('scroll', ()=>{
+    let start = document.querySelector('#Copywright');
+    let startOffset = start.getBoundingClientRect();
+    let startTop = startOffset.top;
+
+    let end = document.querySelector('#Size');
+    let endOffset = end.getBoundingClientRect();
+    let endTop = endOffset.top;
+
+    // console.log('startTop' + startTop);
+    // console.log('endTop' + endTop);
+    if (endTop <= -100 || startTop > 0) {
+        handle.style.opacity = '0';
+        handle.style.display = 'none';
+    } else {
+        handle.style.display = 'flex';
+        handle.style.opacity = '1';
+    }
+})
+
+//頁面loading後預設隱藏未被新增的選項
 window.onload = function() {
+    handle.style.opacity = '0';
+    handle.style.display = 'none';
+
     let unhandleds = document.querySelectorAll('[data-handle=false]');
     for (const unhandled of unhandleds) {
         unhandled.classList.add('js-hide');
     }
 }
 
-
 document.addEventListener('click', (e) => {
         let target = e.target;
-        let handle = document.querySelector('div.handle');
         let handleIcon = handle.querySelector('.for-handle');
         let handleOptions = handle.querySelectorAll('.a-button.as-handle');
         let sections = document.querySelectorAll('#Copywright, #Product, #Size');
@@ -485,26 +510,6 @@ document.addEventListener('click', (e) => {
             }
         }
     }) //end of document click
-
-//新增or刪除案型「之後」產生案型編號
-// document.addEventListener('click', (e) => {
-//     let sections = document.querySelectorAll('#Copywright, #Product, #Size');
-//     for (const section of sections) {
-//         let shownBoxes = section.querySelectorAll('.card-box[data-handle=true]');
-//         let shownHandles = document.querySelectorAll('.a-button[data-handle=true]');
-//         let i;
-//         for (i = 0; i < shownHandles.length; i++) {
-//             let n = i + 1;
-//             shownHandles[i].firstElementChild.textContent = '案型 ' + n;
-//             let capTitle = shownBoxes[i].querySelector('.cap-title');
-//             if (capTitle.textContent.length < 5) {
-//                 capTitle.textContent = '案型 ' + n + '\xa0\xa0' + capTitle.textContent;
-//             } else {
-//                 capTitle.textContent.replace(4, n);
-//             }
-//         }
-//     }
-// });
 //end of 案型增減區
 
 //input輸入時/輸入後響應
