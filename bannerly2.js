@@ -321,7 +321,8 @@ document.addEventListener('scroll', ()=>{
     // console.log('endTop' + endTop);
     if (endTop <= -100 || startTop > 0) {
         handle.style.opacity = '0';
-        handle.style.display = 'none';
+        // handle.style.display = 'none';
+        setTimeout((sethandle.style.display = 'none'), 2000);
     } else {
         handle.style.display = 'flex';
         handle.style.opacity = '1';
