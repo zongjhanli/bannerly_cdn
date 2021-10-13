@@ -720,9 +720,7 @@ for (const dropCard of dropCards) {
         }
 
         //如果點按在unclickable的input（#Size）
-        if (
-            target.querySelector(".input.dropdown").classList.contains("unclickable")
-        ) {
+        if (target.querySelector(".input.dropdown").classList.contains("unclickable")) {
             //若是點按尚未選擇通路的尺寸input
             let colL = target.parentElement.parentElement.previousElementSibling; //in this case, target=dropdown-box
             let ecSelected = colL.querySelectorAll(".js-selected");
