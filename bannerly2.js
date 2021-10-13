@@ -544,12 +544,13 @@ document.addEventListener("click", (e) => {
         }
     }
 }); //end of document click
-//end of 案型增減區
+//end of @form-apply 案型增減響應
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll(".input.dropdown");
 for (const dropInput of dropInputs) {
     let dropCard = dropInput.parentElement.querySelector(".drop-card");
+    
     dropInput.addEventListener("input", (e) => {
         let target = e.target;
         let capInput = target.value.toLowerCase();
@@ -576,6 +577,7 @@ for (const dropInput of dropInputs) {
     //dropInput.addEventListener('keypress', handleKeyPress);
     // triggers a check to see if the user is actually done typing
     dropInput.addEventListener("keyup", handleKeyUp);
+
 
     function newOption() {
         let pendingOptions = dropCard.querySelectorAll("[data-custom=pending]");
@@ -604,9 +606,9 @@ for (const dropInput of dropInputs) {
             if (dropInput.value != "") {
                 newOption();
             }
-            let dropInputConcated = dropInput.value
-                .replace(dropInput.value, "")
-                .concat("新增「", dropInput.value, "」");
+            // let dropInputConcated = dropInput.value
+            //     .replace(dropInput.value, "")
+            //     .concat("新增「", dropInput.value, "」");
             let pendingOptions = dropCard.querySelectorAll("[data-custom=pending]");
             let existingOptions = dropCard.querySelectorAll(
                 ".label:not([data-custom=pending])"
@@ -870,6 +872,45 @@ document.addEventListener("click", () => {
             inputR.classList.remove("unclickable");
         }
     }
-});
+});//end of dropdown hinter提示
+
+//快速套用主案型
+let thunders = document.querySelectorAll('._14px-500.thunder');
+for (const thunder of thunders) {
+    thunder.addEventListener('click', (e)=>{
+        let target = e.target;
+        let tBtn = target.parentElement;
+        let tShape = target.nextElementSibling;
+        let tCardBox = target.parentElement.parentElement.parentElement.parentElement.parentElement;//thunder統一放在card-cap較好
+        let tTextArea = tCardBox.querySelector('textarea');
+
+        let tSwiped = tCardBox.parentElement.parentElement;
+        let MASTER = tSwiped.querySelectorAll('.card-box')[0];
+        let mTextArea = MASTER.querySelector('textarea');
+
+        let keyName = MASTER.querySelector('[data-name]').dataset.name;
+        //分為三種區塊進行核對
+        if (keyName.includes('C-')) {
+            //@Copywright區塊
+            console.log('@Copywright');
+            tTextArea.value = mTextArea.value;
+        } else if (keyName.includes('P-')) {
+            //@Product區塊
+            let mTextArea = MASTER.querySelector('textarea');
+            // console.log('@Product');
+            tTextArea.value = mTextArea.value;
+
+        } else if (keyName.includes('S-')) {
+            //@Size區塊
+            console.log('@Size');
+            let tName = tTextArea.dataset.name;
+            let mName = mTextArea.dataset.name;
+            if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
+                tTextArea.value = mTextArea.value;
+            }
+            
+        } 
+    })
+}
 
 // ----------------------------------------------------------------------------------------------------
