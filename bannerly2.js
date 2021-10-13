@@ -426,19 +426,19 @@ document.addEventListener('click', (e) => {
             }
         }
 
-        //點按handle -> handle-indicator + 全頁swiped移動
-        if (target.classList.contains('a-button', 'as-handle') && !target.classList.contains('js-remove')) {
-            for (const handleOption of handleOptions) {
-                handleOption.classList.remove('js-active');
-                handleOption.querySelector('.handle-indicator').style.height = '0px';
+        //點按swiper -> swiper-indicator + 全頁swiped移動
+        if (target.classList.contains('a-button', 'for-swiper') && !target.classList.contains('js-remove')) {
+            for (const swiperOption of swiperOptions) {
+                swiperOption.classList.remove('js-active');
+                swiperOption.querySelector('.swiper-indicator').style.height = '0px';
                 target.classList.add('js-active');
-                target.querySelector('.handle-indicator').style.height = '4px';
+                target.querySelector('.swiper-indicator').style.height = '4px';
             }
             for (const section of sections) {
-                let handleBox = section.querySelector('.swiped');
+                let swiped = section.querySelector('.swiped');
                 let serial = target.firstElementChild.textContent.charAt(3);
                 serial -= 1;
-                handleBox.style.marginLeft = '-' + 688 * 2 * serial + 'px';
+                swiped.style.marginLeft = '-' + 688 * 2 * serial + 'px';
                 let cardBoxes = section.querySelectorAll('.card-box[data-handle=true]');
 
                 function selfTransform() {
@@ -483,7 +483,7 @@ document.addEventListener('click', (e) => {
             }
         }
 
-        //handle edit mode基本切換
+        //swiper edit mode基本切換
         if (target.classList.contains('js-edit') || target.classList.contains('js-add')) {
             editMode();
             // setTimeout(returnEdit, 3000);
@@ -492,22 +492,22 @@ document.addEventListener('click', (e) => {
         }
 
         function editMode() {
-            handleIcon.classList.remove('js-edit');
-            handleIcon.classList.add('js-add');
-            for (const handleOption of handleOptions) {
-                let remove = handleOption.querySelector('.js-remove');
+            swiperIcon.classList.remove('js-edit');
+            swiperIcon.classList.add('js-add');
+            for (const swiperOption of swiperOptions) {
+                let remove = swiperOption.querySelector('.js-remove');
                 remove.style.display = 'block';
-                handleOption.style.backgroundColor = 'rgba(59,122,71,0.2)';
+                swiperOption.style.backgroundColor = 'rgba(59,122,71,0.2)';
             }
         }
 
         function returnEdit() {
-            handleIcon.classList.add('js-edit');
-            handleIcon.classList.remove('js-add');
-            for (const handleOption of handleOptions) {
-                let remove = handleOption.querySelector('.js-remove');
+            swiperIcon.classList.add('js-edit');
+            swiperIcon.classList.remove('js-add');
+            for (const swiperOption of swiperOptions) {
+                let remove = swiperOption.querySelector('.js-remove');
                 remove.style.display = 'none';
-                handleOption.style.backgroundColor = 'transparent';
+                swiperOption.style.backgroundColor = 'transparent';
             }
         }
     }) //end of document click
