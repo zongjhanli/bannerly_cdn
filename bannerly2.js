@@ -310,18 +310,16 @@ document.addEventListener("click", (e) => {
         }
 
         //多選選項value同步至textarea
-        let tTextAreas =
-            tDPBox.parentElement.parentElement.querySelectorAll("textarea");
+        let tTextAreas = tDPBox.parentElement.parentElement.querySelectorAll("textarea");
         for (const tTextArea of tTextAreas) {
             let areaName = tTextArea.dataset.name;
-            if (
-                tDropCard.dataset.drop == "multi" &&
-                tGroup.dataset.group === areaName.slice(0, areaName.length - 2) &&
-                tInput.dataset.drop != "ec"
-            ) {
-                let multiSelecteds = tGroup.querySelectorAll("[data-select=true]");
-                let TextStr = Array.from(multiSelecteds, (x) => x.textContent);
-                tTextArea.value = TextStr.join("\n");
+            if (tInput.dataset.drop != "ec" && tDropCard.dataset.drop == "multi") {
+                if (tGroup.dataset.group === areaName.slice(0, areaName.length - 2) ||
+                    tGroup.dataset.group === tTextArea.dataset.name) {
+                        let multiSelecteds = tGroup.querySelectorAll("[data-select=true]");
+                        let TextStr = Array.from(multiSelecteds, (x) => x.textContent);
+                        tTextArea.value = TextStr.join("\n");
+                }
             }
         } //!!!此段必須放在confirmAppended();執行之後，否則新增的選項將會讀取到未replace前的>>>新增「」字樣<<<
     } //end of if statement : for labels in dropCards
