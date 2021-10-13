@@ -342,7 +342,7 @@ window.onload = function() {
 
 document.addEventListener('click', (e) => {
         let target = e.target;
-        let swiperIcon = swiper.querySelector('.incon_28x.for-swiper');
+        let swiperIcon = swiper.querySelector('.icon_28x.for-swiper');
         let swiperOptions = swiper.querySelectorAll('.a-button');
         let sections = document.querySelectorAll('#Copywright, #Product, #Size');
 
