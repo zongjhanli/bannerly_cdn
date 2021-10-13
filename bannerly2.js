@@ -75,11 +75,11 @@ for (const customInput of customInputs) {
 
 // GLOBAL 新增選項字數限制
 // crefit 待補上
-$(".js-length-10").on("input", function (e) {
+$(".js-length-10").on("input", function(e) {
     var $that = $(this),
         limit = 10; //調整字元數限制
     $that.attr("maxlength", limit);
-    setTimeout(function () {
+    setTimeout(function() {
         var value = $that.val(),
             reg = /[\u4e00-\u9fa5]{1}/g,
             notReg = /\w{1}/g;
@@ -99,11 +99,11 @@ $(".js-length-10").on("input", function (e) {
         }
     }, 0);
 });
-$(".js-length-6").on("input", function (e) {
+$(".js-length-6").on("input", function(e) {
     var $that = $(this),
         limit = 6; //調整字元數限制
     $that.attr("maxlength", limit);
-    setTimeout(function () {
+    setTimeout(function() {
         var value = $that.val(),
             reg = /[\u4e00-\u9fa5]{1}/g,
             notReg = /\w{1}/g;
@@ -129,18 +129,18 @@ $(".js-length-6").on("input", function (e) {
 //.label 點按響應 (含dropCard、tabBox)
 document.addEventListener("click", (e) => {
     let target = e.target; //以下宣告皆假設target為.label.full-touch
-    let tChecker = target.parentElement.querySelector(".custom-check");
-    let tBtn = target.parentElement;
-    let tGroup = target.parentElement.parentElement;
-    let tDPBox = target.parentElement.parentElement.parentElement.parentElement;
-    let tInput = tDPBox.querySelector(".input.dropdown");
-    let tDropCard = target.parentElement.parentElement.parentElement;
 
     //for labels in dropCards
-    if (
-        target.classList.contains("label") &&
-        !target.parentElement.parentElement.classList.contains("f-block")
-    ) {
+    if (target.classList.contains("label") &&
+        !target.parentElement.parentElement.classList.contains("f-block") &&
+        !target.parentElement.parentElement.classList.contains("div-266h")) {
+        let tChecker = target.parentElement.querySelector(".custom-check");
+        let tBtn = target.parentElement;
+        let tGroup = target.parentElement.parentElement;
+        let tDPBox = target.parentElement.parentElement.parentElement.parentElement;
+        let tInput = tDPBox.querySelector(".input.dropdown");
+        let tDropCard = target.parentElement.parentElement.parentElement;
+
         //多選選項 (預設)
         if (!tChecker.classList.contains("js-selected")) {
             tChecker.classList.add("js-selected");
@@ -316,9 +316,9 @@ document.addEventListener("click", (e) => {
             if (tInput.dataset.drop != "ec" && tDropCard.dataset.drop == "multi") {
                 if (tGroup.dataset.group === areaName.slice(0, areaName.length - 2) ||
                     tGroup.dataset.group === tTextArea.dataset.name) {
-                        let multiSelecteds = tGroup.querySelectorAll("[data-select=true]");
-                        let TextStr = Array.from(multiSelecteds, (x) => x.textContent);
-                        tTextArea.value = TextStr.join("\n");
+                    let multiSelecteds = tGroup.querySelectorAll("[data-select=true]");
+                    let TextStr = Array.from(multiSelecteds, (x) => x.textContent);
+                    tTextArea.value = TextStr.join("\n");
                 }
             }
         } //!!!此段必須放在confirmAppended();執行之後，否則新增的選項將會讀取到未replace前的>>>新增「」字樣<<<
@@ -353,7 +353,7 @@ document.addEventListener("scroll", () => {
 });
 
 //頁面loading後預設隱藏未被新增的案型
-window.onload = function () {
+window.onload = function() {
     swiper.style.opacity = "0";
     swiper.style.display = "none";
 
@@ -550,7 +550,7 @@ document.addEventListener("click", (e) => {
 let dropInputs = document.querySelectorAll(".input.dropdown");
 for (const dropInput of dropInputs) {
     let dropCard = dropInput.parentElement.querySelector(".drop-card");
-    
+
     dropInput.addEventListener("input", (e) => {
         let target = e.target;
         let capInput = target.value.toLowerCase();
@@ -696,29 +696,20 @@ for (const dropCard of dropCards) {
         } //無論點選何處，dropCard預設全數收回
 
         function expandByInput() {
-            target.parentElement
-                .querySelector(".drop-card")
-                .classList.remove("js-collapsed");
-            target.parentElement
-                .querySelector(".dropdown-arrow")
-                .classList.add("js-rotated");
-            target.parentElement
-                .querySelector(".dropdown-arrow")
-                .classList.remove("unclickable");
+            target.parentElement.querySelector(".drop-card").classList.remove("js-collapsed");
+            target.parentElement.querySelector(".dropdown-arrow").classList.add("js-rotated");
+            target.parentElement.querySelector(".dropdown-arrow").classList.remove("unclickable");
         }
 
         function expandByLabel() {
             tDropCard.classList.remove("js-collapsed");
-            tDropCard.parentElement
-                .querySelector(".dropdown-arrow")
-                .classList.add("js-rotated");
-            tDropCard.parentElement
-                .querySelector(".dropdown-arrow")
-                .classList.remove("unclickable");
+            tDropCard.parentElement.querySelector(".dropdown-arrow").classList.add("js-rotated");
+            tDropCard.parentElement.querySelector(".dropdown-arrow").classList.remove("unclickable");
         }
 
         if (!target.classList.contains("unclickable")) {
-            if (target.classList.contains("input", "dropdown")) {
+            if (target.classList.contains("input") &&
+                target.classList.contains("dropdown")) {
                 expandByInput(); //點選input時 -> dropdown開啟
             } else if (
                 target.classList.contains("label", "full-touch") &&
@@ -729,7 +720,7 @@ for (const dropCard of dropCards) {
         }
 
         //如果點按在unclickable的input（#Size）
-        if (target.classList.contains('dropdown-box')){
+        if (target.classList.contains('dropdown-box')) {
             if (target.firstElementChild.classList.contains("unclickable")) {
                 //若是點按尚未選擇通路的尺寸input
                 let colL = target.parentElement.parentElement.previousElementSibling; //in this case, target=dropdown-box
@@ -737,7 +728,7 @@ for (const dropCard of dropCards) {
                 let hinter = colL.querySelector(".empty-hinter");
                 if (ecSelected.length == 0) {
                     hinter.classList.add("js-shake");
-                    setTimeout(function () {
+                    setTimeout(function() {
                         hinter.classList.remove("js-shake");
                     }, 200);
                 }
@@ -872,44 +863,96 @@ document.addEventListener("click", () => {
             inputR.classList.remove("unclickable");
         }
     }
-});//end of dropdown hinter提示
+}); //end of dropdown hinter提示
 
 //快速套用主案型
-let thunders = document.querySelectorAll('._14px-500.thunder');
+let thunders = document.querySelectorAll('._12px-500.thunder');
 for (const thunder of thunders) {
-    thunder.addEventListener('click', (e)=>{
+    thunder.addEventListener('click', (e) => {
         let target = e.target;
         let tBtn = target.parentElement;
         let tShape = target.nextElementSibling;
-        let tCardBox = target.parentElement.parentElement.parentElement.parentElement.parentElement;//thunder統一放在card-cap較好
-        let tTextArea = tCardBox.querySelector('textarea');
+        let tCardBox = target.parentElement.parentElement.parentElement.parentElement; //.thunder-apply 位於card-cap
+        let tTextAreas = tCardBox.querySelectorAll('textarea');
 
-        let tSwiped = tCardBox.parentElement.parentElement;
+        let tSwiped = tCardBox.parentElement;
         let MASTER = tSwiped.querySelectorAll('.card-box')[0];
-        let mTextArea = MASTER.querySelector('textarea');
-
+        let mTextAreas = MASTER.querySelectorAll('textarea');
         let keyName = MASTER.querySelector('[data-name]').dataset.name;
-        //分為三種區塊進行核對
-        if (keyName.includes('C-')) {
-            //@Copywright區塊
-            console.log('@Copywright');
-            tTextArea.value = mTextArea.value;
-        } else if (keyName.includes('P-')) {
-            //@Product區塊
-            let mTextArea = MASTER.querySelector('textarea');
-            // console.log('@Product');
-            tTextArea.value = mTextArea.value;
 
-        } else if (keyName.includes('S-')) {
-            //@Size區塊
-            console.log('@Size');
-            let tName = tTextArea.dataset.name;
-            let mName = mTextArea.dataset.name;
-            if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
-                tTextArea.value = mTextArea.value;
+        for (const tTextArea of tTextAreas) {
+            for (const mTextArea of mTextAreas) {
+
+                //分為三種區塊進行核對
+                if (keyName.includes('C-')) {
+                    //@Copywright區塊
+                    console.log('@Copywright');
+                    tTextArea.value = mTextArea.value;
+                    let tTxtInputs = tCardBox.querySelectorAll('input[type=text]');
+                    let mTxtInputs = MASTER.querySelectorAll('input[type=text]');
+                    for (const tTxtInput of tTxtInputs) {
+                        for (const mTxtInput of mTxtInputs) {
+                            let tName = tTxtInput.dataset.name;
+                            let mName = mTxtInput.dataset.name;
+                            console.log(tName.slice(0, tName.length - 2));
+                            console.log(mName.slice(0, mName.length - 2));
+                            if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
+                                tTxtInput.value = mTxtInput.value;
+                            }
+                        }
+                    }
+                } else if (keyName.includes('P-')) {
+                    //@Product區塊
+                    //textArea Sync
+                    tTextArea.value = mTextArea.value;
+                    //dropOption Sync
+                    let mDropGroup = MASTER.querySelectorAll('.drop-group');
+                    let mCount = mDropGroup[0].querySelectorAll('.a-button').length;
+                    let i;
+                    for (i = 0; i < mCount; i++) cloneDropOption(i);
+
+                } else if (keyName.includes('S-')) {
+                    //@Size區塊
+                    //textArea Sync
+                    let tName = tTextArea.dataset.name;
+                    let mName = mTextArea.dataset.name;
+                    if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
+                        tTextArea.value = mTextArea.value;
+                    }
+                    //dropOption Sync
+                    let mDropGroup = MASTER.querySelectorAll('.drop-group');
+                    let mCount = mDropGroup[0].querySelectorAll('.a-button').length;
+                    let i;
+                    for (i = 0; i < mCount; i++) cloneDropOption(i);
+
+                    let calling = cloneDropOption();
+                    calling.callX();
+                }
             }
-            
-        } 
+        }
+
+        function cloneDropOption() {
+            let dropGroups = tCardBox.querySelectorAll('.drop-group');
+            let button = document.createElement("div");
+            let label = document.createElement("div");
+            let checker = document.createElement("div");
+
+            button.appendChild(label);
+            button.appendChild(checker);
+            button.classList.add("a-button", "as-list");
+            label.classList.add("label", "full-touch");
+            checker.classList.add("custom-check", "tick-right", "js-selected");
+            label.dataset.custom = "confirmed";
+
+            dropGroups[0].insertBefore(button, null);
+
+            function callX() {
+                console.log('x');
+            }
+            return {
+                callX: callX
+            };
+        }
     })
 }
 
