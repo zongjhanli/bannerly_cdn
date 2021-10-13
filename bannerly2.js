@@ -662,14 +662,15 @@ for (const dropCard of dropCards) {
                     input.value = "已選" + checkCount + "項";
                 }
             }
-            if (target.nextElementSibling.nextElementSibling.classList.contains('drop-card')) {
-                let tDropcard = target.nextElementSibling.nextElementSibling;
-                if( tDropcard.style.height = '0px'){
-                    tDropcard.style.borderWidth = '0px';
-                } else {
-                    tDropcard.style.borderWidth = '1px';
-                }
-            }
+            //!!!瀏覽器讀取if condition延遲
+            // if (target.nextElementSibling.nextElementSibling.classList.contains('drop-card')) {
+            //     let tDropcard = target.nextElementSibling.nextElementSibling;
+            //     if( tDropcard.style.height = '0px'){
+            //         tDropcard.style.borderWidth = '0px';
+            //     } else {
+            //         tDropcard.style.borderWidth = '1px';
+            //     }
+            // }
         }
     });
 
