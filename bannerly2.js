@@ -305,9 +305,9 @@ document.addEventListener('click', (e) => {
     }) //end of document click event
 
 //@form-apply 案型增減響應
-let handle = document.querySelector('div.handle');
+let swiper = document.querySelector('div.swiper');
 
-//handle只有在特定範圍內才會出現
+//swiper只有在特定範圍內才會出現
 document.addEventListener('scroll', ()=>{
     let start = document.querySelector('#Copywright');
     let startOffset = start.getBoundingClientRect();
@@ -320,19 +320,19 @@ document.addEventListener('scroll', ()=>{
     // console.log('startTop' + startTop);
     // console.log('endTop' + endTop);
     if (endTop <= -100 || startTop > 0) {
-        handle.style.opacity = '0';
-        // handle.style.display = 'none';
-        setTimeout((sethandle.style.display = 'none'), 2000);
+        swiper.style.opacity = '0';
+        // swiper.style.display = 'none';
+        setTimeout(function swiperDisplay() {swiper.style.display = 'none';}, 2000);
     } else {
-        handle.style.display = 'flex';
-        handle.style.opacity = '1';
+        swiper.style.display = 'flex';
+        swiper.style.opacity = '1';
     }
 })
 
 //頁面loading後預設隱藏未被新增的選項
 window.onload = function() {
-    handle.style.opacity = '0';
-    handle.style.display = 'none';
+    swiper.style.opacity = '0';
+    swiper.style.display = 'none';
 
     let unhandleds = document.querySelectorAll('[data-handle=false]');
     for (const unhandled of unhandleds) {
@@ -342,39 +342,39 @@ window.onload = function() {
 
 document.addEventListener('click', (e) => {
         let target = e.target;
-        let handleIcon = handle.querySelector('.for-handle');
-        let handleOptions = handle.querySelectorAll('.a-button.as-handle');
+        let swiperIcon = swiper.querySelector('.for-swiper');
+        let swiperOptions = swiper.querySelectorAll('.a-button');
         let sections = document.querySelectorAll('#Copywright, #Product, #Size');
 
         //案型增減
-        let hiddenHandles = handle.querySelectorAll('.a-button[data-handle=false]');
+        let hiddenSwipers = swiper.querySelectorAll('.a-button[data-handle=false]');
         for (const section of sections) {
             let hiddenBoxes = section.querySelectorAll('.card-box[data-handle=false]');
-            let shownHandles = handle.querySelectorAll('.a-button[data-handle=true]');
+            let shownSwipers = swiper.querySelectorAll('.a-button[data-handle=true]');
 
-            function disableAllHandles() {
-                for (const shownHandle of shownHandles) {
-                    shownHandle.classList.remove('js-active');
-                    shownHandle.querySelector('.handle-indicator').style.height = '0px';
+            function disableAllSwipers() {
+                for (const shownSwiper of shownSwipers) {
+                    shownSwiper.classList.remove('js-active');
+                    shownSwiper.querySelector('.swiper-indicator').style.height = '0px';
                 }
             }
 
             //新增案型（將隱藏的案型轉換為「可操作」的案型）
             if (target.classList.contains('js-add')) {
-                disableAllHandles();
-                hiddenHandles[0].classList.remove('js-hide');
-                hiddenHandles[0].dataset.handle = 'true';
+                disableAllSwipers();
+                hiddenSwipers[0].classList.remove('js-hide');
+                hiddenSwipers[0].dataset.handle = 'true';
                 hiddenBoxes[0].classList.remove('js-hide');
                 hiddenBoxes[0].dataset.handle = 'true';
 
-                let shownHandles = handle.querySelectorAll('.a-button[data-handle=true]'); //!!需重新定義一次shownHandles
-                let n = shownHandles.length;
+                let shownSwipers = swiper.querySelectorAll('.a-button[data-handle=true]'); //!!需重新定義一次shownSwipers
+                let n = shownSwipers.length;
                 n -= 1;
-                shownHandles[n].classList.add('js-active');
-                shownHandles[n].querySelector('.handle-indicator').style.height = '4px';
+                shownSwipers[n].classList.add('js-active');
+                shownSwipers[n].querySelector('.swiper-indicator').style.height = '4px';
 
-                let handleBox = section.querySelector('.handle-boxes');
-                handleBox.style.marginLeft = '-' + 688 * 2 * n + 'px'; //handleBox視窗推至最右邊
+                let swiped = section.querySelector('.swiped');
+                swiped.style.marginLeft = '-' + 688 * 2 * n + 'px'; //swiped視窗推至最右邊
                 let shownCards = section.querySelectorAll('.card-box[data-handle=true]');
                 shownCards[n].style.transform = 'rotateY(0deg)';
                 shownCards[n].style.opacity = '1';
@@ -394,29 +394,29 @@ document.addEventListener('click', (e) => {
                 shownCards[0].classList.remove('js-hide');
                 shownCards[0].dataset.handle = 'true';
 
-                disableAllHandles();
-                shownHandles[0].classList.add('js-active');
-                shownHandles[0].querySelector('.handle-indicator').style.height = '4px';
-                shownHandles[0].classList.remove('js-hide');
-                shownHandles[0].dataset.handle = 'true';
+                disableAllSwipers();
+                shownSwipers[0].classList.add('js-active');
+                shownSwipers[0].querySelector('.swiper-indicator').style.height = '4px';
+                shownSwipers[0].classList.remove('js-hide');
+                shownSwipers[0].dataset.handle = 'true';
 
                 target.parentElement.classList.remove('js-active');
-                target.parentElement.querySelector('.handle-indicator').style.height = '0px';
+                target.parentElement.querySelector('.swiper-indicator').style.height = '0px';
                 target.parentElement.classList.add('js-hide');
                 target.parentElement.dataset.handle = 'false';
 
-                let handleBox = section.querySelector('.handle-boxes');
-                handleBox.style.marginLeft = '0px'; //handleBox視窗推至最左邊
+                let swiped = section.querySelector('.swiped');
+                swiped.style.marginLeft = '0px'; //swiped視窗推至最左邊
             }
 
             //新增or刪除案型「之後」產生案型編號
             let i;
-            for (i = 0; i < shownHandles.length; i++) {
+            for (i = 0; i < shownSwipers.length; i++) {
                 let n = i + 1;
-                shownHandles[i].firstElementChild.textContent = '案型 ' + n;
+                shownSwipers[i].firstElementChild.textContent = '案型 ' + n;
                 // !!無法同步數值
                 // let shownBoxes = section.querySelectorAll('.card-box[data-handle=true]');
-                // let m = shownHandles[i].firstElementChild.textContent.charAt(3);
+                // let m = shownSwipers[i].firstElementChild.textContent.charAt(3);
                 // let capTitle = shownBoxes[i].querySelector('.cap-title');
                 // if (capTitle.textContent.length < 5) {
                 //     capTitle.textContent = '案型 ' + m + '\xa0\xa0' + capTitle.textContent;
@@ -426,7 +426,7 @@ document.addEventListener('click', (e) => {
             }
         }
 
-        //點按handle -> handle-indicator + 全頁handle-boxes移動
+        //點按handle -> handle-indicator + 全頁swiped移動
         if (target.classList.contains('a-button', 'as-handle') && !target.classList.contains('js-remove')) {
             for (const handleOption of handleOptions) {
                 handleOption.classList.remove('js-active');
@@ -435,7 +435,7 @@ document.addEventListener('click', (e) => {
                 target.querySelector('.handle-indicator').style.height = '4px';
             }
             for (const section of sections) {
-                let handleBox = section.querySelector('.handle-boxes');
+                let handleBox = section.querySelector('.swiped');
                 let serial = target.firstElementChild.textContent.charAt(3);
                 serial -= 1;
                 handleBox.style.marginLeft = '-' + 688 * 2 * serial + 'px';
@@ -731,7 +731,10 @@ for (const tabBox of tabBoxs) {
                     let tTextAreas = tCol.nextElementSibling.querySelectorAll('.as-textarea');
                     for (const tTextArea of tTextAreas) {
                         tTextArea.classList.remove('js-show');
-                        if (tTextArea.dataset.name === target.dataset.tab) {
+                        let areaName = tTextArea.dataset.name;
+                        // console.log(areaName.slice(0,areaName.length-2));
+                        //去除textArea序號以核對
+                        if (areaName.slice(0,areaName.length-2) === target.dataset.tab) {
                             tTextArea.classList.add('js-show');
                         }
                     }
