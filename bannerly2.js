@@ -662,10 +662,13 @@ for (const dropCard of dropCards) {
                     input.value = "已選" + checkCount + "項";
                 }
             }
-            if (dropCard.style.height=='0px') {
-                dropCard.borderWidth = '0px';
-            } else {
-                dropCard.borderWidth = '1px';
+            if (target.nextElementSibling.nextElementSibling.classList.contains('drop-card')) {
+                let tDropcard =target.nextElementSibling.nextElementSibling;
+                if(tDropcard.style.height == '0px'){
+                    tDropcard.borderWidth = '0px';
+                } else {
+                    tDropcard.borderWidth = '1px';
+                }
             }
         }
     });
