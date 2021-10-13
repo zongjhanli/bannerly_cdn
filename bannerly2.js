@@ -319,7 +319,7 @@ document.addEventListener('scroll', ()=>{
 
     // console.log('startTop' + startTop);
     // console.log('endTop' + endTop);
-    if (endTop <= -100 || startTop > 0) {
+    if (endTop <= -50 || startTop > 50) {
         swiper.style.opacity = '0';
         // swiper.style.display = 'none';
         setTimeout(function swiperDisplay() {swiper.style.display = 'none';}, 2000);
