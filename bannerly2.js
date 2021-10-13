@@ -721,7 +721,6 @@ for (const dropCard of dropCards) {
 
         //如果點按在unclickable的input（#Size）
         if (target.classList.contains('dropdown-box')){
-            console.log('x');
             if (target.firstElementChild.classList.contains("unclickable")) {
                 //若是點按尚未選擇通路的尺寸input
                 let colL = target.parentElement.parentElement.previousElementSibling; //in this case, target=dropdown-box

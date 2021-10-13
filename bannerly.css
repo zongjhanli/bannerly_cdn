@@ -70,6 +70,26 @@ comment前綴說明:
     border-radius: 16px;
 }
 
+/* @Form-apply --- dropdown hinter 醒目提示動畫 */
+.empty-hinter.js-shake {
+    transform-origin: 50% 50%;
+    animation-name: shake;
+    animation-duration: 0.2s;
+    animation-iteration-count: 2;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(-8px, 0px);
+    }
+    50% {
+        transform: translate(8px, 0px);
+    }
+    100% {
+        transform: translate(-8px, 0px);
+    }
+}
+
 
 /* @Detail-Entries --- 若anchor對應當前location.hash，呈現特定動畫 */
 
