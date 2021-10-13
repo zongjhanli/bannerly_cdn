@@ -662,6 +662,11 @@ for (const dropCard of dropCards) {
                     input.value = "已選" + checkCount + "項";
                 }
             }
+            if (dropCard.style.height=='0px') {
+                dropCard.borderWidth = '0px';
+            } else {
+                dropCard.borderWidth = '1px';
+            }
         }
     });
 
