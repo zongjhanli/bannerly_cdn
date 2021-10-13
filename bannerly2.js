@@ -720,16 +720,18 @@ for (const dropCard of dropCards) {
         }
 
         //如果點按在unclickable的input（#Size）
-        if (target.querySelector(".input.dropdown").classList.contains("unclickable")) {
-            //若是點按尚未選擇通路的尺寸input
-            let colL = target.parentElement.parentElement.previousElementSibling; //in this case, target=dropdown-box
-            let ecSelected = colL.querySelectorAll(".js-selected");
-            let hinter = colL.querySelector(".empty-hinter");
-            if (ecSelected.length == 0) {
-                hinter.classList.add("js-shake");
-                setTimeout(function () {
-                    hinter.classList.remove("js-shake");
-                }, 200);
+        if (target.classList.contains('dropdown-box')){
+            if (target.firstElementChild.classList.contains("unclickable")) {
+                //若是點按尚未選擇通路的尺寸input
+                let colL = target.parentElement.parentElement.previousElementSibling; //in this case, target=dropdown-box
+                let ecSelected = colL.querySelectorAll(".js-selected");
+                let hinter = colL.querySelector(".empty-hinter");
+                if (ecSelected.length == 0) {
+                    hinter.classList.add("js-shake");
+                    setTimeout(function () {
+                        hinter.classList.remove("js-shake");
+                    }, 200);
+                }
             }
         }
     });
