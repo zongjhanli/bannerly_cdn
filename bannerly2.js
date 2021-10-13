@@ -663,11 +663,11 @@ for (const dropCard of dropCards) {
                 }
             }
             if (target.nextElementSibling.nextElementSibling.classList.contains('drop-card')) {
-                let tDropcard =target.nextElementSibling.nextElementSibling;
-                if(tDropcard.style.height == '0px'){
-                    tDropcard.borderWidth = '0px';
+                let tDropcard = target.nextElementSibling.nextElementSibling;
+                if( tDropcard.style.height = '0px'){
+                    tDropcard.style.borderWidth = '0px';
                 } else {
-                    tDropcard.borderWidth = '1px';
+                    tDropcard.style.borderWidth = '1px';
                 }
             }
         }
