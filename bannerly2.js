@@ -980,11 +980,11 @@ for (const thunder of thunders) {
                             }
                         }
 
-                        let mLabels = mGroups[i].querySelectorAll('.label');
-                        if (mLabels != null) {
-                            let tOldOptions = tGroups[i].querySelectorAll('.a-button');
-                            for (n = 0; n < mLabels.length; n++) tGroups[i].removeChild(tOldOptions[n]);
-                            for (n = 0; n < mLabels.length; n++) aaa(n);
+                        let mBtns = mGroups[i].querySelectorAll('.a-button');
+                        if (mBtns != null) {
+                            let tBtns = tGroups[i].querySelectorAll('.a-button');
+                            for (n = 0; n < tBtns.length; n++) tGroups[i].removeChild(tBtns[n]);
+                            for (n = 0; n < mBtns.length; n++) aaa(n);
                         }
                     };
 
