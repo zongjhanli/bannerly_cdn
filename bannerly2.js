@@ -904,7 +904,9 @@ for (const thunder of thunders) {
                     //textArea Sync
                     tTextArea.value = mTextArea.value;
                     //dropOption Sync
-                    cloneDropOption();
+                    // clone();
+                    mirror();
+
 
                 } else if (keyName.includes('S-')) {
                     //@Size區塊
@@ -915,15 +917,15 @@ for (const thunder of thunders) {
                         tTextArea.value = mTextArea.value;
                     }
                     //dropOption Sync
-                    mirrorSelected();
+                    mirror();
 
 
                 }
             }
         }
 
-        function cloneDropOption() {
-            function clone() {
+        function clone() {
+            function cloning() {
                 let button = document.createElement("div");
                 let label = document.createElement("div");
                 let checker = document.createElement("div");
@@ -941,54 +943,97 @@ for (const thunder of thunders) {
             let mFirstGroup = MASTER.querySelector('.drop-group');
             let mCount = mFirstGroup.querySelectorAll('.a-button').length;
             let i;
-            for (i = 0; i < mCount; i++) clone(i);
+            for (i = 0; i < mCount; i++) cloning(i);
         }
 
-        function mirrorSelected() {
+        function mirror() {
             let tGroups = tCardBox.querySelectorAll('[data-group]');
             let mGroups = MASTER.querySelectorAll('[data-group]');
-            let tChecks = tCardBox.querySelectorAll('.custom-check');
-            let mChecks = MASTER.querySelectorAll('.custom-check');
-            let i;
-            for (i = 0; i < mGroups.length - 1; i++) {
-                if (tGroups[i].dataset.group == mGroups[i].dataset.group) {
-                    // let newGroup = document.createElement('div');
-                    // newGroup.classList.add('drop-group', 'js-hide', 'js-show');
-                    // newGroup.dataset.group = mGroups[i].dataset.group;
-                    // tGroups[i].parentElement.insertBefore(newGroup, tGroups[i]);
-                    // tGroups[i].remove(); //!!!remove放置於最後不會清除上一批被新增進來的el
+            let g;
+            for (g = 0; g < mGroups.length; g++) {
+                let tGroupName = tGroups[g].dataset.group;
+                let mGroupName = mGroups[g].dataset.group;
+                if (tGroupName == mGroupName) {
+                    mirroring();
+                } else if (tGroupName.charAt(0) == mGroupName.charAt(0)) { //依據#Product 區塊的drop-group data-group命名方式
+                    mirroring();
+                }
 
-                    clone();
+                function mirroring() {
+                    function createEl() {
+                        let button = document.createElement("div");
+                        let label = document.createElement("div");
+                        let checker = document.createElement("div");
+                        button.appendChild(label);
+                        button.appendChild(checker);
+                        button.classList.add("a-button", "as-list");
+                        label.classList.add("label", "full-touch");
+                        checker.classList.add("custom-check", "tick-right");
+                        label.dataset.custom = "confirmed";
+                        tGroups[g].insertBefore(button, null);
+                    }
+                    let m;
+                    let t;
+                    let mBtns = mGroups[g].querySelectorAll('.a-button');
+                    let tBtns = tGroups[g].querySelectorAll('.a-button');
 
-                    function clone() {
-                        function aaa() {
-                            let button = document.createElement("div");
-                            let label = document.createElement("div");
-                            let checker = document.createElement("div");
-                            button.appendChild(label);
-                            button.appendChild(checker);
-                            button.classList.add("a-button", "as-list");
-                            label.classList.add("label", "full-touch");
-                            checker.classList.add("custom-check", "tick-right");
-                            label.dataset.custom = "confirmed";
-                            tGroups[i].insertBefore(button, null);
-                            let mLabels = mGroups[i].querySelectorAll('.label');
-                            if (mLabels != null) {
-                                for (n = 0; n < mLabels.length; n++) {
-                                    label.textContent = mLabels[n].textContent;
-                                }
+                    if (mBtns != null) {
+                        for (t = 0; t < tBtns.length - 1; t++) tGroups[g].removeChild(tBtns[t]);
+                        // 將m、n分開核對，因為m不一定等於n
+                        for (m = 0; m < mBtns.length; m++) {
+                            createEl(m);
+                            let tLabels = tGroups[g].querySelectorAll('.label');
+                            let mLabels = mGroups[g].querySelectorAll('.label');
+                            tLabels[m].textContent = mLabels[m].textContent;
+                            if (mLabels[m].nextElementSibling.classList.contains('js-selected')) {
+                                tLabels[m].nextElementSibling.classList.add('js-selected');
                             }
                         }
 
-                        let mBtns = mGroups[i].querySelectorAll('.a-button');
-                        if (mBtns != null) {
-                            let tBtns = tGroups[i].querySelectorAll('.a-button');
-                            for (n = 0; n < tBtns.length; n++) tGroups[i].removeChild(tBtns[n]);
-                            for (n = 0; n < mBtns.length; n++) aaa(n);
-                        }
-                    };
+                    }
+                    // // ec drop option 點擊響應 -> 預設第一個tab以及相關dropGroup, textArea顯現
+                    // if (tInput.dataset.drop == "ec") {
+                    //     let colL = tDPBox.parentElement.parentElement;
+                    //     let indicator = colL.querySelector(".indicator");
+                    //     let shownTabs = colL.querySelectorAll(".a-button.as-tab.js-show");
+                    //     for (const shownTab of shownTabs) {
+                    //         //ec tab indicator 顯示/隱藏條件
+                    //         let tabLength = shownTabs.length;
+                    //         if (tabLength > 0) {
+                    //             indicator.style.display = "block";
+                    //         } else {
+                    //             indicator.style.display = "none";
+                    //         }
 
-                }
+                    //         //每次選取/取消選取，tabBox重新更新「第一個」tab以及相關dropGroup, textArea顯現
+                    //         shownTab.style.opacity = "0.5";
+                    //         shownTabs[0].style.opacity = "1";
+                    //         let tDropGroups =
+                    //             colL.nextElementSibling.querySelectorAll(".drop-group");
+                    //         for (const tDropGroup of tDropGroups) {
+                    //             tDropGroup.classList.remove("js-show");
+                    //             if (
+                    //                 tDropGroup.dataset.group ===
+                    //                 shownTabs[0].firstElementChild.dataset.tab
+                    //             ) {
+                    //                 tDropGroup.classList.add("js-show");
+                    //             }
+                    //         }
+                    //         let tTextAreas =
+                    //             colL.nextElementSibling.querySelectorAll(".as-textarea");
+                    //         for (const tTextArea of tTextAreas) {
+                    //             tTextArea.classList.remove("js-show");
+                    //             let areaName = tTextArea.dataset.name;
+                    //             if (
+                    //                 areaName.slice(0, areaName.length - 2) ===
+                    //                 shownTabs[0].firstElementChild.dataset.tab
+                    //             ) {
+                    //                 tTextArea.classList.add("js-show");
+                    //             }
+                    //         }
+                    //     }
+                    // }
+                };
             }
         }
 
