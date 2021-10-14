@@ -894,8 +894,6 @@ for (const thunder of thunders) {
                         for (const mTxtInput of mTxtInputs) {
                             let tName = tTxtInput.dataset.name;
                             let mName = mTxtInput.dataset.name;
-                            console.log(tName.slice(0, tName.length - 2));
-                            console.log(mName.slice(0, mName.length - 2));
                             if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
                                 tTxtInput.value = mTxtInput.value;
                             }
@@ -906,10 +904,7 @@ for (const thunder of thunders) {
                     //textArea Sync
                     tTextArea.value = mTextArea.value;
                     //dropOption Sync
-                    let mDropGroup = MASTER.querySelectorAll('.drop-group');
-                    let mCount = mDropGroup[0].querySelectorAll('.a-button').length;
-                    let i;
-                    for (i = 0; i < mCount; i++) cloneDropOption(i);
+                    cloneDropOption();
 
                 } else if (keyName.includes('S-')) {
                     //@Size區塊
@@ -920,39 +915,83 @@ for (const thunder of thunders) {
                         tTextArea.value = mTextArea.value;
                     }
                     //dropOption Sync
-                    let mDropGroup = MASTER.querySelectorAll('.drop-group');
-                    let mCount = mDropGroup[0].querySelectorAll('.a-button').length;
-                    let i;
-                    for (i = 0; i < mCount; i++) cloneDropOption(i);
+                    mirrorSelected();
 
-                    let calling = cloneDropOption();
-                    calling.callX();
+
                 }
             }
         }
 
         function cloneDropOption() {
-            let dropGroups = tCardBox.querySelectorAll('.drop-group');
-            let button = document.createElement("div");
-            let label = document.createElement("div");
-            let checker = document.createElement("div");
+            function clone() {
+                let button = document.createElement("div");
+                let label = document.createElement("div");
+                let checker = document.createElement("div");
+                button.appendChild(label);
+                button.appendChild(checker);
+                button.classList.add("a-button", "as-list");
+                label.classList.add("label", "full-touch");
+                checker.classList.add("custom-check", "tick-right", "js-selected");
+                label.dataset.custom = "confirmed";
 
-            button.appendChild(label);
-            button.appendChild(checker);
-            button.classList.add("a-button", "as-list");
-            label.classList.add("label", "full-touch");
-            checker.classList.add("custom-check", "tick-right", "js-selected");
-            label.dataset.custom = "confirmed";
-
-            dropGroups[0].insertBefore(button, null);
-
-            function callX() {
-                console.log('x');
-            }
-            return {
-                callX: callX
+                let tDropGroups = tCardBox.querySelectorAll('.drop-group');
+                tDropGroups[0].insertBefore(button, null)
             };
+
+            let mFirstGroup = MASTER.querySelector('.drop-group');
+            let mCount = mFirstGroup.querySelectorAll('.a-button').length;
+            let i;
+            for (i = 0; i < mCount; i++) clone(i);
         }
+
+        function mirrorSelected() {
+            let tGroups = tCardBox.querySelectorAll('[data-group]');
+            let mGroups = MASTER.querySelectorAll('[data-group]');
+            let tChecks = tCardBox.querySelectorAll('.custom-check');
+            let mChecks = MASTER.querySelectorAll('.custom-check');
+            let i;
+            for (i = 0; i < mGroups.length - 1; i++) {
+                if (tGroups[i].dataset.group == mGroups[i].dataset.group) {
+                    // let newGroup = document.createElement('div');
+                    // newGroup.classList.add('drop-group', 'js-hide', 'js-show');
+                    // newGroup.dataset.group = mGroups[i].dataset.group;
+                    // tGroups[i].parentElement.insertBefore(newGroup, tGroups[i]);
+                    // tGroups[i].remove(); //!!!remove放置於最後不會清除上一批被新增進來的el
+
+                    clone();
+
+                    function clone() {
+                        function aaa() {
+                            let button = document.createElement("div");
+                            let label = document.createElement("div");
+                            let checker = document.createElement("div");
+                            button.appendChild(label);
+                            button.appendChild(checker);
+                            button.classList.add("a-button", "as-list");
+                            label.classList.add("label", "full-touch");
+                            checker.classList.add("custom-check", "tick-right");
+                            label.dataset.custom = "confirmed";
+                            tGroups[i].insertBefore(button, null);
+                            let mLabels = mGroups[i].querySelectorAll('.label');
+                            if (mLabels != null) {
+                                for (n = 0; n < mLabels.length; n++) {
+                                    label.textContent = mLabels[n].textContent;
+                                }
+                            }
+                        }
+
+                        let mLabels = mGroups[i].querySelectorAll('.label');
+                        if (mLabels != null) {
+                            let tOldOptions = tGroups[i].querySelectorAll('.a-button');
+                            for (n = 0; n < mLabels.length; n++) tGroups[i].removeChild(tOldOptions[n]);
+                            for (n = 0; n < mLabels.length; n++) aaa(n);
+                        }
+                    };
+
+                }
+            }
+        }
+
     })
 }
 
