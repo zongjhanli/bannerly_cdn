@@ -960,7 +960,7 @@ for (const thunder of thunders) {
                 }
 
                 function mirroring() {
-                    function createEl() {
+                    function createGroupOption() {
                         let button = document.createElement("div");
                         let label = document.createElement("div");
                         let checker = document.createElement("div");
@@ -978,62 +978,53 @@ for (const thunder of thunders) {
                     let tBtns = tGroups[g].querySelectorAll('.a-button');
 
                     if (mBtns != null) {
-                        for (t = 0; t < tBtns.length - 1; t++) tGroups[g].removeChild(tBtns[t]);
+                        for (t = 0; t < tBtns.length; t++) tGroups[g].removeChild(tBtns[t]);
                         // 將m、n分開核對，因為m不一定等於n
                         for (m = 0; m < mBtns.length; m++) {
-                            createEl(m);
+                            createGroupOption(m + 1);
                             let tLabels = tGroups[g].querySelectorAll('.label');
                             let mLabels = mGroups[g].querySelectorAll('.label');
                             tLabels[m].textContent = mLabels[m].textContent;
                             if (mLabels[m].nextElementSibling.classList.contains('js-selected')) {
                                 tLabels[m].nextElementSibling.classList.add('js-selected');
+
+                                // ec tab 響應區塊
+                                if (tCardBox.querySelector('[data-box=tab]') != null) {
+                                    let tTabBox = tCardBox.querySelector('[data-box=tab]');
+                                    let mTabBox = MASTER.querySelector('[data-box=tab]');
+                                    let tTabs = tTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
+                                    let mTabs = mTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
+
+                                    function createTab() {
+                                        let tab = document.createElement("div");
+                                        let label = document.createElement("div");
+                                        let counter = document.createElement("div");
+                                        tab.appendChild(label);
+                                        tab.appendChild(counter);
+                                        tab.classList.add("a-button", "as-tab", "js-hide");
+                                        label.classList.add("label", "full-touch");
+                                        label.dataset.tab = "";
+                                        counter.classList.add("_12px-500", "as-counts", "in-tab");
+                                        tTabBox.insertBefore(tab, null);
+                                    }
+
+                                    for (t = 0; t < tTabs.length; t++) tTabBox.removeChild(tTabs[t]);
+                                    for (m = 0; m < mTabs.length; m++) {
+                                        createTab(m + 1);
+                                        let mTabLabels = mTabBox.querySelectorAll('.label');
+                                        let mTabCounts = mTabBox.querySelectorAll('.as-counts');
+                                        let tNewLabels = tTabBox.querySelectorAll('.label');
+                                        let tNewCounts = tTabBox.querySelectorAll('.as-counts');
+
+                                        tNewLabels[m].dataset.tab = mTabLabels[m].dataset.tab;
+                                        tNewLabels[m].textContent = mTabLabels[m].textContent;
+                                        tNewCounts[m].textContent = mTabCounts[m].textContent;
+                                    }
+                                }
                             }
                         }
-
                     }
-                    // // ec drop option 點擊響應 -> 預設第一個tab以及相關dropGroup, textArea顯現
-                    // if (tInput.dataset.drop == "ec") {
-                    //     let colL = tDPBox.parentElement.parentElement;
-                    //     let indicator = colL.querySelector(".indicator");
-                    //     let shownTabs = colL.querySelectorAll(".a-button.as-tab.js-show");
-                    //     for (const shownTab of shownTabs) {
-                    //         //ec tab indicator 顯示/隱藏條件
-                    //         let tabLength = shownTabs.length;
-                    //         if (tabLength > 0) {
-                    //             indicator.style.display = "block";
-                    //         } else {
-                    //             indicator.style.display = "none";
-                    //         }
-
-                    //         //每次選取/取消選取，tabBox重新更新「第一個」tab以及相關dropGroup, textArea顯現
-                    //         shownTab.style.opacity = "0.5";
-                    //         shownTabs[0].style.opacity = "1";
-                    //         let tDropGroups =
-                    //             colL.nextElementSibling.querySelectorAll(".drop-group");
-                    //         for (const tDropGroup of tDropGroups) {
-                    //             tDropGroup.classList.remove("js-show");
-                    //             if (
-                    //                 tDropGroup.dataset.group ===
-                    //                 shownTabs[0].firstElementChild.dataset.tab
-                    //             ) {
-                    //                 tDropGroup.classList.add("js-show");
-                    //             }
-                    //         }
-                    //         let tTextAreas =
-                    //             colL.nextElementSibling.querySelectorAll(".as-textarea");
-                    //         for (const tTextArea of tTextAreas) {
-                    //             tTextArea.classList.remove("js-show");
-                    //             let areaName = tTextArea.dataset.name;
-                    //             if (
-                    //                 areaName.slice(0, areaName.length - 2) ===
-                    //                 shownTabs[0].firstElementChild.dataset.tab
-                    //             ) {
-                    //                 tTextArea.classList.add("js-show");
-                    //             }
-                    //         }
-                    //     }
-                    // }
-                };
+                }
             }
         }
 
