@@ -173,11 +173,12 @@ document.addEventListener("click", (e) => {
         }
 
         // ec 尺寸數量同步
-        let sizeCount = tGroup.querySelectorAll(".js-selected").length;
-        let ecTabs = document.querySelectorAll(".label[data-tab]");
-        for (const ecTab of ecTabs) {
-            let countResult = ecTab.nextElementSibling;
-            if (target.dataset.ec == null) {
+        if (target.dataset.ec == null) {
+            let sizeCount = tGroup.querySelectorAll(".js-selected").length;
+            let tCardBox = tGroup.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement;
+            let ecTabs = tCardBox.querySelectorAll(".label[data-tab]");
+            for (const ecTab of ecTabs) {
+                let countResult = ecTab.nextElementSibling;
                 if (tGroup.dataset.group === ecTab.dataset.tab) {
                     countResult.textContent = sizeCount;
                 }
@@ -242,20 +243,26 @@ document.addEventListener("click", (e) => {
             dropBox.insertBefore(newDropGroup, dropBox.querySelectorAll('[data-group]')[0]);
 
             //新增 new textArea
+            let textAreaBox = colR.querySelector("[data-box=textarea]");
             let newTextArea = document.createElement("textarea");
+            let oldTextAreas = textAreaBox.querySelectorAll('textarea');
+            let strLength = oldTextAreas[0].dataset.name.length;
+            let serial = oldTextAreas[0].dataset.name.slice(strLength - 2, strLength);
+            newTextArea.name = tInput.value + serial;
+            newTextArea.maxLength = '5000';
+            newTextArea.dataset.name = tInput.value + serial;
+            newTextArea.id = tInput.value + serial;
+            newTextArea.placeholder = "↑點按以選擇" + tInput.value + "尺寸";
             newTextArea.classList.add(
                 "input",
                 "as-textarea",
                 "bulk-select",
                 "unclickable",
                 "js-hide",
+                "w-input",
                 "js-show"
             );
-            newTextArea.placeholder = "↑點按以選擇" + tInput.value + "尺寸";
-            newTextArea.dataset.name = tInput.value;
-            newTextArea.id = tInput.value;
-            let textAreaBox = colR.querySelector("[data-box=textarea]");
-            textAreaBox.insertBefore(newTextArea, textAreaBox.querySelectorAll('textarea')[0]);
+            textAreaBox.insertBefore(newTextArea, oldTextAreas[0]);
         }
 
         if (target.dataset.custom == "pending") {
@@ -766,11 +773,11 @@ for (const thunder of thunders) {
                 } else if (keyName.includes('S-')) {
                     //@Size區塊
                     //textArea Sync
-                    let tName = tTextArea.dataset.name;
-                    let mName = mTextArea.dataset.name;
-                    if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
-                        tTextArea.value = mTextArea.value;
-                    }
+                    // let tName = tTextArea.dataset.name;
+                    // let mName = mTextArea.dataset.name;
+                    // if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
+                    //     tTextArea.value = mTextArea.value;
+                    // }
                     //dropOption Sync
                     mirror();
                 }
@@ -915,9 +922,12 @@ for (const thunder of thunders) {
                             for (m = 0; m < mTextAreas.length; m++) {
                                 createTextArea(m + 1);
                                 let tNewTextAreas = tAreaBox.querySelectorAll('textarea');
-                                tNewTextAreas[m].dataset.name = mTextAreas[m].dataset.name;
-                                tNewTextAreas[m].name = mTextAreas[m].name;
-                                tNewTextAreas[m].id = mTextAreas[m].id;
+                                let tStrLength = tTextAreas[0].dataset.name.length;
+                                let mStrLength = mTextAreas[0].dataset.name.length;
+                                let tSerial = tTextAreas[0].dataset.name.slice(tStrLength - 2, tStrLength);
+                                tNewTextAreas[m].dataset.name = mTextAreas[m].dataset.name.slice(0, mStrLength - 2) + tSerial;
+                                tNewTextAreas[m].name = mTextAreas[m].name.slice(0, mStrLength - 2) + tSerial;
+                                tNewTextAreas[m].id = mTextAreas[m].id.slice(0, mStrLength - 2) + tSerial;
                                 tNewTextAreas[m].placeholder = mTextAreas[m].placeholder;
                                 tNewTextAreas[m].value = mTextAreas[m].value;
                             }
@@ -944,6 +954,7 @@ for (const thunder of thunders) {
                             shownTabs[0].style.opacity = "1";
                             let indicator = tTabBox.querySelector('.indicator');
                             indicator.style.display = 'block';
+                            indicator.style.top = '0px';
 
                             tNGroups[1].classList.add('js-show'); //tNGroups[0]=ecTabs
                             tNGroups[tNGroups.length - 1].classList.remove('js-show');
