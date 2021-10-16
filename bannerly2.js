@@ -236,10 +236,10 @@ document.addEventListener("click", (e) => {
 
             //新增 new dropGroup
             let newDropGroup = document.createElement("div");
-            newDropGroup.classList.add("drop-group", "js-hide", "js-show");
             newDropGroup.dataset.group = tInput.value;
+            newDropGroup.classList.add("drop-group", "js-hide", "js-show");
             let dropBox = colR.querySelector(".drop-card");
-            dropBox.appendChild(newDropGroup);
+            dropBox.insertBefore(newDropGroup, dropBox.querySelectorAll('[data-group]')[0]);
 
             //新增 new textArea
             let newTextArea = document.createElement("textarea");
@@ -255,7 +255,7 @@ document.addEventListener("click", (e) => {
             newTextArea.dataset.name = tInput.value;
             newTextArea.id = tInput.value;
             let textAreaBox = colR.querySelector("[data-box=textarea]");
-            textAreaBox.appendChild(newTextArea);
+            textAreaBox.insertBefore(newTextArea, textAreaBox.querySelectorAll('textarea')[0]);
         }
 
         if (target.dataset.custom == "pending") {
@@ -641,6 +641,323 @@ for (const dropInput of dropInputs) {
     });
 } //end of dropInput loop !!!
 
+//tab + indicator 響應
+let tabBoxs = document.querySelectorAll("[data-box=tab]");
+for (const tabBox of tabBoxs) {
+    tabBox.addEventListener("click", (e) => {
+        let target = e.target;
+        let tBox = target.parentElement.parentElement;
+        let indicator = tBox.querySelector(".indicator"); //! 不需要使用target.querySelector
+        let shownTabs = tBox.querySelectorAll(".a-button.js-show");
+        let tabLength = shownTabs.length;
+
+        for (const shownTab of shownTabs) {
+            // ec tab 點擊響應
+            if (target.dataset.tab != null) {
+                shownTab.style.opacity = "0.5";
+                target.parentElement.style.opacity = "1";
+
+                let tCol = target.parentElement.parentElement.parentElement;
+                let tDropGroups =
+                    tCol.nextElementSibling.querySelectorAll(".drop-group");
+                for (const tDropGroup of tDropGroups) {
+                    tDropGroup.classList.remove("js-show");
+                    if (tDropGroup.dataset.group === target.dataset.tab) {
+                        tDropGroup.classList.add("js-show");
+                    }
+                }
+                let tTextAreas =
+                    tCol.nextElementSibling.querySelectorAll(".as-textarea");
+                for (const tTextArea of tTextAreas) {
+                    tTextArea.classList.remove("js-show");
+                    let areaName = tTextArea.dataset.name;
+                    // console.log(areaName.slice(0,areaName.length-2));
+                    //去除textArea序號以核對
+                    if (areaName.slice(0, areaName.length - 2) === target.dataset.tab) {
+                        tTextArea.classList.add("js-show");
+                    }
+                }
+
+                //tab 切換 -> indicator移動
+                for (i = 0; i < tabLength; i++) {
+                    let topV = i * 36 + "px";
+                    if (shownTabs[i] == target.parentElement) {
+                        indicator.style.top = topV;
+                    }
+                }
+            }
+        } // end of shownTab loop
+    }); //end of ecTabsCol click event
+} //end of ecTabsCol loop
+
+//dropdown hinter提示
+window.addEventListener("load", () => {
+    let dropInputs = document.querySelectorAll(".input.dropdown");
+    for (const dropInput of dropInputs) {
+        if (dropInput.dataset.name.includes("S-count2")) {
+            dropInput.classList.add("unclickable");
+        }
+    }
+});
+
+document.addEventListener("click", () => {
+    let hinters = document.querySelectorAll(".empty-hinter");
+
+    for (const hinter of hinters) {
+        let tDropOptions = hinter.parentElement.querySelectorAll(".js-selected");
+        if (tDropOptions.length == 0) {
+            hinter.style.display = "block";
+
+            let colR =
+                hinter.parentElement.parentElement.parentElement.nextElementSibling;
+            let inputR = colR.querySelector(".input.dropdown");
+            inputR.classList.add("unclickable");
+        } else {
+            hinter.style.display = "none";
+
+            let colR =
+                hinter.parentElement.parentElement.parentElement.nextElementSibling;
+            let inputR = colR.querySelector(".input.dropdown");
+            inputR.classList.remove("unclickable");
+        }
+    }
+}); //end of dropdown hinter提示
+
+//快速套用主案型
+let thunders = document.querySelectorAll('._12px-500.thunder');
+for (const thunder of thunders) {
+    thunder.addEventListener('click', (e) => {
+        let target = e.target;
+        let tBtn = target.parentElement;
+        let tShape = target.nextElementSibling;
+        let tCardBox = target.parentElement.parentElement.parentElement.parentElement; //.thunder-apply 位於card-cap
+        let tTextAreas = tCardBox.querySelectorAll('textarea');
+
+        let tSwiped = tCardBox.parentElement;
+        let MASTER = tSwiped.querySelectorAll('.card-box')[0];
+        let mTextAreas = MASTER.querySelectorAll('textarea');
+        let keyName = MASTER.querySelector('[data-name]').dataset.name;
+
+        for (const tTextArea of tTextAreas) {
+            for (const mTextArea of mTextAreas) {
+
+                //分為三種區塊進行核對
+                if (keyName.includes('C-')) {
+                    //@Copywright區塊
+                    console.log('@Copywright');
+                    tTextArea.value = mTextArea.value;
+                    let tTxtInputs = tCardBox.querySelectorAll('input[type=text]');
+                    let mTxtInputs = MASTER.querySelectorAll('input[type=text]');
+                    for (const tTxtInput of tTxtInputs) {
+                        for (const mTxtInput of mTxtInputs) {
+                            let tName = tTxtInput.dataset.name;
+                            let mName = mTxtInput.dataset.name;
+                            if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
+                                tTxtInput.value = mTxtInput.value;
+                            }
+                        }
+                    }
+                } else if (keyName.includes('P-')) {
+                    //@Product區塊
+                    //textArea Sync
+                    tTextArea.value = mTextArea.value;
+                    //dropOption Sync
+                    mirror();
+                } else if (keyName.includes('S-')) {
+                    //@Size區塊
+                    //textArea Sync
+                    let tName = tTextArea.dataset.name;
+                    let mName = mTextArea.dataset.name;
+                    if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
+                        tTextArea.value = mTextArea.value;
+                    }
+                    //dropOption Sync
+                    mirror();
+                }
+            }
+        }
+
+        function mirror() {
+            let tDropCards = tCardBox.querySelectorAll('.drop-card');
+            let tGroups = tCardBox.querySelectorAll('[data-group]');
+            let mGroups = MASTER.querySelectorAll('[data-group]');
+
+            if (tDropCards.length == 1) { //指涉#Product區塊
+                mirroring();
+            } else if (tDropCards.length == 2) { //指涉#Size區塊
+                mirroringGroups(); // 因#Size區塊可能會發生Group數量異動（新增通路時）
+                mirroring();
+            }
+
+            //更新 size dropgroups
+            function mirroringGroups() {
+                let tg;
+                for (tg = 1; tg < tGroups.length; tg++) {
+                    if (tGroups[tg].dataset.group != 'xxx') { //data-group=xxx是預留的.js-show，為了保持global dropdown behaviour的運作
+                        tDropCards[1].removeChild(tGroups[tg]);
+                    }
+                }
+
+                function createGroup() {
+                    let newGroup = document.createElement('div');
+                    newGroup.dataset.group = "";
+                    newGroup.classList.add('drop-group', 'js-hide');
+                    tDropCards[1].insertBefore(newGroup, tLeftGroups[0]); //tLeftGroups[0]=[data-group=xxx]
+                }
+
+                let tLeftGroups = tDropCards[1].querySelectorAll('[data-group]');
+                let offset = mGroups.length - 1 - tLeftGroups.length; //判斷案型1比當下案型多出多少group，但須先排除ecTabs與[data-group='xxx']
+                let o;
+                for (o = 1; o <= offset; o++) createGroup(o);
+
+                let tNGroups = tCardBox.querySelectorAll('[data-group]'); //若不重新定義，瀏覽器將抓取被刪除的但仍記憶著的tGroups
+                let tng;
+                for (tng = 0; tng < tNGroups.length; tng++) {
+                    tNGroups[tng].dataset.group = mGroups[tng].dataset.group;
+                }
+            }
+
+            function mirroring() {
+                let tNGroups = tCardBox.querySelectorAll('[data-group]');
+                let tng;
+                for (tng = 0; tng < tNGroups.length; tng++) {
+
+                    function createGroupOption() {
+                        let button = document.createElement("div");
+                        let label = document.createElement("div");
+                        let checker = document.createElement("div");
+                        button.appendChild(label);
+                        button.appendChild(checker);
+                        button.classList.add("a-button", "as-list");
+                        label.classList.add("label", "full-touch");
+                        checker.classList.add("custom-check", "tick-right");
+                        label.dataset.custom = "confirmed";
+                        label.dataset.ec = "";
+                        tNGroups[tng].insertBefore(button, null);
+                    }
+
+                    //僅針對dropGroup[0]
+                    let tBtns = tNGroups[tng].querySelectorAll('.a-button');
+                    if (tBtns != null) {
+                        let t;
+                        for (t = 0; t < tBtns.length; t++) tNGroups[tng].removeChild(tBtns[t]);
+                        // 將m、n分開核對，因為m不一定等於n
+                    }
+
+                    let mBtns = mGroups[tng].querySelectorAll('.a-button');
+                    let m;
+                    for (m = 0; m < mBtns.length; m++) createGroupOption(m + 1);
+                    let tNewBtns = tNGroups[tng].querySelectorAll('.a-button');
+
+                    let tLabels = tNGroups[tng].querySelectorAll('.label');
+                    let mLabels = mGroups[tng].querySelectorAll('.label');
+                    for (m = 0; m < mBtns.length; m++) {
+                        tLabels[m].textContent = mLabels[m].textContent;
+                        tLabels[m].dataset.ec = mLabels[m].textContent;
+                    }
+
+                    // 新增 ec tab 響應區塊
+                    for (m = 0; m < mBtns.length; m++) {
+                        if (tCardBox.querySelector('[data-box=tab]') != null) {
+                            let tTabBox = tCardBox.querySelector('[data-box=tab]');
+                            let mTabBox = MASTER.querySelector('[data-box=tab]');
+                            let tTabs = tTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
+                            let mTabs = mTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
+
+                            function createTab() {
+                                let tab = document.createElement("div");
+                                let label = document.createElement("div");
+                                let counter = document.createElement("div");
+                                tab.appendChild(label);
+                                tab.appendChild(counter);
+                                tab.classList.add("a-button", "as-tab", "js-hide");
+                                label.classList.add("label", "full-touch");
+                                label.dataset.tab = "";
+                                counter.classList.add("_12px-500", "as-counts", "in-tab");
+                                tTabBox.insertBefore(tab, null);
+                            }
+
+                            for (t = 0; t < tTabs.length; t++) tTabBox.removeChild(tTabs[t]);
+                            for (m = 0; m < mTabs.length; m++) {
+                                createTab(m + 1);
+                                let mTabLabels = mTabBox.querySelectorAll('.label');
+                                let mTabCounts = mTabBox.querySelectorAll('.as-counts');
+                                let tNewLabels = tTabBox.querySelectorAll('.label');
+                                let tNewCounts = tTabBox.querySelectorAll('.as-counts');
+
+                                tNewLabels[m].dataset.tab = mTabLabels[m].dataset.tab;
+                                tNewLabels[m].textContent = mTabLabels[m].textContent;
+                                tNewCounts[m].textContent = mTabCounts[m].textContent;
+                            }
+                        }
+                    }
+
+                    // 新增 textArea 響應區塊
+                    for (m = 0; m < mBtns.length; m++) {
+                        if (tCardBox.querySelector('[data-box=textarea]') != null) {
+                            let tAreaBox = tCardBox.querySelector('[data-box=textarea]');
+                            let mAreaBox = MASTER.querySelector('[data-box=textarea]');
+                            let tTextAreas = tAreaBox.querySelectorAll('textarea');
+                            let mTextAreas = mAreaBox.querySelectorAll('textarea');
+
+                            function createTextArea() {
+                                let textArea = document.createElement('textarea');
+                                textArea.dataset.name = '';
+                                textArea.maxlength = '5000';
+                                textArea.name = '';
+                                textArea.id = '';
+                                textArea.placeholder = '';
+                                textArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'w-input');
+                                tAreaBox.insertBefore(textArea, null);
+                            }
+
+                            for (t = 0; t < tTextAreas.length; t++) tAreaBox.removeChild(tTextAreas[t]);
+                            for (m = 0; m < mTextAreas.length; m++) {
+                                createTextArea(m + 1);
+                                let tNewTextAreas = tAreaBox.querySelectorAll('textarea');
+                                tNewTextAreas[m].dataset.name = mTextAreas[m].dataset.name;
+                                tNewTextAreas[m].name = mTextAreas[m].name;
+                                tNewTextAreas[m].id = mTextAreas[m].id;
+                                tNewTextAreas[m].placeholder = mTextAreas[m].placeholder;
+                                tNewTextAreas[m].value = mTextAreas[m].value;
+                            }
+                        }
+                    }
+
+                    // 同步mBtns「勾選狀態」至全部tBtns（包含ec、size）
+                    for (m = 0; m < mBtns.length; m++) {
+                        if (mBtns[m].querySelector('.custom-check').classList.contains('js-selected')) {
+                            tNewBtns[m].querySelector('.custom-check').classList.add('js-selected');
+                        }
+                    }
+
+                    // !!!步驟重複
+                    let mTabGroup = MASTER.querySelector('[data-group=ecTabs]');
+                    let mEcChecks = mTabGroup.querySelectorAll('.custom-check');
+                    let mec
+                    for (mec = 0; mec < mEcChecks.length; mec++) {
+                        if (mEcChecks[mec].classList.contains('js-selected')) {
+                            let tTabBox = tCardBox.querySelector('[data-box=tab]');
+                            let tTabs = tTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
+                            tTabs[mec].classList.add('js-show');
+                            let shownTabs = tTabBox.querySelectorAll('.a-button.as-tab.js-show:not(.indicator)');
+                            shownTabs[0].style.opacity = "1";
+                            let indicator = tTabBox.querySelector('.indicator');
+                            indicator.style.display = 'block';
+
+                            tNGroups[1].classList.add('js-show'); //tNGroups[0]=ecTabs
+                            tNGroups[tNGroups.length - 1].classList.remove('js-show');
+
+                            let tTextareas = tCardBox.querySelectorAll('textarea');
+                            tTextareas[0].classList.add('js-show');
+                        }
+                    }
+                }
+            }
+        }
+    })
+}
+
 //Global general dropdown behaviours
 var dropCards = document.querySelectorAll(".drop-card");
 for (const dropCard of dropCards) {
@@ -782,253 +1099,5 @@ for (const dropCard of dropCards) {
         // }
     }); //end of dropCard click event
 } //end of dropCard loop
-
-//tab + indicator 響應
-let tabBoxs = document.querySelectorAll("[data-box=tab]");
-for (const tabBox of tabBoxs) {
-    tabBox.addEventListener("click", (e) => {
-        let target = e.target;
-        let tBox = target.parentElement.parentElement;
-        let indicator = tBox.querySelector(".indicator"); //! 不需要使用target.querySelector
-        let shownTabs = tBox.querySelectorAll(".a-button.js-show");
-        let tabLength = shownTabs.length;
-
-        for (const shownTab of shownTabs) {
-            // ec tab 點擊響應
-            if (target.dataset.tab != null) {
-                shownTab.style.opacity = "0.5";
-                target.parentElement.style.opacity = "1";
-
-                let tCol = target.parentElement.parentElement.parentElement;
-                let tDropGroups =
-                    tCol.nextElementSibling.querySelectorAll(".drop-group");
-                for (const tDropGroup of tDropGroups) {
-                    tDropGroup.classList.remove("js-show");
-                    if (tDropGroup.dataset.group === target.dataset.tab) {
-                        tDropGroup.classList.add("js-show");
-                    }
-                }
-                let tTextAreas =
-                    tCol.nextElementSibling.querySelectorAll(".as-textarea");
-                for (const tTextArea of tTextAreas) {
-                    tTextArea.classList.remove("js-show");
-                    let areaName = tTextArea.dataset.name;
-                    // console.log(areaName.slice(0,areaName.length-2));
-                    //去除textArea序號以核對
-                    if (areaName.slice(0, areaName.length - 2) === target.dataset.tab) {
-                        tTextArea.classList.add("js-show");
-                    }
-                }
-
-                //tab 切換 -> indicator移動
-                for (i = 0; i < tabLength; i++) {
-                    let topV = i * 36 + "px";
-                    if (shownTabs[i] == target.parentElement) {
-                        indicator.style.top = topV;
-                    }
-                }
-            }
-        } // end of shownTab loop
-    }); //end of ecTabsCol click event
-} //end of ecTabsCol loop
-
-//dropdown hinter提示
-window.addEventListener("load", () => {
-    let dropInputs = document.querySelectorAll(".input.dropdown");
-    for (const dropInput of dropInputs) {
-        if (dropInput.dataset.name.includes("S-count2")) {
-            dropInput.classList.add("unclickable");
-        }
-    }
-});
-
-document.addEventListener("click", () => {
-    let hinters = document.querySelectorAll(".empty-hinter");
-
-    for (const hinter of hinters) {
-        let tDropOptions = hinter.parentElement.querySelectorAll(".js-selected");
-        if (tDropOptions.length == 0) {
-            hinter.style.display = "block";
-
-            let colR =
-                hinter.parentElement.parentElement.parentElement.nextElementSibling;
-            let inputR = colR.querySelector(".input.dropdown");
-            inputR.classList.add("unclickable");
-        } else {
-            hinter.style.display = "none";
-
-            let colR =
-                hinter.parentElement.parentElement.parentElement.nextElementSibling;
-            let inputR = colR.querySelector(".input.dropdown");
-            inputR.classList.remove("unclickable");
-        }
-    }
-}); //end of dropdown hinter提示
-
-//快速套用主案型
-let thunders = document.querySelectorAll('._12px-500.thunder');
-for (const thunder of thunders) {
-    thunder.addEventListener('click', (e) => {
-        let target = e.target;
-        let tBtn = target.parentElement;
-        let tShape = target.nextElementSibling;
-        let tCardBox = target.parentElement.parentElement.parentElement.parentElement; //.thunder-apply 位於card-cap
-        let tTextAreas = tCardBox.querySelectorAll('textarea');
-
-        let tSwiped = tCardBox.parentElement;
-        let MASTER = tSwiped.querySelectorAll('.card-box')[0];
-        let mTextAreas = MASTER.querySelectorAll('textarea');
-        let keyName = MASTER.querySelector('[data-name]').dataset.name;
-
-        for (const tTextArea of tTextAreas) {
-            for (const mTextArea of mTextAreas) {
-
-                //分為三種區塊進行核對
-                if (keyName.includes('C-')) {
-                    //@Copywright區塊
-                    console.log('@Copywright');
-                    tTextArea.value = mTextArea.value;
-                    let tTxtInputs = tCardBox.querySelectorAll('input[type=text]');
-                    let mTxtInputs = MASTER.querySelectorAll('input[type=text]');
-                    for (const tTxtInput of tTxtInputs) {
-                        for (const mTxtInput of mTxtInputs) {
-                            let tName = tTxtInput.dataset.name;
-                            let mName = mTxtInput.dataset.name;
-                            if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
-                                tTxtInput.value = mTxtInput.value;
-                            }
-                        }
-                    }
-                } else if (keyName.includes('P-')) {
-                    //@Product區塊
-                    //textArea Sync
-                    tTextArea.value = mTextArea.value;
-                    //dropOption Sync
-                    // clone();
-                    mirror();
-
-
-                } else if (keyName.includes('S-')) {
-                    //@Size區塊
-                    //textArea Sync
-                    let tName = tTextArea.dataset.name;
-                    let mName = mTextArea.dataset.name;
-                    if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
-                        tTextArea.value = mTextArea.value;
-                    }
-                    //dropOption Sync
-                    mirror();
-
-
-                }
-            }
-        }
-
-        function clone() {
-            function cloning() {
-                let button = document.createElement("div");
-                let label = document.createElement("div");
-                let checker = document.createElement("div");
-                button.appendChild(label);
-                button.appendChild(checker);
-                button.classList.add("a-button", "as-list");
-                label.classList.add("label", "full-touch");
-                checker.classList.add("custom-check", "tick-right", "js-selected");
-                label.dataset.custom = "confirmed";
-
-                let tDropGroups = tCardBox.querySelectorAll('.drop-group');
-                tDropGroups[0].insertBefore(button, null)
-            };
-
-            let mFirstGroup = MASTER.querySelector('.drop-group');
-            let mCount = mFirstGroup.querySelectorAll('.a-button').length;
-            let i;
-            for (i = 0; i < mCount; i++) cloning(i);
-        }
-
-        function mirror() {
-            let tGroups = tCardBox.querySelectorAll('[data-group]');
-            let mGroups = MASTER.querySelectorAll('[data-group]');
-            let g;
-            for (g = 0; g < mGroups.length; g++) {
-                let tGroupName = tGroups[g].dataset.group;
-                let mGroupName = mGroups[g].dataset.group;
-                if (tGroupName == mGroupName) {
-                    mirroring();
-                } else if (tGroupName.charAt(0) == mGroupName.charAt(0)) { //依據#Product 區塊的drop-group data-group命名方式
-                    mirroring();
-                }
-
-                function mirroring() {
-                    function createGroupOption() {
-                        let button = document.createElement("div");
-                        let label = document.createElement("div");
-                        let checker = document.createElement("div");
-                        button.appendChild(label);
-                        button.appendChild(checker);
-                        button.classList.add("a-button", "as-list");
-                        label.classList.add("label", "full-touch");
-                        checker.classList.add("custom-check", "tick-right");
-                        label.dataset.custom = "confirmed";
-                        tGroups[g].insertBefore(button, null);
-                    }
-                    let m;
-                    let t;
-                    let mBtns = mGroups[g].querySelectorAll('.a-button');
-                    let tBtns = tGroups[g].querySelectorAll('.a-button');
-
-                    if (mBtns != null) {
-                        for (t = 0; t < tBtns.length; t++) tGroups[g].removeChild(tBtns[t]);
-                        // 將m、n分開核對，因為m不一定等於n
-                        for (m = 0; m < mBtns.length; m++) {
-                            createGroupOption(m + 1);
-                            let tLabels = tGroups[g].querySelectorAll('.label');
-                            let mLabels = mGroups[g].querySelectorAll('.label');
-                            tLabels[m].textContent = mLabels[m].textContent;
-                            if (mLabels[m].nextElementSibling.classList.contains('js-selected')) {
-                                tLabels[m].nextElementSibling.classList.add('js-selected');
-
-                                // ec tab 響應區塊
-                                if (tCardBox.querySelector('[data-box=tab]') != null) {
-                                    let tTabBox = tCardBox.querySelector('[data-box=tab]');
-                                    let mTabBox = MASTER.querySelector('[data-box=tab]');
-                                    let tTabs = tTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
-                                    let mTabs = mTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
-
-                                    function createTab() {
-                                        let tab = document.createElement("div");
-                                        let label = document.createElement("div");
-                                        let counter = document.createElement("div");
-                                        tab.appendChild(label);
-                                        tab.appendChild(counter);
-                                        tab.classList.add("a-button", "as-tab", "js-hide");
-                                        label.classList.add("label", "full-touch");
-                                        label.dataset.tab = "";
-                                        counter.classList.add("_12px-500", "as-counts", "in-tab");
-                                        tTabBox.insertBefore(tab, null);
-                                    }
-
-                                    for (t = 0; t < tTabs.length; t++) tTabBox.removeChild(tTabs[t]);
-                                    for (m = 0; m < mTabs.length; m++) {
-                                        createTab(m + 1);
-                                        let mTabLabels = mTabBox.querySelectorAll('.label');
-                                        let mTabCounts = mTabBox.querySelectorAll('.as-counts');
-                                        let tNewLabels = tTabBox.querySelectorAll('.label');
-                                        let tNewCounts = tTabBox.querySelectorAll('.as-counts');
-
-                                        tNewLabels[m].dataset.tab = mTabLabels[m].dataset.tab;
-                                        tNewLabels[m].textContent = mTabLabels[m].textContent;
-                                        tNewCounts[m].textContent = mTabCounts[m].textContent;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-    })
-}
 
 // ----------------------------------------------------------------------------------------------------
