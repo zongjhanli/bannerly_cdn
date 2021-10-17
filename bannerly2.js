@@ -267,11 +267,13 @@ document.addEventListener("click", (e) => {
         }
 
         if (target.dataset.custom == "pending") {
-            revealAll();
             confirmAppended();
+            revealAll();
             if (tInput.dataset.drop == "ec") {
                 newTab();
             }
+        } else if (target.dataset.select == 'true') {
+            revealAll();
         }
 
         // ec drop option 點擊響應 -> 預設第一個tab以及相關dropGroup, textArea顯現
@@ -282,9 +284,10 @@ document.addEventListener("click", (e) => {
             let tSizeInput = tDPBox.parentElement.parentElement.parentElement.querySelectorAll('.input.dropdown')[1];
 
             if (shownTabs.length != 0) {
-                let tabName = shownTabs[0].firstElementChild.dataset.tab;
 
                 for (const shownTab of shownTabs) {
+                    let tabName = shownTabs[0].firstElementChild.dataset.tab;
+
                     //ec tab indicator 顯示/隱藏條件
                     let tabLength = shownTabs.length;
                     if (tabLength > 0) {
@@ -294,8 +297,8 @@ document.addEventListener("click", (e) => {
                     }
 
                     //每次選取/取消選取，tabBox重新更新「第一個」tab以及相關dropGroup, textArea顯現
-                    shownTab.style.color = "rgba(135, 48, 35, 0.5)";
-                    shownTabs[0].style.color = "rgba(135, 48, 35, 1)";
+                    shownTab.style.color = "rgba(47, 90, 58, 0.5)";
+                    shownTabs[0].style.color = "rgba(47, 90, 58, 1)";
                     let tDropGroups =
                         colL.nextElementSibling.querySelectorAll(".drop-group");
                     for (const tDropGroup of tDropGroups) {
@@ -313,8 +316,9 @@ document.addEventListener("click", (e) => {
                             tTextArea.classList.add("js-show");
                         }
                     }
+
+                    tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
                 }
-                tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
             } else if (shownTabs.length == 0) {
                 tSizeInput.placeholder = '請輸入尺寸';
             }
@@ -418,33 +422,36 @@ document.addEventListener("click", (e) => {
 
         //刪除案型 (將指定刪除的案型及其相聯的card-box隱藏起來)
         if (target.classList.contains("js-remove")) {
-            let serial =
-                target.previousElementSibling.previousElementSibling.textContent.charAt(
-                    3
-                );
-            serial -= 1;
-            let shownCards = section.querySelectorAll(".card-box");
-            shownCards[serial].classList.add("js-hide");
-            shownCards[serial].dataset.handle = "false";
-            shownCards[0].style.transform = "rotateY(0deg)";
-            shownCards[0].style.opacity = "1";
-            shownCards[0].classList.remove("js-hide");
-            shownCards[0].dataset.handle = "true";
+            let allRemoveBtns = target.parentElement.parentElement.querySelectorAll('.js-remove');
+            if (target != allRemoveBtns[0]) { //第一個案型不可刪除
+                let serial =
+                    target.previousElementSibling.previousElementSibling.textContent.charAt(
+                        3
+                    );
+                serial -= 1;
+                let shownCards = section.querySelectorAll(".card-box");
+                shownCards[serial].classList.add("js-hide");
+                shownCards[serial].dataset.handle = "false";
+                shownCards[0].style.transform = "rotateY(0deg)";
+                shownCards[0].style.opacity = "1";
+                shownCards[0].classList.remove("js-hide");
+                shownCards[0].dataset.handle = "true";
 
-            disableAllSwipers();
-            shownSwipers[0].classList.add("js-active");
-            shownSwipers[0].querySelector(".swiper-indicator").style.height = "4px";
-            shownSwipers[0].classList.remove("js-hide");
-            shownSwipers[0].dataset.handle = "true";
+                disableAllSwipers();
+                shownSwipers[0].classList.add("js-active");
+                shownSwipers[0].querySelector(".swiper-indicator").style.height = "4px";
+                shownSwipers[0].classList.remove("js-hide");
+                shownSwipers[0].dataset.handle = "true";
 
-            target.parentElement.classList.remove("js-active");
-            target.parentElement.querySelector(".swiper-indicator").style.height =
-                "0px";
-            target.parentElement.classList.add("js-hide");
-            target.parentElement.dataset.handle = "false";
+                target.parentElement.classList.remove("js-active");
+                target.parentElement.querySelector(".swiper-indicator").style.height =
+                    "0px";
+                target.parentElement.classList.add("js-hide");
+                target.parentElement.dataset.handle = "false";
 
-            let swiped = section.querySelector(".swiped");
-            swiped.style.marginLeft = "0px"; //swiped視窗推至最左邊
+                let swiped = section.querySelector(".swiped");
+                swiped.style.marginLeft = "0px"; //swiped視窗推至最左邊
+            }
         }
 
         //新增or刪除案型「之後」產生案型編號
@@ -452,7 +459,7 @@ document.addEventListener("click", (e) => {
         for (i = 0; i < shownSwipers.length; i++) {
             let n = i + 1;
             shownSwipers[i].firstElementChild.textContent = "案型 " + n;
-            // !!無法同步數值
+            // !!無法同步數值至capTitle
             // let shownBoxes = section.querySelectorAll('.card-box[data-handle=true]');
             // let m = shownSwipers[i].firstElementChild.textContent.charAt(3);
             // let capTitle = shownBoxes[i].querySelector('.cap-title');
@@ -555,8 +562,7 @@ document.addEventListener("click", (e) => {
             swiperOption.style.backgroundColor = "transparent";
         }
     }
-}); //end of document click
-//end of @form-apply 案型增減響應
+}); //end of @form-apply 案型增減響應
 
 //input輸入時/輸入後響應
 let dropInputs = document.querySelectorAll(".input.dropdown");
@@ -666,8 +672,8 @@ for (const tabBox of tabBoxs) {
         for (const shownTab of shownTabs) {
             // ec tab 點擊響應
             if (target.dataset.tab != null) {
-                shownTab.style.color = "rgba(135, 48, 35, 0.5)";
-                target.parentElement.style.color = "rgba(135, 48, 35, 1)";
+                shownTab.style.color = "rgba(47, 90, 58, 0.5)";
+                target.parentElement.style.color = "rgba(47, 90, 58, 1)";
 
                 let tCol = target.parentElement.parentElement.parentElement;
                 let tDropGroups =
@@ -678,6 +684,13 @@ for (const tabBox of tabBoxs) {
                         tDropGroup.classList.add("js-show");
                     }
                 }
+
+                let tabName = shownTab.firstElementChild.dataset.tab;
+                let tSizeInput = tCol.nextElementSibling.querySelector('[data-dropfor=size]');
+                if (target == shownTab.firstElementChild) {
+                    tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
+                }
+
                 let tTextAreas =
                     tCol.nextElementSibling.querySelectorAll(".as-textarea");
                 for (const tTextArea of tTextAreas) {
@@ -702,6 +715,8 @@ for (const tabBox of tabBoxs) {
     }); //end of ecTabsCol click event
 } //end of ecTabsCol loop
 
+
+//@form-apply hinter 響應
 //dropdown hinter提示
 window.addEventListener("load", () => {
     let dropInputs = document.querySelectorAll(".input.dropdown");
@@ -713,7 +728,7 @@ window.addEventListener("load", () => {
 });
 
 document.addEventListener("click", () => {
-    let hinters = document.querySelectorAll(".hinter-box");
+    let hinters = document.querySelectorAll(".hinter-box.for-ec");
 
     for (const hinter of hinters) {
         let tDropOptions = hinter.parentElement.querySelectorAll(".js-selected");
@@ -734,6 +749,181 @@ document.addEventListener("click", () => {
         }
     }
 }); //end of dropdown hinter提示
+
+//其他hinter提示
+window.addEventListener("load", () => {
+    let hinters = document.querySelectorAll(".hinter-box.in-card, .hinter-box.for-swiper");
+    for (const hinter of hinters) {
+        hinter.style.display = 'none';
+    }
+
+    //預設日期txtInput.value =""
+    let dateInput = document.querySelector('.date-input');
+    dateInput.value = "";
+});
+
+//swiper hinter 響應
+let removeBtn = document.querySelectorAll('.swiper .js-remove');
+removeBtn[0].addEventListener("click", () => {
+    let swprHinter = document.querySelector(".hinter-box.for-swiper");
+    swprHinter.style.display = "block";
+    swprHinter.classList.add("js-shake");
+    setTimeout(function() {
+        swprHinter.classList.remove("js-shake");
+    }, 200);
+    setTimeout(function() {
+        swprHinter.style.display = "none";
+    }, 2000);
+});
+
+//in-card hinter 響應
+let nextBtns = document.querySelectorAll('[data-next], .submit.w-button');
+for (const nextBtn of nextBtns) {
+    nextBtn.addEventListener("click", () => {
+        let tSection = nextBtn.parentElement.parentElement;
+        if (tSection.id == 'Info' || tSection.id == 'Visual' || tSection.id == 'Submit') {
+            let fBlocks = tSection.querySelectorAll('.f-block');
+            let f;
+            for (f = 0; f < fBlocks.length; f++) {
+                if (tSection.id == 'Info') {
+                    txtInputCheck();
+                    radioInputCheck();
+                } else if (tSection.id == 'Visual') {
+                    radioInputCheck();
+                } else if (tSection.id == 'Submit') {
+                    console.log('submit')
+                    txtInputCheck();
+                    txtAreaCheck();
+                }
+
+                function txtInputCheck() {
+                    if (fBlocks[f].querySelector('input[type=text]:not(.js-length-10)') && //若有txtInput未填寫
+                        fBlocks[f].querySelector('input[type=text]').value == "") {
+                        fBlocks[f].querySelector('.hinter-box').style.display = 'block';
+                    }
+                }
+
+                function radioInputCheck() {
+                    if (fBlocks[f].querySelector('input[type=radio]') && //若radio Input全無勾選
+                        !fBlocks[f].querySelector('.w--redirected-checked')) {
+                        fBlocks[f].querySelector('.hinter-box').style.display = 'block';
+                    }
+                }
+
+                function txtAreaCheck() {
+                    if (fBlocks[f].querySelector('textarea') && //若textArea未填寫
+                        fBlocks[f].querySelector('textarea').value == "") {
+                        fBlocks[f].querySelector('.hinter-box').style.display = 'block';
+                    }
+                }
+            }
+        } else if (tSection.id == 'Copywright' || tSection.id == 'Product' || tSection.id == 'Size') {
+            let swipeds = document.querySelectorAll('.swiped');
+            let cardBoxes = tSection.querySelectorAll('.card-box:not(.js-hide)'); //必須屬於可操作案型
+            let c;
+            for (c = 0; c < cardBoxes.length; c++) {
+                if (tSection.id == 'Copywright') {
+                    txtAreaCheck();
+                    swipeTo();
+                }
+                if (tSection.id == 'Product') {
+                    txtAreaCheck();
+                    swipeForProduct();
+                }
+                if (tSection.id == 'Size') {
+                    sizeCheck();
+                    swipeForSize();
+                }
+
+                function swiping() {
+                    let swipers = document.querySelectorAll('.a-button.for-swiper[data-handle=true]');
+                    for (const swiper of swipers) {
+                        let indicator = swiper.querySelector('.swiper-indicator');
+                        swiper.classList.remove('js-active');
+                        indicator.style.height = "0px";
+                        swipers[c].classList.add('js-active');
+                        swipers[c].querySelector('.swiper-indicator').style.height = "4px";
+                    }
+
+                    for (const swiped of swipeds) {
+                        swiped.style.marginLeft = "-" + 688 * 2 * c + "px";
+                        let cardBoxes = swiped.querySelectorAll('.card-box:not(.js-hide)'); //重新定義carBox為全頁物件
+                        cardBoxes[c].style.transform = "rotateY(0deg)";
+                        cardBoxes[c].style.opacity = "1";
+                        if (cardBoxes[c + 1]) {
+                            cardBoxes[c + 1].style.transform = "rotateY(-80deg)";
+                            cardBoxes[c + 1].style.opacity = "0";
+                        }
+                        if (cardBoxes[c - 1]) {
+                            cardBoxes[c - 1].style.transform = "rotateY(80deg)";
+                            cardBoxes[c - 1].style.opacity = "0";
+                        }
+                    }
+                }
+
+                function swipeForProduct() {
+                    let allHinters = tSection.querySelectorAll('.hinter-box');
+                    if (allHinters[c].style.display == 'block') {
+                        allHinters[c].dataset.shown = 'true';
+                    }
+                    let shownHinters = tSection.querySelectorAll('.hinter-box[data-shown=true]');
+
+                    if (shownHinters[0] == allHinters[c]) {
+                        swiping();
+                    }
+                }
+
+                function swipeForSize() {
+                    let allHinters = tSection.querySelectorAll('.hinter-box');
+                    for (const allHinter of allHinters) {
+                        if (allHinter.style.display == 'block') {
+                            allHinter.dataset.shown = 'true';
+                        }
+                    }
+                    let shownHinters = tSection.querySelectorAll('.hinter-box[data-shown=true]');
+                    let colLs = tSection.querySelectorAll('.col-left');
+                    if (shownHinters[0].parentElement.parentElement.parentElement === colLs[c] ||
+                        shownHinters[0].parentElement.parentElement.parentElement.parentElement === colLs[c]) { //判斷S-count1序號，並考量ecDrop hinter以及sizeTab hinter兩種情形
+                        console.log(c);
+                        console.log(shownHinters[0]);
+                        swiping();
+                    }
+                }
+
+                function txtAreaCheck() {
+                    if (cardBoxes[c].querySelector('textarea') && //若textArea(主標)未填寫
+                        cardBoxes[c].querySelector('textarea').value == "") {
+                        cardBoxes[c].querySelector('.hinter-box').style.display = 'block';
+                    }
+                }
+
+                function sizeCheck() {
+                    let sizeTabs = cardBoxes[c].querySelectorAll('.a-button.as-tab:not(.indicator)');
+                    for (const sizeTab of sizeTabs) {
+                        if (sizeTab.querySelector('.as-counts').textContent == "0") { //若有通路未選尺寸，需要創造hinter-box
+                            let hinterBox = document.createElement('div');
+                            let hinterLabel = document.createElement('div');
+                            let hinterTriangle = document.createElement('div');
+                            hinterBox.classList.add('hinter-box', 'in-card', 'lower-pos');
+                            hinterLabel.classList.add('_12px-500', 'for-hinter');
+                            hinterTriangle.classList.add('hinter-triangle', 'in-card');
+                            hinterBox.appendChild(hinterLabel);
+                            hinterBox.appendChild(hinterTriangle);
+                            hinterBox.dataset.shown = 'true';
+                            hinterLabel.textContent = '尺寸未選';
+                            sizeTab.insertBefore(hinterBox, null);
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    function pass() {
+        console.log('pass');
+    }
+}
+
 
 //快速套用主案型
 let thunders = document.querySelectorAll('._12px-500.thunder');
@@ -914,10 +1104,10 @@ for (const thunder of thunders) {
 
                             function createTextArea() {
                                 let textArea = document.createElement('textarea');
-                                textArea.dataset.name = '';
+                                textArea.dataset.name = 'txtArea' + m;
                                 textArea.maxlength = '5000';
-                                textArea.name = '';
-                                textArea.id = '';
+                                textArea.name = 'txtArea' + m;
+                                textArea.id = 'txtArea' + m;
                                 textArea.placeholder = '';
                                 textArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'w-input');
                                 tAreaBox.insertBefore(textArea, null);
@@ -928,12 +1118,11 @@ for (const thunder of thunders) {
                                 createTextArea(m + 1);
                                 let tNewTextAreas = tAreaBox.querySelectorAll('textarea');
                                 let tStrLength = tTextAreas[0].dataset.name.length;
-                                let mStrLength = mTextAreas[0].dataset.name.length;
+                                let mStrLength = mTextAreas[m].dataset.name.length;
                                 let tSerial = tTextAreas[0].dataset.name.slice(tStrLength - 2, tStrLength);
                                 tNewTextAreas[m].dataset.name = mTextAreas[m].dataset.name.slice(0, mStrLength - 2) + tSerial;
                                 tNewTextAreas[m].name = mTextAreas[m].name.slice(0, mStrLength - 2) + tSerial;
                                 tNewTextAreas[m].id = mTextAreas[m].id.slice(0, mStrLength - 2) + tSerial;
-                                tNewTextAreas[m].placeholder = mTextAreas[m].placeholder;
                                 tNewTextAreas[m].value = mTextAreas[m].value;
                             }
                         }
@@ -956,7 +1145,7 @@ for (const thunder of thunders) {
                             let tTabs = tTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
                             tTabs[mec].classList.add('js-show');
                             let shownTabs = tTabBox.querySelectorAll('.a-button.as-tab.js-show:not(.indicator)');
-                            shownTabs[0].style.color = "rgba(135, 48, 35, 1)";
+                            shownTabs[0].style.color = "rgba(47, 90, 58, 1)";
                             let indicator = tTabBox.querySelector('.indicator');
                             indicator.style.display = 'block';
                             indicator.style.top = '0px';
