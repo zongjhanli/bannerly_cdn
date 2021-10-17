@@ -70,7 +70,9 @@ comment前綴說明:
     border-radius: 16px;
 }
 
+
 /* @Form-apply --- dropdown hinter 醒目提示動畫 */
+
 .empty-hinter.js-shake {
     transform-origin: 50% 50%;
     animation-name: shake;
@@ -155,4 +157,9 @@ comment前綴說明:
 
 .a-anchor.w--current>.anch-pipe>.anch-drip {
     display: block;
+}
+
+.swiper {
+    /* top 位置 = [畫心] + [cardBox height/2] + [cardBox margin-bttm/2] */
+    top: calc(50vh + 201px + 40px);
 }
