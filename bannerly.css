@@ -73,7 +73,7 @@ comment前綴說明:
 
 /* @Form-apply --- dropdown hinter 醒目提示動畫 */
 
-.empty-hinter.js-shake {
+.hinter-box.js-shake {
     transform-origin: 50% 50%;
     animation-name: shake;
     animation-duration: 0.2s;
