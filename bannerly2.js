@@ -1059,74 +1059,76 @@ for (const thunder of thunders) {
                     }
 
                     // 新增 ec tab 響應區塊
-                    for (m = 0; m < mBtns.length; m++) {
-                        if (tCardBox.querySelector('[data-box=tab]') != null) {
-                            let tTabBox = tCardBox.querySelector('[data-box=tab]');
-                            let mTabBox = MASTER.querySelector('[data-box=tab]');
-                            let tTabs = tTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
-                            let mTabs = mTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
+                    // for (m = 0; m < mBtns.length; m++) {
+                    if (tCardBox.querySelector('[data-box=tab]') != null) {
+                        let tTabBox = tCardBox.querySelector('[data-box=tab]');
+                        let mTabBox = MASTER.querySelector('[data-box=tab]');
+                        let tTabs = tTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
+                        let mTabs = mTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
 
-                            function createTab() {
-                                let tab = document.createElement("div");
-                                let label = document.createElement("div");
-                                let counter = document.createElement("div");
-                                tab.appendChild(label);
-                                tab.appendChild(counter);
-                                tab.classList.add("a-button", "as-tab", "js-hide");
-                                label.classList.add("label", "full-touch");
-                                label.dataset.tab = "";
-                                counter.classList.add("_12px-500", "as-counts", "in-tab");
-                                tTabBox.insertBefore(tab, null);
-                            }
+                        function createTab() {
+                            let tab = document.createElement("div");
+                            let label = document.createElement("div");
+                            let counter = document.createElement("div");
+                            tab.appendChild(label);
+                            tab.appendChild(counter);
+                            tab.classList.add("a-button", "as-tab", "js-hide");
+                            label.classList.add("label", "full-touch");
+                            label.dataset.tab = "";
+                            counter.classList.add("_12px-500", "as-counts", "in-tab");
+                            tTabBox.insertBefore(tab, null);
+                        }
 
-                            for (t = 0; t < tTabs.length; t++) tTabBox.removeChild(tTabs[t]);
-                            for (m = 0; m < mTabs.length; m++) {
-                                createTab(m + 1);
-                                let mTabLabels = mTabBox.querySelectorAll('.label');
-                                let mTabCounts = mTabBox.querySelectorAll('.as-counts');
-                                let tNewLabels = tTabBox.querySelectorAll('.label');
-                                let tNewCounts = tTabBox.querySelectorAll('.as-counts');
+                        for (t = 0; t < tTabs.length; t++) tTabBox.removeChild(tTabs[t]);
+                        for (m = 0; m < mTabs.length; m++) {
+                            createTab(m + 1);
+                            let mTabLabels = mTabBox.querySelectorAll('.label');
+                            let mTabCounts = mTabBox.querySelectorAll('.as-counts');
+                            let tNewLabels = tTabBox.querySelectorAll('.label');
+                            let tNewCounts = tTabBox.querySelectorAll('.as-counts');
 
-                                tNewLabels[m].dataset.tab = mTabLabels[m].dataset.tab;
-                                tNewLabels[m].textContent = mTabLabels[m].textContent;
-                                tNewCounts[m].textContent = mTabCounts[m].textContent;
-                            }
+                            tNewLabels[m].dataset.tab = mTabLabels[m].dataset.tab;
+                            tNewLabels[m].textContent = mTabLabels[m].textContent;
+                            tNewCounts[m].textContent = mTabCounts[m].textContent;
                         }
                     }
+                    // }
 
                     // 新增 textArea 響應區塊
-                    for (m = 0; m < mBtns.length; m++) {
-                        if (tCardBox.querySelector('[data-box=textarea]') != null) {
-                            let tAreaBox = tCardBox.querySelector('[data-box=textarea]');
-                            let mAreaBox = MASTER.querySelector('[data-box=textarea]');
-                            let tTextAreas = tAreaBox.querySelectorAll('textarea');
-                            let mTextAreas = mAreaBox.querySelectorAll('textarea');
+                    // for (m = 0; m < mBtns.length; m++) {
+                    if (tCardBox.querySelector('[data-box=textarea]') != null) {
+                        let tAreaBox = tCardBox.querySelector('[data-box=textarea]');
+                        let mAreaBox = MASTER.querySelector('[data-box=textarea]');
+                        let tTextAreas = tAreaBox.querySelectorAll('textarea');
+                        let mTextAreas = mAreaBox.querySelectorAll('textarea');
 
-                            function createTextArea() {
-                                let textArea = document.createElement('textarea');
-                                textArea.dataset.name = 'txtArea' + m;
-                                textArea.maxlength = '5000';
-                                textArea.name = 'txtArea' + m;
-                                textArea.id = 'txtArea' + m;
-                                textArea.placeholder = '';
-                                textArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'w-input');
-                                tAreaBox.insertBefore(textArea, null);
-                            }
+                        for (t = 0; t < tTextAreas.length; t++) tAreaBox.removeChild(tTextAreas[t]);
+                        for (m = 0; m < mTextAreas.length; m++) createTextArea(m);
+                        for (m = 0; m < mTextAreas.length; m++) renameTextArea(m);
 
-                            for (t = 0; t < tTextAreas.length; t++) tAreaBox.removeChild(tTextAreas[t]);
-                            for (m = 0; m < mTextAreas.length; m++) {
-                                createTextArea(m + 1);
-                                let tNewTextAreas = tAreaBox.querySelectorAll('textarea');
-                                let tStrLength = tTextAreas[0].dataset.name.length;
-                                let mStrLength = mTextAreas[m].dataset.name.length;
-                                let tSerial = tTextAreas[0].dataset.name.slice(tStrLength - 2, tStrLength);
-                                tNewTextAreas[m].dataset.name = mTextAreas[m].dataset.name.slice(0, mStrLength - 2) + tSerial;
-                                tNewTextAreas[m].name = mTextAreas[m].name.slice(0, mStrLength - 2) + tSerial;
-                                tNewTextAreas[m].id = mTextAreas[m].id.slice(0, mStrLength - 2) + tSerial;
-                                tNewTextAreas[m].value = mTextAreas[m].value;
-                            }
+                        function createTextArea() {
+                            let textArea = document.createElement('textarea');
+                            textArea.dataset.name = m;
+                            textArea.maxlength = '5000';
+                            textArea.name = m;
+                            textArea.id = m;
+                            textArea.placeholder = '';
+                            textArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'w-input');
+                            tAreaBox.insertBefore(textArea, null);
+                        }
+
+                        function renameTextArea() {
+                            let tNewTextAreas = tAreaBox.querySelectorAll('textarea');
+                            let tStrLength = tTextAreas[0].dataset.name.length;
+                            let mStrLength = mTextAreas[m].dataset.name.length;
+                            let tSerial = tTextAreas[0].dataset.name.slice(tStrLength - 2, tStrLength);
+                            tNewTextAreas[m].dataset.name = mTextAreas[m].dataset.name.slice(0, mStrLength - 2) + tSerial;
+                            tNewTextAreas[m].name = mTextAreas[m].name.slice(0, mStrLength - 2) + tSerial;
+                            tNewTextAreas[m].id = mTextAreas[m].id.slice(0, mStrLength - 2) + tSerial;
+                            tNewTextAreas[m].value = mTextAreas[m].value;
                         }
                     }
+                    // }
 
                     // 同步mBtns「勾選狀態」至全部tBtns（包含ec、size）
                     for (m = 0; m < mBtns.length; m++) {
