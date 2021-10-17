@@ -252,7 +252,8 @@ document.addEventListener("click", (e) => {
             newTextArea.maxLength = '5000';
             newTextArea.dataset.name = tInput.value + serial;
             newTextArea.id = tInput.value + serial;
-            newTextArea.placeholder = "↑點按以選擇" + tInput.value + "尺寸";
+            // newTextArea.placeholder = "↑點按以選擇" + tInput.value + "尺寸";
+            newTextArea.placeholder = "";
             newTextArea.classList.add(
                 "input",
                 "as-textarea",
@@ -278,41 +279,44 @@ document.addEventListener("click", (e) => {
             let colL = tDPBox.parentElement.parentElement;
             let indicator = colL.querySelector(".indicator");
             let shownTabs = colL.querySelectorAll(".a-button.as-tab.js-show");
-            for (const shownTab of shownTabs) {
-                //ec tab indicator 顯示/隱藏條件
-                let tabLength = shownTabs.length;
-                if (tabLength > 0) {
-                    indicator.style.display = "block";
-                } else {
-                    indicator.style.display = "none";
-                }
+            let tSizeInput = tDPBox.parentElement.parentElement.parentElement.querySelectorAll('.input.dropdown')[1];
 
-                //每次選取/取消選取，tabBox重新更新「第一個」tab以及相關dropGroup, textArea顯現
-                shownTab.style.opacity = "0.5";
-                shownTabs[0].style.opacity = "1";
-                let tDropGroups =
-                    colL.nextElementSibling.querySelectorAll(".drop-group");
-                for (const tDropGroup of tDropGroups) {
-                    tDropGroup.classList.remove("js-show");
-                    if (
-                        tDropGroup.dataset.group ===
-                        shownTabs[0].firstElementChild.dataset.tab
-                    ) {
-                        tDropGroup.classList.add("js-show");
+            if (shownTabs.length != 0) {
+                let tabName = shownTabs[0].firstElementChild.dataset.tab;
+
+                for (const shownTab of shownTabs) {
+                    //ec tab indicator 顯示/隱藏條件
+                    let tabLength = shownTabs.length;
+                    if (tabLength > 0) {
+                        indicator.style.display = "block";
+                    } else {
+                        indicator.style.display = "none";
+                    }
+
+                    //每次選取/取消選取，tabBox重新更新「第一個」tab以及相關dropGroup, textArea顯現
+                    shownTab.style.color = "rgba(135, 48, 35, 0.5)";
+                    shownTabs[0].style.color = "rgba(135, 48, 35, 1)";
+                    let tDropGroups =
+                        colL.nextElementSibling.querySelectorAll(".drop-group");
+                    for (const tDropGroup of tDropGroups) {
+                        tDropGroup.classList.remove("js-show");
+                        if (tDropGroup.dataset.group === tabName) {
+                            tDropGroup.classList.add("js-show");
+                        }
+                    }
+                    let tTextAreas =
+                        colL.nextElementSibling.querySelectorAll(".as-textarea");
+                    for (const tTextArea of tTextAreas) {
+                        tTextArea.classList.remove("js-show");
+                        let areaName = tTextArea.dataset.name;
+                        if (areaName.slice(0, areaName.length - 2) === tabName) {
+                            tTextArea.classList.add("js-show");
+                        }
                     }
                 }
-                let tTextAreas =
-                    colL.nextElementSibling.querySelectorAll(".as-textarea");
-                for (const tTextArea of tTextAreas) {
-                    tTextArea.classList.remove("js-show");
-                    let areaName = tTextArea.dataset.name;
-                    if (
-                        areaName.slice(0, areaName.length - 2) ===
-                        shownTabs[0].firstElementChild.dataset.tab
-                    ) {
-                        tTextArea.classList.add("js-show");
-                    }
-                }
+                tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
+            } else if (shownTabs.length == 0) {
+                tSizeInput.placeholder = '請輸入尺寸';
             }
         }
 
@@ -462,7 +466,8 @@ document.addEventListener("click", (e) => {
 
     //點按swiper -> swiper-indicator + 全頁swiped移動
     if (
-        target.classList.contains("a-button", "for-swiper") &&
+        target.classList.contains("a-button") &&
+        target.classList.contains("for-swiper") &&
         !target.classList.contains("js-remove")
     ) {
         for (const swiperOption of swiperOptions) {
@@ -661,8 +666,8 @@ for (const tabBox of tabBoxs) {
         for (const shownTab of shownTabs) {
             // ec tab 點擊響應
             if (target.dataset.tab != null) {
-                shownTab.style.opacity = "0.5";
-                target.parentElement.style.opacity = "1";
+                shownTab.style.color = "rgba(135, 48, 35, 0.5)";
+                target.parentElement.style.color = "rgba(135, 48, 35, 1)";
 
                 let tCol = target.parentElement.parentElement.parentElement;
                 let tDropGroups =
@@ -708,7 +713,7 @@ window.addEventListener("load", () => {
 });
 
 document.addEventListener("click", () => {
-    let hinters = document.querySelectorAll(".empty-hinter");
+    let hinters = document.querySelectorAll(".hinter-box");
 
     for (const hinter of hinters) {
         let tDropOptions = hinter.parentElement.querySelectorAll(".js-selected");
@@ -951,7 +956,7 @@ for (const thunder of thunders) {
                             let tTabs = tTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
                             tTabs[mec].classList.add('js-show');
                             let shownTabs = tTabBox.querySelectorAll('.a-button.as-tab.js-show:not(.indicator)');
-                            shownTabs[0].style.opacity = "1";
+                            shownTabs[0].style.color = "rgba(135, 48, 35, 1)";
                             let indicator = tTabBox.querySelector('.indicator');
                             indicator.style.display = 'block';
                             indicator.style.top = '0px';
@@ -961,6 +966,10 @@ for (const thunder of thunders) {
 
                             let tTextareas = tCardBox.querySelectorAll('textarea');
                             tTextareas[0].classList.add('js-show');
+
+                            let tSizeInput = tCardBox.querySelectorAll('.input.dropdown')[1];
+                            let tabName = shownTabs[0].firstElementChild.dataset.tab;
+                            tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
                         }
                     }
                 }
@@ -1053,7 +1062,7 @@ for (const dropCard of dropCards) {
                 //若是點按尚未選擇通路的尺寸input
                 let colL = target.parentElement.parentElement.previousElementSibling; //in this case, target=dropdown-box
                 let ecSelected = colL.querySelectorAll(".js-selected");
-                let hinter = colL.querySelector(".empty-hinter");
+                let hinter = colL.querySelector(".hinter-box");
                 if (ecSelected.length == 0) {
                     hinter.classList.add("js-shake");
                     setTimeout(function() {
