@@ -896,7 +896,7 @@ if (window.location.href.includes('form-apply')) {
 
     //其他hinter提示
     window.addEventListener("load", () => {
-        let hinters = document.querySelectorAll(".hinter-box.in-card, .hinter-box.for-swiper");
+        let hinters = document.querySelectorAll(".hinter-box.in-card, .hinter-box.for-swiper, .hinter-box.for-thunder");
         for (const hinter of hinters) {
             hinter.style.display = 'none';
         }
@@ -1066,16 +1066,81 @@ if (window.location.href.includes('form-apply')) {
         function pass() {
             console.log('pass');
         }
+    }
+
+    //thunder hinter 響應
+    let thunderBoxes = document.querySelectorAll('.th-box');
+    for (const thunderBox of thunderBoxes) {
+        thunderBox.addEventListener('mouseenter', (e) => {
+            let target = e.target;
+            let hinter = target.querySelector('.hinter-box');
+            hinter.style.display = "block";
+        });
+        thunderBox.addEventListener('mouseleave', (e) => {
+            let target = e.target;
+            let hinter = target.querySelector('.hinter-box');
+            hinter.style.display = "none";
+        });
     } //end of @form-apply hinter 響應
 
     //快速套用主案型
-    let thunders = document.querySelectorAll('._12px-500.thunder');
-    for (const thunder of thunders) {
-        thunder.addEventListener('click', (e) => {
+    // let thunderBoxes = document.querySelectorAll('.th-box');
+    for (const thunderBox of thunderBoxes) {
+        thunderBox.addEventListener('click', (e) => {
             let target = e.target;
-            let tBtn = target.parentElement;
-            let tShape = target.nextElementSibling;
-            let tCardBox = target.parentElement.parentElement.parentElement.parentElement; //.thunder-apply 位於card-cap
+
+            //thunder 動畫
+            thundering();
+
+            function thundering() {
+                let thG1 = $('.thunder>.g-1');
+                let thG2 = $('.thunder>.g-2');
+                let thG3 = $('.thunder>.g-3');
+                let thG4 = $('.thunder>.g-4');
+                let thW1 = $('.thunder>._w-1');
+                let thW2 = $('.thunder>._w-2');
+                let thW3 = $('.thunder>._w-3');
+                let thW4 = $('.thunder>._w-4');
+                if ($('.th-box .thunder').attr('data-thunder') == "false") {
+                    $('.th-box .thunder').attr('data-thunder', 'true');
+
+                    thG1.css({
+                        'transform': 'translate(4px,4px) rotate(40deg)'
+                    });
+                    thG3.css({
+                        'transform': 'translate(-4px,-4px) rotate(40deg)'
+                    });
+                    thW1.css({
+                        'transform': 'translate(6px,6px) rotate(40deg)'
+                    });
+                    thW3.css({
+                        'transform': 'translate(-5px,-5px) rotate(40deg)'
+                    });
+                    thW2.css({
+                        'transform': 'translate(-5px,7px)'
+                    });
+                    thW4.css({
+                        'transform': 'translate(5px,-7px)'
+                    });
+                    setTimeout(function() {
+                        thW2.css({
+                            'transform': 'translate(-7px,7px)'
+                        });
+                        thW4.css({
+                            'transform': 'translate(7px,-7px)'
+                        });
+                        $('.thunder').css({
+                            'border': '1px solid rgba(255,251,204,1)'
+                        })
+                        $('.th-w').css({
+                            'backgroundColor': 'rgba(255,251,204,1)',
+                        })
+                    }, 100)
+                }
+            }
+
+            //案型套用
+            let tCardBox = target.parentElement.parentElement.parentElement; //.thunder-apply 位於card-cap
             let tTextAreas = tCardBox.querySelectorAll('textarea');
 
             let tSwiped = tCardBox.parentElement;
@@ -1089,7 +1154,6 @@ if (window.location.href.includes('form-apply')) {
                     //分為三種區塊進行核對
                     if (keyName.includes('C-')) {
                         //@Copywright區塊
-                        console.log('@Copywright');
                         tTextArea.value = mTextArea.value;
                         let tTxtInputs = tCardBox.querySelectorAll('input[type=text]');
                         let mTxtInputs = MASTER.querySelectorAll('input[type=text]');
@@ -1312,5 +1376,6 @@ if (window.location.href.includes('form-apply')) {
         })
     }
 }
+
 
 // ----------------------------------------------------------------------------------------------------
