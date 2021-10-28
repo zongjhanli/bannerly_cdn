@@ -1088,286 +1088,227 @@ if (window.location.href.includes('form-apply')) {
     for (const thunderBox of thunderBoxes) {
         thunderBox.addEventListener('click', (e) => {
             let target = e.target;
-
-            //thunder 動畫
-            thundering();
-
-            function thundering() {
-                let thG1 = $('.thunder>.g-1');
-                let thG2 = $('.thunder>.g-2');
-                let thG3 = $('.thunder>.g-3');
-                let thG4 = $('.thunder>.g-4');
-                let thW1 = $('.thunder>._w-1');
-                let thW2 = $('.thunder>._w-2');
-                let thW3 = $('.thunder>._w-3');
-                let thW4 = $('.thunder>._w-4');
-                if ($('.th-box .thunder').attr('data-thunder') == "false") {
-                    $('.th-box .thunder').attr('data-thunder', 'true');
-
-                    thG1.css({
-                        'transform': 'translate(4px,4px) rotate(40deg)'
-                    });
-                    thG3.css({
-                        'transform': 'translate(-4px,-4px) rotate(40deg)'
-                    });
-                    thW1.css({
-                        'transform': 'translate(6px,6px) rotate(40deg)'
-                    });
-                    thW3.css({
-                        'transform': 'translate(-5px,-5px) rotate(40deg)'
-                    });
-                    thW2.css({
-                        'transform': 'translate(-5px,7px)'
-                    });
-                    thW4.css({
-                        'transform': 'translate(5px,-7px)'
-                    });
-                    setTimeout(function() {
-                        thW2.css({
-                            'transform': 'translate(-7px,7px)'
-                        });
-                        thW4.css({
-                            'transform': 'translate(7px,-7px)'
-                        });
-                        $('.thunder').css({
-                            'border': '1px solid rgba(255,251,204,1)'
-                        })
-                        $('.th-w').css({
-                            'backgroundColor': 'rgba(255,251,204,1)',
-                        })
-                    }, 100)
-                }
-            }
-
-            //案型套用
             let tCardBox = target.parentElement.parentElement.parentElement; //.thunder-apply 位於card-cap
-            let tTextAreas = tCardBox.querySelectorAll('textarea');
-
             let tSwiped = tCardBox.parentElement;
             let MASTER = tSwiped.querySelectorAll('.card-box')[0];
-            let mTextAreas = MASTER.querySelectorAll('textarea');
-            let keyName = MASTER.querySelector('[data-name]').dataset.name;
 
-            for (const tTextArea of tTextAreas) {
-                for (const mTextArea of mTextAreas) {
+            if (!target.querySelector('.thunder').classList.contains('js-thunder')) {
+                //案型套用
+                let tTextAreas = tCardBox.querySelectorAll('textarea');
+                let mTextAreas = MASTER.querySelectorAll('textarea');
+                let keyName = MASTER.querySelector('[data-name]').dataset.name;
 
-                    //分為三種區塊進行核對
-                    if (keyName.includes('C-')) {
-                        //@Copywright區塊
-                        tTextArea.value = mTextArea.value;
-                        let tTxtInputs = tCardBox.querySelectorAll('input[type=text]');
-                        let mTxtInputs = MASTER.querySelectorAll('input[type=text]');
-                        for (const tTxtInput of tTxtInputs) {
-                            for (const mTxtInput of mTxtInputs) {
-                                let tName = tTxtInput.dataset.name;
-                                let mName = mTxtInput.dataset.name;
-                                if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
-                                    tTxtInput.value = mTxtInput.value;
+                //分為三種區塊進行核對
+                if (keyName.includes('C-')) {
+                    //@Copywright區塊
+                    for (const tTextArea of tTextAreas) {
+                        for (const mTextArea of mTextAreas) {
+                            tTextArea.value = mTextArea.value; //textArea Sync
+                        }
+                    }
+                    let tTxtInputs = tCardBox.querySelectorAll('input[type=text]');
+                    let mTxtInputs = MASTER.querySelectorAll('input[type=text]');
+                    for (const tTxtInput of tTxtInputs) {
+                        for (const mTxtInput of mTxtInputs) {
+                            let tName = tTxtInput.dataset.name;
+                            let mName = mTxtInput.dataset.name;
+                            if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
+                                tTxtInput.value = mTxtInput.value; //textInput Sync
+                            }
+                        }
+                    }
+                } else if (keyName.includes('P-')) {
+                    //@Product區塊
+                    for (const tTextArea of tTextAreas) {
+                        for (const mTextArea of mTextAreas) {
+                            tTextArea.value = mTextArea.value; //textArea Sync
+                        }
+                    }
+                    mirror(); //dropOption Sync
+                } else if (keyName.includes('S-')) {
+                    mirror(); //dropOption Sync
+                }
+
+                function mirror() {
+                    let tDropCards = tCardBox.querySelectorAll('.drop-card');
+                    let tGroups = tCardBox.querySelectorAll('[data-group]');
+                    let mGroups = MASTER.querySelectorAll('[data-group]');
+
+                    if (tDropCards.length == 1) { //指涉#Product區塊
+                        mirroring();
+                    } else if (tDropCards.length == 2) { //指涉#Size區塊
+                        mirroringGroups(); // 因#Size區塊可能會發生Group數量異動（新增通路時）
+                        mirroring();
+                    }
+
+                    //更新 size dropgroups
+                    function mirroringGroups() {
+                        let tg;
+                        for (tg = 1; tg < tGroups.length; tg++) {
+                            if (tGroups[tg].dataset.group != 'xxx') { //data-group=xxx是預留的.js-show，為了保持global dropdown behaviour的運作
+                                tDropCards[1].removeChild(tGroups[tg]);
+                            }
+                        }
+
+                        function createGroup() {
+                            let newGroup = document.createElement('div');
+                            newGroup.dataset.group = "";
+                            newGroup.classList.add('drop-group', 'js-hide');
+                            tDropCards[1].insertBefore(newGroup, tLeftGroups[0]); //tLeftGroups[0]=[data-group=xxx]
+                        }
+
+                        let tLeftGroups = tDropCards[1].querySelectorAll('[data-group]');
+                        let offset = mGroups.length - 1 - tLeftGroups.length; //判斷案型1比當下案型多出多少group，但須先排除ecTabs與[data-group='xxx']
+                        let o;
+                        for (o = 1; o <= offset; o++) createGroup(o);
+
+                        let tNGroups = tCardBox.querySelectorAll('[data-group]'); //若不重新定義，瀏覽器將抓取被刪除的但仍記憶著的tGroups
+                        let tng;
+                        for (tng = 0; tng < tNGroups.length; tng++) {
+                            tNGroups[tng].dataset.group = mGroups[tng].dataset.group;
+                        }
+                    }
+
+                    function mirroring() {
+                        let tNGroups = tCardBox.querySelectorAll('[data-group]');
+                        let tng;
+                        for (tng = 0; tng < tNGroups.length; tng++) {
+
+                            function createGroupOption() {
+                                let button = document.createElement("div");
+                                let label = document.createElement("div");
+                                let checker = document.createElement("div");
+                                button.appendChild(label);
+                                button.appendChild(checker);
+                                button.classList.add("a-button", "as-list");
+                                label.classList.add("label", "full-touch");
+                                checker.classList.add("custom-check", "tick-right");
+                                label.dataset.custom = "confirmed";
+                                label.dataset.ec = "";
+                                tNGroups[tng].insertBefore(button, null);
+                            }
+
+                            //僅針對dropGroup[0]
+                            let tBtns = tNGroups[tng].querySelectorAll('.a-button');
+                            if (tBtns != null) {
+                                let t;
+                                for (t = 0; t < tBtns.length; t++) tNGroups[tng].removeChild(tBtns[t]);
+                                // 將m、n分開核對，因為m不一定等於n
+                            }
+
+                            let mBtns = mGroups[tng].querySelectorAll('.a-button');
+                            let m;
+                            for (m = 0; m < mBtns.length; m++) createGroupOption(m + 1);
+                            let tNewBtns = tNGroups[tng].querySelectorAll('.a-button');
+
+                            let tLabels = tNGroups[tng].querySelectorAll('.label');
+                            let mLabels = mGroups[tng].querySelectorAll('.label');
+                            for (m = 0; m < mBtns.length; m++) {
+                                tLabels[m].textContent = mLabels[m].textContent;
+                                tLabels[m].dataset.ec = mLabels[m].textContent;
+                            }
+
+                            // 新增 textArea 響應區塊
+                            if (tCardBox.querySelector('[data-box=textarea]') != null) {
+                                let tAreaBox = tCardBox.querySelector('[data-box=textarea]');
+                                let mAreaBox = MASTER.querySelector('[data-box=textarea]');
+                                let tTextAreas = tAreaBox.querySelectorAll('textarea');
+                                let mTextAreas = mAreaBox.querySelectorAll('textarea');
+
+                                for (t = 0; t < tTextAreas.length; t++) tAreaBox.removeChild(tTextAreas[t]);
+                                for (m = 0; m < mTextAreas.length; m++) createTextArea(m);
+                                for (m = 0; m < mTextAreas.length; m++) renameTextArea(m);
+
+                                function createTextArea() {
+                                    let textArea = document.createElement('textarea');
+                                    textArea.dataset.name = m;
+                                    textArea.maxlength = '5000';
+                                    textArea.name = m;
+                                    textArea.id = m;
+                                    textArea.placeholder = '';
+                                    textArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'w-input');
+                                    tAreaBox.insertBefore(textArea, null);
+                                }
+
+                                function renameTextArea() {
+                                    let tNewTextAreas = tAreaBox.querySelectorAll('textarea');
+                                    let tStrLength = tTextAreas[0].dataset.name.length;
+                                    let mStrLength = mTextAreas[m].dataset.name.length;
+                                    let tSerial = tTextAreas[0].dataset.name.slice(tStrLength - 2, tStrLength);
+                                    tNewTextAreas[m].dataset.name = mTextAreas[m].dataset.name.slice(0, mStrLength - 2) + tSerial;
+                                    tNewTextAreas[m].name = mTextAreas[m].name.slice(0, mStrLength - 2) + tSerial;
+                                    tNewTextAreas[m].id = mTextAreas[m].id.slice(0, mStrLength - 2) + tSerial;
+                                    tNewTextAreas[m].value = mTextAreas[m].value;
                                 }
                             }
-                        }
-                    } else if (keyName.includes('P-')) {
-                        //@Product區塊
-                        //textArea Sync
-                        tTextArea.value = mTextArea.value;
-                        //dropOption Sync
-                        mirror();
-                    } else if (keyName.includes('S-')) {
-                        //@Size區塊
-                        //textArea Sync
-                        // let tName = tTextArea.dataset.name;
-                        // let mName = mTextArea.dataset.name;
-                        // if (tName.slice(0, tName.length - 2) == mName.slice(0, mName.length - 2)) {
-                        //     tTextArea.value = mTextArea.value;
-                        // }
-                        //dropOption Sync
-                        mirror();
-                    }
-                }
-            }
 
-            function mirror() {
-                let tDropCards = tCardBox.querySelectorAll('.drop-card');
-                let tGroups = tCardBox.querySelectorAll('[data-group]');
-                let mGroups = MASTER.querySelectorAll('[data-group]');
-
-                if (tDropCards.length == 1) { //指涉#Product區塊
-                    mirroring();
-                } else if (tDropCards.length == 2) { //指涉#Size區塊
-                    mirroringGroups(); // 因#Size區塊可能會發生Group數量異動（新增通路時）
-                    mirroring();
-                }
-
-                //更新 size dropgroups
-                function mirroringGroups() {
-                    let tg;
-                    for (tg = 1; tg < tGroups.length; tg++) {
-                        if (tGroups[tg].dataset.group != 'xxx') { //data-group=xxx是預留的.js-show，為了保持global dropdown behaviour的運作
-                            tDropCards[1].removeChild(tGroups[tg]);
-                        }
-                    }
-
-                    function createGroup() {
-                        let newGroup = document.createElement('div');
-                        newGroup.dataset.group = "";
-                        newGroup.classList.add('drop-group', 'js-hide');
-                        tDropCards[1].insertBefore(newGroup, tLeftGroups[0]); //tLeftGroups[0]=[data-group=xxx]
-                    }
-
-                    let tLeftGroups = tDropCards[1].querySelectorAll('[data-group]');
-                    let offset = mGroups.length - 1 - tLeftGroups.length; //判斷案型1比當下案型多出多少group，但須先排除ecTabs與[data-group='xxx']
-                    let o;
-                    for (o = 1; o <= offset; o++) createGroup(o);
-
-                    let tNGroups = tCardBox.querySelectorAll('[data-group]'); //若不重新定義，瀏覽器將抓取被刪除的但仍記憶著的tGroups
-                    let tng;
-                    for (tng = 0; tng < tNGroups.length; tng++) {
-                        tNGroups[tng].dataset.group = mGroups[tng].dataset.group;
-                    }
-                }
-
-                function mirroring() {
-                    let tNGroups = tCardBox.querySelectorAll('[data-group]');
-                    let tng;
-                    for (tng = 0; tng < tNGroups.length; tng++) {
-
-                        function createGroupOption() {
-                            let button = document.createElement("div");
-                            let label = document.createElement("div");
-                            let checker = document.createElement("div");
-                            button.appendChild(label);
-                            button.appendChild(checker);
-                            button.classList.add("a-button", "as-list");
-                            label.classList.add("label", "full-touch");
-                            checker.classList.add("custom-check", "tick-right");
-                            label.dataset.custom = "confirmed";
-                            label.dataset.ec = "";
-                            tNGroups[tng].insertBefore(button, null);
-                        }
-
-                        //僅針對dropGroup[0]
-                        let tBtns = tNGroups[tng].querySelectorAll('.a-button');
-                        if (tBtns != null) {
-                            let t;
-                            for (t = 0; t < tBtns.length; t++) tNGroups[tng].removeChild(tBtns[t]);
-                            // 將m、n分開核對，因為m不一定等於n
-                        }
-
-                        let mBtns = mGroups[tng].querySelectorAll('.a-button');
-                        let m;
-                        for (m = 0; m < mBtns.length; m++) createGroupOption(m + 1);
-                        let tNewBtns = tNGroups[tng].querySelectorAll('.a-button');
-
-                        let tLabels = tNGroups[tng].querySelectorAll('.label');
-                        let mLabels = mGroups[tng].querySelectorAll('.label');
-                        for (m = 0; m < mBtns.length; m++) {
-                            tLabels[m].textContent = mLabels[m].textContent;
-                            tLabels[m].dataset.ec = mLabels[m].textContent;
-                        }
-
-                        // 新增 ec tab 響應區塊
-                        // for (m = 0; m < mBtns.length; m++) {
-                        if (tCardBox.querySelector('[data-box=tab]') != null) {
-                            let tTabBox = tCardBox.querySelector('[data-box=tab]');
-                            let mTabBox = MASTER.querySelector('[data-box=tab]');
-                            let tTabs = tTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
-                            let mTabs = mTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
-
-                            function createTab() {
-                                let tab = document.createElement("div");
-                                let label = document.createElement("div");
-                                let counter = document.createElement("div");
-                                tab.appendChild(label);
-                                tab.appendChild(counter);
-                                tab.classList.add("a-button", "as-tab", "js-hide");
-                                label.classList.add("label", "full-touch");
-                                label.dataset.tab = "";
-                                counter.classList.add("_12px-500", "as-counts", "in-tab");
-                                tTabBox.insertBefore(tab, null);
+                            // 同步mBtns「勾選狀態」至全部tBtns（包含ec、size）
+                            for (m = 0; m < mBtns.length; m++) {
+                                if (mBtns[m].querySelector('.custom-check').classList.contains('js-selected')) {
+                                    tNewBtns[m].querySelector('.custom-check').classList.add('js-selected');
+                                }
                             }
 
-                            for (t = 0; t < tTabs.length; t++) tTabBox.removeChild(tTabs[t]);
-                            for (m = 0; m < mTabs.length; m++) {
-                                createTab(m + 1);
-                                let mTabLabels = mTabBox.querySelectorAll('.label');
-                                let mTabCounts = mTabBox.querySelectorAll('.as-counts');
-                                let tNewLabels = tTabBox.querySelectorAll('.label');
-                                let tNewCounts = tTabBox.querySelectorAll('.as-counts');
-
-                                tNewLabels[m].dataset.tab = mTabLabels[m].dataset.tab;
-                                tNewLabels[m].textContent = mTabLabels[m].textContent;
-                                tNewCounts[m].textContent = mTabCounts[m].textContent;
-                            }
-                        }
-                        // }
-
-                        // 新增 textArea 響應區塊
-                        // for (m = 0; m < mBtns.length; m++) {
-                        if (tCardBox.querySelector('[data-box=textarea]') != null) {
-                            let tAreaBox = tCardBox.querySelector('[data-box=textarea]');
-                            let mAreaBox = MASTER.querySelector('[data-box=textarea]');
-                            let tTextAreas = tAreaBox.querySelectorAll('textarea');
-                            let mTextAreas = mAreaBox.querySelectorAll('textarea');
-
-                            for (t = 0; t < tTextAreas.length; t++) tAreaBox.removeChild(tTextAreas[t]);
-                            for (m = 0; m < mTextAreas.length; m++) createTextArea(m);
-                            for (m = 0; m < mTextAreas.length; m++) renameTextArea(m);
-
-                            function createTextArea() {
-                                let textArea = document.createElement('textarea');
-                                textArea.dataset.name = m;
-                                textArea.maxlength = '5000';
-                                textArea.name = m;
-                                textArea.id = m;
-                                textArea.placeholder = '';
-                                textArea.classList.add('input', 'as-textarea', 'bulk-select', 'unclickable', 'js-hide', 'w-input');
-                                tAreaBox.insertBefore(textArea, null);
-                            }
-
-                            function renameTextArea() {
-                                let tNewTextAreas = tAreaBox.querySelectorAll('textarea');
-                                let tStrLength = tTextAreas[0].dataset.name.length;
-                                let mStrLength = mTextAreas[m].dataset.name.length;
-                                let tSerial = tTextAreas[0].dataset.name.slice(tStrLength - 2, tStrLength);
-                                tNewTextAreas[m].dataset.name = mTextAreas[m].dataset.name.slice(0, mStrLength - 2) + tSerial;
-                                tNewTextAreas[m].name = mTextAreas[m].name.slice(0, mStrLength - 2) + tSerial;
-                                tNewTextAreas[m].id = mTextAreas[m].id.slice(0, mStrLength - 2) + tSerial;
-                                tNewTextAreas[m].value = mTextAreas[m].value;
-                            }
-                        }
-                        // }
-
-                        // 同步mBtns「勾選狀態」至全部tBtns（包含ec、size）
-                        for (m = 0; m < mBtns.length; m++) {
-                            if (mBtns[m].querySelector('.custom-check').classList.contains('js-selected')) {
-                                tNewBtns[m].querySelector('.custom-check').classList.add('js-selected');
-                            }
-                        }
-
-                        // !!!步驟重複
-                        let mTabGroup = MASTER.querySelector('[data-group=ecTabs]');
-                        let mEcChecks = mTabGroup.querySelectorAll('.custom-check');
-                        let mec
-                        for (mec = 0; mec < mEcChecks.length; mec++) {
-                            if (mEcChecks[mec].classList.contains('js-selected')) {
+                            // 新增 ec tab 響應區塊
+                            if (tCardBox.querySelector('[data-box=tab]') != null) {
                                 let tTabBox = tCardBox.querySelector('[data-box=tab]');
+                                let mTabBox = MASTER.querySelector('[data-box=tab]');
                                 let tTabs = tTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
-                                tTabs[mec].classList.add('js-show');
-                                let shownTabs = tTabBox.querySelectorAll('.a-button.as-tab.js-show:not(.indicator)');
-                                shownTabs[0].style.color = "rgba(47, 90, 58, 1)";
-                                let indicator = tTabBox.querySelector('.indicator');
-                                indicator.style.display = 'block';
-                                indicator.style.top = '0px';
+                                let mTabs = mTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
 
-                                tNGroups[1].classList.add('js-show'); //tNGroups[0]=ecTabs
-                                tNGroups[tNGroups.length - 1].classList.remove('js-show');
+                                function createTab() {
+                                    let tab = document.createElement("div");
+                                    let label = document.createElement("div");
+                                    let counter = document.createElement("div");
+                                    tab.appendChild(label);
+                                    tab.appendChild(counter);
+                                    tab.classList.add("a-button", "as-tab", "js-hide");
+                                    label.classList.add("label", "full-touch");
+                                    label.dataset.tab = "";
+                                    counter.classList.add("_12px-500", "as-counts", "in-tab");
+                                    tTabBox.insertBefore(tab, null);
+                                }
 
-                                let tTextareas = tCardBox.querySelectorAll('textarea');
-                                tTextareas[0].classList.add('js-show');
+                                for (t = 0; t < tTabs.length; t++) tTabBox.removeChild(tTabs[t]);
+                                for (m = 0; m < mTabs.length; m++) {
+                                    createTab(m + 1);
+                                    let mTabLabels = mTabBox.querySelectorAll('.label');
+                                    let mTabCounts = mTabBox.querySelectorAll('.as-counts');
+                                    let tNewLabels = tTabBox.querySelectorAll('.label');
+                                    let tNewCounts = tTabBox.querySelectorAll('.as-counts');
 
-                                let tSizeInput = tCardBox.querySelectorAll('.input.dropdown')[1];
-                                let tabName = shownTabs[0].firstElementChild.dataset.tab;
-                                tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
+                                    tNewLabels[m].dataset.tab = mTabLabels[m].dataset.tab;
+                                    tNewLabels[m].textContent = mTabLabels[m].textContent;
+                                    tNewCounts[m].textContent = mTabCounts[m].textContent;
+                                }
+
+
+                                // !!!步驟重複
+                                let mTabGroup = MASTER.querySelector('[data-group=ecTabs]');
+                                let mEcChecks = mTabGroup.querySelectorAll('.custom-check');
+                                let mec
+                                for (mec = 0; mec < mEcChecks.length; mec++) {
+                                    if (mEcChecks[mec].classList.contains('js-selected')) {
+                                        let tTabBox = tCardBox.querySelector('[data-box=tab]');
+                                        let tTabs = tTabBox.querySelectorAll('.a-button.as-tab:not(.indicator)');
+                                        tTabs[mec].classList.add('js-show');
+                                        let shownTabs = tTabBox.querySelectorAll('.a-button.as-tab.js-show:not(.indicator)');
+                                        shownTabs[0].style.color = "rgba(47, 90, 58, 1)";
+                                        let indicator = tTabBox.querySelector('.indicator');
+                                        indicator.style.display = 'block';
+                                        indicator.style.top = '0px';
+
+                                        tNGroups[1].classList.add('js-show'); //tNGroups[0]=ecTabs
+                                        tNGroups[tNGroups.length - 1].classList.remove('js-show');
+
+                                        let tTextareas = tCardBox.querySelectorAll('textarea');
+                                        tTextareas[0].classList.add('js-show');
+
+                                        let tSizeInput = tCardBox.querySelectorAll('.input.dropdown')[1];
+                                        let tabName = shownTabs[0].firstElementChild.dataset.tab;
+                                        tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
+                                    }
+                                }
                             }
                         }
                     }
@@ -1375,6 +1316,96 @@ if (window.location.href.includes('form-apply')) {
             }
         })
     }
+
+    $('.th-box').click(function thundering() {
+        let thG1 = $(this).find('.g-1');
+        let thG2 = $(this).find('.g-2');
+        let thG3 = $(this).find('.g-3');
+        let thG4 = $(this).find('.g-4');
+        let thW1 = $(this).find('._w-1');
+        let thW2 = $(this).find('._w-2');
+        let thW3 = $(this).find('._w-3');
+        let thW4 = $(this).find('._w-4');
+        let thAllW = $(this).find('.th-w');
+        let thunder = $(this).find('.thunder');
+        let tBlockGroup = $(this).parentsUntil('.card-box').find('.height-318');
+
+        if (thunder.attr('data-thunder') == 'false') {
+            thunder.attr('data-thunder', 'true');
+            tBlockGroup.addClass('thunder-locked');
+
+            thG1.css({
+                'transform': 'translate(4px,4px) rotate(40deg)'
+            });
+            thG3.css({
+                'transform': 'translate(-4px,-4px) rotate(40deg)'
+            });
+            thW1.css({
+                'transform': 'translate(6px,6px) rotate(40deg)'
+            });
+            thW3.css({
+                'transform': 'translate(-5px,-5px) rotate(40deg)'
+            });
+            thW2.css({
+                'transform': 'translate(-5px,7px)'
+            });
+            thW4.css({
+                'transform': 'translate(5px,-7px)'
+            });
+            setTimeout(function() {
+                thW2.css({
+                    'transform': 'translate(-7px,7px)'
+                });
+                thW4.css({
+                    'transform': 'translate(7px,-7px)'
+                });
+                thunder.css({
+                    'border': '1px solid rgba(255,251,204,1)'
+                })
+                thAllW.css({
+                    'backgroundColor': 'rgba(255,251,204,1)',
+                })
+            }, 100)
+        } else if (thunder.attr('data-thunder') == 'true') {
+            thunder.attr('data-thunder', 'false');
+            tBlockGroup.removeClass('thunder-locked');
+
+            thG1.css({
+                'transform': 'translate(0px,0px) rotate(40deg)'
+            });
+            thG3.css({
+                'transform': 'translate(0px,0px) rotate(40deg)'
+            });
+            thW1.css({
+                'transform': 'translate(0px,0px) rotate(40deg)'
+            });
+            thW3.css({
+                'transform': 'translate(0px,0px) rotate(40deg)'
+            });
+            thW2.css({
+                'transform': 'translate(0px,0px)'
+            });
+            thW4.css({
+                'transform': 'translate(0px,0px)'
+            });
+            setTimeout(function() {
+                // thW2.css({
+                //     'transform': 'translate(7px,-7px)'
+                // });
+                // thW4.css({
+                //     'transform': 'translate(-7px,7px)'
+                // });
+                thunder.css({
+                    'border': '1px solid rgba(255,255,255,0.2)'
+                })
+                thAllW.css({
+                    'backgroundColor': 'rgba(255,255,255,0.7)',
+                })
+            }, 100)
+        }
+    })
+
+
 }
 
 
