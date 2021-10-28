@@ -171,3 +171,7 @@ textarea {
 .th-box div {
     pointer-events: none;
 }
+
+.height-318.vertical-flex.thunder-locked {
+    pointer-events: none;
+}
