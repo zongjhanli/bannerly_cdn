@@ -1184,6 +1184,7 @@ if (window.location.href.includes('form-apply')) {
                                 label.classList.add("label", "full-touch");
                                 checker.classList.add("custom-check", "tick-right");
                                 label.dataset.custom = "confirmed";
+                                label.dataset.select = "";
                                 label.dataset.ec = "";
                                 tNGroups[tng].insertBefore(button, null);
                             }
@@ -1246,6 +1247,7 @@ if (window.location.href.includes('form-apply')) {
                             for (m = 0; m < mBtns.length; m++) {
                                 if (mBtns[m].querySelector('.custom-check').classList.contains('js-selected')) {
                                     tNewBtns[m].querySelector('.custom-check').classList.add('js-selected');
+                                    tNewBtns[m].querySelector('.label').dataset.select = 'true';
                                 }
                             }
 
