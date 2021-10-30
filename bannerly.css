@@ -176,6 +176,6 @@ textarea {
     pointer-events: none;
 }
 
-input:focused {
+input:focus {
     outline-width: 0px;
 }
