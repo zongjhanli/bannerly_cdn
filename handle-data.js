@@ -107,7 +107,7 @@ if (!window.location.href.includes('form-apply')) {
             let jsData = data.substr(47).slice(0, -2);
             const json = JSON.parse(jsData);
             const rows = json.table.rows;
-            let listBox = document.querySelector('.m-list_section');
+            let listBox = document.querySelector('.list-box');
 
             //List欄位output
             let rw;
