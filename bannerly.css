@@ -175,3 +175,7 @@ textarea {
 .height-318.vertical-flex.thunder-locked {
     pointer-events: none;
 }
+
+input:focused {
+    outline-width: 0px;
+}
