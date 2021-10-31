@@ -290,6 +290,7 @@ if (!window.location.href.includes('form-apply')) {
                     sortDropBox.find('.custom-check').removeClass('js-selected');
                     sortDropBox.find('.custom-check').first().addClass('js-selected');
                     sortDropBox.find('.label').removeClass('unclickable');
+                    sortDropBox.find('.label').first().addClass('unclickable');
                     sortKey.text(sortDropBox.find('.label').first().text());
                     if (!target.hasClass('js-filtering') && sortKey.text() == '舊件置頂') {
                         sortQuery();
