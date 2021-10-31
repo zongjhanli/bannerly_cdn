@@ -105,11 +105,11 @@ if (!window.location.href.includes('form-apply')) {
         .then(res => res.text())
         .then(data => {
             let jsData = data.substr(47).slice(0, -2);
-            const json = JSON.parse(jsData);
-            const rows = json.table.rows;
+            let json = JSON.parse(jsData);
+            let rows = json.table.rows;
             let listBox = document.querySelector('.list-box');
 
-            //List欄位output
+            //List欄位-output
             let rw;
             for (rw = 1; rw < rows.length; rw++) {
                 listing(rw);
@@ -139,20 +139,20 @@ if (!window.location.href.includes('form-apply')) {
                     listBox.insertBefore(list, null);
 
 
-                    title.textContent = '00/00~00/00 品牌類型BN';
-                    applicant.textContent = '需求方';
-                    designer.textContent = '設計方';
-                    status.textContent = '製作中';
+                    // title.textContent = '00/00~00/00 品牌類型BN';
+                    // applicant.textContent = '需求方';
+                    // designer.textContent = '設計方';
+                    // status.textContent = '製作中';
 
-                    const cells = rows[rw].c;
+                    let cells = rows[rw].c;
 
-                    title.textContent = cells[0].v + cells[1].v + cells[2].v + 'BN';
+                    title.textContent = cells[0].v + '\u00a0\u00a0' + cells[1].v + cells[2].v + 'BN';
                     if (cells[3] != null) {
                         title.textContent += ' (' + cells[3].v + ')';
                     }
-                    applicant.textContent = cells[cells.length - 7].v.slice(0, 3);
+                    applicant.textContent = cells[cells.length - 7].v.slice(0, 3).trim();
                     if (cells[cells.length - 5] != null) {
-                        designer.textContent = cells[cells.length - 5].v.slice(0, 3);
+                        designer.textContent = cells[cells.length - 5].v.slice(0, 3).trim();
                         status.textContent = '製作中';
                     } else {
                         designer.textContent = '未指派';
@@ -161,9 +161,206 @@ if (!window.location.href.includes('form-apply')) {
                         status.style.background = '#f5f5f5';
                         status.style.color = '#808080';
                     }
+
+                    // function createList() {
+                    //     let list = document.createElement('div');
+                    //     let divLine = document.createElement('div');
+                    //     let title = document.createElement('div');
+                    //     let statsBox = document.createElement('div');
+                    //     let applicant = document.createElement('div');
+                    //     let designer = document.createElement('div');
+                    //     let status = document.createElement('div');
+                    //     statsBox.appendChild(applicant);
+                    //     statsBox.appendChild(designer);
+                    //     statsBox.appendChild(status);
+                    //     list.appendChild(divLine);
+                    //     list.appendChild(title);
+                    //     list.appendChild(statsBox);
+
+                    //     list.classList.add('a-list');
+                    //     divLine.classList.add('a-divisional', 'for_list');
+                    //     title.classList.add('_14px-500');
+                    //     statsBox.classList.add('stats-flex', 'in-list')
+                    //     applicant.classList.add('_14px-500', 'as-stats');
+                    //     designer.classList.add('_14px-500', 'as-stats');
+                    //     status.classList.add('stats-chip')
+                    //     listBox.insertBefore(list, null);
+                    // }
+                    // return {
+                    //     createList: createList
+                    // };
                 }
             }
-            //end of List欄位output
+
+            //List欄位-QUERY
+
+            //execute search query
+            $('.search-input').change(function() {
+                let keyedTxt = $(this).val();
+                $('.a-list').each(function() {
+                    $(this).css('display', 'flex');
+                    console.log($(this).children('._14px-500'))
+                    if ($(this).children('._14px-500').text().toLowerCase().indexOf(keyedTxt.toLowerCase()) < 0) {
+                        $(this).css('display', 'none');
+                    }
+                })
+
+            })
+
+            //filter 響應區塊
+            $(document).click(function(e) {
+                let target = $(e.target);
+
+                // dropdown之間僅保留一個顯現，其餘收合
+                if (target.hasClass('dropdown-box')) {
+                    collapseAll();
+                    target.find('.drop-card').toggleClass('js-collapsed');
+                    target.find('.dropdown-arrow').toggleClass('js-rotated');
+                    // sortQuery(); //!-- 這邊不叫喚的話會暫時跑掉，疑惑待解
+                } else {
+                    collapseAll();
+                }
+
+                function collapseAll() {
+                    $('.dropdown-box.for-query').not(target).find('.drop-card').addClass('js-collapsed');
+                    $('.dropdown-box.for-query').not(target).find('.dropdown-arrow').removeClass('js-rotated');
+                }
+
+                // drop option 轉換文字
+                if (target.hasClass('label', 'full-touch') && target.parentsUntil('.query-box') != null) {
+                    target.parentsUntil('.drop-group').siblings().find('.custom-check').removeClass('js-selected');
+                    let tDropdownBox = target.parent().parent().parent().parent();
+
+                    if (tDropdownBox.attr('data-query') == 'sort') { //sort、quarter不可同項目取消點選
+                        target.siblings('.custom-check').addClass('js-selected');
+                        target.addClass('unclickable');
+                        target.parent().siblings().find('.label').removeClass('unclickable');
+                    } else if (tDropdownBox.attr('data-query') == 'quarter') {
+                        target.siblings('.custom-check').addClass('js-selected');
+                    } else {
+                        target.siblings('.custom-check').toggleClass('js-selected');
+                    }
+
+                    //clear all filters
+                    let tFilterKey = tDropdownBox.children('.unclickable').not('.dropdown-arrow');
+                    if (tDropdownBox.find('.js-selected').length != 0) {
+                        tFilterKey.text(target.text());
+                        tDropdownBox.not('[data-query=quarter]').addClass('js-filtering'); //quarter query 顏色維持charcoal，其他為prm B
+                        tDropdownBox.not('[data-query=quarter]').find('.dropdown-arrow').addClass('js-filtering');
+                    } else if (tDropdownBox.find('.js-selected').length == 0) {
+                        tDropdownBox.not('[data-query=quarter]').removeClass('js-filtering'); //quarter query 顏色維持charcoal，其他為prm B
+                        tDropdownBox.not('[data-query=quarter]').find('.dropdown-arrow').removeClass('js-filtering');
+                        if (tDropdownBox.attr('data-query') == 'applicant') {
+                            tFilterKey.text('需求方');
+                        } else if (tDropdownBox.attr('data-query') == 'designer') {
+                            tFilterKey.text('設計方');
+                        } else if (tDropdownBox.attr('data-query') == 'status') {
+                            tFilterKey.text('狀態');
+                        }
+                    }
+                }
+
+                //filter 模式開關
+                if (target.hasClass('filter')) {
+                    target.toggleClass('js-filtering');
+                    target.parent().find('.dropdown-box').toggleClass('unclickable');
+                    target.parent().find('.dropdown-arrow').toggleClass('js-hide');
+                    target.parent().find('[data-query=sort]').toggleClass('js-hide');
+                    //defaulting query conditions
+                    let tDropdownBox = target.parent().find('.dropdown-box').not('[data-query=sort]');
+
+                    tDropdownBox.find('.custom-check').removeClass('js-selected');
+                    tDropdownBox.removeClass('js-filtering'); //quarter query 顏色維持charcoal，其他為prm B
+                    tDropdownBox.find('.dropdown-arrow').removeClass('js-filtering');
+
+                    tDropdownBox.each(function() {
+                        let tFilterKey = $(this).children('.unclickable').not('.dropdown-arrow');
+                        if ($(this).attr('data-query') == 'applicant') {
+                            tFilterKey.text('需求方');
+                        } else if ($(this).attr('data-query') == 'designer') {
+                            tFilterKey.text('設計方');
+                        } else if ($(this).attr('data-query') == 'status') {
+                            tFilterKey.text('狀態');
+                        }
+                    })
+
+                    //另行處理 dropdown-box sort query
+                    let sortDropBox = target.parent().find('.dropdown-box[data-query=sort]');
+                    let sortKey = sortDropBox.children('.unclickable').not('.dropdown-arrow');
+                    sortDropBox.find('.custom-check').removeClass('js-selected');
+                    sortDropBox.find('.custom-check').first().addClass('js-selected');
+                    sortDropBox.find('.label').removeClass('unclickable');
+                    sortKey.text(sortDropBox.find('.label').first().text());
+                    if (!target.hasClass('js-filtering') && sortKey.text() == '舊件置頂') {
+                        sortQuery();
+                    }
+                }
+
+                //query 區塊
+                $('.a-list').css('display', 'flex'); //每次執行query之前，先顯現所有list
+
+                quarterQuery(); //除了click event 也用於document.ready
+                statsQuery();
+                if (target.hasClass('label') && target.parent().parent().parent().parent().attr('data-query') == 'sort') {
+                    sortQuery();
+                }
+
+                function statsQuery() {
+                    $('.dropdown-box').each(function() {
+                        let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
+
+                        if ($(this).parent().hasClass('stats-flex') && $(this).find('.js-selected').length > 0) {
+                            $('.a-list').each(function() {
+                                let statsStr =
+                                    $(this).find('.stats-flex').find('._14px-500:nth-child(1)').text() +
+                                    $(this).find('.stats-flex').find('._14px-500:nth-child(2)').text() +
+                                    $(this).find('.stats-chip').text();
+                                if (statsStr.indexOf(filterKey) < 0) {
+                                    $(this).css('display', 'none');
+                                }
+                            })
+                        }
+                    })
+                }
+
+                function sortQuery() {
+                    $('.dropdown-box[data-query=sort]').each(function() {
+                        let sortKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
+                        let lists = document.querySelectorAll('.a-list');
+                        let listBox = document.querySelector('.list-box');
+                        let l;
+                        for (l = lists.length - 1; l >= 0; l--) {
+                            listBox.insertBefore(lists[l], null);
+                        }
+                    });
+                }
+            })
+
+            $(document).ready(function() {
+                quarterQuery();
+            })
+
+            function quarterQuery() {
+                $('.dropdown-box').each(function() {
+                    if ($(this).attr('data-query') == 'quarter') {
+                        let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
+                        let qKey = filterKey.slice(1, 2);
+                        if (filterKey.indexOf('全季') < 0) {
+                            $('.a-list').each(function() {
+                                let month = $(this).children('._14px-500').text().slice(0, 2);
+                                if (month <= (qKey - 1) * 3 || month > qKey * 3) {
+                                    $(this).css('display', 'none');
+                                }
+                            })
+                        } else {
+                            $('.a-list').css('display', 'flex');
+                        }
+                    }
+                })
+            }
+
+            //end of List欄位-QUERY
+
 
             // Result欄位output
             document.addEventListener('click', (e) => {
