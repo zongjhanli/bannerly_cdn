@@ -291,10 +291,12 @@ if (!window.location.href.includes('form-apply')) {
                     sortDropBox.find('.custom-check').first().addClass('js-selected');
                     sortDropBox.find('.label').removeClass('unclickable');
                     sortDropBox.find('.label').first().addClass('unclickable');
-                    sortKey.text(sortDropBox.find('.label').first().text());
-                    if (!target.hasClass('js-filtering') && sortKey.text() == '舊件置頂') {
-                        sortQuery();
+                    if (!target.hasClass('js-filtering')) {
+                        if (sortKey.text() === '新件置頂') {
+                            sortQuery();
+                        }
                     }
+                    sortKey.text(sortDropBox.find('.label').first().text()); //在sortKey更換回default前，先執行sortQuery回復初始排序
                 }
 
                 //query 區塊
@@ -302,8 +304,10 @@ if (!window.location.href.includes('form-apply')) {
 
                 quarterQuery(); //除了click event 也用於document.ready
                 statsQuery();
-                if (target.hasClass('label') && target.parent().parent().parent().parent().attr('data-query') == 'sort') {
-                    sortQuery();
+                if (target.hasClass('label')) {
+                    if (target.parent().parent().parent().parent().attr('data-query') == 'sort') {
+                        sortQuery();
+                    }
                 }
 
                 function statsQuery() {
