@@ -30,6 +30,7 @@ if (window.location.href.includes('form-apply')) {
                 "主打品牌": $('#brand').val(),
                 "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
                 "急迫度": $("[name=urgency]").siblings(".w--redirected-checked").siblings(".label").text().slice(3, 4),
+                "曝光年份": $('[data-year]').attr('data-year'),
                 ////主視覺
                 "指定色調": $("[name=color-tone]").siblings(".w--redirected-checked").siblings("[name=color-tone]").val(),
                 "指定氛圍": $("[name=theme]").siblings(".w--redirected-checked").siblings("[name=theme]").val(),
@@ -111,7 +112,7 @@ if (!window.location.href.includes('form-apply')) {
 
             //List欄位-output
             let rw;
-            for (rw = 1; rw < rows.length; rw++) {
+            for (rw = 0; rw < rows.length; rw++) {
                 listing(rw);
 
                 function listing() {
@@ -161,12 +162,37 @@ if (!window.location.href.includes('form-apply')) {
                         status.style.background = '#f5f5f5';
                         status.style.color = '#808080';
                     }
+                    list.dataset.year = cells[4].v;
                 }
             }
 
             //List欄位-QUERY
 
-            //execute search query
+            //quarter query 選項建置
+            $(document).ready(function() {
+                //首先判斷list中有「哪幾種」年份
+                let yearArr = [];
+                let l;
+                for (l = 0; l < $('.a-list').length; l++) {
+                    yearArr.push($('.a-list').eq(l).attr('data-year'));
+                }
+                yearArr = jQuery.unique(yearArr);
+                console.log(yearArr);
+                //利用yearArr！！！以年為單位！！！分別sort(曝光月份)，因填單時月份不一定照升/降冪排序
+                let monthArr = [];
+                for (l = 0; l < $('.a-list').length; l++) {
+                    monthArr.push($('.a-list').eq(l).children('._14px-500').text().slice(0, 2));
+                }
+                monthArr = monthArr.sort();
+                console.log(monthArr);
+
+                //利用4的倍數區間找出需要的Quarter值
+                //利用「Quarter值」搭配「yearArr」製造quarter query選項（近者優先）
+                //頁面load預設第一選項被選中
+                let filterKey = $('.dropdown-box[data-query=quarter]').children('.unclickable').not('.dropdown-arrow').text();
+            })
+
+            //search input 響應
             $('.search-input').change(function() {
                 searchQuery();
                 quarterQuery();
@@ -174,24 +200,31 @@ if (!window.location.href.includes('form-apply')) {
                 // sortQuery();
             })
 
-            $('.search-input').keydown(function(e) {
+            $('.search-input').keyup(function(e) {
                 $(this).parent().parent().find('.icon_32x.for-search-query').addClass('js-return');
                 if (e.which == 13) {
                     $(this).parent().parent().find('.icon_32x.for-search-query').removeClass('js-return').addClass('js-clear-search');
                 }
-            })
-
-            $('.icon_32x.for-search-query').click(function(e) {
-                if ($(this).hasClass('js-clear-search')) {
-                    $(this).parent().find('.search-input').val('');
-                    $(this).removeClass('js-clear-search');
-                } else if ($(this).hasClass('js-return')) {
+                if ($(this).val() == "") {
+                    $(this).parent().parent().find('.icon_32x.for-search-query').removeClass('js-return').removeClass('js-clear-search');
+                    $('.list').css('display', 'flex');
                     searchQuery();
                     quarterQuery();
                     statsQuery();
-                    $(this).removeClass('js-return').addClass('js-clear-search');
                 }
             })
+
+            $('.icon_32x.for-search-query').click(function(e) {
+                    if ($(this).hasClass('js-clear-search')) {
+                        $(this).parent().find('.search-input').val('');
+                        $(this).removeClass('js-clear-search');
+                    } else if ($(this).hasClass('js-return')) {
+                        searchQuery();
+                        quarterQuery();
+                        statsQuery();
+                        $(this).removeClass('js-return').addClass('js-clear-search');
+                    }
+                }) //end of search input 響應
 
             //filter 響應區塊
             $(document).click(function(e) {

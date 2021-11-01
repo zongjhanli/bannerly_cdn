@@ -125,7 +125,6 @@ $(".js-length-6").on("input", function(e) {
 });
 
 //GLOBAL .label 點按響應 (含dropCard、tabBox)
-
 document.addEventListener("click", (e) => {
     let target = e.target; //以下宣告皆假設target為.label.full-touch
 
@@ -587,54 +586,64 @@ for (const dropCard of dropCards) {
 // ----------------------------------------------------------------------------------------------------
 
 //@Index 專屬區塊
-
-//Result dropDown Label 點擊響應
-//!!!待解，jQuery不接受'js-'開頭的class name???
-$('[data-name=designer]').parent().find('.label').click(function() {
-    if (!$(this).siblings('.custom-check').hasClass('j-selected')) {
-        $(this).parentsUntil('.drop-card').find('.custom-check').removeClass('j-selected');
-        $(this).siblings('.custom-check').addClass('j-selected');
-    }
-})
-
-//Result Tab 點擊響應
-$('.label[data-ec]').click(function() {
-    $(this).parent().siblings().not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
-    $(this).parent().css('color', 'rgba(47, 90, 58, 1)');
-
-    let tabGroup = $(this).parent().parent();
-    let eachLabel = tabGroup.find('.label[data-ec]');
-    let eachResult = tabGroup.parent().parent().find('[data-output]');
-    console.log(eachResult)
-    let i;
-    for (i = 0; i < eachLabel.length; i++) {
-        if (eachLabel.eq(i).text() == $(this).text()) {
-            eachResult.css('display', 'none');
-            eachResult.eq(i).css('display', 'block');
-
-            i = i * 36 + 'px';
-            tabGroup.find('.a-button.as-tab.indicator').css('top', i);
+if (!window.location.href.includes('form-apply') || !window.location.href.includes('custom-apply')) {
+    //Result dropDown Label 點擊響應
+    //!!!待解，jQuery不接受'js-'開頭的class name???
+    $('[data-name=designer]').parent().find('.label').click(function() {
+        if (!$(this).siblings('.custom-check').hasClass('j-selected')) {
+            $(this).parentsUntil('.drop-card').find('.custom-check').removeClass('j-selected');
+            $(this).siblings('.custom-check').addClass('j-selected');
         }
-    }
-})
+    })
 
-$('.back-home').click(function() {
-    $('.container.output').removeClass('js-show');
+    //Result Tab 點擊響應
+    $('.label[data-ec]').click(function() {
+        $(this).parent().siblings().not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
+        $(this).parent().css('color', 'rgba(47, 90, 58, 1)');
 
-    //defaulting output blocks
-    $('.img').remove();
-    $('.a-button.as-tab.indicator').css('top', '0px');
-    $('.col-left').find('.a-button').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
-    $('.col-left').find('.a-button').not('.indicator').first().css('color', 'rgba(47, 90, 58, 1)');
-    $('.col-right').find('[data-output]').css('display', 'none');
-    $('.col-right').find('[data-output]').first().css('display', 'block');
-})
+        let tabGroup = $(this).parent().parent();
+        let eachLabel = tabGroup.find('.label[data-ec]');
+        let eachResult = tabGroup.parent().parent().find('[data-output]');
+        console.log(eachResult)
+        let i;
+        for (i = 0; i < eachLabel.length; i++) {
+            if (eachLabel.eq(i).text() == $(this).text()) {
+                eachResult.css('display', 'none');
+                eachResult.eq(i).css('display', 'block');
+
+                i = i * 36 + 'px';
+                tabGroup.find('.a-button.as-tab.indicator').css('top', i);
+            }
+        }
+    })
+
+    $('.back-home').click(function() {
+        $('.container.output').removeClass('js-show');
+
+        //defaulting output blocks
+        $('.img').remove();
+        $('.a-button.as-tab.indicator').css('top', '0px');
+        $('.col-left').find('.a-button').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
+        $('.col-left').find('.a-button').not('.indicator').first().css('color', 'rgba(47, 90, 58, 1)');
+        $('.col-right').find('[data-output]').css('display', 'none');
+        $('.col-right').find('[data-output]').first().css('display', 'block');
+    })
+}
 
 
 // ----------------------------------------------------------------------------------------------------
 
 //@Form-apply、@Custom-apply 專屬區塊
 if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
+
+    //date-range-picker 年份處理
+    $(document).click(function() {
+        if ($('.date-input').val().length > 0) {
+            let year = $('.date-input').val().slice(0, 4);
+            $('.date-input').attr('data-year', year);
+            $('.date-input').val($('.date-input').val().replaceAll(year + '/', ''));
+        }
+    })
 
     //@form-apply 案型增減響應
     let swiper = document.querySelector("div.swiper");
