@@ -130,9 +130,9 @@ if (!window.location.href.includes('form-apply')) {
                     list.appendChild(statsBox);
 
                     list.classList.add('a-list');
-                    divLine.classList.add('a-divisional', 'for_list');
-                    title.classList.add('_14px-500');
-                    statsBox.classList.add('stats-flex', 'in-list')
+                    divLine.classList.add('a-divisional', 'for_list', 'unclickable');
+                    title.classList.add('_14px-500', 'unclickable');
+                    statsBox.classList.add('stats-flex', 'in-list', 'unclickable')
                     applicant.classList.add('_14px-500', 'as-stats');
                     designer.classList.add('_14px-500', 'as-stats');
                     status.classList.add('stats-chip')
@@ -161,34 +161,6 @@ if (!window.location.href.includes('form-apply')) {
                         status.style.background = '#f5f5f5';
                         status.style.color = '#808080';
                     }
-
-                    // function createList() {
-                    //     let list = document.createElement('div');
-                    //     let divLine = document.createElement('div');
-                    //     let title = document.createElement('div');
-                    //     let statsBox = document.createElement('div');
-                    //     let applicant = document.createElement('div');
-                    //     let designer = document.createElement('div');
-                    //     let status = document.createElement('div');
-                    //     statsBox.appendChild(applicant);
-                    //     statsBox.appendChild(designer);
-                    //     statsBox.appendChild(status);
-                    //     list.appendChild(divLine);
-                    //     list.appendChild(title);
-                    //     list.appendChild(statsBox);
-
-                    //     list.classList.add('a-list');
-                    //     divLine.classList.add('a-divisional', 'for_list');
-                    //     title.classList.add('_14px-500');
-                    //     statsBox.classList.add('stats-flex', 'in-list')
-                    //     applicant.classList.add('_14px-500', 'as-stats');
-                    //     designer.classList.add('_14px-500', 'as-stats');
-                    //     status.classList.add('stats-chip')
-                    //     listBox.insertBefore(list, null);
-                    // }
-                    // return {
-                    //     createList: createList
-                    // };
                 }
             }
 
@@ -196,15 +168,29 @@ if (!window.location.href.includes('form-apply')) {
 
             //execute search query
             $('.search-input').change(function() {
-                let keyedTxt = $(this).val();
-                $('.a-list').each(function() {
-                    $(this).css('display', 'flex');
-                    console.log($(this).children('._14px-500'))
-                    if ($(this).children('._14px-500').text().toLowerCase().indexOf(keyedTxt.toLowerCase()) < 0) {
-                        $(this).css('display', 'none');
-                    }
-                })
+                searchQuery();
+                quarterQuery();
+                statsQuery();
+                // sortQuery();
+            })
 
+            $('.search-input').keydown(function(e) {
+                $(this).parent().parent().find('.icon_32x.for-search-query').addClass('js-return');
+                if (e.which == 13) {
+                    $(this).parent().parent().find('.icon_32x.for-search-query').removeClass('js-return').addClass('js-clear-search');
+                }
+            })
+
+            $('.icon_32x.for-search-query').click(function(e) {
+                if ($(this).hasClass('js-clear-search')) {
+                    $(this).parent().find('.search-input').val('');
+                    $(this).removeClass('js-clear-search');
+                } else if ($(this).hasClass('js-return')) {
+                    searchQuery();
+                    quarterQuery();
+                    statsQuery();
+                    $(this).removeClass('js-return').addClass('js-clear-search');
+                }
             })
 
             //filter 響應區塊
@@ -300,50 +286,34 @@ if (!window.location.href.includes('form-apply')) {
                 }
 
                 //query 區塊
-                $('.a-list').css('display', 'flex'); //每次執行query之前，先顯現所有list
-
-                quarterQuery(); //除了click event 也用於document.ready
-                statsQuery();
-                if (target.hasClass('label')) {
-                    if (target.parent().parent().parent().parent().attr('data-query') == 'sort') {
-                        sortQuery();
+                if (target.parentsUntil('.query-box') != null) {
+                    $('.a-list').css('display', 'flex'); //每次執行query之前，先顯現所有list
+                    searchQuery();
+                    quarterQuery(); //除了click event 也用於document.ready
+                    statsQuery();
+                    if (target.hasClass('label')) {
+                        if (target.parent().parent().parent().parent().attr('data-query') == 'sort') {
+                            sortQuery();
+                        }
                     }
                 }
 
-                function statsQuery() {
-                    $('.dropdown-box').each(function() {
-                        let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
 
-                        if ($(this).parent().hasClass('stats-flex') && $(this).find('.js-selected').length > 0) {
-                            $('.a-list').each(function() {
-                                let statsStr =
-                                    $(this).find('.stats-flex').find('._14px-500:nth-child(1)').text() +
-                                    $(this).find('.stats-flex').find('._14px-500:nth-child(2)').text() +
-                                    $(this).find('.stats-chip').text();
-                                if (statsStr.indexOf(filterKey) < 0) {
-                                    $(this).css('display', 'none');
-                                }
-                            })
-                        }
-                    })
-                }
-
-                function sortQuery() {
-                    $('.dropdown-box[data-query=sort]').each(function() {
-                        let sortKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
-                        let lists = document.querySelectorAll('.a-list');
-                        let listBox = document.querySelector('.list-box');
-                        let l;
-                        for (l = lists.length - 1; l >= 0; l--) {
-                            listBox.insertBefore(lists[l], null);
-                        }
-                    });
-                }
             })
 
             $(document).ready(function() {
                 quarterQuery();
             })
+
+            function searchQuery() {
+                let keyedTxt = $('.search-input').val();
+                $('.a-list').each(function() {
+                    $(this).css('display', 'flex');
+                    if ($(this).children('._14px-500').text().toLowerCase().indexOf(keyedTxt.toLowerCase()) < 0) {
+                        $(this).css('display', 'none');
+                    }
+                })
+            }
 
             function quarterQuery() {
                 $('.dropdown-box').each(function() {
@@ -364,6 +334,35 @@ if (!window.location.href.includes('form-apply')) {
                 })
             }
 
+            function statsQuery() {
+                $('.dropdown-box').each(function() {
+                    let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
+
+                    if ($(this).parent().hasClass('stats-flex') && $(this).find('.js-selected').length > 0) {
+                        $('.a-list').each(function() {
+                            let statsStr =
+                                $(this).find('.stats-flex').find('._14px-500:nth-child(1)').text() +
+                                $(this).find('.stats-flex').find('._14px-500:nth-child(2)').text() +
+                                $(this).find('.stats-chip').text();
+                            if (statsStr.indexOf(filterKey) < 0) {
+                                $(this).css('display', 'none');
+                            }
+                        })
+                    }
+                })
+            }
+
+            function sortQuery() {
+                $('.dropdown-box[data-query=sort]').each(function() {
+                    let sortKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
+                    let lists = document.querySelectorAll('.a-list');
+                    let listBox = document.querySelector('.list-box');
+                    let l;
+                    for (l = lists.length - 1; l >= 0; l--) {
+                        listBox.insertBefore(lists[l], null);
+                    }
+                });
+            }
             //end of List欄位-QUERY
 
 
@@ -372,11 +371,14 @@ if (!window.location.href.includes('form-apply')) {
                     let target = e.target;
                     let output = document.querySelector('.container.output');
 
-                    if (target.classList.contains('back-home')) {
-                        output.classList.remove('js-show');
-                    }
-
                     if (target.classList.contains('a-list') || target.parentElement.classList.contains('a-list')) {
+
+                        //tab區塊預設styling
+                        $('.col-left').find('.a-button').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
+                        $('.col-left').find('.a-button').not('.indicator').first().css('color', 'rgba(47, 90, 58, 1)');
+                        $('.col-right').find('[data-output]').css('display', 'none');
+                        $('.col-right').find('[data-output]').first().css('display', 'block');
+
                         output.classList.add('js-show');
                         let lists = document.querySelectorAll('.a-list');
                         outputData();
@@ -420,46 +422,51 @@ if (!window.location.href.includes('form-apply')) {
                                                 $("[data-output='P-count-A']").text(tCells[i].v.slice(2, 3) + '商品');
                                             }
                                             if (rows[0].c[i].v == '案型1-商品清單') {
-                                                $("[data-output='P-A']").text(tCells[i].v);
+                                                let pdSerial = tCells[i].v.replaceAll('\n', ',');
+                                                pdSerial = pdSerial.split(',');
+                                                jQuery.each(pdSerial, function(i, value) {
+                                                    let url = "url(pd-temp/" + value + ".jpg)";
+                                                    $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
+                                                })
                                             }
                                             if (rows[0].c[i].v == '案型1-尺寸總數') {
                                                 $("[data-output='S-count2-A']").text(tCells[i].v.slice(2, 3) + '通路');
                                             }
                                             if (rows[0].c[i].v == '案型1-momo尺寸') {
-                                                $("[data-output='momo-A']").text(tCells[i].v);
+                                                $("[data-output='momo-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-pchome尺寸') {
-                                                $("[data-output='pchome-A']").text(tCells[i].v);
+                                                $("[data-output='pchome-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-friday尺寸') {
-                                                $("[data-output='friday-A']").text(tCells[i].v);
+                                                $("[data-output='friday-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-book尺寸') {
-                                                $("[data-output='book-A']").text(tCells[i].v);
+                                                $("[data-output='book-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-shopee尺寸') {
-                                                $("[data-output='shopee-A']").text(tCells[i].v);
+                                                $("[data-output='shopee-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-yahoo尺寸') {
-                                                $("[data-output='yahoo-A']").text(tCells[i].v);
+                                                $("[data-output='yahoo-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-etmall尺寸') {
-                                                $("[data-output='etmall-A']").text(tCells[i].v);
+                                                $("[data-output='etmall-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-buy123尺寸') {
-                                                $("[data-output='buy123-A']").text(tCells[i].v);
+                                                $("[data-output='buy123-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-meimaii尺寸') {
-                                                $("[data-output='meimaii-A']").text(tCells[i].v);
+                                                $("[data-output='meimaii-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-自定義1尺寸') {
-                                                $("[data-output='custom1-A']").text(tCells[i].v);
+                                                $("[data-output='custom1-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-自定義2尺寸') {
-                                                $("[data-output='custom2-A']").text(tCells[i].v);
+                                                $("[data-output='custom2-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-自定義3尺寸') {
-                                                $("[data-output='custom3-A']").text(tCells[i].v);
+                                                $("[data-output='custom3-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型1-通路名稱') {
                                                 let ecNames = tCells[i].v.split(','); //values truned into an array
@@ -477,46 +484,51 @@ if (!window.location.href.includes('form-apply')) {
                                                 $("[data-output='P-count-B']").text(tCells[i].v.slice(2, 3) + '商品');
                                             }
                                             if (rows[0].c[i].v == '案型2-商品清單') {
-                                                $("[data-output='P-B']").text(tCells[i].v);
+                                                let pdSerial = tCells[i].v.replaceAll('\n', ',');
+                                                pdSerial = pdSerial.split(',');
+                                                jQuery.each(pdSerial, function(i, value) {
+                                                    let url = "url(pd-temp/" + value + ".jpg)";
+                                                    $("[data-output='P-B']").append($('<div></div>').addClass('img').css('background-image', url));
+                                                })
                                             }
                                             if (rows[0].c[i].v == '案型2-尺寸總數') {
                                                 $("[data-output='S-count2-B']").text(tCells[i].v.slice(2, 3) + '通路');
                                             }
                                             if (rows[0].c[i].v == '案型2-momo尺寸') {
-                                                $("[data-output='momo-B']").text(tCells[i].v);
+                                                $("[data-output='momo-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-pchome尺寸') {
-                                                $("[data-output='pchome-B']").text(tCells[i].v);
+                                                $("[data-output='pchome-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-friday尺寸') {
-                                                $("[data-output='friday-B']").text(tCells[i].v);
+                                                $("[data-output='friday-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-book尺寸') {
-                                                $("[data-output='book-B']").text(tCells[i].v);
+                                                $("[data-output='book-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-shopee尺寸') {
-                                                $("[data-output='shopee-B']").text(tCells[i].v);
+                                                $("[data-output='shopee-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-yahoo尺寸') {
-                                                $("[data-output='yahoo-B']").text(tCells[i].v);
+                                                $("[data-output='yahoo-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-etmall尺寸') {
-                                                $("[data-output='etmall-B']").text(tCells[i].v);
+                                                $("[data-output='etmall-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-buy123尺寸') {
-                                                $("[data-output='buy123-B']").text(tCells[i].v);
+                                                $("[data-output='buy123-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-meimaii尺寸') {
-                                                $("[data-output='meimaii-B']").text(tCells[i].v);
+                                                $("[data-output='meimaii-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-自定義1尺寸') {
-                                                $("[data-output='custom1-B']").text(tCells[i].v);
+                                                $("[data-output='custom1-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-自定義2尺寸') {
-                                                $("[data-output='custom2-B']").text(tCells[i].v);
+                                                $("[data-output='custom2-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-自定義3尺寸') {
-                                                $("[data-output='custom3-B']").text(tCells[i].v);
+                                                $("[data-output='custom3-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型2-通路名稱') {
                                                 let ecNames = tCells[i].v.split(','); //values truned into an array
@@ -534,46 +546,51 @@ if (!window.location.href.includes('form-apply')) {
                                                 $("[data-output='P-count-C']").text(tCells[i].v.slice(2, 3) + '商品');
                                             }
                                             if (rows[0].c[i].v == '案型3-商品清單') {
-                                                $("[data-output='P-C']").text(tCells[i].v);
+                                                let pdSerial = tCells[i].v.replaceAll('\n', ',');
+                                                pdSerial = pdSerial.split(',');
+                                                jQuery.each(pdSerial, function(i, value) {
+                                                    let url = "url(pd-temp/" + value + ".jpg)";
+                                                    $("[data-output='P-C']").append($('<div></div>').addClass('img').css('background-image', url));
+                                                })
                                             }
                                             if (rows[0].c[i].v == '案型3-尺寸總數') {
                                                 $("[data-output='S-count2-C']").text(tCells[i].v.slice(2, 3) + '通路');
                                             }
                                             if (rows[0].c[i].v == '案型3-momo尺寸') {
-                                                $("[data-output='momo-C']").text(tCells[i].v);
+                                                $("[data-output='momo-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-pchome尺寸') {
-                                                $("[data-output='pchome-C']").text(tCells[i].v);
+                                                $("[data-output='pchome-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-friday尺寸') {
-                                                $("[data-output='friday-C']").text(tCells[i].v);
+                                                $("[data-output='friday-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-book尺寸') {
-                                                $("[data-output='book-C']").text(tCells[i].v);
+                                                $("[data-output='book-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-shopee尺寸') {
-                                                $("[data-output='shopee-C']").text(tCells[i].v);
+                                                $("[data-output='shopee-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-yahoo尺寸') {
-                                                $("[data-output='yahoo-C']").text(tCells[i].v);
+                                                $("[data-output='yahoo-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-etmall尺寸') {
-                                                $("[data-output='etmall-C']").text(tCells[i].v);
+                                                $("[data-output='etmall-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-buy123尺寸') {
-                                                $("[data-output='buy123-C']").text(tCells[i].v);
+                                                $("[data-output='buy123-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-meimaii尺寸') {
-                                                $("[data-output='meimaii-C']").text(tCells[i].v);
+                                                $("[data-output='meimaii-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-自定義1尺寸') {
-                                                $("[data-output='custom1-C']").text(tCells[i].v);
+                                                $("[data-output='custom1-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-自定義2尺寸') {
-                                                $("[data-output='custom2-C']").text(tCells[i].v);
+                                                $("[data-output='custom2-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-自定義3尺寸') {
-                                                $("[data-output='custom3-C']").text(tCells[i].v);
+                                                $("[data-output='custom3-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
                                             if (rows[0].c[i].v == '案型3-通路名稱') {
                                                 let ecNames = tCells[i].v.split(','); //values truned into an array
