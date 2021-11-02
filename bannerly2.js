@@ -139,6 +139,8 @@ document.addEventListener("click", (e) => {
         let tDPBox = target.parentElement.parentElement.parentElement.parentElement;
         let tInput = tDPBox.querySelector(".input.dropdown");
         let tDropCard = target.parentElement.parentElement.parentElement;
+        let colL = tDPBox.parentElement.parentElement;
+        let colR = colL.nextElementSibling;
 
         //多選選項
         if (tDropCard.dataset.drop == "multi") {
@@ -215,8 +217,6 @@ document.addEventListener("click", (e) => {
         } //將 >>> 新增「」<<< 字樣刪除，並切換data-custom狀態
 
         function newTab() {
-            let colL = tDPBox.parentElement.parentElement;
-            let colR = colL.nextElementSibling;
             let tabBtn = document.createElement("div");
             let tabLabel = document.createElement("div");
             let tabCounter = document.createElement("div");
@@ -228,7 +228,6 @@ document.addEventListener("click", (e) => {
             tabLabel.classList.add("label", "full-touch");
             tabCounter.classList.add("_12px-500", "as-counts", "in-tab");
             tabLabel.textContent = tInput.value;
-            tabLabel.dataset.tab = tInput.value;
             tabCounter.textContent = "0";
             tabBtn.appendChild(tabLabel);
             tabBtn.appendChild(tabCounter);
@@ -237,7 +236,6 @@ document.addEventListener("click", (e) => {
 
             //新增 new dropGroup
             let newDropGroup = document.createElement("div");
-            newDropGroup.dataset.group = tInput.value;
             newDropGroup.classList.add("drop-group", "js-hide", "js-show");
             let dropBox = colR.querySelector(".drop-card");
             dropBox.insertBefore(newDropGroup, dropBox.querySelectorAll('[data-group]')[0]);
@@ -248,10 +246,7 @@ document.addEventListener("click", (e) => {
             let oldTextAreas = textAreaBox.querySelectorAll('textarea');
             let strLength = oldTextAreas[0].dataset.name.length;
             let serial = oldTextAreas[0].dataset.name.slice(strLength - 2, strLength);
-            newTextArea.name = tInput.value + serial;
             newTextArea.maxLength = '5000';
-            newTextArea.dataset.name = tInput.value + serial;
-            newTextArea.id = tInput.value + serial;
             // newTextArea.placeholder = "↑點按以選擇" + tInput.value + "尺寸";
             newTextArea.placeholder = "";
             newTextArea.classList.add(
@@ -264,13 +259,38 @@ document.addEventListener("click", (e) => {
                 "js-show"
             );
             textAreaBox.insertBefore(newTextArea, oldTextAreas[0]);
+
+            //添加dataset custom + nth
+            let nth = tabGroup.querySelectorAll('[data-nth]').length; //判斷目前有幾個自定義通路已存在
+            if (nth < 3) {
+                nth += 1;
+                tabLabel.dataset.nth = nth;
+                tabLabel.dataset.tab = 'custom' + nth;
+                newDropGroup.dataset.group = 'custom' + nth;
+                newTextArea.name = 'custom' + nth + serial;
+                newTextArea.dataset.name = 'custom' + nth + serial;
+                newTextArea.id = 'custom' + nth + serial;
+            } else {
+                tabBtn.remove();
+                newDropGroup.remove();
+                newTextArea.remove();
+            }
         }
 
         if (target.dataset.custom == "pending") {
             confirmAppended();
             revealAll();
             if (tInput.dataset.drop == "ec") {
-                newTab();
+                if (colL.querySelectorAll('[data-nth]').length < 3) {
+                    newTab();
+                } else {
+                    tDropCard.querySelectorAll('[data-custom=confirmed]')[0].parentElement.remove();
+                    console.log(colL.parentElement.querySelector('.hinter-box'));
+                    colL.parentElement.querySelector('.hinter-box.nth-alert').style.display = 'block';
+                    setTimeout(() => {
+                        colL.parentElement.querySelector('.hinter-box.nth-alert').style.display = 'none';
+                    }, 3000)
+                }
             }
         } else if (target.dataset.select == 'true') {
             revealAll();
@@ -286,7 +306,7 @@ document.addEventListener("click", (e) => {
             if (shownTabs.length != 0) {
 
                 for (const shownTab of shownTabs) {
-                    let tabName = shownTabs[0].firstElementChild.dataset.tab;
+                    let tabName = shownTabs[0].firstElementChild.textContent;
 
                     //ec tab indicator 顯示/隱藏條件
                     let tabLength = shownTabs.length;
@@ -586,7 +606,7 @@ for (const dropCard of dropCards) {
 // ----------------------------------------------------------------------------------------------------
 
 //@Index 專屬區塊
-if (!window.location.href.includes('form-apply') || !window.location.href.includes('custom-apply')) {
+if (!window.location.href.includes('form-apply') && !window.location.href.includes('custom-apply')) {
     //Result dropDown Label 點擊響應
     //!!!待解，jQuery不接受'js-'開頭的class name???
     $('[data-name=designer]').parent().find('.label').click(function() {
@@ -623,7 +643,7 @@ if (!window.location.href.includes('form-apply') || !window.location.href.includ
         //defaulting output blocks
 
         //pd count area
-        $('[data-output=P-count-A]', '[data-output=P-count-B]', '[data-output=P-count-C]').text('0');
+        $('[data-output=P-count-A], [data-output=P-count-B], [data-output=P-count-C]').text('0');
 
         //img area
         $('.img').remove();
@@ -912,7 +932,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                         }
                     }
 
-                    let tabName = shownTab.firstElementChild.dataset.tab;
+                    let tabName = shownTab.firstElementChild.textContent;
                     let tSizeInput = tCol.nextElementSibling.querySelector('[data-dropfor=size]');
                     if (target == shownTab.firstElementChild) {
                         tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
@@ -1364,6 +1384,9 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                                     tNewLabels[m].dataset.tab = mTabLabels[m].dataset.tab;
                                     tNewLabels[m].textContent = mTabLabels[m].textContent;
                                     tNewCounts[m].textContent = mTabCounts[m].textContent;
+                                    if (mTabLabels[m].dataset.nth != "") {
+                                        tNewLabels[m].dataset.nth = mTabLabels[m].dataset.nth;
+                                    }
                                 }
 
 
@@ -1389,7 +1412,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                                         tTextareas[0].classList.add('js-show');
 
                                         let tSizeInput = tCardBox.querySelectorAll('.input.dropdown')[1];
-                                        let tabName = shownTabs[0].firstElementChild.dataset.tab;
+                                        let tabName = shownTabs[0].firstElementChild.textContent;
                                         tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
                                     }
                                 }
@@ -1401,93 +1424,94 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
         })
     }
 
+    //thunder動畫
     $('.th-box').click(function thundering() {
-        let thG1 = $(this).find('.g-1');
-        let thG2 = $(this).find('.g-2');
-        let thG3 = $(this).find('.g-3');
-        let thG4 = $(this).find('.g-4');
-        let thW1 = $(this).find('._w-1');
-        let thW2 = $(this).find('._w-2');
-        let thW3 = $(this).find('._w-3');
-        let thW4 = $(this).find('._w-4');
-        let thAllW = $(this).find('.th-w');
-        let thunder = $(this).find('.thunder');
-        let tBlockGroup = $(this).parentsUntil('.card-box').find('.height-318');
+            let thG1 = $(this).find('.g-1');
+            let thG2 = $(this).find('.g-2');
+            let thG3 = $(this).find('.g-3');
+            let thG4 = $(this).find('.g-4');
+            let thW1 = $(this).find('._w-1');
+            let thW2 = $(this).find('._w-2');
+            let thW3 = $(this).find('._w-3');
+            let thW4 = $(this).find('._w-4');
+            let thAllW = $(this).find('.th-w');
+            let thunder = $(this).find('.thunder');
+            let tBlockGroup = $(this).parentsUntil('.card-box').find('.height-318');
 
-        if (thunder.attr('data-thunder') == 'false') {
-            thunder.attr('data-thunder', 'true');
-            tBlockGroup.addClass('thunder-locked');
+            if (thunder.attr('data-thunder') == 'false') {
+                thunder.attr('data-thunder', 'true');
+                tBlockGroup.addClass('thunder-locked');
 
-            thG1.css({
-                'transform': 'translate(4px,4px) rotate(40deg)'
-            });
-            thG3.css({
-                'transform': 'translate(-4px,-4px) rotate(40deg)'
-            });
-            thW1.css({
-                'transform': 'translate(6px,6px) rotate(40deg)'
-            });
-            thW3.css({
-                'transform': 'translate(-5px,-5px) rotate(40deg)'
-            });
-            thW2.css({
-                'transform': 'translate(-5px,7px)'
-            });
-            thW4.css({
-                'transform': 'translate(5px,-7px)'
-            });
-            setTimeout(function() {
+                thG1.css({
+                    'transform': 'translate(4px,4px) rotate(40deg)'
+                });
+                thG3.css({
+                    'transform': 'translate(-4px,-4px) rotate(40deg)'
+                });
+                thW1.css({
+                    'transform': 'translate(6px,6px) rotate(40deg)'
+                });
+                thW3.css({
+                    'transform': 'translate(-5px,-5px) rotate(40deg)'
+                });
                 thW2.css({
-                    'transform': 'translate(-7px,7px)'
+                    'transform': 'translate(-5px,7px)'
                 });
                 thW4.css({
-                    'transform': 'translate(7px,-7px)'
+                    'transform': 'translate(5px,-7px)'
                 });
-                thunder.css({
-                    'border': '1px solid rgba(255,251,204,1)'
-                })
-                thAllW.css({
-                    'backgroundColor': 'rgba(255,251,204,1)',
-                })
-            }, 100)
-        } else if (thunder.attr('data-thunder') == 'true') {
-            thunder.attr('data-thunder', 'false');
-            tBlockGroup.removeClass('thunder-locked');
+                setTimeout(function() {
+                    thW2.css({
+                        'transform': 'translate(-7px,7px)'
+                    });
+                    thW4.css({
+                        'transform': 'translate(7px,-7px)'
+                    });
+                    thunder.css({
+                        'border': '1px solid rgba(255,251,204,1)'
+                    })
+                    thAllW.css({
+                        'backgroundColor': 'rgba(255,251,204,1)',
+                    })
+                }, 100)
+            } else if (thunder.attr('data-thunder') == 'true') {
+                thunder.attr('data-thunder', 'false');
+                tBlockGroup.removeClass('thunder-locked');
 
-            thG1.css({
-                'transform': 'translate(0px,0px) rotate(40deg)'
-            });
-            thG3.css({
-                'transform': 'translate(0px,0px) rotate(40deg)'
-            });
-            thW1.css({
-                'transform': 'translate(0px,0px) rotate(40deg)'
-            });
-            thW3.css({
-                'transform': 'translate(0px,0px) rotate(40deg)'
-            });
-            thW2.css({
-                'transform': 'translate(0px,0px)'
-            });
-            thW4.css({
-                'transform': 'translate(0px,0px)'
-            });
-            setTimeout(function() {
-                // thW2.css({
-                //     'transform': 'translate(7px,-7px)'
-                // });
-                // thW4.css({
-                //     'transform': 'translate(-7px,7px)'
-                // });
-                thunder.css({
-                    'border': '1px solid rgba(255,255,255,0.2)'
-                })
-                thAllW.css({
-                    'backgroundColor': 'rgba(255,255,255,0.7)',
-                })
-            }, 100)
-        }
-    })
+                thG1.css({
+                    'transform': 'translate(0px,0px) rotate(40deg)'
+                });
+                thG3.css({
+                    'transform': 'translate(0px,0px) rotate(40deg)'
+                });
+                thW1.css({
+                    'transform': 'translate(0px,0px) rotate(40deg)'
+                });
+                thW3.css({
+                    'transform': 'translate(0px,0px) rotate(40deg)'
+                });
+                thW2.css({
+                    'transform': 'translate(0px,0px)'
+                });
+                thW4.css({
+                    'transform': 'translate(0px,0px)'
+                });
+                setTimeout(function() {
+                    // thW2.css({
+                    //     'transform': 'translate(7px,-7px)'
+                    // });
+                    // thW4.css({
+                    //     'transform': 'translate(-7px,7px)'
+                    // });
+                    thunder.css({
+                        'border': '1px solid rgba(255,255,255,0.2)'
+                    })
+                    thAllW.css({
+                        'backgroundColor': 'rgba(255,255,255,0.7)',
+                    })
+                }, 100)
+            }
+        }) //end of 快速套用主案型
 
 
 }

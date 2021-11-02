@@ -50,6 +50,9 @@ if (window.location.href.includes('form-apply')) {
                 "案型1-etmall尺寸": $("#etmall-A").val(),
                 "案型1-buy123尺寸": $("#buy123-A").val(),
                 "案型1-meimaii尺寸": $("#meimaii-A").val(),
+                "案型1-自定義1尺寸": $("#custom1-A").val(),
+                "案型1-自定義2尺寸": $("#custom2-A").val(),
+                "案型1-自定義3尺寸": $("#custom3-A").val(),
                 "案型1-通路名稱": AecStr.toString(),
                 ////案型2
                 "案型2-活動文案": BcopywrightStr.toString(),
@@ -67,6 +70,9 @@ if (window.location.href.includes('form-apply')) {
                 "案型2-etmall尺寸": $("#etmall-B").val(),
                 "案型2-buy123尺寸": $("#buy123-B").val(),
                 "案型2-meimaii尺寸": $("#meimaii-B").val(),
+                "案型2-自定義1尺寸": $("#custom1-A").val(),
+                "案型2-自定義2尺寸": $("#custom2-A").val(),
+                "案型2-自定義3尺寸": $("#custom3-A").val(),
                 "案型2-通路名稱": BecStr,
                 ////案型3
                 "案型3-活動文案": CcopywrightStr.toString(),
@@ -84,6 +90,9 @@ if (window.location.href.includes('form-apply')) {
                 "案型3-etmall尺寸": $("#etmall-C").val(),
                 "案型3-buy123尺寸": $("#buy123-C").val(),
                 "案型3-meimaii尺寸": $("#meimaii-C").val(),
+                "案型3-自定義1尺寸": $("#custom1-A").val(),
+                "案型3-自定義2尺寸": $("#custom2-A").val(),
+                "案型3-自定義3尺寸": $("#custom3-A").val(),
                 "案型3-通路名稱": CecStr,
                 ////送出前確認訊息
                 "需求方": $("#applicant").val(),
