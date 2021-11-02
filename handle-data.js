@@ -112,7 +112,7 @@ if (!window.location.href.includes('form-apply')) {
 
             //List欄位-output
             let rw;
-            for (rw = 1; rw < rows.length; rw++) {
+            for (rw = 0; rw < rows.length; rw++) {
                 listing(rw);
 
                 function listing() {
@@ -432,7 +432,7 @@ if (!window.location.href.includes('form-apply')) {
                     let target = e.target;
                     let output = document.querySelector('.container.output');
 
-                    if (target.classList.contains('a-list') || target.parentElement.classList.contains('a-list')) {
+                    if (target.classList.contains('a-list')) {
 
                         //tab區塊預設styling
                         $('.col-left').find('.a-button').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
@@ -450,7 +450,7 @@ if (!window.location.href.includes('form-apply')) {
                             for (li = 0; li < lists.length; li++) {
                                 if (target == lists[li]) {
                                     let cols = json.table.cols;
-                                    let tCells = rows[li + 1].c;
+                                    let tCells = rows[li].c;
                                     let i;
                                     for (i = 0; i < cols.length; i++) {
                                         if (tCells[i] != null) {
@@ -681,6 +681,18 @@ if (!window.location.href.includes('form-apply')) {
                                 sCard.parentElement.parentElement.parentElement.style.display = "none";
                             }
                         }
+
+                        //隱藏空白的pd pool
+                        $('.block-pool').each(function() {
+                            if ($(this).find('.img').length == 0) {
+                                // $(this).parent().css('display', 'none');
+                                $(this).css({
+                                    'padding-left': '12px',
+                                    'color': 'rgba(47, 90, 58, 0.5)'
+                                });
+                                $(this).text('曝光商品未選');
+                            }
+                        })
 
                         //隱藏空白的tab
                         let tabLabels = $(".a-button.as-tab .label");

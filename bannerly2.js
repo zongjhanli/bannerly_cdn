@@ -621,7 +621,21 @@ if (!window.location.href.includes('form-apply') || !window.location.href.includ
         $('.container.output').removeClass('js-show');
 
         //defaulting output blocks
+
+        //img area
         $('.img').remove();
+        $('.block-pool').each(function() {
+            if ($(this).find('.img').length == 0) {
+                // $(this).parent().css('display', 'none');
+                $(this).css({
+                    'padding-left': '8px',
+                    'color': 'rgba(47, 90, 58, 0.5)'
+                });
+                $(this).text('');
+            }
+        })
+
+        //tab area
         $('.a-button.as-tab.indicator').css('top', '0px');
         $('.col-left').find('.a-button').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
         $('.col-left').find('.a-button').not('.indicator').first().css('color', 'rgba(47, 90, 58, 1)');
