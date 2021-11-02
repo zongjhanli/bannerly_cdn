@@ -706,17 +706,26 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
         let endOffset = end.getBoundingClientRect();
         let endTop = endOffset.top;
 
-        // console.log('startTop' + startTop);
-        // console.log('endTop' + endTop);
-        if (endTop <= -50 || startTop > 50) {
+        console.log('startTop' + startTop);
+        console.log('endTop' + endTop);
+        if (endTop < -50 || startTop > 50) {
             swiper.style.opacity = "0";
-            // swiper.style.display = 'none';
-            setTimeout(function swiperDisplay() {
-                swiper.style.display = "none";
-            }, 2000);
+            swiper.classList.add('unclickable');
         } else {
             swiper.style.display = "flex";
             swiper.style.opacity = "1";
+            swiper.classList.remove('unclickable');
+
+            //copied from returnEdit
+            let swiperIcon = swiper.querySelector(".icon_28x.for-swiper");
+            let swiperOptions = swiper.querySelectorAll(".a-button");
+            swiperIcon.classList.add("js-edit");
+            swiperIcon.classList.remove("js-add");
+            for (const swiperOption of swiperOptions) {
+                let remove = swiperOption.querySelector(".js-remove");
+                remove.style.display = "none";
+                swiperOption.style.backgroundColor = "transparent";
+            }
         }
     });
 
