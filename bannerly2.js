@@ -673,6 +673,12 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 //@Form-apply、@Custom-apply 專屬區塊
 if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
 
+    //修正browser tab resize位移
+    window.addEventListener('resize', () => {
+        // console.log(window.innerHeight);
+        window.scrollBy(window.innerHeight, 0);
+    })
+
     //date-range-picker 年份處理
     $(document).click(function() {
         if ($('.date-input').val().length > 0) {
@@ -706,8 +712,8 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
         let endOffset = end.getBoundingClientRect();
         let endTop = endOffset.top;
 
-        console.log('startTop' + startTop);
-        console.log('endTop' + endTop);
+        // console.log('startTop' + startTop);
+        // console.log('endTop' + endTop);
         if (endTop < -50 || startTop > 50) {
             swiper.style.opacity = "0";
             swiper.classList.add('unclickable');
