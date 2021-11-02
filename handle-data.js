@@ -112,7 +112,7 @@ if (!window.location.href.includes('form-apply')) {
 
             //List欄位-output
             let rw;
-            for (rw = 0; rw < rows.length; rw++) {
+            for (rw = 1; rw < rows.length; rw++) {
                 listing(rw);
 
                 function listing() {
@@ -172,24 +172,52 @@ if (!window.location.href.includes('form-apply')) {
             $(document).ready(function() {
                 //首先判斷list中有「哪幾種」年份
                 let yearArr = [];
+                let labelArr = [];
                 let l;
-                for (l = 0; l < $('.a-list').length; l++) {
+                for (l = $('.a-list').length - 1; l >= 0; l--) { //!!!影響順序
                     yearArr.push($('.a-list').eq(l).attr('data-year'));
                 }
                 yearArr = jQuery.unique(yearArr);
-                console.log(yearArr);
                 //利用yearArr！！！以年為單位！！！分別sort(曝光月份)，因填單時月份不一定照升/降冪排序
-                let monthArr = [];
-                for (l = 0; l < $('.a-list').length; l++) {
-                    monthArr.push($('.a-list').eq(l).children('._14px-500').text().slice(0, 2));
+                let y;
+                for (y = 0; y < yearArr.length; y++) {
+                    let monthArr = [];
+                    for (l = $('.a-list').length - 1; l >= 0; l--) { //!!!影響順序
+                        if ($('.a-list').eq(l).attr('data-year') == yearArr[y]) {
+                            monthArr.push($('.a-list').eq(l).children('._14px-500').text().slice(0, 2));
+                            monthArr.key = yearArr[y];
+                        }
+                    }
+                    monthArr = monthArr.sort();
+                    monthArr.reverse();
+                    let q;
+                    let m;
+                    for (q = 4; q > 0; q--) { //利用4的倍數區間找出需要的Quarter值
+                        for (m = monthArr.length - 1; m >= 0; m--) { //!!!影響順序
+                            if ((q - 1) * 3 < monthArr[m] && q * 3 >= monthArr[m]) {
+                                let labelText = 'Q' + q + '/' + monthArr.key.slice(2, 4); //利用「Quarter值」搭配「year」製造選項文字
+                                labelArr.push(labelText);
+                            }
+                        }
+                    }
+                    labelArr = jQuery.unique(labelArr);
                 }
-                monthArr = monthArr.sort();
-                console.log(monthArr);
+                let label;
+                for (label = 0; label < labelArr.length; label++) {
+                    let newQ = '<div class="a-button as-list"><div class="label full-touch"></div><div class="custom-check tick-right"></div></div>';
+                    $('[data-query=quarter]').find('.drop-group').append(newQ);
+                    $('[data-query=quarter]').find('.label').eq(label).text(labelArr[label]);
+                }
 
-                //利用4的倍數區間找出需要的Quarter值
-                //利用「Quarter值」搭配「yearArr」製造quarter query選項（近者優先）
                 //頁面load預設第一選項被選中
-                let filterKey = $('.dropdown-box[data-query=quarter]').children('.unclickable').not('.dropdown-arrow').text();
+                let first = $('[data-query=quarter]').find('.drop-group').find('.label').first();
+                $('[data-query=quarter]').children('.unclickable').not('.dropdown-arrow').text(first.text());
+                first.siblings('.custom-check').addClass('js-selected');
+
+                //添加「全案件」選項
+                let newQ = '<div class="a-button as-list"><div class="label full-touch"></div><div class="custom-check tick-right"></div></div>';
+                $('[data-query=quarter]').find('.drop-group').append(newQ);
+                $('[data-query=quarter]').find('.label').last().text('全案件');
             })
 
             //search input 響應
@@ -417,44 +445,51 @@ if (!window.location.href.includes('form-apply')) {
                         outputData();
 
                         function outputData() {
+
                             let li;
                             for (li = 0; li < lists.length; li++) {
                                 if (target == lists[li]) {
+                                    let cols = json.table.cols;
                                     let tCells = rows[li + 1].c;
                                     let i;
-                                    for (i = 0; i < tCells.length; i++) {
+                                    for (i = 0; i < cols.length; i++) {
                                         if (tCells[i] != null) {
+                                            //標題output
+                                            $('[data-output=case-name]').text(tCells[0].v + '\u00a0\u00a0' + tCells[1].v + tCells[2].v + 'BN');
+                                            if (tCells[3] != null) {
+                                                $('[data-output=case-name]').text(($('[data-output=case-name]').text().concat(' (' + tCells[3].v + ')')));
+                                            }
                                             //基本資訊output
-                                            if (rows[0].c[i].v == '需求方') {
+                                            if (cols[i].label == '需求方') {
                                                 $("[data-output='applicant']").text(tCells[i].v);
                                             }
-                                            if (rows[0].c[i].v == '相關路徑') {
+                                            if (cols[i].label == '相關路徑') {
                                                 $("[data-output='path']").text(tCells[i].v);
                                             }
-                                            if (rows[0].c[i].v == '設計方') {
+                                            if (cols[i].label == '設計方') {
                                                 $("[data-output='designer']").val(tCells[i].v);
                                             }
-                                            if (rows[0].c[i].v == '初稿交件日期') {
+                                            if (cols[i].label == '初稿交件日期') {
                                                 $("[data-output='ddl-1']").val(tCells[i].v);
                                             }
-                                            if (rows[0].c[i].v == '完成日期') {
+                                            if (cols[i].label == '完成日期') {
                                                 $("[data-output='ddl-2']").val(tCells[i].v);
                                             }
                                             //主視覺output
-                                            if (rows[0].c[i].v == '指定色調') {
+                                            if (cols[i].label == '指定色調') {
                                                 $("[data-output='color-tone']").text(tCells[i].v);
                                             }
-                                            if (rows[0].c[i].v == '指定氛圍') {
+                                            if (cols[i].label == '指定氛圍') {
                                                 $("[data-output='theme']").text(tCells[i].v);
                                             }
                                             //案型1 output
-                                            if (rows[0].c[i].v == '案型1-活動文案') {
+                                            if (cols[i].label == '案型1-活動文案') {
                                                 $("[data-output='C-A']").html(tCells[i].v.replaceAll(',', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-商品總數') {
+                                            if (cols[i].label == '案型1-商品總數') {
                                                 $("[data-output='P-count-A']").text(tCells[i].v.slice(2, 3) + '商品');
                                             }
-                                            if (rows[0].c[i].v == '案型1-商品清單') {
+                                            if (cols[i].label == '案型1-商品清單') {
                                                 let pdSerial = tCells[i].v.replaceAll('\n', ',');
                                                 pdSerial = pdSerial.split(',');
                                                 jQuery.each(pdSerial, function(i, value) {
@@ -462,46 +497,46 @@ if (!window.location.href.includes('form-apply')) {
                                                     $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
-                                            if (rows[0].c[i].v == '案型1-尺寸總數') {
+                                            if (cols[i].label == '案型1-尺寸總數') {
                                                 $("[data-output='S-count2-A']").text(tCells[i].v.slice(2, 3) + '通路');
                                             }
-                                            if (rows[0].c[i].v == '案型1-momo尺寸') {
+                                            if (cols[i].label == '案型1-momo尺寸') {
                                                 $("[data-output='momo-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-pchome尺寸') {
+                                            if (cols[i].label == '案型1-pchome尺寸') {
                                                 $("[data-output='pchome-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-friday尺寸') {
+                                            if (cols[i].label == '案型1-friday尺寸') {
                                                 $("[data-output='friday-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-book尺寸') {
+                                            if (cols[i].label == '案型1-book尺寸') {
                                                 $("[data-output='book-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-shopee尺寸') {
+                                            if (cols[i].label == '案型1-shopee尺寸') {
                                                 $("[data-output='shopee-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-yahoo尺寸') {
+                                            if (cols[i].label == '案型1-yahoo尺寸') {
                                                 $("[data-output='yahoo-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-etmall尺寸') {
+                                            if (cols[i].label == '案型1-etmall尺寸') {
                                                 $("[data-output='etmall-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-buy123尺寸') {
+                                            if (cols[i].label == '案型1-buy123尺寸') {
                                                 $("[data-output='buy123-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-meimaii尺寸') {
+                                            if (cols[i].label == '案型1-meimaii尺寸') {
                                                 $("[data-output='meimaii-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-自定義1尺寸') {
+                                            if (cols[i].label == '案型1-自定義1尺寸') {
                                                 $("[data-output='custom1-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-自定義2尺寸') {
+                                            if (cols[i].label == '案型1-自定義2尺寸') {
                                                 $("[data-output='custom2-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-自定義3尺寸') {
+                                            if (cols[i].label == '案型1-自定義3尺寸') {
                                                 $("[data-output='custom3-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型1-通路名稱') {
+                                            if (cols[i].label == '案型1-通路名稱') {
                                                 let ecNames = tCells[i].v.split(','); //values truned into an array
                                                 let ec;
                                                 for (ec = 0; ec < ecNames.length; ec++) {
@@ -510,13 +545,13 @@ if (!window.location.href.includes('form-apply')) {
                                                 }
                                             }
                                             //案型2 output
-                                            if (rows[0].c[i].v == '案型2-活動文案') {
+                                            if (cols[i].label == '案型2-活動文案') {
                                                 $("[data-output='C-B']").html(tCells[i].v.replaceAll(',', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-商品總數') {
+                                            if (cols[i].label == '案型2-商品總數') {
                                                 $("[data-output='P-count-B']").text(tCells[i].v.slice(2, 3) + '商品');
                                             }
-                                            if (rows[0].c[i].v == '案型2-商品清單') {
+                                            if (cols[i].label == '案型2-商品清單') {
                                                 let pdSerial = tCells[i].v.replaceAll('\n', ',');
                                                 pdSerial = pdSerial.split(',');
                                                 jQuery.each(pdSerial, function(i, value) {
@@ -524,46 +559,46 @@ if (!window.location.href.includes('form-apply')) {
                                                     $("[data-output='P-B']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
-                                            if (rows[0].c[i].v == '案型2-尺寸總數') {
+                                            if (cols[i].label == '案型2-尺寸總數') {
                                                 $("[data-output='S-count2-B']").text(tCells[i].v.slice(2, 3) + '通路');
                                             }
-                                            if (rows[0].c[i].v == '案型2-momo尺寸') {
+                                            if (cols[i].label == '案型2-momo尺寸') {
                                                 $("[data-output='momo-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-pchome尺寸') {
+                                            if (cols[i].label == '案型2-pchome尺寸') {
                                                 $("[data-output='pchome-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-friday尺寸') {
+                                            if (cols[i].label == '案型2-friday尺寸') {
                                                 $("[data-output='friday-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-book尺寸') {
+                                            if (cols[i].label == '案型2-book尺寸') {
                                                 $("[data-output='book-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-shopee尺寸') {
+                                            if (cols[i].label == '案型2-shopee尺寸') {
                                                 $("[data-output='shopee-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-yahoo尺寸') {
+                                            if (cols[i].label == '案型2-yahoo尺寸') {
                                                 $("[data-output='yahoo-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-etmall尺寸') {
+                                            if (cols[i].label == '案型2-etmall尺寸') {
                                                 $("[data-output='etmall-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-buy123尺寸') {
+                                            if (cols[i].label == '案型2-buy123尺寸') {
                                                 $("[data-output='buy123-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-meimaii尺寸') {
+                                            if (cols[i].label == '案型2-meimaii尺寸') {
                                                 $("[data-output='meimaii-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-自定義1尺寸') {
+                                            if (cols[i].label == '案型2-自定義1尺寸') {
                                                 $("[data-output='custom1-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-自定義2尺寸') {
+                                            if (cols[i].label == '案型2-自定義2尺寸') {
                                                 $("[data-output='custom2-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-自定義3尺寸') {
+                                            if (cols[i].label == '案型2-自定義3尺寸') {
                                                 $("[data-output='custom3-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型2-通路名稱') {
+                                            if (cols[i].label == '案型2-通路名稱') {
                                                 let ecNames = tCells[i].v.split(','); //values truned into an array
                                                 let ec;
                                                 for (ec = 0; ec < ecNames.length; ec++) {
@@ -572,13 +607,13 @@ if (!window.location.href.includes('form-apply')) {
                                                 }
                                             }
                                             //案型3 output
-                                            if (rows[0].c[i].v == '案型3-活動文案') {
+                                            if (cols[i].label == '案型3-活動文案') {
                                                 $("[data-output='C-C']").html(tCells[i].v.replaceAll(',', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-商品總數') {
+                                            if (cols[i].label == '案型3-商品總數') {
                                                 $("[data-output='P-count-C']").text(tCells[i].v.slice(2, 3) + '商品');
                                             }
-                                            if (rows[0].c[i].v == '案型3-商品清單') {
+                                            if (cols[i].label == '案型3-商品清單') {
                                                 let pdSerial = tCells[i].v.replaceAll('\n', ',');
                                                 pdSerial = pdSerial.split(',');
                                                 jQuery.each(pdSerial, function(i, value) {
@@ -586,46 +621,46 @@ if (!window.location.href.includes('form-apply')) {
                                                     $("[data-output='P-C']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
-                                            if (rows[0].c[i].v == '案型3-尺寸總數') {
+                                            if (cols[i].label == '案型3-尺寸總數') {
                                                 $("[data-output='S-count2-C']").text(tCells[i].v.slice(2, 3) + '通路');
                                             }
-                                            if (rows[0].c[i].v == '案型3-momo尺寸') {
+                                            if (cols[i].label == '案型3-momo尺寸') {
                                                 $("[data-output='momo-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-pchome尺寸') {
+                                            if (cols[i].label == '案型3-pchome尺寸') {
                                                 $("[data-output='pchome-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-friday尺寸') {
+                                            if (cols[i].label == '案型3-friday尺寸') {
                                                 $("[data-output='friday-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-book尺寸') {
+                                            if (cols[i].label == '案型3-book尺寸') {
                                                 $("[data-output='book-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-shopee尺寸') {
+                                            if (cols[i].label == '案型3-shopee尺寸') {
                                                 $("[data-output='shopee-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-yahoo尺寸') {
+                                            if (cols[i].label == '案型3-yahoo尺寸') {
                                                 $("[data-output='yahoo-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-etmall尺寸') {
+                                            if (cols[i].label == '案型3-etmall尺寸') {
                                                 $("[data-output='etmall-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-buy123尺寸') {
+                                            if (cols[i].label == '案型3-buy123尺寸') {
                                                 $("[data-output='buy123-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-meimaii尺寸') {
+                                            if (cols[i].label == '案型3-meimaii尺寸') {
                                                 $("[data-output='meimaii-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-自定義1尺寸') {
+                                            if (cols[i].label == '案型3-自定義1尺寸') {
                                                 $("[data-output='custom1-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-自定義2尺寸') {
+                                            if (cols[i].label == '案型3-自定義2尺寸') {
                                                 $("[data-output='custom2-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-自定義3尺寸') {
+                                            if (cols[i].label == '案型3-自定義3尺寸') {
                                                 $("[data-output='custom3-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
                                             }
-                                            if (rows[0].c[i].v == '案型3-通路名稱') {
+                                            if (cols[i].label == '案型3-通路名稱') {
                                                 let ecNames = tCells[i].v.split(','); //values truned into an array
                                                 let ec;
                                                 for (ec = 0; ec < ecNames.length; ec++) {
