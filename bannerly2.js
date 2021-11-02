@@ -622,6 +622,9 @@ if (!window.location.href.includes('form-apply') || !window.location.href.includ
 
         //defaulting output blocks
 
+        //pd count area
+        $('[data-output=P-count-A]', '[data-output=P-count-B]', '[data-output=P-count-C]').text('0');
+
         //img area
         $('.img').remove();
         $('.block-pool').each(function() {
