@@ -77,33 +77,40 @@ for (const customInput of customInputs) {
 //若input class=".js-custom-input"，並且也另一class"js-limit-(number)" ，即由(number)定義字數限制（含全形/半形）
 $(".js-custom-input").on("input", function() {
     let $that = $(this);
-    let limit;
     let key = 'js-length';
     if ($that.attr('class').includes(key)) {
+        let limit;
         let index = $that.attr('class').indexOf(key);
         let keyVal = $that.attr('class').slice(index + key.length + 1, index + key.length + 3);
         limit = keyVal;
+        $that.attr("maxlength", limit);
+        setTimeout(function() {
+            let value = $that.val();
+            //以下段落可將1個全形字視為2個字符
+            // let reg = /[\u4e00-\u9fa5]{1}/g;
+            // let notReg = /\w{1}/g;
+            // let Cn = value.match(reg);
+            // let En = value.match(notReg);
+            // if (Cn) {
+            //     limit = limit - Cn.length * 2;
+            // }
+            // if (En) {
+            //     limit = limit - En.length;
+            // }
+            if (limit <= 0) {
+                var finalLen = value.length + limit;
+                value = value.substring(0, finalLen);
+                $that.attr("maxlength", limit);
+                $that[0].value = value;
+            }
+        }, 0);
+        $that.one('keydown', () => {
+            console.log('s')
+            if ($that.val().length == limit) {
+                alert('最多輸入' + limit + '字');
+            }
+        })
     }
-    $that.attr("maxlength", limit);
-    setTimeout(function() {
-        var value = $that.val(),
-            reg = /[\u4e00-\u9fa5]{1}/g,
-            notReg = /\w{1}/g;
-        var Cn = value.match(reg);
-        var En = value.match(notReg);
-        if (Cn) {
-            limit = limit - Cn.length * 2;
-        }
-        if (En) {
-            limit = limit - En.length;
-        }
-        if (limit <= 0) {
-            var finalLen = value.length + limit;
-            value = value.substring(0, finalLen);
-            $that.attr("maxlength", limit);
-            $that[0].value = value;
-        }
-    }, 0);
 });
 
 //GLOBAL .label 點按響應 (含dropCard、tabBox)
