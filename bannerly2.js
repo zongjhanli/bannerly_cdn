@@ -74,10 +74,16 @@ for (const customInput of customInputs) {
 }
 
 // GLOBAL 新增選項字數限制
-// crefit 待補上
-$(".js-length-10").on("input", function(e) {
-    var $that = $(this),
-        limit = 10; //調整字元數限制
+//若input class=".js-custom-input"，並且也另一class"js-limit-(number)" ，即由(number)定義字數限制（含全形/半形）
+$(".js-custom-input").on("input", function() {
+    let $that = $(this);
+    let limit;
+    let key = 'js-length';
+    if ($that.attr('class').includes(key)) {
+        let index = $that.attr('class').indexOf(key);
+        let keyVal = $that.attr('class').slice(index + key.length + 1, index + key.length + 3);
+        limit = keyVal;
+    }
     $that.attr("maxlength", limit);
     setTimeout(function() {
         var value = $that.val(),
@@ -87,30 +93,6 @@ $(".js-length-10").on("input", function(e) {
         var En = value.match(notReg);
         if (Cn) {
             limit = limit - Cn.length * 2;
-        }
-        if (En) {
-            limit = limit - En.length;
-        }
-        if (limit <= 0) {
-            var finalLen = value.length + limit;
-            value = value.substring(0, finalLen);
-            $that.attr("maxlength", limit);
-            $that[0].value = value;
-        }
-    }, 0);
-});
-$(".js-length-6").on("input", function(e) {
-    var $that = $(this),
-        limit = 6; //調整字元數限制
-    $that.attr("maxlength", limit);
-    setTimeout(function() {
-        var value = $that.val(),
-            reg = /[\u4e00-\u9fa5]{1}/g,
-            notReg = /\w{1}/g;
-        var Cn = value.match(reg);
-        var En = value.match(notReg);
-        if (Cn) {
-            limit = 0;
         }
         if (En) {
             limit = limit - En.length;
@@ -602,6 +584,21 @@ for (const dropCard of dropCards) {
     }
 } //end of dropCard loop
 //end of Global general dropdown behaviours
+
+//checked input styling
+$(document).click(function(e) {
+    let target = e.target;
+    if (!$(target).siblings('.custom-check').hasClass('w--redirected-checked')) {
+        if ($(target).parent().hasClass('full-chip')) {
+            $(target).css('color', 'rgba(47, 90, 58, 1)');
+        } else if ($(target).parent().hasClass('as-chip')) {
+            $(target).parent().siblings().find('.label').css('color', 'rgba(47, 90, 58, 0.5)');
+            $(target).css('color', 'rgba(47, 90, 58, 1)');
+        }
+    } else {
+        $(target).css('color', 'rgba(47, 90, 58, 0.5)');
+    }
+})
 
 // ----------------------------------------------------------------------------------------------------
 
