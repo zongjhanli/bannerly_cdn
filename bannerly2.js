@@ -673,6 +673,11 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 //@Form-apply、@Custom-apply 專屬區塊
 if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
 
+    //取消webflow form 殘留響應
+    $(document).ready(() => {
+        $('w-form').removeClass('w-form');
+    })
+
     //修正browser tab resize位移
     window.addEventListener('resize', () => {
         // console.log(window.innerHeight);
