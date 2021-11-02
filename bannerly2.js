@@ -32,9 +32,7 @@ callers.forEach((caller) => {
 });
 
 // GLOBAL 新增自定義選項（適用於radio select）
-const customInputs = document.querySelectorAll(
-    'input[type="text"].js-custom-input:not(.dropdown)'
-);
+const customInputs = document.querySelectorAll('input[type="text"].js-custom-input:not(.dropdown)');
 for (const customInput of customInputs) {
     customInput.addEventListener("change", (e) => {
         let target = e.target;
@@ -56,6 +54,7 @@ for (const customInput of customInputs) {
             // 當選項被新增 -> 隱藏Text Input，並取消選取其他選項，藉以擬仿radio的特性
             if (span.innerText.length != 0) {
                 target.classList.add("js-toggle");
+                target.value = "";
                 customRadio.classList.remove("js-toggle");
                 otherOption.classList.remove("w--redirected-checked");
                 checker.classList.add("w--redirected-checked");
@@ -63,7 +62,6 @@ for (const customInput of customInputs) {
 
             // 當選項被移除 -> 重新顯示Text Input，並清除原本已新增的選項
             function reset() {
-                target.value = ""; // !-- 尚未檢查 target所鍵入value是否殘存
                 target.classList.remove("js-toggle");
                 customRadio.classList.add("js-toggle");
             }
@@ -105,7 +103,6 @@ $(".js-custom-input").on("input", function() {
             }
         }, 0);
         $that.one('keydown', () => {
-            console.log('s')
             if ($that.val().length == limit) {
                 alert('最多輸入' + limit + '字');
             }
