@@ -53,11 +53,12 @@ for (const customInput of customInputs) {
         for (const otherOption of otherOptions) {
             // 當選項被新增 -> 隱藏Text Input，並取消選取其他選項，藉以擬仿radio的特性
             if (span.innerText.length != 0) {
+                otherOption.classList.remove("w--redirected-checked");
+                otherOption.nextElementSibling.nextElementSibling.style.color = "rgba(47, 90, 58, 0.5)";
                 target.classList.add("js-toggle");
                 target.value = "";
                 span.style.color = "rgba(47, 90, 58, 1)";
                 customRadio.classList.remove("js-toggle");
-                otherOption.classList.remove("w--redirected-checked");
                 checker.classList.add("w--redirected-checked");
             }
 
@@ -67,7 +68,11 @@ for (const customInput of customInputs) {
                 customRadio.classList.add("js-toggle");
             }
             customRadio.addEventListener("click", reset);
-            otherOption.parentElement.addEventListener("click", reset);
+            otherOption.parentElement.addEventListener("click", () => {
+                reset();
+                otherOption.classList.add("w--redirected-checked");
+                otherOption.nextElementSibling.nextElementSibling.style.color = "rgba(47, 90, 58, 1)";
+            });
         }
     });
 }
@@ -674,6 +679,16 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
 //@Form-apply、@Custom-apply 專屬區塊
 if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
+
+    //按下enter後防止（瀏覽器預設）送出表單
+    $(document).ready(function() {
+        $(window).keydown(function(event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    });
 
     //取消webflow form 殘留響應
     $(document).ready(() => {
