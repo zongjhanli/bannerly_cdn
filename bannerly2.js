@@ -55,6 +55,7 @@ for (const customInput of customInputs) {
             if (span.innerText.length != 0) {
                 target.classList.add("js-toggle");
                 target.value = "";
+                span.style.color = "rgba(47, 90, 58, 1)";
                 customRadio.classList.remove("js-toggle");
                 otherOption.classList.remove("w--redirected-checked");
                 checker.classList.add("w--redirected-checked");
