@@ -175,8 +175,41 @@ if (!window.location.href.includes('form-apply')) {
                 }
             }
 
-            //List欄位-QUERY
+            //List 標註月份（H3）
+            $(document).ready(function() {
+                let l;
+                for (l = 0; l < $('.a-list').length; l++) {
+                    let base = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2);
+                    let plus = $('.a-list').eq(l + 1).children('._14px-500').text().slice(0, 2);
+                    let minus = $('.a-list').eq(l - 1).children('._14px-500').text().slice(0, 2);
 
+                    if (base - minus == 1 || plus - base == 1) {
+                        let month = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2) + '月';
+                        let mHeader = '<h3 class="h3 month-indicator" data-m="' + month + '">' + month + '</h3>';
+                        $(mHeader).attr('data-m', month);
+                        $('.a-list').eq(l).before($(mHeader));
+                        $('.a-list').eq(l).attr('data-m', month);
+                    }
+                }
+                let firstMonth = $('.a-list').eq(0).children('._14px-500').text().slice(0, 2) + '月';
+                let firstHeader = '<h3 class="h3 month-indicator" data-m="' + firstMonth + '">' + firstMonth + '</h3>';
+                let lastMonth = $('.a-list').eq($('.a-list').length - 1).children('._14px-500').text().slice(0, 2) + '月';
+                let lastHeader = '<h3 class="h3 month-indicator" data-m="' + lastMonth + '">' + lastMonth + '</h3>';
+                $('.a-list').first().before(firstHeader);
+                $('.a-list').first().attr('data-m', firstMonth);
+                $('.a-list').last().before(lastHeader);
+                $('.a-list').last().attr('data-m', lastMonth);
+
+                //挖除月份標籤的"0"字樣
+                $('.month-indicator').each((i) => {
+                    if ($('.month-indicator').eq(i).text().slice(0, 1) == '0') {
+                        $('.month-indicator').eq(i).text($('.month-indicator').eq(i).text().replace('0', ''));
+                    }
+                })
+
+            })
+
+            //List欄位-QUERY
             //quarter query 選項建置
             $(document).ready(function() {
                 //首先判斷list中有「哪幾種」年份
@@ -377,12 +410,34 @@ if (!window.location.href.includes('form-apply')) {
 
             function searchQuery() {
                 let keyedTxt = $('.search-input').val();
-                $('.a-list').each(function() {
-                    $(this).css('display', 'flex');
-                    if ($(this).children('._14px-500').text().toLowerCase().indexOf(keyedTxt.toLowerCase()) < 0) {
-                        $(this).css('display', 'none');
-                    }
-                })
+                if (keyedTxt.includes(' ')) {
+                    keyedTxt = keyedTxt.replace(/ /g, ',');
+                    keyedTxt = keyedTxt.split(',');
+                    // let t;
+                    // for (t = 0; t < keyedTxt.length; t++) {
+                    $(keyedTxt).each((i) => {
+                        $('.a-list').css('display', 'flex');
+                        $('.a-list').each((l) => {
+                            if ($('.a-list').eq(l).children('._14px-500').text().toLowerCase().indexOf(keyedTxt[i].toLowerCase()) < 0) {
+                                $('.a-list').eq(l).css('display', 'none');
+                            }
+                        })
+                    })
+
+                    // }
+                } else {
+                    $('.a-list').css('display', 'flex');
+                    $('.a-list').each(function() {
+                        if ($(this).children('._14px-500').text().toLowerCase().indexOf(keyedTxt.toLowerCase()) < 0) {
+                            $(this).css('display', 'none');
+                        }
+                    })
+                }
+                // $('.a-list').each(function() {
+                //     if ($(this).children('._14px-500').text().toLowerCase().indexOf(keyedTxt.toLowerCase()) < 0) {
+                //         $(this).css('display', 'none');
+                //     }
+                // })
             }
 
             function quarterQuery() {
@@ -435,6 +490,16 @@ if (!window.location.href.includes('form-apply')) {
             }
             //end of List欄位-QUERY
 
+
+            $(document).ready(function() {
+                //若list隱藏，月份標籤連帶隱藏
+                $('.a-list[data-m]').each((m) => {
+                    if ($('.a-list[data-m]').eq(m).is(':hidden')) {
+                        console.log($('.a-list[data-m]').eq(m));
+                        $('.month-indicator[data-m]').eq(m).css('display', 'none');
+                    }
+                })
+            })
 
             // Result欄位output
             document.addEventListener('click', (e) => {
