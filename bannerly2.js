@@ -11,78 +11,16 @@
 // "credit" -> 參考來源
 // test test
 
-// GLOBAL 跨區叫喚
-let calleds = document.querySelectorAll("[data-called]");
-let callers = document.querySelectorAll("[data-caller]");
-callers.forEach((caller) => {
-    caller.addEventListener("click", (e) => {
-        let target = e.target;
-        let dataCaller = target.dataset.caller;
-
-        calleds.forEach((called) => {
-            let dataCalled = called.dataset.called;
-            if (dataCalled == dataCaller) {
-                // !++ condition等式兩端不可互換
-                called.classList.remove("js-toggle");
-            } else {
-                called.classList.add("js-toggle");
-            }
-        });
-    });
-});
-
-// GLOBAL 新增自定義選項（適用於radio select）
-const customInputs = document.querySelectorAll('input[type="text"].js-custom-input:not(.dropdown)');
-for (const customInput of customInputs) {
-    customInput.addEventListener("change", (e) => {
-        let target = e.target;
-        let customRadio = target.previousElementSibling;
-        let span = customRadio.querySelector("span");
-        let input = customRadio.querySelector("input");
-        let checker = customRadio.querySelector(".custom-check");
-        let parentDiv = target.parentElement;
-
-        // 新增子元素之attribute隨user key-in變化
-        let keyInText = target.value;
-        span.innerText = keyInText;
-        input.value = keyInText;
-        input.id = keyInText;
-
-        // 新增自定義選項後，相關DOM元素的反應
-        let otherOptions = parentDiv.querySelectorAll(".custom-check");
-        for (const otherOption of otherOptions) {
-            // 當選項被新增 -> 隱藏Text Input，並取消選取其他選項，藉以擬仿radio的特性
-            if (span.innerText.length != 0) {
-                otherOption.classList.remove("w--redirected-checked");
-                otherOption.nextElementSibling.nextElementSibling.style.color = "rgba(47, 90, 58, 0.5)";
-                target.classList.add("js-toggle");
-                target.value = "";
-                span.style.color = "rgba(47, 90, 58, 1)";
-                customRadio.classList.remove("js-toggle");
-                checker.classList.add("w--redirected-checked");
-            }
-
-            // 當選項被移除 -> 重新顯示Text Input，並清除原本已新增的選項
-            function reset() {
-                target.classList.remove("js-toggle");
-                customRadio.classList.add("js-toggle");
-            }
-            customRadio.addEventListener("click", reset);
-            otherOption.parentElement.addEventListener("click", () => {
-                reset();
-                otherOption.classList.add("w--redirected-checked");
-                otherOption.nextElementSibling.nextElementSibling.style.color = "rgba(47, 90, 58, 1)";
-            });
-        }
-    });
-}
-
-// GLOBAL 新增選項字數限制
-//若input class=".js-custom-input"，並且也另一class"js-limit-(number)" ，即由(number)定義字數限制（含全形/半形）
+// GLOBAL 新增自定義選項（適用於radio select、color picker）
+$(document).ready(() => {
+        let minihinters = $(".js-custom-input").parent().find('.js-limit-hinter , .icon_20x.for-custom-input');
+        minihinters.css('display', 'none');
+    })
+    //若input class=".js-custom-input"，並且也另一class"js-limit-(number)" ，即由(number)定義字數限制（含全形/半形）
 $(".js-custom-input").on("input", function() {
     let $that = $(this);
     let key = 'js-length';
-    if ($that.attr('class').includes(key)) {
+    if ($that.attr('class').includes(key)) { //若不標註則會包括dropdown input
         let limit;
         let index = $that.attr('class').indexOf(key);
         let keyVal = $that.attr('class').slice(index + key.length + 1, index + key.length + 3);
@@ -108,11 +46,80 @@ $(".js-custom-input").on("input", function() {
                 $that[0].value = value;
             }
         }, 0);
-        $that.one('keydown', () => {
-            if ($that.val().length == limit) {
-                alert('最多輸入' + limit + '字');
+        if ($that.attr('data-name') == 'custom--color') {
+            $that.one('keydown', () => {
+                if ($that.val().length == limit) {
+                    alert('最多輸入' + limit + '字');
+                }
+            })
+        }
+        let limitHinter = $that.parent().find('.js-limit-hinter');
+        let iconHinter = $that.parent().find('.icon_20x.for-custom-input');
+        limitHinter.css('display', 'block');
+        limitHinter.text('限' + limit + '字符');
+        iconHinter.css('display', 'block');
+        //enter 完成input change
+        $that.keydown(function(event) {
+            if (event.keyCode == 13) {
+                $that.change();
+                event.preventDefault();
+                limitHinter.css('display', 'none');
+                iconHinter.removeClass('js-return').addClass('js-clear-input');
+            } else {
+                limitHinter.css('display', 'block');
+                iconHinter.addClass('js-return').removeClass('js-clear-input');
+            }
+        });
+        $(this).change(function(e) {
+            let target = e.target;
+
+            if (!$(target).parent().hasClass('color-code')) {
+                if ($(target).val().length > 0) {
+                    let otherCheck = $(target).parent().parent().find('.custom-check');
+                    let tCheck = $(target).parent().parent().find('[data-customInput]').siblings('.custom-check');
+                    otherCheck.removeClass('w--redirected-checked');
+                    otherCheck.siblings('span').css('color', 'rgba(47, 90, 58, 0.5)');
+                    tCheck.addClass('w--redirected-checked');
+                    tCheck.parent().removeClass('js-toggle');
+                    tCheck.siblings('span').text($(target).val());
+                    tCheck.siblings('span').css('color', 'rgba(47, 90, 58, 1)');
+                    tCheck.siblings('input').val($(target).val());
+
+                    let limitHinter = $(target).parent().find('.js-limit-hinter');
+                    let iconHinter = $(target).parent().find('.icon_20x.for-custom-input');
+                    limitHinter.css('display', 'none');
+                    iconHinter.removeClass('js-return').addClass('js-clear-input');
+                    iconHinter.css('pointerEvents', 'all');
+                    iconHinter.css('zIndex', '2');
+                } else {
+                    resetCustomBtn(e);
+                }
+            } else if ($(target).parent().hasClass('color-code')) {
+                $(target).parent().parent().parent().parent().find('.input.color').trigger('click');
+                $('.label.for-color').siblings('.custom-check').css('backgroundImage', "url('../images/dashicons_color-picker-active.svg')");
+                $('.label.for-color').siblings('.custom-check').css('backgroundColor', "transparent");
             }
         })
+        $('.icon_20x.for-custom-input').click((e) => {
+            let target = e.target;
+            $(target).removeClass('js-clear-input').addClass('js-return');
+            $(target).css({
+                'pointerEvents': 'none',
+                'display': 'none'
+            });
+            $(this).val('');
+            resetCustomBtn(e);
+        })
+
+        function resetCustomBtn(e) {
+            let target = e.target;
+            let tCheck = $(target).parent().parent().find('[data-customInput]').siblings('.custom-check');
+            tCheck.removeClass('w--redirected-checked');
+            tCheck.parent().addClass('js-toggle');
+            tCheck.siblings('span').text('');
+            tCheck.siblings('span').css('color', 'rgba(47, 90, 58, 0.5)');
+            tCheck.siblings('input').val('');
+        }
     }
 });
 
@@ -601,12 +608,18 @@ $(document).click(function(e) {
     if (!$(target).siblings('.custom-check').hasClass('w--redirected-checked')) {
         if ($(target).parent().hasClass('full-chip')) {
             $(target).css('color', 'rgba(47, 90, 58, 1)');
+
         } else if ($(target).parent().hasClass('as-chip')) {
             $(target).parent().siblings().find('.label').css('color', 'rgba(47, 90, 58, 0.5)');
             $(target).css('color', 'rgba(47, 90, 58, 1)');
         }
     } else {
-        $(target).css('color', 'rgba(47, 90, 58, 0.5)');
+        if ($(target).parent().hasClass('full-chip')) {
+            $(target).css('color', 'rgba(47, 90, 58, 0.5)');
+        } else if ($(target).parent().hasClass('as-chip')) {
+            $(target).parent().siblings().find('.label').css('color', 'rgba(47, 90, 58, 0.5)');
+            $(target).css('color', 'rgba(47, 90, 58, 1)');
+        }
     }
 })
 
@@ -709,6 +722,23 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
             $('.date-input').val($('.date-input').val().replaceAll(year + '/', ''));
         }
     })
+
+    //color-code 點擊響應&套件開關
+    $(document).click(function(e) {
+        let target = e.target;
+        let tClass = $(target).attr('class');
+        if (tClass.indexOf('for-color') >= 0) {
+            $(target).parent().parent().parent().find('.color-block').removeClass('js-toggle');
+            if (!$(target).siblings('.custom-check').attr('class').includes('w--redirected-checked')) {
+                $(target).parent().css('backgroundImage', 'linear-gradient(180deg, rgba(255, 234, 0, 0.2), rgba(255, 234, 0, 0.2))');
+                $(target).siblings('.custom-check').addClass('active');
+            }
+        } else if ($(target).parent().siblings().find('.for-color').length == 1) {
+            $(target).parent().parent().parent().find('.color-block').addClass('js-toggle');
+            $(target).parent().siblings('.input.color').css('backgroundImage', 'linear-gradient(180deg, rgba(255, 234, 0, 0), rgba(255, 234, 0, 0))');
+            $(target).parent().siblings('.input.color').find('.custom-check').removeClass('active');
+        }
+    });
 
     //@form-apply 案型增減響應
     let swiper = document.querySelector("div.swiper");
