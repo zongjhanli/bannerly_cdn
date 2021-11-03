@@ -491,15 +491,20 @@ if (!window.location.href.includes('form-apply')) {
             //end of List欄位-QUERY
 
 
-            $(document).ready(function() {
+            $(document).ready(function() { monthIndicator(); })
+            $(document).click(function() { monthIndicator(); })
+
+
+            function monthIndicator() {
                 //若list隱藏，月份標籤連帶隱藏
                 $('.a-list[data-m]').each((m) => {
                     if ($('.a-list[data-m]').eq(m).is(':hidden')) {
-                        console.log($('.a-list[data-m]').eq(m));
                         $('.month-indicator[data-m]').eq(m).css('display', 'none');
+                    } else {
+                        $('.month-indicator[data-m]').eq(m).css('display', 'block');
                     }
                 })
-            })
+            }
 
             // Result欄位output
             document.addEventListener('click', (e) => {
