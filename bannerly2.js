@@ -96,7 +96,7 @@ $(".js-custom-input").on("input", function() {
                 }
             } else if ($(target).parent().hasClass('color-code')) {
                 $(target).parent().parent().parent().parent().find('.input.color').trigger('click');
-                $('.label.for-color').siblings('.custom-check').css('backgroundImage', "url('../images/dashicons_color-picker-active.svg')");
+                $('.label.for-color').siblings('.custom-check').css('backgroundPosition', '50% 50%');
                 $('.label.for-color').siblings('.custom-check').css('backgroundColor', "transparent");
             }
         })
