@@ -111,6 +111,15 @@ $(".js-custom-input").on("input", function() {
             resetCustomBtn(e);
         })
 
+        let allCheck = $that.parent().parent().find('input[type=radio]');
+        $(allCheck).siblings('.label').click((e) => {
+            // resetCustomBtn(e);//此時customBtn不能reset，而是保留在DOM上
+            $(allCheck).siblings('.custom-check').removeClass('w--redirected-checked');
+            $(allCheck).siblings('.label').css('color', 'rgba(47, 90, 58, 0.5');
+            $(this).siblings('.custom-check').addClass('w--redirected-checked');
+            $(this).css('color', 'rgba(47, 90, 58, 1)');
+        })
+
         function resetCustomBtn(e) {
             let target = e.target;
             let tCheck = $(target).parent().parent().find('[data-customInput]').siblings('.custom-check');
@@ -726,17 +735,19 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
     //color-code 點擊響應&套件開關
     $(document).click(function(e) {
         let target = e.target;
-        let tClass = $(target).attr('class');
-        if (tClass.indexOf('for-color') >= 0) {
-            $(target).parent().parent().parent().find('.color-block').removeClass('js-toggle');
-            if (!$(target).siblings('.custom-check').attr('class').includes('w--redirected-checked')) {
+
+        if ($(target).siblings('input').attr('name') == 'color-tone') { //name = color-tone同組的radio btn的label
+            console.log($(target));
+            let colorTool = $(target).parent().parent().parent().find('.color-block'); //colorTool 套件
+            if ($(target).parent().attr('data-nome') == 'color') {
+                colorTool.removeClass('js-toggle');
                 $(target).parent().css('backgroundImage', 'linear-gradient(180deg, rgba(255, 234, 0, 0.2), rgba(255, 234, 0, 0.2))');
                 $(target).siblings('.custom-check').addClass('active');
+            } else if ($(target).parent().attr('data-nome') != 'color') {
+                colorTool.addClass('js-toggle');
+                $('[data-nome=color]').css('backgroundImage', 'none');
+                $('[data-nome=color]').find('.custom-check').removeClass('active');
             }
-        } else if ($(target).parent().siblings().find('.for-color').length == 1) {
-            $(target).parent().parent().parent().find('.color-block').addClass('js-toggle');
-            $(target).parent().siblings('.input.color').css('backgroundImage', 'linear-gradient(180deg, rgba(255, 234, 0, 0), rgba(255, 234, 0, 0))');
-            $(target).parent().siblings('.input.color').find('.custom-check').removeClass('active');
         }
     });
 
