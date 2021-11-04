@@ -701,6 +701,20 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 //@Form-apply專屬區塊
 if (window.location.href.includes('form-apply')) {
 
+    //anchor dot breathing
+    $(document).ready(() => { showDot() });
+    $(document).click(() => { showDot() });
+
+    function showDot() {
+        $('.as_anchor').each((a) => {
+            if ($('.as_anchor').eq(a).hasClass('w--current')) {
+                $('.as_anchor').eq(a).find('.anch-inner_circ').css('display', 'block');
+            } else if (!$('.as_anchor').eq(a).hasClass('w--current')) {
+                $('.as_anchor').eq(a).find('.anch-inner_circ').css('display', 'none');
+            }
+        })
+    }
+
     //tab indicator 在沒有ec tab顯現時隱藏
     $(document).click(() => {
         $('[data-group=ecTabs]').each((t) => {
