@@ -11,7 +11,9 @@
 // "credit" -> 參考來源
 // test test
 
-// GLOBAL 新增自定義選項（適用於radio select、color picker）
+// ----------------------------------------------------------------------------------------------------
+
+//GLOBAL 新增自定義選項（適用於radio select、color picker）
 $(document).ready(() => {
         let minihinters = $(".js-custom-input").parent().find('.js-limit-hinter , .icon_20x.for-custom-input');
         minihinters.css('display', 'none');
@@ -293,7 +295,6 @@ document.addEventListener("click", (e) => {
                     newTab();
                 } else {
                     tDropCard.querySelectorAll('[data-custom=confirmed]')[0].parentElement.remove();
-                    console.log(colL.parentElement.querySelector('.hinter-box'));
                     colL.parentElement.querySelector('.hinter-box.nth-alert').style.display = 'block';
                     setTimeout(() => {
                         colL.parentElement.querySelector('.hinter-box.nth-alert').style.display = 'none';
@@ -314,7 +315,7 @@ document.addEventListener("click", (e) => {
             if (shownTabs.length != 0) {
 
                 for (const shownTab of shownTabs) {
-                    let tabName = shownTabs[0].firstElementChild.textContent;
+                    let tabName = shownTabs[0].firstElementChild.dataset.tab;
 
                     //ec tab indicator 顯示/隱藏條件
                     let tabLength = shownTabs.length;
@@ -327,16 +328,16 @@ document.addEventListener("click", (e) => {
                     //每次選取/取消選取，tabBox重新更新「第一個」tab以及相關dropGroup, textArea顯現
                     shownTab.style.color = "rgba(47, 90, 58, 0.5)";
                     shownTabs[0].style.color = "rgba(47, 90, 58, 1)";
-                    let tDropGroups =
-                        colL.nextElementSibling.querySelectorAll(".drop-group");
-                    for (const tDropGroup of tDropGroups) {
-                        tDropGroup.classList.remove("js-show");
-                        if (tDropGroup.dataset.group === tabName) {
-                            tDropGroup.classList.add("js-show");
+                    let tDropGroups = colL.nextElementSibling.querySelectorAll(".drop-group");
+                    if (tDropGroups != null) {
+                        for (const tDropGroup of tDropGroups) {
+                            tDropGroup.classList.remove("js-show");
+                            if (tDropGroup.dataset.group === tabName) {
+                                tDropGroup.classList.add("js-show");
+                            }
                         }
                     }
-                    let tTextAreas =
-                        colL.nextElementSibling.querySelectorAll(".as-textarea");
+                    let tTextAreas = colL.nextElementSibling.querySelectorAll(".as-textarea");
                     for (const tTextArea of tTextAreas) {
                         tTextArea.classList.remove("js-show");
                         let areaName = tTextArea.dataset.name;
@@ -345,7 +346,7 @@ document.addEventListener("click", (e) => {
                         }
                     }
 
-                    tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
+                    tSizeInput.placeholder = '請輸入' + shownTabs[0].firstElementChild.textContent + '尺寸';
                 }
             } else if (shownTabs.length == 0) {
                 tSizeInput.placeholder = '請輸入尺寸';
@@ -455,11 +456,11 @@ for (const dropInput of dropInputs) {
     dropInput.addEventListener("focus", (e) => {
         let target = e.target;
         target.select(); //全選文字
-        let tOptions = dropInput.parentElement
-            .querySelector(".drop-group.js-show")
-            .querySelectorAll(".a-button.as-list");
-        for (const tOption of tOptions) {
-            tOption.classList.remove("js-hide");
+        if (dropInput.parentElement.querySelector(".drop-group.js-show") != null) {
+            let tOptions = dropInput.parentElement.querySelector(".drop-group.js-show").querySelectorAll(".a-button.as-list");
+            for (const tOption of tOptions) {
+                tOption.classList.remove("js-hide");
+            }
         }
     });
 } //end of dropInput loop !!!
@@ -473,32 +474,32 @@ for (const dropCard of dropCards) {
         //multi-dropdown input value 顯現>>>已選N項<<<
         document.addEventListener("click", (e) => {
             let target = e.target;
-            let multiDropCards = document.querySelectorAll(
-                ".drop-card[data-drop=multi]"
-            );
+            let multiDropCards = document.querySelectorAll(".drop-card[data-drop=multi]");
             for (const multiDropCard of multiDropCards) {
-                let shownGroup = multiDropCard.querySelector(".drop-group.js-show");
-                let checkCount = shownGroup.querySelectorAll(".js-selected").length;
-                let input = multiDropCard.parentElement.querySelector(".input.dropdown");
+                if (multiDropCard.querySelector(".drop-group.js-show") != null) {
+                    let shownGroup = multiDropCard.querySelector(".drop-group.js-show");
+                    let checkCount = shownGroup.querySelectorAll(".js-selected").length;
+                    let input = multiDropCard.parentElement.querySelector(".input.dropdown");
 
-                if (target.dataset.drop == "multi" && input == document.activeElement) {
-                    input.value = "";
-                } else if (input != document.activeElement) {
-                    if (checkCount == "0") {
+                    if (target.dataset.drop == "multi" && input == document.activeElement) {
                         input.value = "";
-                    } else {
-                        input.value = "已選" + checkCount + "項";
+                    } else if (input != document.activeElement) {
+                        if (checkCount == "0") {
+                            input.value = "";
+                        } else {
+                            input.value = "已選" + checkCount + "項";
+                        }
                     }
+                    //!!!瀏覽器讀取if condition延遲
+                    // if (target.nextElementSibling.nextElementSibling.classList.contains('drop-card')) {
+                    //     let tDropcard = target.nextElementSibling.nextElementSibling;
+                    //     if( tDropcard.style.height = '0px'){
+                    //         tDropcard.style.borderWidth = '0px';
+                    //     } else {
+                    //         tDropcard.style.borderWidth = '1px';
+                    //     }
+                    // }
                 }
-                //!!!瀏覽器讀取if condition延遲
-                // if (target.nextElementSibling.nextElementSibling.classList.contains('drop-card')) {
-                //     let tDropcard = target.nextElementSibling.nextElementSibling;
-                //     if( tDropcard.style.height = '0px'){
-                //         tDropcard.style.borderWidth = '0px';
-                //     } else {
-                //         tDropcard.style.borderWidth = '1px';
-                //     }
-                // }
             }
         });
 
@@ -653,7 +654,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         let tabGroup = $(this).parent().parent();
         let eachLabel = tabGroup.find('.label[data-ec]');
         let eachResult = tabGroup.parent().parent().find('[data-output]');
-        console.log(eachResult)
         let i;
         for (i = 0; i < eachLabel.length; i++) {
             if (eachLabel.eq(i).text() == $(this).text()) {
@@ -696,40 +696,27 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     })
 }
 
-
 // ----------------------------------------------------------------------------------------------------
 
-//@Form-apply、@Custom-apply 專屬區塊
-if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
+//@Form-apply專屬區塊
+if (window.location.href.includes('form-apply')) {
 
-    //按下enter後防止（瀏覽器預設）送出表單
-    $(document).ready(function() {
-        $(window).keydown(function(event) {
-            if (event.keyCode == 13) {
-                event.preventDefault();
-                return false;
+    //tab indicator 在沒有ec tab顯現時隱藏
+    $(document).click(() => {
+        $('[data-group=ecTabs]').each((t) => {
+            if ($('[data-group=ecTabs]').eq(t).find('.js-selected').length == 0) {
+                $('[data-group=ecTabs]').eq(t).closest('.col-left').find('.indicator').css('display', 'none');
             }
-        });
-    });
+        })
+    })
 
-    //取消webflow form 殘留響應
+    //去除Webflow 為textarea預設的placeholder
     $(document).ready(() => {
-        $('w-form').removeClass('w-form');
-    })
-
-    //修正browser tab resize位移
-    window.addEventListener('resize', () => {
-        // console.log(window.innerHeight);
-        window.scrollBy(window.innerHeight, 0);
-    })
-
-    //date-range-picker 年份處理
-    $(document).click(function() {
-        if ($('.date-input').val().length > 0) {
-            let year = $('.date-input').val().slice(0, 4);
-            $('.date-input').attr('data-year', year);
-            $('.date-input').val($('.date-input').val().replaceAll(year + '/', ''));
-        }
+        $('textarea').each((ta) => {
+            if ($('textarea').eq(ta).attr('placeholder') == 'Example text') {
+                $('textarea').eq(ta).attr('placeholder', '');
+            }
+        })
     })
 
     //color-code 點擊響應&套件開關
@@ -737,7 +724,6 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
         let target = e.target;
 
         if ($(target).siblings('input').attr('name') == 'color-tone') { //name = color-tone同組的radio btn的label
-            console.log($(target));
             let colorTool = $(target).parent().parent().parent().find('.color-block'); //colorTool 套件
             if ($(target).parent().attr('data-nome') == 'color') {
                 colorTool.removeClass('js-toggle');
@@ -751,7 +737,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
         }
     });
 
-    //@form-apply 案型增減響應
+    //Swiper 案型增減響應
     let swiper = document.querySelector("div.swiper");
 
     //頁面loading後預設隱藏未被新增的案型
@@ -1041,7 +1027,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
     } //end of ecTabsCol loop
 
     //@form-apply hinter 響應
-    //dropdown hinter提示
+    //ec size 預設為不可點按
     window.addEventListener("load", () => {
         let dropInputs = document.querySelectorAll(".input.dropdown");
         for (const dropInput of dropInputs) {
@@ -1051,6 +1037,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
         }
     });
 
+    //dropdown hinter提示
     document.addEventListener("click", () => {
         let hinters = document.querySelectorAll(".hinter-box.for-ec");
 
@@ -1208,8 +1195,6 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                         let colLs = tSection.querySelectorAll('.col-left');
                         if (shownHinters[0].parentElement.parentElement.parentElement === colLs[c] ||
                             shownHinters[0].parentElement.parentElement.parentElement.parentElement === colLs[c]) { //判斷S-count1序號，並考量ecDrop hinter以及sizeTab hinter兩種情形
-                            console.log(c);
-                            console.log(shownHinters[0]);
                             swiping();
                         }
                     }
@@ -1261,7 +1246,45 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
             let hinter = target.querySelector('.hinter-box');
             hinter.style.display = "none";
         });
-    } //end of @form-apply hinter 響應
+    }
+
+    //重新填寫觸發hinter關閉
+    $(document).click((e) => {
+        let target = e.target;
+        $('.f-block').each((f) => {
+            if ($('.f-block').eq(f).find('.hinter-box').length != 0) {
+                if ($('.f-block').eq(f).find('.hinter-box').css('display') == 'block') {
+                    if ($(target).is('.label')) {
+                        $(target).closest('.f-block').find('.hinter-box').css('display', 'none');
+                    } else if ($(target).is('input[type=text]') || $(target).is('textarea')) {
+                        $(target).closest('.f-block').find('.hinter-box').css('display', 'none');
+                    }
+                }
+            }
+        });
+        $('.height-318').each((h) => {
+            if ($('.height-318').eq(h).find('.hinter-box').length != 0) {
+                if ($('.height-318').eq(h).find('.hinter-box').css('display') == 'block') {
+                    if ($('.height-318').eq(h).find('[data-col=tab]').length == 0) { //無tab col的height-318 === #Product
+                        if ($(target).is('.label')) {
+                            $(target).closest('.height-318').find('.hinter-box').css('display', 'none');
+                        }
+                    } else { //#Size
+                        if ($(target).is('.label') && $(target).parent().parent().attr('data-group') != 'ecTabs') {
+                            let hinters = $(target).closest('.height-318').find('.hinter-box');
+                            $(hinters).each((h) => {
+                                if ($(target).closest('.drop-group').attr('data-group') == hinters.eq(h).siblings('.label').attr('data-tab')) {
+                                    hinters.eq(h).css('display', 'none');
+                                }
+                            })
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+    //end of @form-apply hinter 響應
 
     //快速套用主案型
     // let thunderBoxes = document.querySelectorAll('.th-box');
@@ -1590,9 +1613,49 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                 }, 100)
             }
         }) //end of 快速套用主案型
-
-
 }
 
 
 // ----------------------------------------------------------------------------------------------------
+
+//@Custom-apply 專屬區塊
+// if (window.location.href.includes('custom-apply')) {
+// console.log('x');
+// };
+
+// ----------------------------------------------------------------------------------------------------
+
+
+//@Form-apply、@Custom-apply 共用區塊
+if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
+
+    //按下enter後防止（瀏覽器預設）送出表單
+    $(document).ready(function() {
+        $(window).keydown(function(event) {
+            if (event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
+        });
+    });
+
+    //取消webflow form 殘留響應
+    $(document).ready(() => {
+        $('w-form').removeClass('w-form');
+    })
+
+    //修正browser tab resize位移
+    window.addEventListener('resize', () => {
+        // console.log(window.innerHeight);
+        window.scrollBy(window.innerHeight, 0);
+    })
+
+    //date-range-picker 年份處理
+    $(document).click(function() {
+        if ($('.date-input').val().length > 0) {
+            let year = $('.date-input').val().slice(0, 4);
+            $('.date-input').attr('data-year', year);
+            $('.date-input').val($('.date-input').val().replaceAll(year + '/', ''));
+        }
+    })
+}
