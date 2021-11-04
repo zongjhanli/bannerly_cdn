@@ -13,6 +13,11 @@
 
 // ----------------------------------------------------------------------------------------------------
 
+//預設日期txtInput.value =""
+$(document).ready(function() {
+    $('.date-input').val('');
+})
+
 //GLOBAL 每次頁面load完畢，刪除網址末尾可能包含的#href字串
 $(document).ready(function() {
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
@@ -88,7 +93,7 @@ $(".js-custom-input").on("input", function() {
             if (!$(target).parent().hasClass('color-code')) {
                 if ($(target).val().length > 0) {
                     let otherCheck = $(target).parent().parent().find('.custom-check');
-                    let tCheck = $(target).parent().parent().find('[data-customInput]').siblings('.custom-check');
+                    let tCheck = $(target).parent().parent().find('[data-custom=radio-btn]').siblings('.custom-check');
                     otherCheck.removeClass('w--redirected-checked');
                     otherCheck.siblings('span').css('color', 'rgba(47, 90, 58, 0.5)');
                     tCheck.addClass('w--redirected-checked');
@@ -134,7 +139,7 @@ $(".js-custom-input").on("input", function() {
 
         function resetCustomBtn(e) {
             let target = e.target;
-            let tCheck = $(target).parent().parent().find('[data-customInput]').siblings('.custom-check');
+            let tCheck = $(target).parent().parent().find('[data-custom=radio-btn]').siblings('.custom-check');
             tCheck.removeClass('w--redirected-checked');
             tCheck.parent().addClass('js-toggle');
             tCheck.siblings('span').text('');
@@ -735,14 +740,14 @@ if (window.location.href.includes('form-apply')) {
 
         if ($(target).siblings('input').attr('name') == 'color-tone') { //name = color-tone同組的radio btn的label
             let colorTool = $(target).parent().parent().parent().find('.color-block'); //colorTool 套件
-            if ($(target).parent().attr('data-nome') == 'color') {
+            if ($(target).parent().attr('data-custom') == 'color-picker') {
                 colorTool.removeClass('js-toggle');
                 $(target).parent().css('backgroundImage', 'linear-gradient(180deg, rgba(255, 234, 0, 0.2), rgba(255, 234, 0, 0.2))');
                 $(target).siblings('.custom-check').addClass('active');
-            } else if ($(target).parent().attr('data-nome') != 'color') {
+            } else if ($(target).parent().attr('data-custom') != 'color-picker') {
                 colorTool.addClass('js-toggle');
-                $('[data-nome=color]').css('backgroundImage', 'none');
-                $('[data-nome=color]').find('.custom-check').removeClass('active');
+                $('[data-custom=color-picker]').css('backgroundImage', 'none');
+                $('[data-custom=color-picker]').find('.custom-check').removeClass('active');
             }
         }
     });
@@ -1071,16 +1076,12 @@ if (window.location.href.includes('form-apply')) {
         }
     }); //end of dropdown hinter提示
 
-    //其他hinter提示
+    //in-card、swiper、thunder hinter提示預設隱藏
     window.addEventListener("load", () => {
         let hinters = document.querySelectorAll(".hinter-box.in-card, .hinter-box.for-swiper, .hinter-box.for-thunder");
         for (const hinter of hinters) {
             hinter.style.display = 'none';
         }
-
-        //預設日期txtInput.value =""
-        let dateInput = document.querySelector('.date-input');
-        dateInput.value = "";
     });
 
     //swiper hinter 響應
