@@ -13,6 +13,16 @@
 
 // ----------------------------------------------------------------------------------------------------
 
+//GLOBAL 每次頁面load完畢，刪除網址末尾可能包含的#href字串
+$(document).ready(function() {
+    if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+        if (window.location.href.includes('#')) {
+            let index = window.location.href.indexOf('#');
+            window.location.href = window.location.href.slice(0, index);
+        }
+    }
+})
+
 //GLOBAL 新增自定義選項（適用於radio select、color picker）
 $(document).ready(() => {
         let minihinters = $(".js-custom-input").parent().find('.js-limit-hinter , .icon_20x.for-custom-input');
@@ -701,20 +711,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 //@Form-apply專屬區塊
 if (window.location.href.includes('form-apply')) {
 
-    //anchor dot breathing
-    $(document).ready(() => { showDot() });
-    $(document).click(() => { showDot() });
-
-    function showDot() {
-        $('.as_anchor').each((a) => {
-            if ($('.as_anchor').eq(a).hasClass('w--current')) {
-                $('.as_anchor').eq(a).find('.anch-inner_circ').css('display', 'block');
-            } else if (!$('.as_anchor').eq(a).hasClass('w--current')) {
-                $('.as_anchor').eq(a).find('.anch-inner_circ').css('display', 'none');
-            }
-        })
-    }
-
     //tab indicator 在沒有ec tab顯現時隱藏
     $(document).click(() => {
         $('[data-group=ecTabs]').each((t) => {
@@ -1101,11 +1097,18 @@ if (window.location.href.includes('form-apply')) {
         }, 2000);
     });
 
-    //in-card hinter 響應
-    let nextBtns = document.querySelectorAll('[data-next], .submit.w-button');
-    for (const nextBtn of nextBtns) {
-        nextBtn.addEventListener("click", () => {
-            let tSection = nextBtn.parentElement.parentElement;
+    //[data-anch]、[data-next] --> in-card hinter 響應
+    //[data-anch]、[data-next]預設值
+    $(document).ready(() => {
+        $('.a-button[data-next]').attr('href', '#');
+        $('.a-button[data-anch]').addClass('unclickable');
+        $('.a-button[data-anch]').first().removeClass('unclickable');
+    })
+
+    $('.a-button[data-next]').each((n) => {
+        $('.a-button[data-next]').eq(n).click((e) => {
+            let target = e.target;
+            let tSection = target.parentElement.parentElement;
             if (tSection.id == 'Info' || tSection.id == 'Visual' || tSection.id == 'Submit') {
                 let fBlocks = tSection.querySelectorAll('.f-block');
                 let f;
@@ -1116,7 +1119,6 @@ if (window.location.href.includes('form-apply')) {
                     } else if (tSection.id == 'Visual') {
                         radioInputCheck();
                     } else if (tSection.id == 'Submit') {
-                        console.log('submit')
                         txtInputCheck();
                         txtAreaCheck();
                     }
@@ -1125,6 +1127,10 @@ if (window.location.href.includes('form-apply')) {
                         if (fBlocks[f].querySelector('input[type=text]:not(.js-length-10)') && //若有txtInput未填寫
                             fBlocks[f].querySelector('input[type=text]').value == "") {
                             fBlocks[f].querySelector('.hinter-box').style.display = 'block';
+                            tSection.scrollIntoView();
+                        } else if (fBlocks[f].querySelector('input[type=text]').value != "" &&
+                            tSection.nextElementSibling != null) {
+                            pass();
                         }
                     }
 
@@ -1132,6 +1138,10 @@ if (window.location.href.includes('form-apply')) {
                         if (fBlocks[f].querySelector('input[type=radio]') && //若radio Input全無勾選
                             !fBlocks[f].querySelector('.w--redirected-checked')) {
                             fBlocks[f].querySelector('.hinter-box').style.display = 'block';
+                            tSection.scrollIntoView();
+                        } else if (fBlocks[f].querySelector('.w--redirected-checked') &&
+                            tSection.nextElementSibling != null) {
+                            pass();
                         }
                     }
 
@@ -1139,6 +1149,10 @@ if (window.location.href.includes('form-apply')) {
                         if (fBlocks[f].querySelector('textarea') && //若textArea未填寫
                             fBlocks[f].querySelector('textarea').value == "") {
                             fBlocks[f].querySelector('.hinter-box').style.display = 'block';
+                            tSection.scrollIntoView();
+                        } else if (fBlocks[f].querySelector('textarea').value == "" &&
+                            tSection.nextElementSibling != null) {
+                            pass();
                         }
                     }
                 }
@@ -1149,7 +1163,7 @@ if (window.location.href.includes('form-apply')) {
                 for (c = 0; c < cardBoxes.length; c++) {
                     if (tSection.id == 'Copywright') {
                         txtAreaCheck();
-                        swipeTo();
+                        swiping();
                     }
                     if (tSection.id == 'Product') {
                         txtAreaCheck();
@@ -1217,6 +1231,9 @@ if (window.location.href.includes('form-apply')) {
                         if (cardBoxes[c].querySelector('textarea') && //若textArea(主標)未填寫
                             cardBoxes[c].querySelector('textarea').value == "") {
                             cardBoxes[c].querySelector('.hinter-box').style.display = 'block';
+                            tSection.scrollIntoView();
+                        } else {
+                            pass();
                         }
                     }
 
@@ -1235,17 +1252,35 @@ if (window.location.href.includes('form-apply')) {
                                 hinterBox.dataset.shown = 'true';
                                 hinterLabel.textContent = '尺寸未選';
                                 sizeTab.insertBefore(hinterBox, null);
+                                tSection.scrollIntoView();
+                            } else {
+                                pass();
+                                // $('.a-button[data-next]').eq(n).trigger('click');
+                                console.log(tSection.nextElementSibling);
                             }
                         }
                     }
                 }
             }
-        });
 
-        function pass() {
-            console.log('pass');
-        }
-    }
+            function pass() {
+                $('.a-button[data-anch]').eq(n + 1).removeClass('unclickable');
+                tSection.nextElementSibling.scrollIntoView();
+                let hrefed = false;
+                if (!window.location.href.includes(tSection.nextElementSibling.id) && !hrefed) { //防止pass()重複運作多次
+                    hrefed = true;
+                    // if (window.location.href.includes(tSection.id)) {
+                    window.location.href = window.location.href.replace('#' + tSection.id, '') + '#' + tSection.nextElementSibling.id;
+                    // }
+                    //因若無對象可replace將自動跳過，故不需要if statement
+                }
+
+                if (tSection.id == 'Size') { //!!!針對submit區塊，只有scrollBy能成功跳頁
+                    $(document).scrollBy(-100, 0);
+                }
+            }
+        });
+    })
 
     //thunder hinter 響應
     let thunderBoxes = document.querySelectorAll('.th-box');
@@ -1297,8 +1332,23 @@ if (window.location.href.includes('form-apply')) {
             }
         });
     });
-
     //end of @form-apply hinter 響應
+
+    //anchor dot breathing
+    $(document).ready(() => {
+        $('.anch-inner_circ').css('display', 'none');
+        $('.anch-inner_circ').eq(0).css('display', 'block');
+    });
+    $(document).scroll(() => {
+            // $('.anch-inner_circ').css('display', 'none');
+            let anchKey = window.location.href;
+            $('.a-button[data-anch]').each((a) => {
+                if (anchKey.includes($('.a-button[data-anch]').eq(a).attr('href'))) {
+                    $('.a-button[data-anch]').find('.anch-inner_circ').css('display', 'none');
+                    $('.a-button[data-anch]').eq(a).find('.anch-inner_circ').css('display', 'block');
+                }
+            })
+        }) // end of anchor dot breathing
 
     //快速套用主案型
     // let thunderBoxes = document.querySelectorAll('.th-box');
