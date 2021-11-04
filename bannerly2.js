@@ -1102,7 +1102,9 @@ if (window.location.href.includes('form-apply')) {
     $(document).ready(() => {
         $('.a-button[data-next]').attr('href', '#');
         $('.a-button[data-anch]').addClass('unclickable');
+        $('.a-button[data-anch]').css('cursor', 'not-allowed');
         $('.a-button[data-anch]').first().removeClass('unclickable');
+        $('.a-button[data-anch]').css('cursor', 'pointer');
     })
 
     $('.a-button[data-next]').each((n) => {
@@ -1256,7 +1258,7 @@ if (window.location.href.includes('form-apply')) {
                             } else {
                                 pass();
                                 // $('.a-button[data-next]').eq(n).trigger('click');
-                                console.log(tSection.nextElementSibling);
+                                // console.log(tSection.nextElementSibling);
                             }
                         }
                     }
@@ -1265,17 +1267,38 @@ if (window.location.href.includes('form-apply')) {
 
             function pass() {
                 $('.a-button[data-anch]').eq(n + 1).removeClass('unclickable');
-                tSection.nextElementSibling.scrollIntoView();
-                let hrefed = false;
-                if (!window.location.href.includes(tSection.nextElementSibling.id) && !hrefed) { //防止pass()重複運作多次
-                    hrefed = true;
-                    // if (window.location.href.includes(tSection.id)) {
-                    window.location.href = window.location.href.replace('#' + tSection.id, '') + '#' + tSection.nextElementSibling.id;
-                    // }
-                    //因若無對象可replace將自動跳過，故不需要if statement
+                $('.a-button[data-anch]').eq(n + 1).css('color', '#333333');
+                $('.a-button[data-anch]').eq(n).css('color', '#333333');
+                $('.a-button[data-anch]').eq(n + 1).css('cursor', 'pointer');
+                $('.a-button[data-anch]').eq(n).css('cursor', 'pointer');
+                if (n + 1 < 5) {
+                    $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n + 1).css('height', '100%');
+                } else if (n + 1 == 5) {
+                    $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n + 1).css('height', '50%');
                 }
+                $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n).css('height', '100%');
+                $('.m-anchors').not('.upper').find('.anch-circ').first().css('backgroundColor', '#333333');
+                $(target).css('opacity', '1');
+                tSection.nextElementSibling.scrollIntoView({
+                    behavior: 'smooth',
+                    block: "center",
+                    inline: "nearest"
+                });
+                setTimeout(function() {
+                    let hrefed = false;
+                    if (!window.location.href.includes(tSection.nextElementSibling.id) && !hrefed) { //防止pass()重複運作多次
+                        hrefed = true;
+                        // if (window.location.href.includes(tSection.id)) {
+                        window.location.href = window.location.href.replace('#' + tSection.id, '') + '#' + tSection.nextElementSibling.id;
+                        // }
+                        //因若無對象可replace將自動跳過，故不需要if statement
+                    }
+                }, 400)
+
+
 
                 if (tSection.id == 'Size') { //!!!針對submit區塊，只有scrollBy能成功跳頁
+                    $('.m-anchors').not('.upper').find('.anch-circ').last().css('backgroundColor', '#333333');
                     $(document).scrollBy(-100, 0);
                 }
             }
