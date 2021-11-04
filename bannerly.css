@@ -98,19 +98,19 @@ comment前綴說明:
 .anch-inner_circ {
     transform-origin: 50% 50%;
     animation-name: current;
-    animation-duration: 2s;
+    animation-duration: 3s;
     animation-iteration-count: infinite;
 }
 
 @keyframes current {
     0% {
-        transform: scale(.6);
+        transform: scale(1.2);
     }
     50% {
-        transform: scale(.4);
+        transform: scale(1);
     }
     100% {
-        transform: scale(.6);
+        transform: scale(1.2);
     }
 }
 
