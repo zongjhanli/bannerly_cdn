@@ -1098,158 +1098,6 @@ if (window.location.href.includes('form-apply')) {
         }, 2000);
     });
 
-    //[data-anch]、[data-next] --> in-card hinter 響應
-    //[data-anch]、[data-next]預設值
-    $(document).ready(() => {
-        // $('.a-button[data-next]').attr('href', '#');
-        // $('.a-button[data-anch]').addClass('unclickable');
-        // $('.a-button[data-anch]').first().removeClass('unclickable');
-    })
-
-    $('[data-next]').click((e) => {
-        let target = e.target;
-
-        let hrefNow,
-            hrefNext;
-        $('.section').each((s) => {
-            if ($('.section').eq(s).find(target).length == 1) {
-                hrefNow = $('.section').eq(s).attr('id');
-                if ($('.section').eq(s + 1) != null) {
-                    hrefNext = $('.section').eq(s + 1).attr('id');
-                }
-                console.log('now: ' + hrefNow);
-                console.log('next: ' + hrefNext);
-
-                let tSection = $(target).parent().parent();
-                let keyBlock = $(tSection).find('.card-box').not('.js-hide').find('[data-required=true]');
-                $(keyBlock).each((rq) => {
-                    if ($(tSection).attr('id') != 'Size') {
-                        if ($(tSection).attr('id') != 'Copywright' && $(tSection).attr('id') != 'Product') {
-                            basicCheck();
-                        } else {
-                            basicCheck();
-                            swiping();
-                        }
-
-                        function basicCheck() {
-                            if ($(keyBlock).eq(rq).find('input[type=text]').not('[data-required=false]').length != 0 &&
-                                $(keyBlock).eq(rq).find('input[type=text]').not('[data-required=false]').val() == '') {
-                                hinterPoping();
-                            } else if ($(keyBlock).eq(rq).find('textarea').length != 0 &&
-                                $(keyBlock).eq(rq).find('textarea').val() == '') {
-                                hinterPoping();
-                            } else if ($(keyBlock).eq(rq).find('input[type=radio]').length != 0 &&
-                                $(keyBlock).eq(rq).find('input[type=radio]').siblings('.w--redirected-checked').length == 0) {
-                                hinterPoping();
-                            }
-                        }
-                    } else if ($(tSection).attr('id') == 'Size') {
-                        let counter = $(keyBlock).eq(rq).find('.as-tab.js-show').find('.as-counts');
-                        $(counter).each((c) => {
-                            if ($(counter).eq(c).text() == '0') {
-                                let tabHinter =
-                                    '<div class="hinter-box in-card lower-pos"><div class="_12px-500 for-hinter">尺寸未選</div><div class="hinter-triangle in-card"></div></div>';
-                                $(counter).eq(c).parent().append(tabHinter);
-                                tabHinter = $(counter).eq(c).siblings('.hinter-box');
-                                $(tabHinter).css('display', 'block');
-                                $(tabHinter).addClass("js-shake");
-                                setTimeout(function() {
-                                    $(tabHinter).removeClass("js-shake");
-                                }, 200);
-                            }
-                            swiping();
-                        })
-                    }
-
-                    function swiping() { //hard-code js 版本見2021/11/04 commit
-                        let cardBox = $(tSection).find('.card-box').not('.js-hide');
-                        let hinter = $(tSection).find('.hinter-box').not('.for-ec').not('.nth-alert').not('.for-thunder');
-                        let cbIndex = [];
-                        $(cardBox).each((cb) => {
-                            if ($(cardBox).eq(cb).find($(hinter)).length > 0 &&
-                                $(cardBox).eq(cb).find($(hinter)).css('display') == 'block') {
-                                cbIndex.push(cb);
-                                cbIndex.sort();
-                                cb = cbIndex[0];
-                                $(tSection).find('.swiped').css('margin-left', "-" + 688 * 2 * cb + "px");
-
-                                $(cardBox).eq(cb).css({
-                                    'transform': 'rotateY(0deg)',
-                                    'opacity': '1'
-                                })
-                                if ($(cardBox).eq(cb + 1) <= 2) {
-                                    $(cardBox).eq(cb + 1).css({
-                                        'transform': 'rotateY(-80deg)',
-                                        'opacity': '0'
-                                    })
-                                }
-                                if ($(cardBox).eq(cb - 1) >= 0) {
-                                    console.log($(cardBox).eq(cb - 1))
-                                    $(cardBox).eq(cb - 1).css({
-                                        'transform': 'rotateY(80deg)',
-                                        'opacity': '0'
-                                    })
-                                }
-
-                                let swiper = $('.a-button.for-swiper[data-handle=true]');
-                                $(swiper).removeClass('js-active');
-                                $(swiper).eq(cb).addClass('js-active');
-                                $(swiper).find('.swiper-indicator').css('height', '0px');
-                                $(swiper).eq(cb).find('.swiper-indicator').css('height', '4px');
-                            }
-                        })
-                    }
-
-                    function hinterPoping() {
-                        let hinter = $(keyBlock).eq(rq).find('.hinter-box');
-                        $(hinter).css('display', 'block');
-                        $(hinter).addClass("js-shake");
-                        setTimeout(function() {
-                            $(hinter).removeClass("js-shake");
-                        }, 200);
-                    }
-
-                })
-            }
-        })
-
-
-
-
-
-
-        function pass() {
-            $('.a-button[data-anch]').eq(n + 1).removeClass('unclickable');
-            $('.a-button[data-anch]').eq(n + 1).css('color', '#333333');
-            $('.a-button[data-anch]').eq(n).css('color', '#333333');
-            $('.a-button[data-anch]').eq(n + 1).css('cursor', 'pointer');
-            $('.a-button[data-anch]').eq(n).css('cursor', 'pointer');
-            if (n + 1 < 5) {
-                $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n + 1).css('height', '100%');
-            } else if (n + 1 == 5) {
-                $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n + 1).css('height', '50%');
-            }
-            $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n).css('height', '100%');
-            $('.m-anchors').not('.upper').find('.anch-circ').first().css('backgroundColor', '#333333');
-            $(target).css('opacity', '1');
-            tSection.nextElementSibling.scrollIntoView({
-                behavior: 'smooth',
-                block: "center",
-                inline: "nearest"
-            });
-            setTimeout(function() {
-                let hrefed = false;
-                if (!window.location.href.includes(tSection.nextElementSibling.id) && !hrefed) { //防止pass()重複運作多次
-                    hrefed = true;
-                    // if (window.location.href.includes(tSection.id)) {
-                    window.location.href = window.location.href.replace('#' + tSection.id, '') + '#' + tSection.nextElementSibling.id;
-                    // }
-                    //因若無對象可replace將自動跳過，故不需要if statement
-                }
-            }, 400)
-        }
-    });
-
     //thunder hinter 響應
     let thunderBoxes = document.querySelectorAll('.th-box');
     for (const thunderBox of thunderBoxes) {
@@ -1265,7 +1113,149 @@ if (window.location.href.includes('form-apply')) {
         });
     }
 
-    //重新填寫觸發hinter關閉
+
+    //in-card hinter 響應 ([data-anch]、[data-next])
+    //[data-anch]、[data-next]預設值
+    $(document).ready(() => {
+        // $('.a-button[data-next]').attr('href', '#');
+        // $('.a-button[data-anch]').addClass('unclickable');
+        // $('.a-button[data-anch]').first().removeClass('unclickable');
+    })
+
+    $('.submit-trigger').click((e) => {
+        let target = e.target;
+
+        // let hrefNow,
+        //     hrefNext;
+        $('.section').each((s) => {
+            hrefNow = $('.section').eq(s).attr('id');
+            if ($('.section').eq(s + 1) != null) {
+                hrefNext = $('.section').eq(s + 1).attr('id');
+            }
+            // console.log('now: ' + hrefNow);
+            // console.log('next: ' + hrefNext);
+
+            let tSection = $('.section').eq(s);
+            let keyBlock = $(tSection).find('.card-box').not('.js-hide').find('[data-required=true]');
+            $(keyBlock).each((rq) => {
+                if ($(tSection).attr('id') != 'Size') {
+                    if ($(tSection).attr('id') != 'Copywright' && $(tSection).attr('id') != 'Product') {
+                        basicCheck();
+                    } else {
+                        basicCheck();
+                        swiping();
+                    }
+
+                    function basicCheck() {
+                        if ($(keyBlock).eq(rq).find('input[type=text]').not('[data-required=false]').length != 0 &&
+                            $(keyBlock).eq(rq).find('input[type=text]').not('[data-required=false]').val() == '') {
+                            hinterPoping();
+                        } else if ($(keyBlock).eq(rq).find('textarea').length != 0 &&
+                            $(keyBlock).eq(rq).find('textarea').val() == '') {
+                            hinterPoping();
+                        } else if ($(keyBlock).eq(rq).find('input[type=radio]').length != 0 &&
+                            $(keyBlock).eq(rq).find('input[type=radio]').siblings('.w--redirected-checked').length == 0) {
+                            hinterPoping();
+                        }
+                    }
+                } else if ($(tSection).attr('id') == 'Size') {
+                    let counter = $(keyBlock).eq(rq).find('.as-tab.js-show').find('.as-counts');
+                    $(counter).each((c) => {
+                        if ($(counter).eq(c).text() == '0') {
+                            let tabHinter =
+                                '<div class="hinter-box in-card lower-pos"><div class="_12px-500 for-hinter">尺寸未選</div><div class="hinter-triangle in-card"></div></div>';
+                            $(counter).eq(c).parent().append(tabHinter);
+                            tabHinter = $(counter).eq(c).siblings('.hinter-box');
+                            $(tabHinter).css('display', 'block');
+                            $(tabHinter).addClass("js-shake");
+                            setTimeout(function() {
+                                $(tabHinter).removeClass("js-shake");
+                            }, 200);
+                        }
+                        swiping();
+                    })
+                }
+
+                function swiping() { //hard-code js 版本見2021/11/04 commit
+                    let cardBox = $(tSection).find('.card-box').not('.js-hide');
+                    let hinter = $(tSection).find('.hinter-box').not('.for-ec').not('.nth-alert').not('.for-thunder');
+                    let cbIndex = [];
+                    $(cardBox).each((cb) => {
+                        if ($(cardBox).eq(cb).find($(hinter)).length > 0 &&
+                            $(cardBox).eq(cb).find($(hinter)).css('display') == 'block') {
+                            setTimeout(function() {
+                                    cbIndex.push(cb);
+                                    cbIndex.sort();
+                                    cb = cbIndex[0];
+                                    $(tSection).find('.swiped').css('margin-left', "-" + 688 * 2 * cb + "px");
+
+                                    $(cardBox).eq(cb).css({
+                                        'transform': 'rotateY(0deg)',
+                                        'opacity': '1'
+                                    })
+                                    if ($(cardBox).eq(cb + 1) <= 2) {
+                                        $(cardBox).eq(cb + 1).css({
+                                            'transform': 'rotateY(-80deg)',
+                                            'opacity': '0'
+                                        })
+                                    }
+                                    if ($(cardBox).eq(cb - 1) >= 0) {
+                                        console.log($(cardBox).eq(cb - 1))
+                                        $(cardBox).eq(cb - 1).css({
+                                            'transform': 'rotateY(80deg)',
+                                            'opacity': '0'
+                                        })
+                                    }
+
+                                    let swiper = $('.a-button.for-swiper[data-handle=true]');
+                                    $(swiper).removeClass('js-active');
+                                    $(swiper).eq(cb).addClass('js-active');
+                                    $(swiper).find('.swiper-indicator').css('height', '0px');
+                                    $(swiper).eq(cb).find('.swiper-indicator').css('height', '4px');
+                                }, 1000) //須等待頁面scroll完畢再出現案型swiping動畫較佳
+                        }
+                    })
+                }
+
+                function hinterPoping() {
+                    let hinter = $(keyBlock).eq(rq).find('.hinter-box');
+                    $(hinter).css('display', 'block');
+                    $(hinter).addClass("js-shake");
+                    setTimeout(function() {
+                        $(hinter).removeClass("js-shake");
+                    }, 200);
+
+                    let hArr = [];
+                    $('.hinter-box').each((h) => {
+                            if ($('.hinter-box').eq(h).css('display') == 'block') {
+                                hArr.push(h);
+                            }
+                        })
+                        // console.log(hArr);
+                    let firstSection = $('.hinter-box').eq(hArr[0]).closest('.section');
+                    setTimeout(function() {
+                        $(firstSection)[0].scrollIntoView({
+                            behavior: 'smooth',
+                            block: "center",
+                            inline: "nearest"
+                        });
+                    }, 200);
+                }
+            })
+        })
+
+        if ($(document).find('.hinter-box').css('display') == 'none') {
+            console.log('no hinter')
+            $(target).siblings('.submit').trigger('click');
+        } else {
+            $(target).siblings('.submit').addClass("js-shake");
+            setTimeout(function() {
+                $(target).siblings('.submit').removeClass("js-shake");
+            }, 200);
+        }
+    });
+
+    //重新填寫觸發in-card hinter關閉
     $(document).click((e) => {
         let target = e.target;
         $('.f-block').each((f) => {
@@ -1304,16 +1294,39 @@ if (window.location.href.includes('form-apply')) {
 
     //anchor dot breathing
     $(document).ready(() => {
+        // $('.anch-inner_circ').css('backgroundColor', '#3B7A47');
         $('.anch-inner_circ').css('display', 'none');
         $('.anch-inner_circ').eq(0).css('display', 'block');
+        $('.a-button[data-anch]').attr('href', '#'); //暫時放棄webflow scroll script，因下方bind events 有bug 無法解決
+        $('body')[0].scrollIntoView({ //頁面重新整理預設回到頂端
+            behavior: 'smooth',
+            block: "start",
+            inline: "nearest"
+        });
     });
-    $(document).scroll(() => {
-            // $('.anch-inner_circ').css('display', 'none');
+    $('.a-button[data-anch]').each((a) => {
+        $('.a-button[data-anch]').eq(a).click((e) => {
+            if ($('.a-button[data-anch]').eq(a)) {
+                tSection = $('.section')[a];
+                tSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: "center",
+                    inline: "nearest"
+                });
+            }
+        })
+    })
+    $(window).bind('mousewheel DOMMouseScroll scroll mouseup mousedown keyup keydown', () => { //涵蓋所有頁面捲動的事件監聽
             let anchKey = window.location.href;
             $('.a-button[data-anch]').each((a) => {
-                if (anchKey.includes($('.a-button[data-anch]').eq(a).attr('href'))) {
+                if (anchKey.includes($('.a-button[data-anch]').eq(a).attr('href')) ||
+                    $('.a-button[data-anch]').eq(a).attr('class').includes('w--current')) {
                     $('.a-button[data-anch]').find('.anch-inner_circ').css('display', 'none');
                     $('.a-button[data-anch]').eq(a).find('.anch-inner_circ').css('display', 'block');
+                }
+                if (anchKey.includes('Info')) {
+                    $('.a-button[data-anch]').find('.anch-inner_circ').css('display', 'none');
+                    $('.a-button[data-anch]').eq(0).find('.anch-inner_circ').css('display', 'block');
                 }
             })
         }) // end of anchor dot breathing
