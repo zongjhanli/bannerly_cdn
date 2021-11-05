@@ -716,27 +716,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 //@Form-apply專屬區塊
 if (window.location.href.includes('form-apply')) {
 
-    $(document).ready(() => {
-        $('.swiper').css('right', '-' + 48 + 'px');
-    })
-
-    document.addEventListener('click', (e) => {
-        let target = e.target;
-        //swiper 位置隨長度變化
-        if (target.classList.contains("js-remove")) {
-            let currWidth = $('.swiper')[0].getBoundingClientRect().width;
-            currWidth -= currWidth / 2;
-            if (target != $('.js-remove').eq(0)) {
-                $('.swiper').css('right', '-' + currWidth + 'px');
-            }
-        }
-        if (target.classList.contains("js-add")) {
-            let currWidth = $('.swiper')[0].getBoundingClientRect().width;
-            currWidth += currWidth / 2
-            $('.swiper').css('right', '-' + currWidth + 'px');
-        }
-    })
-
     //tab indicator 在沒有ec tab顯現時隱藏
     $(document).click(() => {
         $('[data-group=ecTabs]').each((t) => {
@@ -773,7 +752,7 @@ if (window.location.href.includes('form-apply')) {
         }
     });
 
-    //Swiper 案型增減響應
+    //SWIPER 案型增減響應
     let swiper = document.querySelector("div.swiper");
 
     //頁面loading後預設隱藏未被新增的案型
@@ -787,6 +766,12 @@ if (window.location.href.includes('form-apply')) {
         }
     };
 
+    //swiper預設樣式
+    $(document).ready(() => {
+        $('.swiper').css('right', '-' + 48 + 'px');
+        $('.swiper').css('top', 'calc(50vh + 60px)'); //與anchor底部對齊
+    })
+
     //swiper只有在特定範圍內才會出現
     document.addEventListener("scroll", () => {
         let start = document.querySelector("#Copywright");
@@ -799,13 +784,15 @@ if (window.location.href.includes('form-apply')) {
 
         // console.log('startTop' + startTop);
         // console.log('endTop' + endTop);
-        if (endTop < -170 || startTop > 170) {
+        if (endTop < -100 || startTop > 240) {
             swiper.style.opacity = "0";
             swiper.classList.add('unclickable');
+            swiper.style.transform = "translate(100px,0px)";
         } else {
             swiper.style.display = "flex";
             swiper.style.opacity = "1";
             swiper.classList.remove('unclickable');
+            swiper.style.transform = "translate(0px,0px)";
 
             //copied from returnEdit
             let swiperIcon = swiper.querySelector(".icon_28x.for-swiper");
@@ -823,6 +810,23 @@ if (window.location.href.includes('form-apply')) {
             }
         }
     });
+
+    //swiper 位置隨長度變化
+    document.addEventListener('click', (e) => {
+        let target = e.target;
+        if (target.classList.contains("js-remove")) {
+            let currWidth = $('.swiper')[0].getBoundingClientRect().width;
+            currWidth -= currWidth / 2;
+            if (target != $('.js-remove').eq(0)) {
+                $('.swiper').css('right', '-' + currWidth + 'px');
+            }
+        }
+        if (target.classList.contains("js-add")) {
+            let currWidth = $('.swiper')[0].getBoundingClientRect().width;
+            currWidth += currWidth / 2
+            $('.swiper').css('right', '-' + currWidth + 'px');
+        }
+    })
 
     document.addEventListener("click", (e) => {
         let target = e.target;
@@ -1014,7 +1018,7 @@ if (window.location.href.includes('form-apply')) {
                 // }
             }
         }
-    }); //end of @form-apply 案型增減響應
+    }); //end of SWIPER 案型增減響應
 
     //tab + indicator 響應
     let tabBoxs = document.querySelectorAll("[data-box=tab]");
