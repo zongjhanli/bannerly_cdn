@@ -137,10 +137,11 @@ comment前綴說明:
     display: block;
 }
 
-.swiper {
-    /* top 位置 = [畫心] + [cardBox height/2] + [cardBox margin-bttm/2] */
+
+/* .swiper {
+    top 位置 = [畫心] + [cardBox height/2] + [cardBox margin-bttm/2]
     top: calc(50vh + 201px + 24px);
-}
+} */
 
 textarea {
     resize: none;
