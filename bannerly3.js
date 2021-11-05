@@ -766,6 +766,28 @@ if (window.location.href.includes('form-apply')) {
         }
     };
 
+    //swiper 位置隨長度變化
+    $(document).ready(() => {
+        let n = 48; //baseWidth
+        $('.swiper').css('right', '-' + n + 'px');
+    })
+
+    $('.js-remove').click(() => {
+        console.log('remove')
+        let n = 48; //baseWidth
+        n -= 48;
+        if (!$('.js-remove').eq(0)) {
+            $('.swiper').css('right', '-' + n + 'px');
+        }
+    })
+
+    $('.js-add').click(() => {
+        console.log($(add));
+        let n = 48; //baseWidth
+        n += 48;
+        $('.swiper').css('right', '-' + n + 'px');
+    })
+
     //swiper只有在特定範圍內才會出現
     document.addEventListener("scroll", () => {
         let start = document.querySelector("#Copywright");
@@ -795,6 +817,10 @@ if (window.location.href.includes('form-apply')) {
                 let remove = swiperOption.querySelector(".js-remove");
                 remove.style.display = "none";
                 swiperOption.style.backgroundColor = "transparent";
+                swiperOption.style.borderRadius = "8px";
+                if (swiperOption.classList.contains('js-active')) {
+                    swiperOption.style.backgroundSize = '40px';
+                }
             }
         }
     });
@@ -830,7 +856,7 @@ if (window.location.href.includes('form-apply')) {
                 let n = shownSwipers.length;
                 n -= 1;
                 shownSwipers[n].classList.add("js-active");
-                shownSwipers[n].querySelector(".swiper-indicator").style.height = "4px";
+                // shownSwipers[n].querySelector(".swiper-indicator").style.height = "4px";
 
                 let swiped = section.querySelector(".swiped");
                 swiped.style.marginLeft = "-" + 688 * 2 * n + "px"; //swiped視窗推至最右邊
@@ -846,9 +872,7 @@ if (window.location.href.includes('form-apply')) {
                 let allRemoveBtns = target.parentElement.parentElement.querySelectorAll('.js-remove');
                 if (target != allRemoveBtns[0]) { //第一個案型不可刪除
                     let serial =
-                        target.previousElementSibling.previousElementSibling.textContent.charAt(
-                            3
-                        );
+                        target.previousElementSibling.previousElementSibling.textContent.charAt(0);
                     serial -= 1;
                     let shownCards = section.querySelectorAll(".card-box");
                     shownCards[serial].classList.add("js-hide");
@@ -860,7 +884,7 @@ if (window.location.href.includes('form-apply')) {
 
                     disableAllSwipers();
                     shownSwipers[0].classList.add("js-active");
-                    shownSwipers[0].querySelector(".swiper-indicator").style.height = "4px";
+                    // shownSwipers[0].querySelector(".swiper-indicator").style.height = "4px";
                     shownSwipers[0].classList.remove("js-hide");
                     shownSwipers[0].dataset.handle = "true";
 
@@ -879,7 +903,7 @@ if (window.location.href.includes('form-apply')) {
             let i;
             for (i = 0; i < shownSwipers.length; i++) {
                 let n = i + 1;
-                shownSwipers[i].firstElementChild.textContent = "案型 " + n;
+                shownSwipers[i].firstElementChild.textContent = n;
                 // !!無法同步數值至capTitle
                 // let shownBoxes = section.querySelectorAll('.card-box[data-handle=true]');
                 // let m = shownSwipers[i].firstElementChild.textContent.charAt(3);
@@ -902,11 +926,11 @@ if (window.location.href.includes('form-apply')) {
                 swiperOption.classList.remove("js-active");
                 swiperOption.querySelector(".swiper-indicator").style.height = "0px";
                 target.classList.add("js-active");
-                target.querySelector(".swiper-indicator").style.height = "4px";
+                // target.querySelector(".swiper-indicator").style.height = "4px";
             }
             for (const section of sections) {
                 let swiped = section.querySelector(".swiped");
-                let serial = target.firstElementChild.textContent.charAt(3);
+                let serial = target.firstElementChild.textContent.charAt(0);
                 serial -= 1;
                 swiped.style.marginLeft = "-" + 688 * 2 * serial + "px";
                 let cardBoxes = section.querySelectorAll(".card-box[data-handle=true]");
@@ -971,6 +995,10 @@ if (window.location.href.includes('form-apply')) {
                 let remove = swiperOption.querySelector(".js-remove");
                 remove.style.display = "block";
                 swiperOption.style.backgroundColor = "rgba(59,122,71,0.2)";
+                swiperOption.style.borderRadius = "10px";
+                if (swiperOption.classList.contains('js-active')) {
+                    swiperOption.style.backgroundSize = '32px';
+                }
             }
             $('.swiper-indicator').css('left', '-21px');
         }
@@ -982,6 +1010,10 @@ if (window.location.href.includes('form-apply')) {
                 let remove = swiperOption.querySelector(".js-remove");
                 remove.style.display = "none";
                 swiperOption.style.backgroundColor = "transparent";
+                swiperOption.style.borderRadius = "8px";
+                if (swiperOption.classList.contains('js-active')) {
+                    swiperOption.style.backgroundSize = '40px';
+                }
             }
             $('.swiper-indicator').css('left', '-22px');
         }
@@ -1213,7 +1245,7 @@ if (window.location.href.includes('form-apply')) {
                                     $(swiper).removeClass('js-active');
                                     $(swiper).eq(cb).addClass('js-active');
                                     $(swiper).find('.swiper-indicator').css('height', '0px');
-                                    $(swiper).eq(cb).find('.swiper-indicator').css('height', '4px');
+                                    // $(swiper).eq(cb).find('.swiper-indicator').css('height', '4px');
                                 }, 1000) //須等待頁面scroll完畢再出現案型swiping動畫較佳
                         }
                     })
