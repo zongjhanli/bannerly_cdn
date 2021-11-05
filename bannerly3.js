@@ -562,7 +562,7 @@ for (const dropCard of dropCards) {
             }
 
             //如果點按在unclickable的input（#Size）
-            if (target.classList.contains('dropdown-box') && target.dataset.query == '') { //排除filter query//!!!新舊衝突
+            if (target.classList.contains('dropdown-box') && target.dataset.query == undefined) { //排除filter query//!!!新舊衝突
                 if (target.firstElementChild.classList.contains("unclickable")) {
                     //若是點按尚未選擇通路的尺寸input
                     let colL = target.parentElement.parentElement.previousElementSibling; //in this case, target=dropdown-box
@@ -1101,210 +1101,154 @@ if (window.location.href.includes('form-apply')) {
     //[data-anch]、[data-next] --> in-card hinter 響應
     //[data-anch]、[data-next]預設值
     $(document).ready(() => {
-        $('.a-button[data-next]').attr('href', '#');
-        $('.a-button[data-anch]').addClass('unclickable');
-        $('.a-button[data-anch]').css('cursor', 'not-allowed');
-        $('.a-button[data-anch]').first().removeClass('unclickable');
-        $('.a-button[data-anch]').css('cursor', 'pointer');
+        // $('.a-button[data-next]').attr('href', '#');
+        // $('.a-button[data-anch]').addClass('unclickable');
+        // $('.a-button[data-anch]').first().removeClass('unclickable');
     })
 
-    $('.a-button[data-next]').each((n) => {
-        $('.a-button[data-next]').eq(n).click((e) => {
-            let target = e.target;
-            let tSection = target.parentElement.parentElement;
-            if (tSection.id == 'Info' || tSection.id == 'Visual' || tSection.id == 'Submit') {
-                let fBlocks = tSection.querySelectorAll('.f-block');
-                let f;
-                for (f = 0; f < fBlocks.length; f++) {
-                    if (tSection.id == 'Info') {
-                        txtInputCheck();
-                        radioInputCheck();
-                    } else if (tSection.id == 'Visual') {
-                        radioInputCheck();
-                    } else if (tSection.id == 'Submit') {
-                        txtInputCheck();
-                        txtAreaCheck();
-                    }
+    $('[data-next]').click((e) => {
+        let target = e.target;
 
-                    function txtInputCheck() {
-                        if (fBlocks[f].querySelector('input[type=text]:not(.js-length-10)') && //若有txtInput未填寫
-                            fBlocks[f].querySelector('input[type=text]').value == "") {
-                            fBlocks[f].querySelector('.hinter-box').style.display = 'block';
-                            tSection.scrollIntoView();
-                        } else if (fBlocks[f].querySelector('input[type=text]').value != "" &&
-                            tSection.nextElementSibling != null) {
-                            pass();
-                        }
-                    }
-
-                    function radioInputCheck() {
-                        if (fBlocks[f].querySelector('input[type=radio]') && //若radio Input全無勾選
-                            !fBlocks[f].querySelector('.w--redirected-checked')) {
-                            fBlocks[f].querySelector('.hinter-box').style.display = 'block';
-                            tSection.scrollIntoView();
-                        } else if (fBlocks[f].querySelector('.w--redirected-checked') &&
-                            tSection.nextElementSibling != null) {
-                            pass();
-                        }
-                    }
-
-                    function txtAreaCheck() {
-                        if (fBlocks[f].querySelector('textarea') && //若textArea未填寫
-                            fBlocks[f].querySelector('textarea').value == "") {
-                            fBlocks[f].querySelector('.hinter-box').style.display = 'block';
-                            tSection.scrollIntoView();
-                        } else if (fBlocks[f].querySelector('textarea').value == "" &&
-                            tSection.nextElementSibling != null) {
-                            pass();
-                        }
-                    }
+        let hrefNow,
+            hrefNext;
+        $('.section').each((s) => {
+            if ($('.section').eq(s).find(target).length == 1) {
+                hrefNow = $('.section').eq(s).attr('id');
+                if ($('.section').eq(s + 1) != null) {
+                    hrefNext = $('.section').eq(s + 1).attr('id');
                 }
-            } else if (tSection.id == 'Copywright' || tSection.id == 'Product' || tSection.id == 'Size') {
-                let swipeds = document.querySelectorAll('.swiped');
-                let cardBoxes = tSection.querySelectorAll('.card-box:not(.js-hide)'); //必須屬於可操作案型
-                let c;
-                for (c = 0; c < cardBoxes.length; c++) {
-                    if (tSection.id == 'Copywright') {
-                        txtAreaCheck();
-                        swiping();
-                    }
-                    if (tSection.id == 'Product') {
-                        txtAreaCheck();
-                        swipeForProduct();
-                    }
-                    if (tSection.id == 'Size') {
-                        sizeCheck();
-                        swipeForSize();
-                    }
+                console.log('now: ' + hrefNow);
+                console.log('next: ' + hrefNext);
 
-                    function swiping() {
-                        let swipers = document.querySelectorAll('.a-button.for-swiper[data-handle=true]');
-                        for (const swiper of swipers) {
-                            let indicator = swiper.querySelector('.swiper-indicator');
-                            swiper.classList.remove('js-active');
-                            indicator.style.height = "0px";
-                            swipers[c].classList.add('js-active');
-                            swipers[c].querySelector('.swiper-indicator').style.height = "4px";
-                        }
-
-                        for (const swiped of swipeds) {
-                            swiped.style.marginLeft = "-" + 688 * 2 * c + "px";
-                            let cardBoxes = swiped.querySelectorAll('.card-box:not(.js-hide)'); //重新定義carBox為全頁物件
-                            cardBoxes[c].style.transform = "rotateY(0deg)";
-                            cardBoxes[c].style.opacity = "1";
-                            if (cardBoxes[c + 1]) {
-                                cardBoxes[c + 1].style.transform = "rotateY(-80deg)";
-                                cardBoxes[c + 1].style.opacity = "0";
-                            }
-                            if (cardBoxes[c - 1]) {
-                                cardBoxes[c - 1].style.transform = "rotateY(80deg)";
-                                cardBoxes[c - 1].style.opacity = "0";
-                            }
-                        }
-                    }
-
-                    function swipeForProduct() {
-                        let allHinters = tSection.querySelectorAll('.hinter-box');
-                        if (allHinters[c].style.display == 'block') {
-                            allHinters[c].dataset.shown = 'true';
-                        }
-                        let shownHinters = tSection.querySelectorAll('.hinter-box[data-shown=true]');
-
-                        if (shownHinters[0] == allHinters[c]) {
-                            swiping();
-                        }
-                    }
-
-                    function swipeForSize() {
-                        let allHinters = tSection.querySelectorAll('.hinter-box');
-                        for (const allHinter of allHinters) {
-                            if (allHinter.style.display == 'block') {
-                                allHinter.dataset.shown = 'true';
-                            }
-                        }
-                        let shownHinters = tSection.querySelectorAll('.hinter-box[data-shown=true]');
-                        let colLs = tSection.querySelectorAll('.col-left');
-                        if (shownHinters[0].parentElement.parentElement.parentElement === colLs[c] ||
-                            shownHinters[0].parentElement.parentElement.parentElement.parentElement === colLs[c]) { //判斷S-count1序號，並考量ecDrop hinter以及sizeTab hinter兩種情形
-                            swiping();
-                        }
-                    }
-
-                    function txtAreaCheck() {
-                        if (cardBoxes[c].querySelector('textarea') && //若textArea(主標)未填寫
-                            cardBoxes[c].querySelector('textarea').value == "") {
-                            cardBoxes[c].querySelector('.hinter-box').style.display = 'block';
-                            tSection.scrollIntoView();
+                let tSection = $(target).parent().parent();
+                let keyBlock = $(tSection).find('.card-box').not('.js-hide').find('[data-required=true]');
+                $(keyBlock).each((rq) => {
+                    if ($(tSection).attr('id') != 'Size') {
+                        if ($(tSection).attr('id') != 'Copywright' && $(tSection).attr('id') != 'Product') {
+                            basicCheck();
                         } else {
-                            pass();
+                            basicCheck();
+                            swiping();
                         }
-                    }
 
-                    function sizeCheck() {
-                        let sizeTabs = cardBoxes[c].querySelectorAll('.a-button.as-tab:not(.indicator)');
-                        for (const sizeTab of sizeTabs) {
-                            if (sizeTab.querySelector('.as-counts').textContent == "0") { //若有通路未選尺寸，需要創造hinter-box
-                                let hinterBox = document.createElement('div');
-                                let hinterLabel = document.createElement('div');
-                                let hinterTriangle = document.createElement('div');
-                                hinterBox.classList.add('hinter-box', 'in-card', 'lower-pos');
-                                hinterLabel.classList.add('_12px-500', 'for-hinter');
-                                hinterTriangle.classList.add('hinter-triangle', 'in-card');
-                                hinterBox.appendChild(hinterLabel);
-                                hinterBox.appendChild(hinterTriangle);
-                                hinterBox.dataset.shown = 'true';
-                                hinterLabel.textContent = '尺寸未選';
-                                sizeTab.insertBefore(hinterBox, null);
-                                tSection.scrollIntoView();
-                            } else {
-                                pass();
-                                // $('.a-button[data-next]').eq(n).trigger('click');
-                                // console.log(tSection.nextElementSibling);
+                        function basicCheck() {
+                            if ($(keyBlock).eq(rq).find('input[type=text]').not('[data-required=false]').length != 0 &&
+                                $(keyBlock).eq(rq).find('input[type=text]').not('[data-required=false]').val() == '') {
+                                hinterPoping();
+                            } else if ($(keyBlock).eq(rq).find('textarea').length != 0 &&
+                                $(keyBlock).eq(rq).find('textarea').val() == '') {
+                                hinterPoping();
+                            } else if ($(keyBlock).eq(rq).find('input[type=radio]').length != 0 &&
+                                $(keyBlock).eq(rq).find('input[type=radio]').siblings('.w--redirected-checked').length == 0) {
+                                hinterPoping();
                             }
                         }
+                    } else if ($(tSection).attr('id') == 'Size') {
+                        let counter = $(keyBlock).eq(rq).find('.as-tab.js-show').find('.as-counts');
+                        $(counter).each((c) => {
+                            if ($(counter).eq(c).text() == '0') {
+                                let tabHinter =
+                                    '<div class="hinter-box in-card lower-pos"><div class="_12px-500 for-hinter">尺寸未選</div><div class="hinter-triangle in-card"></div></div>';
+                                $(counter).eq(c).parent().append(tabHinter);
+                                tabHinter = $(counter).eq(c).siblings('.hinter-box');
+                                $(tabHinter).css('display', 'block');
+                                $(tabHinter).addClass("js-shake");
+                                setTimeout(function() {
+                                    $(tabHinter).removeClass("js-shake");
+                                }, 200);
+                            }
+                            swiping();
+                        })
                     }
-                }
-            }
 
-            function pass() {
-                $('.a-button[data-anch]').eq(n + 1).removeClass('unclickable');
-                $('.a-button[data-anch]').eq(n + 1).css('color', '#333333');
-                $('.a-button[data-anch]').eq(n).css('color', '#333333');
-                $('.a-button[data-anch]').eq(n + 1).css('cursor', 'pointer');
-                $('.a-button[data-anch]').eq(n).css('cursor', 'pointer');
-                if (n + 1 < 5) {
-                    $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n + 1).css('height', '100%');
-                } else if (n + 1 == 5) {
-                    $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n + 1).css('height', '50%');
-                }
-                $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n).css('height', '100%');
-                $('.m-anchors').not('.upper').find('.anch-circ').first().css('backgroundColor', '#333333');
-                $(target).css('opacity', '1');
-                tSection.nextElementSibling.scrollIntoView({
-                    behavior: 'smooth',
-                    block: "center",
-                    inline: "nearest"
-                });
-                setTimeout(function() {
-                    let hrefed = false;
-                    if (!window.location.href.includes(tSection.nextElementSibling.id) && !hrefed) { //防止pass()重複運作多次
-                        hrefed = true;
-                        // if (window.location.href.includes(tSection.id)) {
-                        window.location.href = window.location.href.replace('#' + tSection.id, '') + '#' + tSection.nextElementSibling.id;
-                        // }
-                        //因若無對象可replace將自動跳過，故不需要if statement
+                    function swiping() { //hard-code js 版本見2021/11/04 commit
+                        let cardBox = $(tSection).find('.card-box').not('.js-hide');
+                        let hinter = $(tSection).find('.hinter-box').not('.for-ec').not('.nth-alert').not('.for-thunder');
+                        let cbIndex = [];
+                        $(cardBox).each((cb) => {
+                            if ($(cardBox).eq(cb).find($(hinter)).length > 0 &&
+                                $(cardBox).eq(cb).find($(hinter)).css('display') == 'block') {
+                                cbIndex.push(cb);
+                                cbIndex.sort();
+                                cb = cbIndex[0];
+                                $(tSection).find('.swiped').css('margin-left', "-" + 688 * 2 * cb + "px");
+
+                                $(cardBox).eq(cb).css({
+                                    'transform': 'rotateY(0deg)',
+                                    'opacity': '1'
+                                })
+                                if ($(cardBox).eq(cb + 1) <= 2) {
+                                    $(cardBox).eq(cb + 1).css({
+                                        'transform': 'rotateY(-80deg)',
+                                        'opacity': '0'
+                                    })
+                                }
+                                if ($(cardBox).eq(cb - 1) >= 0) {
+                                    console.log($(cardBox).eq(cb - 1))
+                                    $(cardBox).eq(cb - 1).css({
+                                        'transform': 'rotateY(80deg)',
+                                        'opacity': '0'
+                                    })
+                                }
+
+                                let swiper = $('.a-button.for-swiper[data-handle=true]');
+                                $(swiper).removeClass('js-active');
+                                $(swiper).eq(cb).addClass('js-active');
+                                $(swiper).find('.swiper-indicator').css('height', '0px');
+                                $(swiper).eq(cb).find('.swiper-indicator').css('height', '4px');
+                            }
+                        })
                     }
-                }, 400)
 
+                    function hinterPoping() {
+                        let hinter = $(keyBlock).eq(rq).find('.hinter-box');
+                        $(hinter).css('display', 'block');
+                        $(hinter).addClass("js-shake");
+                        setTimeout(function() {
+                            $(hinter).removeClass("js-shake");
+                        }, 200);
+                    }
 
-
-                if (tSection.id == 'Size') { //!!!針對submit區塊，只有scrollBy能成功跳頁
-                    $('.m-anchors').not('.upper').find('.anch-circ').last().css('backgroundColor', '#333333');
-                    $(document).scrollBy(-100, 0);
-                }
+                })
             }
-        });
-    })
+        })
+
+
+
+
+
+
+        function pass() {
+            $('.a-button[data-anch]').eq(n + 1).removeClass('unclickable');
+            $('.a-button[data-anch]').eq(n + 1).css('color', '#333333');
+            $('.a-button[data-anch]').eq(n).css('color', '#333333');
+            $('.a-button[data-anch]').eq(n + 1).css('cursor', 'pointer');
+            $('.a-button[data-anch]').eq(n).css('cursor', 'pointer');
+            if (n + 1 < 5) {
+                $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n + 1).css('height', '100%');
+            } else if (n + 1 == 5) {
+                $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n + 1).css('height', '50%');
+            }
+            $('.m-anchors').not('.upper').find('.anch-line.piper').eq(n).css('height', '100%');
+            $('.m-anchors').not('.upper').find('.anch-circ').first().css('backgroundColor', '#333333');
+            $(target).css('opacity', '1');
+            tSection.nextElementSibling.scrollIntoView({
+                behavior: 'smooth',
+                block: "center",
+                inline: "nearest"
+            });
+            setTimeout(function() {
+                let hrefed = false;
+                if (!window.location.href.includes(tSection.nextElementSibling.id) && !hrefed) { //防止pass()重複運作多次
+                    hrefed = true;
+                    // if (window.location.href.includes(tSection.id)) {
+                    window.location.href = window.location.href.replace('#' + tSection.id, '') + '#' + tSection.nextElementSibling.id;
+                    // }
+                    //因若無對象可replace將自動跳過，故不需要if statement
+                }
+            }, 400)
+        }
+    });
 
     //thunder hinter 響應
     let thunderBoxes = document.querySelectorAll('.th-box');
