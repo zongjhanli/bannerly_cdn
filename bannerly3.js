@@ -972,6 +972,7 @@ if (window.location.href.includes('form-apply')) {
                 remove.style.display = "block";
                 swiperOption.style.backgroundColor = "rgba(59,122,71,0.2)";
             }
+            $('.swiper-indicator').css('left', '-21px');
         }
 
         function returnEdit() {
@@ -982,6 +983,7 @@ if (window.location.href.includes('form-apply')) {
                 remove.style.display = "none";
                 swiperOption.style.backgroundColor = "transparent";
             }
+            $('.swiper-indicator').css('left', '-22px');
         }
     }); //end of @form-apply 案型增減響應
 
