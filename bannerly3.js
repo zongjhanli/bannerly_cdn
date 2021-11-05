@@ -716,6 +716,27 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 //@Form-apply專屬區塊
 if (window.location.href.includes('form-apply')) {
 
+    $(document).ready(() => {
+        $('.swiper').css('right', '-' + 48 + 'px');
+    })
+
+    document.addEventListener('click', (e) => {
+        let target = e.target;
+        //swiper 位置隨長度變化
+        if (target.classList.contains("js-remove")) {
+            let currWidth = $('.swiper')[0].getBoundingClientRect().width;
+            currWidth -= currWidth / 2;
+            if (target != $('.js-remove').eq(0)) {
+                $('.swiper').css('right', '-' + currWidth + 'px');
+            }
+        }
+        if (target.classList.contains("js-add")) {
+            let currWidth = $('.swiper')[0].getBoundingClientRect().width;
+            currWidth += currWidth / 2
+            $('.swiper').css('right', '-' + currWidth + 'px');
+        }
+    })
+
     //tab indicator 在沒有ec tab顯現時隱藏
     $(document).click(() => {
         $('[data-group=ecTabs]').each((t) => {
@@ -766,28 +787,6 @@ if (window.location.href.includes('form-apply')) {
         }
     };
 
-    //swiper 位置隨長度變化
-    $(document).ready(() => {
-        let n = 48; //baseWidth
-        $('.swiper').css('right', '-' + n + 'px');
-    })
-
-    $('.js-remove').click(() => {
-        console.log('remove')
-        let n = 48; //baseWidth
-        n -= 48;
-        if (!$('.js-remove').eq(0)) {
-            $('.swiper').css('right', '-' + n + 'px');
-        }
-    })
-
-    $('.js-add').click(() => {
-        console.log($(add));
-        let n = 48; //baseWidth
-        n += 48;
-        $('.swiper').css('right', '-' + n + 'px');
-    })
-
     //swiper只有在特定範圍內才會出現
     document.addEventListener("scroll", () => {
         let start = document.querySelector("#Copywright");
@@ -818,9 +817,9 @@ if (window.location.href.includes('form-apply')) {
                 remove.style.display = "none";
                 swiperOption.style.backgroundColor = "transparent";
                 swiperOption.style.borderRadius = "8px";
-                if (swiperOption.classList.contains('js-active')) {
-                    swiperOption.style.backgroundSize = '40px';
-                }
+                // if (swiperOption.classList.contains('js-active')) {
+                //     swiperOption.style.backgroundSize = '40px';
+                // }
             }
         }
     });
@@ -845,7 +844,7 @@ if (window.location.href.includes('form-apply')) {
             }
 
             //新增案型（將隱藏的案型轉換為「可操作」的案型）
-            if (target.classList.contains("js-add")) {
+            if (target.classList.contains("js-add") && hiddenSwipers[0] != null) {
                 disableAllSwipers();
                 hiddenSwipers[0].classList.remove("js-hide");
                 hiddenSwipers[0].dataset.handle = "true";
@@ -996,11 +995,10 @@ if (window.location.href.includes('form-apply')) {
                 remove.style.display = "block";
                 swiperOption.style.backgroundColor = "rgba(59,122,71,0.2)";
                 swiperOption.style.borderRadius = "10px";
-                if (swiperOption.classList.contains('js-active')) {
-                    swiperOption.style.backgroundSize = '32px';
-                }
+                // if (swiperOption.classList.contains('js-active')) {
+                //     swiperOption.style.backgroundSize = '32px';
+                // }
             }
-            $('.swiper-indicator').css('left', '-21px');
         }
 
         function returnEdit() {
@@ -1011,11 +1009,10 @@ if (window.location.href.includes('form-apply')) {
                 remove.style.display = "none";
                 swiperOption.style.backgroundColor = "transparent";
                 swiperOption.style.borderRadius = "8px";
-                if (swiperOption.classList.contains('js-active')) {
-                    swiperOption.style.backgroundSize = '40px';
-                }
+                // if (swiperOption.classList.contains('js-active')) {
+                //     swiperOption.style.backgroundSize = '40px';
+                // }
             }
-            $('.swiper-indicator').css('left', '-22px');
         }
     }); //end of @form-apply 案型增減響應
 
