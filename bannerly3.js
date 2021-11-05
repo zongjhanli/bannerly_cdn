@@ -778,7 +778,7 @@ if (window.location.href.includes('form-apply')) {
 
         // console.log('startTop' + startTop);
         // console.log('endTop' + endTop);
-        if (endTop < -50 || startTop > 50) {
+        if (endTop < -170 || startTop > 170) {
             swiper.style.opacity = "0";
             swiper.classList.add('unclickable');
         } else {
