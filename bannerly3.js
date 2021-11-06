@@ -1333,6 +1333,8 @@ if (window.location.href.includes('form-apply')) {
                 $('.swipe-anchor.indicator').css('display', 'block');
                 // let scrollPos = $('.swiping-area')[0].scrollTop;
                 $('.swipe-anchor.indicator').css('top', as * 37 + 'px');
+                $('.swipe-anchor').not('.indicator').removeClass('js-current');
+                $('.swipe-anchor').not('.indicator').eq(as).addClass('js-current');
             }
         })
     })
@@ -1346,6 +1348,7 @@ if (window.location.href.includes('form-apply')) {
                     $('[data-anch]').eq(a).find('.anch-inner_circ').css('display', 'block');
                     $('.swipe-anchor.indicator').css('display', 'none'); //#Swiped在畫外時隱藏
                     $('.swiped-alt-anch').css('display', 'block'); //#Swiped在畫外時顯現
+                    $('.swipe-anchor').not('.indicator').removeClass('js-current');
 
                     if ($('[data-anch]').eq(a).attr('data-anch') == 'Swiped') {
                         $('.swipe-anchors-box').css('marginTop', '14px');
@@ -1357,6 +1360,7 @@ if (window.location.href.includes('form-apply')) {
                         $('.swipe-anchor.indicator').css('display', 'block'); //#Swiped在畫內時顯現
                         let scrollPos = $('.swiping-area')[0].scrollTop;
                         $('.swipe-anchor.indicator').css('top', (scrollPos / 496) * 37 + 'px');
+                        $('.swipe-anchor').not('.indicator').eq(scrollPos / 496).addClass('js-current');
                     } else if ($('[data-anch]').eq(a).attr('data-anch') == 'Submit') {
                         $('.swipe-anchors-box').css('marginBottom', '14px');
                         $('.swipe-anchors-box').css('marginTop', '0px');
