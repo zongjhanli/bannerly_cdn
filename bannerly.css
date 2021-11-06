@@ -157,8 +157,6 @@ input:focus {
     scroll-snap-type: both mandatory;
     scroll-snap-type: mandatory;
     overflow: scroll;
-    scroll-snap-points-y: repeat(494px);
-    scroll-padding-top: 48px;
 }
 
 .section {
