@@ -757,76 +757,11 @@ if (window.location.href.includes('form-apply')) {
 
     //頁面loading後預設隱藏未被新增的案型
     window.onload = function() {
-        swiper.style.opacity = "0";
-        swiper.style.display = "none";
-
         let unhandleds = document.querySelectorAll("[data-handle=false]");
         for (const unhandled of unhandleds) {
             unhandled.classList.add("js-hide");
         }
     };
-
-    //swiper預設樣式
-    $(document).ready(() => {
-        $('.swiper').css('right', '-' + 48 + 'px');
-        $('.swiper').css('top', 'calc(50vh + 60px)'); //與anchor底部對齊
-    })
-
-    //swiper只有在特定範圍內才會出現
-    document.addEventListener("scroll", () => {
-        let start = document.querySelector("#Copywright");
-        let startOffset = start.getBoundingClientRect();
-        let startTop = startOffset.top;
-
-        let end = document.querySelector("#Size");
-        let endOffset = end.getBoundingClientRect();
-        let endTop = endOffset.top;
-
-        // console.log('startTop' + startTop);
-        // console.log('endTop' + endTop);
-        if (endTop < -100 || startTop > 240) {
-            swiper.style.opacity = "0";
-            swiper.classList.add('unclickable');
-            swiper.style.transform = "translate(100px,0px)";
-        } else {
-            swiper.style.display = "flex";
-            swiper.style.opacity = "1";
-            swiper.classList.remove('unclickable');
-            swiper.style.transform = "translate(0px,0px)";
-
-            //copied from returnEdit
-            let swiperIcon = swiper.querySelector(".icon_28x.for-swiper");
-            let swiperOptions = swiper.querySelectorAll(".a-button");
-            swiperIcon.classList.add("js-edit");
-            swiperIcon.classList.remove("js-add");
-            for (const swiperOption of swiperOptions) {
-                let remove = swiperOption.querySelector(".js-remove");
-                remove.style.display = "none";
-                swiperOption.style.backgroundColor = "transparent";
-                swiperOption.style.borderRadius = "8px";
-                // if (swiperOption.classList.contains('js-active')) {
-                //     swiperOption.style.backgroundSize = '40px';
-                // }
-            }
-        }
-    });
-
-    //swiper 位置隨長度變化
-    document.addEventListener('click', (e) => {
-        let target = e.target;
-        if (target.classList.contains("js-remove")) {
-            let currWidth = $('.swiper')[0].getBoundingClientRect().width;
-            currWidth -= currWidth / 2;
-            if (target != $('.js-remove').eq(0)) {
-                $('.swiper').css('right', '-' + currWidth + 'px');
-            }
-        }
-        if (target.classList.contains("js-add")) {
-            let currWidth = $('.swiper')[0].getBoundingClientRect().width;
-            currWidth += currWidth / 2
-            $('.swiper').css('right', '-' + currWidth + 'px');
-        }
-    })
 
     document.addEventListener("click", (e) => {
         let target = e.target;
@@ -843,7 +778,7 @@ if (window.location.href.includes('form-apply')) {
             function disableAllSwipers() {
                 for (const shownSwiper of shownSwipers) {
                     shownSwiper.classList.remove("js-active");
-                    shownSwiper.querySelector(".swiper-indicator").style.height = "0px";
+                    // shownSwiper.querySelector(".swiper-indicator").style.height = "0px";
                 }
             }
 
@@ -892,8 +827,8 @@ if (window.location.href.includes('form-apply')) {
                     shownSwipers[0].dataset.handle = "true";
 
                     target.parentElement.classList.remove("js-active");
-                    target.parentElement.querySelector(".swiper-indicator").style.height =
-                        "0px";
+                    // target.parentElement.querySelector(".swiper-indicator").style.height =
+                    //     "0px";
                     target.parentElement.classList.add("js-hide");
                     target.parentElement.dataset.handle = "false";
 
@@ -927,7 +862,7 @@ if (window.location.href.includes('form-apply')) {
         ) {
             for (const swiperOption of swiperOptions) {
                 swiperOption.classList.remove("js-active");
-                swiperOption.querySelector(".swiper-indicator").style.height = "0px";
+                // swiperOption.querySelector(".swiper-indicator").style.height = "0px";
                 target.classList.add("js-active");
                 // target.querySelector(".swiper-indicator").style.height = "4px";
             }
@@ -1018,7 +953,35 @@ if (window.location.href.includes('form-apply')) {
                 // }
             }
         }
-    }); //end of SWIPER 案型增減響應
+    });
+
+
+    //swiper 位置初始設定
+    $(document).ready(() => {
+        // $('.swiped').css('marginBottom', '64px');
+        // $('.swiper').css('bottom', 'calc(50vh - 230px)');
+        $('.swiper-title').css('left', -98 + 'px'); //(-98 + 22*2)
+    })
+
+    //swiper-title 位置隨長度變化 (目前採align-center(flex)自動計算)
+    // $(document).click((e) => {
+    //     let target = e.target;
+    //     let caseLength = $(target).parent().parent().find('[data-handle=true]').length;
+    //     if ($(target).hasClass("js-remove")) {
+    //         if ($(target).parent().find('.unclickable').text() != '1') {
+    //             caseLength -= 2;
+    //             let newPos = -98 - (caseLength * 22) + 'px';
+    //             // console.log(newPos)
+    //             $('.swiper-title').css('left', newPos);
+    //         }
+    //     } else if ($(target).hasClass("js-add")) {
+    //         let newPos = -98 - (caseLength * 22) + 'px';
+    //         // console.log(newPos)
+    //         if (caseLength < 3) {
+    //             $('.swiper-title').css('left', newPos);
+    //         }
+    //     }
+    // })
 
     //tab + indicator 響應
     let tabBoxs = document.querySelectorAll("[data-box=tab]");
@@ -1235,7 +1198,7 @@ if (window.location.href.includes('form-apply')) {
                                         })
                                     }
                                     if ($(cardBox).eq(cb - 1) >= 0) {
-                                        console.log($(cardBox).eq(cb - 1))
+                                        // console.log($(cardBox).eq(cb - 1))
                                         $(cardBox).eq(cb - 1).css({
                                             'transform': 'rotateY(80deg)',
                                             'opacity': '0'
@@ -1245,7 +1208,7 @@ if (window.location.href.includes('form-apply')) {
                                     let swiper = $('.a-button.for-swiper[data-handle=true]');
                                     $(swiper).removeClass('js-active');
                                     $(swiper).eq(cb).addClass('js-active');
-                                    $(swiper).find('.swiper-indicator').css('height', '0px');
+                                    // $(swiper).find('.swiper-indicator').css('height', '0px');
                                     // $(swiper).eq(cb).find('.swiper-indicator').css('height', '4px');
                                 }, 1000) //須等待頁面scroll完畢再出現案型swiping動畫較佳
                         }
@@ -1280,7 +1243,6 @@ if (window.location.href.includes('form-apply')) {
         })
 
         if ($(document).find('.hinter-box').css('display') == 'none') {
-            console.log('no hinter')
             $(target).siblings('.submit').trigger('click');
         } else {
             $(target).siblings('.submit').addClass("js-shake");
@@ -1332,36 +1294,89 @@ if (window.location.href.includes('form-apply')) {
         // $('.anch-inner_circ').css('backgroundColor', '#3B7A47');
         $('.anch-inner_circ').css('display', 'none');
         $('.anch-inner_circ').eq(0).css('display', 'block');
-        $('.a-button[data-anch]').attr('href', '#'); //暫時放棄webflow scroll script，因下方bind events 有bug 無法解決
+        $('[data-anch]').attr('href', '#'); //暫時放棄webflow scroll script，因下方bind events 有bug 無法解決
         $('body')[0].scrollIntoView({ //頁面重新整理預設回到頂端
             behavior: 'smooth',
             block: "start",
             inline: "nearest"
         });
     });
-    $('.a-button[data-anch]').each((a) => {
-        $('.a-button[data-anch]').eq(a).click((e) => {
-            if ($('.a-button[data-anch]').eq(a)) {
-                tSection = $('.section')[a];
-                tSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: "center",
-                    inline: "nearest"
-                });
-            }
+
+    //Scroll響應
+    //[data-anch]
+    $('[data-anch]').each((a) => {
+            $('[data-anch]').eq(a).click(() => {
+                if ($('[data-anch]').eq(a)) {
+                    let s;
+                    for (s = 0; s < $('.section').length; s++) {
+                        if ($('[data-anch]').eq(a).attr('data-anch') == $('.section').eq(s).attr('id')) {
+                            $('.section')[s].scrollIntoView({
+                                behavior: 'smooth',
+                                block: "center",
+                                inline: "nearest"
+                            });
+                        }
+                    }
+                }
+            })
         })
+        //[data-anchS]
+    $('[data-anchS]').each((as) => {
+            $('[data-anchS]').eq(as).click(() => {
+                if ($('[data-anchS]').eq(as)) {
+                    $('.swiping-area')[0].scroll({
+                        top: 496 * as,
+                        behavior: 'smooth',
+                        block: "center",
+                        inline: "nearest"
+                    });
+                    $('.swipe-anchor.indicator').css('display', 'block');
+                    // let scrollPos = $('.swiping-area')[0].scrollTop;
+                    $('.swipe-anchor.indicator').css('top', as * 37 + 'px');
+                }
+
+            })
+        })
+        //!!! scrollIntoView不能是each內的click event?
+    $('[data-anchS]').click(() => {
+        $('.section.swiping-area')[0].scrollIntoView({
+            behavior: 'smooth',
+            block: "center",
+            inline: "nearest"
+        });
     })
-    $(window).bind('mousewheel DOMMouseScroll scroll mouseup mousedown keyup keydown', () => { //涵蓋所有頁面捲動的事件監聽
+
+    $(window).bind('mousewheel DOMMouseScroll scroll mouseup mousedown keyup keydown load', () => { //涵蓋所有頁面捲動的事件監聽
             let anchKey = window.location.href;
-            $('.a-button[data-anch]').each((a) => {
-                if (anchKey.includes($('.a-button[data-anch]').eq(a).attr('href')) ||
-                    $('.a-button[data-anch]').eq(a).attr('class').includes('w--current')) {
-                    $('.a-button[data-anch]').find('.anch-inner_circ').css('display', 'none');
-                    $('.a-button[data-anch]').eq(a).find('.anch-inner_circ').css('display', 'block');
+            $('[data-anch]').each((a) => {
+                if (anchKey.includes($('[data-anch]').eq(a).attr('href')) ||
+                    $('[data-anch]').eq(a).attr('class').includes('w--current')) {
+                    $('[data-anch]').find('.anch-inner_circ').css('display', 'none');
+                    $('[data-anch]').eq(a).find('.anch-inner_circ').css('display', 'block');
+                    $('.swipe-anchor.indicator').css('display', 'none');
+
+                    //調整$('.swipe-anchors-box')上下margin
+                    if ($('[data-anch]').eq(a).attr('data-anch') == 'Swiped') {
+                        $('.swipe-anchors-box').css('marginTop', '14px');
+                        $('.swipe-anchors-box').css('marginBottom', '0px');
+                        $('.m-anchors').css('height', '286px');
+
+                        $('.swipe-anchor.indicator').css('display', 'block');
+                        let scrollPos = $('.swiping-area')[0].scrollTop;
+                        $('.swipe-anchor.indicator').css('top', (scrollPos / 496) * 37 + 'px');
+                    } else if ($('[data-anch]').eq(a).attr('data-anch') == 'Submit') {
+                        $('.swipe-anchors-box').css('marginBottom', '14px');
+                        $('.swipe-anchors-box').css('marginTop', '0px');
+                        $('.m-anchors').css('height', '286px');
+                    } else {
+                        $('.swipe-anchors-box').css('marginBottom', '0px');
+                        $('.swipe-anchors-box').css('marginTop', '0px');
+                        $('.m-anchors').css('height', '272px');
+                    }
                 }
                 if (anchKey.includes('Info')) {
-                    $('.a-button[data-anch]').find('.anch-inner_circ').css('display', 'none');
-                    $('.a-button[data-anch]').eq(0).find('.anch-inner_circ').css('display', 'block');
+                    $('[data-anch]').find('.anch-inner_circ').css('display', 'none');
+                    $('[data-anch]').eq(0).find('.anch-inner_circ').css('display', 'block');
                 }
             })
         }) // end of anchor dot breathing
