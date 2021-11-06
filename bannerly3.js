@@ -1325,7 +1325,7 @@ if (window.location.href.includes('form-apply')) {
         $('[data-anchS]').eq(as).click((e) => {
             if ($('[data-anchS]').eq(as)) {
                 $('.swiping-area')[0].scroll({
-                    top: 496 * as,
+                    top: 498 * as,
                     behavior: 'smooth',
                     block: "start",
                     inline: "nearest"
@@ -1359,8 +1359,9 @@ if (window.location.href.includes('form-apply')) {
                         $('.swiped-alt-anch').css('display', 'none'); //#Swiped在畫內時隱藏
                         $('.swipe-anchor.indicator').css('display', 'block'); //#Swiped在畫內時顯現
                         let scrollPos = $('.swiping-area')[0].scrollTop;
-                        $('.swipe-anchor.indicator').css('top', (scrollPos / 496) * 37 + 'px');
-                        $('.swipe-anchor').not('.indicator').eq(scrollPos / 496).addClass('js-current');
+                        $('.swipe-anchor.indicator').css('top', (scrollPos / 498) * 37 + 'px');
+                        roundPos = Math.round(scrollPos / 496); //防止數值飄忽，難以錨定
+                        $('.swipe-anchor').not('.indicator').eq(roundPos).addClass('js-current');
                     } else if ($('[data-anch]').eq(a).attr('data-anch') == 'Submit') {
                         $('.swipe-anchors-box').css('marginBottom', '14px');
                         $('.swipe-anchors-box').css('marginTop', '0px');
