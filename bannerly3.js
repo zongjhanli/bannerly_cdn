@@ -1322,46 +1322,39 @@ if (window.location.href.includes('form-apply')) {
         })
         //[data-anchS]
     $('[data-anchS]').each((as) => {
-            $('[data-anchS]').eq(as).click(() => {
-                if ($('[data-anchS]').eq(as)) {
-                    $('.swiping-area')[0].scroll({
-                        top: 496 * as,
-                        behavior: 'smooth',
-                        block: "center",
-                        inline: "nearest"
-                    });
-                    $('.swipe-anchor.indicator').css('display', 'block');
-                    // let scrollPos = $('.swiping-area')[0].scrollTop;
-                    $('.swipe-anchor.indicator').css('top', as * 37 + 'px');
-                }
-
-            })
+        $('[data-anchS]').eq(as).click((e) => {
+            if ($('[data-anchS]').eq(as)) {
+                $('.swiping-area')[0].scroll({
+                    top: 496 * as,
+                    behavior: 'smooth',
+                    block: "start",
+                    inline: "nearest"
+                });
+                $('.swipe-anchor.indicator').css('display', 'block');
+                // let scrollPos = $('.swiping-area')[0].scrollTop;
+                $('.swipe-anchor.indicator').css('top', as * 37 + 'px');
+            }
         })
-        //!!! scrollIntoView不能是each內的click event?
-    $('[data-anchS]').click(() => {
-        $('.section.swiping-area')[0].scrollIntoView({
-            behavior: 'smooth',
-            block: "center",
-            inline: "nearest"
-        });
     })
 
-    $(window).bind('mousewheel DOMMouseScroll scroll mouseup mousedown keyup keydown load', () => { //涵蓋所有頁面捲動的事件監聽
+    $(window).bind('mousewheel DOMMouseScroll scroll mouseup mousedown keyup keydown load', (e) => { //涵蓋所有頁面捲動的事件監聽
             let anchKey = window.location.href;
             $('[data-anch]').each((a) => {
                 if (anchKey.includes($('[data-anch]').eq(a).attr('href')) ||
                     $('[data-anch]').eq(a).attr('class').includes('w--current')) {
                     $('[data-anch]').find('.anch-inner_circ').css('display', 'none');
                     $('[data-anch]').eq(a).find('.anch-inner_circ').css('display', 'block');
-                    $('.swipe-anchor.indicator').css('display', 'none');
+                    $('.swipe-anchor.indicator').css('display', 'none'); //#Swiped在畫外時隱藏
+                    $('.swiped-alt-anch').css('display', 'block'); //#Swiped在畫外時顯現
 
-                    //調整$('.swipe-anchors-box')上下margin
                     if ($('[data-anch]').eq(a).attr('data-anch') == 'Swiped') {
                         $('.swipe-anchors-box').css('marginTop', '14px');
                         $('.swipe-anchors-box').css('marginBottom', '0px');
                         $('.m-anchors').css('height', '286px');
 
-                        $('.swipe-anchor.indicator').css('display', 'block');
+                        //調整$('.swipe-anchors-box')上下margin
+                        $('.swiped-alt-anch').css('display', 'none'); //#Swiped在畫內時隱藏
+                        $('.swipe-anchor.indicator').css('display', 'block'); //#Swiped在畫內時顯現
                         let scrollPos = $('.swiping-area')[0].scrollTop;
                         $('.swipe-anchor.indicator').css('top', (scrollPos / 496) * 37 + 'px');
                     } else if ($('[data-anch]').eq(a).attr('data-anch') == 'Submit') {
