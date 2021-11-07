@@ -106,7 +106,50 @@ if (window.location.href.includes('form-apply')) {
 }
 
 //@Index output 專屬區塊
-if (!window.location.href.includes('form-apply')) {
+if (!window.location.href.includes('form-apply') || !window.location.href.includes('custom-apply')) {
+
+    $(document).ready(() => {
+        $('.initial-bg').removeClass('js-hide');
+    })
+    let codeUrl = 'https://docs.google.com/spreadsheets/d';
+    let ssid2 = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
+    const query2 = `/gviz/tq?`; //google visualisation 
+    const endpoint2 = `${codeUrl}${ssid2}${query2}`;
+    fetch(endpoint2)
+        .then(res => res.text())
+        .then(data => {
+            let jsData = data.substr(47).slice(0, -2);
+            let json = JSON.parse(jsData);
+            let rows = json.table.rows;
+            let cols = json.table.cols;
+            // console.log('cols=' + cols[0])
+            // console.log('rows=' + rows[0])
+            // console.log(rows.length)
+            // console.log(rows[1].c[2].v)
+
+            // let tCells = rows[li].c;
+            $('#validation').change((e) => {
+                let target = e.target;
+                console.log(rows)
+                let i;
+                let iArr = [];
+                for (i = 1; i < rows.length; i++) {
+                    if (rows[i].c[2].v.indexOf($(target).val()) >= 0) {
+                        $('.initial-bg').addClass('js-hide');
+                        iArr.push(i);
+                    }
+                }
+                console.log(rows[iArr[0]]);
+                if (rows[iArr[0]].c[0].v == 'applicant') {
+                    $('.send').parent().remove();
+                    console.log('applicant');
+                } else if (rows[iArr[0]].c[0].v == 'MASTER') {
+                    $('.end-case').parent().remove();
+                    console.log('MASTER');
+                }
+            })
+        })
+
     let baseUrl = 'https://docs.google.com/spreadsheets/d';
     let ssid = '/1Jdm46l4ggZhEi44v2Y9ws6PaWHWnXnDFol9-HvETnLg';
     const query1 = `/gviz/tq?`; //google visualisation 
@@ -511,6 +554,8 @@ if (!window.location.href.includes('form-apply')) {
             // Result欄位output
             document.addEventListener('click', (e) => {
                     let target = e.target;
+                    let listTop = target.getBoundingClientRect().top;
+                    // console.log(listTop);
                     let output = document.querySelector('.container.output');
 
                     if (target.classList.contains('a-list')) {
@@ -537,7 +582,7 @@ if (!window.location.href.includes('form-apply')) {
                                         if (tCells[i] != null) {
                                             //標題output
                                             $('[data-output=case-name]').text(tCells[0].v + '\u00a0\u00a0' + tCells[1].v + tCells[2].v);
-                                            if (tCells[3] != null) {
+                                            if (tCells[3] != null) { //急件
                                                 $('[data-output=case-name]').text(($('[data-output=case-name]').text().concat(' (' + tCells[3].v + ')')));
                                             }
                                             //基本資訊output
