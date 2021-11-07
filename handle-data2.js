@@ -158,7 +158,7 @@ if (!window.location.href.includes('form-apply')) {
 
                     let cells = rows[rw].c;
 
-                    title.textContent = cells[0].v + '\u00a0\u00a0' + cells[1].v + cells[2].v + 'BN';
+                    title.textContent = cells[0].v + '\u00a0\u00a0' + cells[1].v + cells[2].v;
                     if (cells[3] != null) {
                         title.textContent += ' (' + cells[3].v + ')';
                     }
@@ -536,7 +536,7 @@ if (!window.location.href.includes('form-apply')) {
                                     for (i = 0; i < cols.length; i++) {
                                         if (tCells[i] != null) {
                                             //標題output
-                                            $('[data-output=case-name]').text(tCells[0].v + '\u00a0\u00a0' + tCells[1].v + tCells[2].v + 'BN');
+                                            $('[data-output=case-name]').text(tCells[0].v + '\u00a0\u00a0' + tCells[1].v + tCells[2].v);
                                             if (tCells[3] != null) {
                                                 $('[data-output=case-name]').text(($('[data-output=case-name]').text().concat(' (' + tCells[3].v + ')')));
                                             }
