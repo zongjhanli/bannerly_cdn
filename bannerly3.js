@@ -1209,7 +1209,6 @@ if (window.location.href.includes('form-apply')) {
                                 $(swiper).removeClass('js-active');
                                 $(swiper).eq(cb0).addClass('js-active');
 
-                                console.log(cardBox);
                                 if (cb0 == 1) {
                                     nextRotate();
                                     prevRotate();
@@ -1294,7 +1293,13 @@ if (window.location.href.includes('form-apply')) {
             })
         })
 
-        if ($('.hinter-box').is(':visible').length == 0) {
+        let timestamp = moment().zone(0)._d;
+        timestamp = timestamp.toString().replace(' GMT+0800 (台北標準時間)', '').replace(/ /g, '-');
+        $('.submit-box').attr('data-stamp', timestamp);
+        // console.log(timestamp)
+
+
+        if ($('.hinter-box:visible').length == 0) {
             $(target).siblings('.submit').trigger('click');
         } else {
             $(target).siblings('.submit').addClass("js-shake");

@@ -25,6 +25,7 @@ if (window.location.href.includes('form-apply')) {
 
         axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
             "data": {
+                "timestamp": $('.submit-box').attr('data-stamp'),
                 ////基本資訊
                 "曝光日期": $('#date-exposure_range').val(),
                 "主打品牌": $('#brand').val(),
@@ -111,6 +112,7 @@ if (!window.location.href.includes('form-apply')) {
     const query1 = `/gviz/tq?`; //google visualisation 
     const endpoint1 = `${baseUrl}${ssid}${query1}`;
 
+    //Load JSON
     fetch(endpoint1)
         .then(res => res.text())
         .then(data => {
@@ -747,6 +749,9 @@ if (!window.location.href.includes('form-apply')) {
                                                     labels[ec].textContent = ecNames[ec];
                                                 }
                                             }
+                                            if (cols[i].label == 'timestamp') {
+                                                $('[data-output=case-name]').attr('data-stamp', tCells[i].v);
+                                            }
                                         }
                                     }
                                 }
@@ -780,6 +785,19 @@ if (!window.location.href.includes('form-apply')) {
                                 tabLabel.parentElement.style.display = 'none';
                             }
                         }
+                        $('.send').siblings().click(() => {
+                            let timestamp = $('[data-output=case-name]').attr('data-stamp');
+                            let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
+                            axios.patch(targetRow, {
+                                "data": {
+                                    "設計方": $('#designer').val(),
+                                    "初稿交件日期": $('#ddl-1').val(),
+                                    "完成日期": $('#ddl-2').val()
+                                }
+                            }).then(response => {
+                                console.log(response.data);
+                            });
+                        })
                     }
                 }) //end of Result欄位output
         })
