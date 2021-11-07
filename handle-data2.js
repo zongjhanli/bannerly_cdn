@@ -109,7 +109,7 @@ if (window.location.href.includes('form-apply')) {
 if (!window.location.href.includes('form-apply') || !window.location.href.includes('custom-apply')) {
 
     $(document).ready(() => {
-        $('.initial-bg').addClass('js-hide');
+        $('.initial-bg').removeClass('js-hide');
     })
     let codeUrl = 'https://docs.google.com/spreadsheets/d';
     let ssid2 = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
