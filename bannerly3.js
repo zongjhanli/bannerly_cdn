@@ -1257,6 +1257,12 @@ if (window.location.href.includes('form-apply')) {
                                         })
                                     }
                                 }
+
+                                $('.swipe-anchor').not('.indicator').removeClass('js-current');
+                                let scrollPos = $('.swiping-area')[0].scrollTop;
+                                $('.swipe-anchor.indicator').css('top', (scrollPos / 498) * 37 + 'px');
+                                roundPos = Math.round(scrollPos / 498); //防止數值飄忽，難以錨定
+                                $('.swipe-anchor').not('.indicator').eq(roundPos).addClass('js-current');
                             }, 1000) //須等待頁面scroll完畢再出現案型swiping動畫較佳
                     }
                 }
