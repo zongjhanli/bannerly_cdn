@@ -1115,7 +1115,7 @@ if (window.location.href.includes('form-apply')) {
     //in-card hinter 響應 ([data-anch]、[data-next])
     //[data-anch]、[data-next]預設值
     $(document).ready(() => {
-        // $('.a-button[data-next]').attr('href', '#');
+        $('.submit').addClass('unclickable');
         // $('.a-button[data-anch]').addClass('unclickable');
         // $('.a-button[data-anch]').first().removeClass('unclickable');
     })
@@ -1133,7 +1133,7 @@ if (window.location.href.includes('form-apply')) {
             // console.log('now: ' + hrefNow);
             // console.log('next: ' + hrefNext);
 
-            let tSection = $('.section').eq(s);
+            let tSection = $('.section').not('.swiping-area').eq(s);
             let keyBlock = $(tSection).find('.card-box').not('.js-hide').find('[data-required=true]');
             $(keyBlock).each((rq) => {
                 if ($(tSection).attr('id') != 'Size') {
@@ -1175,44 +1175,90 @@ if (window.location.href.includes('form-apply')) {
                 }
 
                 function swiping() { //hard-code js 版本見2021/11/04 commit
-                    let cardBox = $(tSection).find('.card-box').not('.js-hide');
-                    let hinter = $(tSection).find('.hinter-box').not('.for-ec').not('.nth-alert').not('.for-thunder');
-                    let cbIndex = [];
+                    let sArr = [];
+                    let sArrPushed = false;
+                    $('.section.in-swiped').each((ss) => {
+                            if ($('.section.in-swiped').eq(ss).find('.hinter-box').not('.nth-alert').not('.for-thunder').is(':visible')) {
+                                if (!sArrPushed) {
+                                    sArr.push(ss);
+                                    sArrPushed = true;
+                                }
+                            }
+                        })
+                        // console.log('sArr0= ' + sArr[0])
+                    let cardBox = $('.section.in-swiped').eq(sArr[0]).find('.card-box[data-handle=true]');
+                    // let hinter = $(tSection).find('.hinter-box').not('.for-ec').not('.nth-alert').not('.for-thunder');
+                    let cbArr = [];
+                    let cbArrPushed = false;
                     $(cardBox).each((cb) => {
-                        if ($(cardBox).eq(cb).find($(hinter)).length > 0 &&
-                            $(cardBox).eq(cb).find($(hinter)).css('display') == 'block') {
-                            setTimeout(function() {
-                                    cbIndex.push(cb);
-                                    cbIndex.sort();
-                                    cb = cbIndex[0];
-                                    $(tSection).find('.swiped').css('margin-left', "-" + 688 * 2 * cb + "px");
+                        if ($(cardBox).eq(cb).find('.hinter-box').not('.nth-alert').not('.for-thunder').is(':visible')) {
+                            if (!cbArrPushed) {
+                                cbArr.push(cb);
+                                cbArrPushed = true;
+                            }
+                        }
+                    })
+                    let swiped = false;
+                    if (!swiped) {
+                        swiped = true;
+                        setTimeout(function() {
+                                cb0 = cbArr[0];
+                                $('.swiped').css('margin-left', "-" + 688 * 2 * cb0 + "px");
+                                let swiper = $('.a-button.for-swiper[data-handle=true]');
+                                // let cardBox = $('.section.in-swiped').find('.card-box[data-handle=true]');
+                                $(swiper).removeClass('js-active');
+                                $(swiper).eq(cb0).addClass('js-active');
 
-                                    $(cardBox).eq(cb).css({
-                                        'transform': 'rotateY(0deg)',
-                                        'opacity': '1'
-                                    })
-                                    if ($(cardBox).eq(cb + 1) <= 2) {
-                                        $(cardBox).eq(cb + 1).css({
+                                console.log(cardBox);
+                                if (cb0 == 1) {
+                                    nextRotate();
+                                    prevRotate();
+                                    currRotate();
+                                    // console.log('a')
+                                } else if (cb0 == 0) {
+                                    nextRotate();
+                                    currRotate();
+                                    // console.log('b')
+                                } else if (cb0 == 2) {
+                                    prevRotate();
+                                    currRotate();
+                                    // console.log('c')
+                                }
+
+                                function nextRotate() {
+                                    let n;
+                                    for (n = 0; n < 3; n++) {
+                                        let cardBox = $('.section.in-swiped').eq(n).find('.card-box[data-handle=true]');
+                                        $(cardBox).eq(cb0 + 1).css({
                                             'transform': 'rotateY(-80deg)',
                                             'opacity': '0'
                                         })
                                     }
-                                    if ($(cardBox).eq(cb - 1) >= 0) {
-                                        // console.log($(cardBox).eq(cb - 1))
-                                        $(cardBox).eq(cb - 1).css({
+                                }
+
+                                function prevRotate() {
+                                    let n;
+                                    for (n = 0; n < 3; n++) {
+                                        let cardBox = $('.section.in-swiped').eq(n).find('.card-box[data-handle=true]');
+                                        $(cardBox).eq(cb0 - 1).css({
                                             'transform': 'rotateY(80deg)',
                                             'opacity': '0'
                                         })
                                     }
+                                }
 
-                                    let swiper = $('.a-button.for-swiper[data-handle=true]');
-                                    $(swiper).removeClass('js-active');
-                                    $(swiper).eq(cb).addClass('js-active');
-                                    // $(swiper).find('.swiper-indicator').css('height', '0px');
-                                    // $(swiper).eq(cb).find('.swiper-indicator').css('height', '4px');
-                                }, 1000) //須等待頁面scroll完畢再出現案型swiping動畫較佳
-                        }
-                    })
+                                function currRotate() {
+                                    let n;
+                                    for (n = 0; n < 3; n++) {
+                                        let cardBox = $('.section.in-swiped').eq(n).find('.card-box[data-handle=true]');
+                                        $(cardBox).eq(cb0).css({
+                                            'transform': 'rotateY(0deg)',
+                                            'opacity': '1'
+                                        })
+                                    }
+                                }
+                            }, 1000) //須等待頁面scroll完畢再出現案型swiping動畫較佳
+                    }
                 }
 
                 function hinterPoping() {
@@ -1242,7 +1288,7 @@ if (window.location.href.includes('form-apply')) {
             })
         })
 
-        if ($(document).find('.hinter-box').css('display') == 'none') {
+        if ($('.hinter-box').is(':visible').length == 0) {
             $(target).siblings('.submit').trigger('click');
         } else {
             $(target).siblings('.submit').addClass("js-shake");
