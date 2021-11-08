@@ -405,13 +405,17 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     applicant.textContent = cells[cells.length - 7].v.slice(0, 3).trim();
                     if (cells[cells.length - 5] != null) {
                         designer.textContent = cells[cells.length - 5].v.slice(0, 3).trim();
-                        status.textContent = '製作中';
+                        if (cells[cells.length - 2] != null) {
+                            status.textContent = '已結案';
+                            status.classList.add('js-endcase');
+                        } else {
+                            status.textContent = '製作中';
+                        }
                     } else {
                         designer.textContent = '未指派';
                         designer.style.color = '#808080';
                         status.textContent = '未發單';
-                        status.style.background = '#f5f5f5';
-                        status.style.color = '#808080';
+                        status.classList.add('js-tbc');
                     }
                     list.dataset.year = cells[4].v;
                 }
