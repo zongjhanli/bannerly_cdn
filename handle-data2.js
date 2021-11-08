@@ -1,5 +1,184 @@
+//@Form-apply @Custom-apply 共用區塊 （專屬@Form-apply段落另外註記）
+if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
+
+    //Fetch 下拉選單常用選項
+    const gsUrl = 'https://docs.google.com/spreadsheets/d';
+    const query = `/gviz/tq?`; //google visualisation 
+    let ssidDrop = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
+    const endpointDrop = `${gsUrl}${ssidDrop}${query}`;
+    fetch(endpointDrop)
+        .then(res => res.text())
+        .then(data => {
+            let jsData = data.substr(47).slice(0, -2);
+            let json = JSON.parse(jsData);
+            let rows = json.table.rows;
+            let cols = json.table.cols;
+
+            let i;
+            let applicant = 0; //需求方
+            let brand = 0; //品牌列表
+            let ecName = 0; //通路列表
+            let ecData = 0; //通路列表-data
+            for (i = 0; i < cols.length; i++) {
+                if (rows[0].c[i].v == '需求方') {
+                    applicant += i;
+                }
+                if (rows[0].c[i].v == '品牌列表') {
+                    brand += i;
+                }
+                if (rows[0].c[i].v == '通路列表') {
+                    ecName += i;
+                }
+                if (rows[0].c[i].v == '通路列表-data') {
+                    ecData += i;
+                }
+            }
+            let r;
+            for (r = 1; r < rows.length; r++) {
+                if (rows[r].c[brand] != null) {
+                    let brandOption;
+                    if (!rows[r].c[brand].v.includes('*')) {
+                        brandOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[brand].v + '</div><div class="custom-check tick-right"></div></div>';
+                    } else if (rows[r].c[brand].v.includes('*')) {
+                        rows[r].c[brand].v = rows[r].c[brand].v.replace('*', '');
+                        brandOption = '<div class="a-button as-list drop-div"><div class="label drop-div">' + rows[r].c[brand].v + '</div></div>';
+                    }
+                    $('#brand').parent().find('.drop-group').append(brandOption);
+                }
+                if (rows[r].c[applicant] != null) {
+                    let option = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[applicant].v + '</div><div class="custom-check tick-right"></div></div>'
+                    $('#applicant').parent().find('.drop-group').append(option);
+                }
+                //@Form-apply 專屬段落
+                if (window.location.href.includes('form-apply')) {
+                    if (rows[r].c[ecName] != null && rows[r].c[ecData] != null) {
+                        //左側tabBox裡面新增選項
+                        let tab = '<div class="a-button as-tab js-hide"><div data-tab="' + rows[r].c[ecData].v + '" class="label full-touch js-exclude">' + rows[r].c[ecName].v + '</div><div class="_12px-500 as-counts in-tab">0</div></div>'
+                        $('[data-box=tab]').append(tab);
+
+                        //左側dropGroup裡面新增選項
+                        let ecOption = '<div class="a-button as-list"><div data-ec="' + rows[r].c[ecData].v + '" class="label full-touch">' + rows[r].c[ecName].v + '</div><div class="custom-check tick-right"></div></div>'
+                        $('[data-group=ecTabs]').parent().find('.drop-group').append(ecOption);
+
+                        //新增右側dropGroup
+                        let sizeGroup = '<div data-group="' + rows[r].c[ecData].v + '" class="drop-group js-hide"></div>'
+                        $('[data-dropfor=size]').parent().find('.drop-card').append(sizeGroup);
+
+                        ////新增textarea，需注意「案型編號」
+                        let serial = ['A', 'B', 'C'];
+                        let s;
+                        for (s = 0; s < serial.length; s++) {
+                            let txtarea = '<textarea name="' + rows[r].c[ecData].v + '-' + serial[s] + '" maxlength="5000" data-name="' + rows[r].c[ecData].v + '-' + serial[s] + '" id="' + rows[r].c[ecData].v + '-' + serial[s] + '" placeholder="" class="input as-textarea bulk-select unclickable js-hide w-input"></textarea>'
+                            $('[data-box=textarea]').eq(s).append(txtarea);
+                        }
+                    }
+                }
+            }
+            //@Form-apply 專屬段落
+            if (window.location.href.includes('form-apply')) {
+                //右側dropGroup裡面「依照通路」新增尺寸選項
+                for (r = 1; r < rows.length; r++) {
+                    let newSizeGroup = $('.col-right').find('.drop-group');
+                    let i;
+                    for (i = 0; i < cols.length; i++) {
+                        $(newSizeGroup).each((nsg) => {
+                            if ($(newSizeGroup).eq(nsg).attr('data-group') == rows[0].c[i].v) {
+                                if (rows[r].c[i] != null) {
+                                    let sizeOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[i].v + '</div><div class="custom-check tick-right"></div></div>'
+                                    $(newSizeGroup).eq(nsg).append(sizeOption);
+                                }
+                            }
+                        })
+                    }
+                    let newSizeOption = $('.col-right').find('.label.full-touch');
+                    $(newSizeOption).each((nso) => {
+                        if ($(newSizeOption).eq(nso).text() == 'null') {
+                            $(newSizeOption).eq(nso).parent().remove();
+                        }
+                    })
+                }
+            }
+        })
+}
+
+//@Custom-apply input 專屬區塊
+if (window.location.href.includes('custom-apply')) {
+    let submit = document.querySelector('input[type=submit]');
+    submit.addEventListener('click', () => {
+
+        //reconstruct copywright value
+        let AcopywrightStr = [];
+        AcopywrightStr.push($("#C-1-A").val(), $("#C-2-A").val(), $("#C-3-A").val(), $("#C-4-A").val());
+        let BcopywrightStr = [];
+        if ($("#C-1-B").val() != "") {
+            BcopywrightStr.push($("#C-1-B").val(), $("#C-2-B").val(), $("#C-3-B").val(), $("#C-4-B").val());
+        }
+        let CcopywrightStr = [];
+        if ($("#C-1-C").val() != "") {
+            CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), $("#C-4-C").val());
+        }
+
+        axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
+            "data": {
+                "timestamp": $('.submit-box').attr('data-stamp'),
+                ////基本資訊
+                "曝光日期": $('#date-exposure_range').val(),
+                "主打品牌": $('#brand').val(),
+                "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
+                "急迫度": $("[name=urgency]").siblings(".w--redirected-checked").siblings(".label").text().slice(3, 4),
+                "曝光年份": $('[data-year]').attr('data-year'),
+                ////送出前確認訊息
+                "需求方": $("#applicant").val(),
+                "相關路徑": $("#path").val(),
+            }
+        }).then(response => {
+            console.log(response.data);
+        });
+    })
+}
+
 //@Form-apply input 專屬區塊
 if (window.location.href.includes('form-apply')) {
+
+    //ajax 讀取本機資料夾圖片名稱
+    const folder = "常用商品/";
+
+    let url2 = "";
+    let imgNameArr = []
+    $.ajax({
+        url: folder,
+        success: function(data) {
+            $(data).find("a").attr("href", function(i, val) {
+                url2 = folder + val.replace('/%E5%B8%B8%E7%94%A8%E5%95%86%E5%93%81/', '') + '/'
+                $.ajax({
+                    url: url2,
+                    success: function(data) {
+                        $(data).find("a").attr("href", function(i, imgName) {
+                            if (imgName.match(/\.(jpe?g|png|gif)$/)) {
+                                imgName = imgName.replace('/%E5%B8%B8%E7%94%A8%E5%95%86%E5%93%81/', '');
+                                let slashIndex = imgName.indexOf('/');
+                                imgName = imgName.slice(slashIndex + 1, imgName.length);
+                                imgNameArr.push(imgName);
+                                // $("body").append("<img src='" + url2 + val + "'>");
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    });
+    setTimeout(function() {
+        $('#Product').find('.drop-group').each((d) => {
+            let i;
+            for (i = 0; i < $(imgNameArr).length; i++) {
+                let option = '<div class="a-button as-list"><div class="label full-touch">' + imgNameArr[i] + '</div><div class="custom-check tick-right"></div></div>'
+                $('#Product').find('.drop-group').eq(d).append(option);
+                // console.log(imgNameArr[i]);
+            }
+        })
+    }, 1000);
+
+    //sheetDB API 上傳資料
     let submit = document.querySelector('input[type=submit]');
     submit.addEventListener('click', () => {
         //lookup ec names
@@ -106,31 +285,26 @@ if (window.location.href.includes('form-apply')) {
 }
 
 //@Index output 專屬區塊
-if (!window.location.href.includes('form-apply') || !window.location.href.includes('custom-apply')) {
+if (!window.location.href.includes('form-apply') && !window.location.href.includes('custom-apply')) {
 
+    const gsUrl = 'https://docs.google.com/spreadsheets/d';
+    const query = `/gviz/tq?`; //google visualisation 
+
+    //Fetch授權憑證
     $(document).ready(() => {
         $('.initial-bg').removeClass('js-hide');
     })
-    let codeUrl = 'https://docs.google.com/spreadsheets/d';
-    let ssid2 = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
-    const query2 = `/gviz/tq?`; //google visualisation 
-    const endpoint2 = `${codeUrl}${ssid2}${query2}`;
-    fetch(endpoint2)
+    let ssidCode = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
+    const endpointCode = `${gsUrl}${ssidCode}${query}`;
+    fetch(endpointCode)
         .then(res => res.text())
         .then(data => {
             let jsData = data.substr(47).slice(0, -2);
             let json = JSON.parse(jsData);
             let rows = json.table.rows;
             let cols = json.table.cols;
-            // console.log('cols=' + cols[0])
-            // console.log('rows=' + rows[0])
-            // console.log(rows.length)
-            // console.log(rows[1].c[2].v)
-
-            // let tCells = rows[li].c;
             $('#validation').change((e) => {
                 let target = e.target;
-                console.log(rows)
                 let i;
                 let iArr = [];
                 for (i = 1; i < rows.length; i++) {
@@ -139,7 +313,6 @@ if (!window.location.href.includes('form-apply') || !window.location.href.includ
                         iArr.push(i);
                     }
                 }
-                console.log(rows[iArr[0]]);
                 if (rows[iArr[0]].c[0].v == 'applicant') {
                     $('.send').parent().remove();
                     console.log('applicant');
@@ -150,13 +323,37 @@ if (!window.location.href.includes('form-apply') || !window.location.href.includ
             })
         })
 
-    let baseUrl = 'https://docs.google.com/spreadsheets/d';
-    let ssid = '/1Jdm46l4ggZhEi44v2Y9ws6PaWHWnXnDFol9-HvETnLg';
-    const query1 = `/gviz/tq?`; //google visualisation 
-    const endpoint1 = `${baseUrl}${ssid}${query1}`;
+    //Fetch下拉選單常用選項
+    let ssidDrop = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
+    const endpointDrop = `${gsUrl}${ssidDrop}${query}`;
+    fetch(endpointDrop)
+        .then(res => res.text())
+        .then(data => {
+            let jsData = data.substr(47).slice(0, -2);
+            let json = JSON.parse(jsData);
+            let rows = json.table.rows;
+            let cols = json.table.cols;
 
-    //Load JSON
-    fetch(endpoint1)
+            let i;
+            let designer = 0;
+            for (i = 0; i < cols.length; i++) {
+                if (rows[0].c[i].v == '設計方') {
+                    designer += i;
+                }
+            }
+            let r;
+            for (r = 1; r < rows.length; r++) {
+                if (rows[r].c[designer] != null) {
+                    let option = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[designer].v + '</div><div class="custom-check tick-right"></div></div>'
+                    $('#designer').closest('.dropdown-box').find('.drop-group').append(option);
+                }
+            }
+        })
+
+    //Fetch案件資料
+    let ssidList = '/1Jdm46l4ggZhEi44v2Y9ws6PaWHWnXnDFol9-HvETnLg';
+    const endpointList = `${gsUrl}${ssidList}${query}`;
+    fetch(endpointList)
         .then(res => res.text())
         .then(data => {
             let jsData = data.substr(47).slice(0, -2);
@@ -554,8 +751,6 @@ if (!window.location.href.includes('form-apply') || !window.location.href.includ
             // Result欄位output
             document.addEventListener('click', (e) => {
                     let target = e.target;
-                    let listTop = target.getBoundingClientRect().top;
-                    // console.log(listTop);
                     let output = document.querySelector('.container.output');
 
                     if (target.classList.contains('a-list')) {
