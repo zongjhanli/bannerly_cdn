@@ -140,39 +140,76 @@ if (window.location.href.includes('custom-apply')) {
 //@Form-apply input 專屬區塊
 if (window.location.href.includes('form-apply')) {
 
-    //Fetch 下拉選單常用選項
-    const gsUrl = 'https://docs.google.com/spreadsheets/d';
-    const query = `/gviz/tq?`; //google visualisation 
-    let ssidPD = '/1--Bm763Gd8DNq6egYKQgHyewISd7gn3vZzDisb8NUbQ';
-    const endpointPD = `${gsUrl}${ssidPD}${query}`;
-    fetch(endpointPD)
-        .then(res => res.text())
-        .then(data => {
-            let jsData = data.substr(47).slice(0, -2);
-            let json = JSON.parse(jsData);
-            let rows = json.table.rows;
-            let cols = json.table.cols;
-            let r;
-            let imgArr = [];
-            for (r = 1; r < rows.length; r++) {
-                imgArr.push(rows[r].c[0].v);
-            }
-            imgArr.sort(); //sheet當中為亂序
+    //Fetch 常用商品清單 G-Sheet Approach
+    // const gsUrl = 'https://docs.google.com/spreadsheets/d';
+    // const query = `/gviz/tq?`; //google visualisation 
+    // let ssidPD = '/1--Bm763Gd8DNq6egYKQgHyewISd7gn3vZzDisb8NUbQ';
+    // const endpointPD = `${gsUrl}${ssidPD}${query}`;
+    // fetch(endpointPD)
+    //     .then(res => res.text())
+    //     .then(data => {
+    //         let jsData = data.substr(47).slice(0, -2);
+    //         let json = JSON.parse(jsData);
+    //         let rows = json.table.rows;
+    //         let cols = json.table.cols;
+    //         let r;
+    //         let imgArr = [];
+    //         for (r = 1; r < rows.length; r++) {
+    //             imgArr.push(rows[r].c[0].v);
+    //         }
+    //         imgArr.sort(); //sheet當中為亂序
 
-            setTimeout(function() {
-                $('#Product').find('.drop-group').each((d) => {
-                    let i;
-                    for (i = 0; i < $(imgArr).length; i++) {
-                        let option = '<div class="a-button as-list"><div class="label full-touch">' + imgArr[i] + '</div><div class="custom-check tick-right"></div></div>'
-                        $('#Product').find('.drop-group').eq(d).append(option);
-                        // console.log(imgNameArr[i]);
-                    }
-                })
-            }, 1000);
-        })
+    //         setTimeout(function() {
+    //             $('#Product').find('.drop-group').each((d) => {
+    //                 let i;
+    //                 for (i = 0; i < $(imgArr).length; i++) {
+    //                     let option = '<div class="a-button as-list"><div class="label full-touch">' + imgArr[i] + '</div><div class="custom-check tick-right"></div></div>'
+    //                     $('#Product').find('.drop-group').eq(d).append(option);
+    //                     // console.log(imgNameArr[i]);
+    //                 }
+    //             })
+    //         }, 1000);
+    //     })
 
+    //Fetch 常用商品清單 Github Repo Approach
+    const pdFolder = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/trees/f749bc29069adbd0366e224df22cb42bcea7a0e0';
+    // const query = `/gviz/tq?`; //google visualisation 
+    // let ssidPD = '/1--Bm763Gd8DNq6egYKQgHyewISd7gn3vZzDisb8NUbQ';
+    const endpointGitPd = `${pdFolder}`;
+    fetch(endpointGitPd)
+        .then(async(response) => {
+            const data = await response.json();
+            console.log($(data)[0].tree[2].url)
+                // We'll copy our data over to state here...
+        });
+    // let r;
+    // let imgArr = [];
+    // for (r = 1; r < rows.length; r++) {
+    //     imgArr.push(rows[r].c[0].v);
+    // }
+    // imgArr.sort(); //sheet當中為亂序
 
-    //ajax 讀取本機資料夾圖片名稱
+    // setTimeout(function() {
+    //     $('#Product').find('.drop-group').each((d) => {
+    //         let i;
+    //         for (i = 0; i < $(imgArr).length; i++) {
+    //             let option = '<div class="a-button as-list"><div class="label full-touch">' + imgArr[i] + '</div><div class="custom-check tick-right"></div></div>'
+    //             $('#Product').find('.drop-group').eq(d).append(option);
+    //             // console.log(imgNameArr[i]);
+    //         }
+    //     })
+    // }, 1000);
+    // })
+
+    fetch(
+        `https://api.github.com/repos/cheatcode/nodejs-server-boilerplate`
+    ).then(async(response) => {
+        const data = await response.json();
+
+        // We'll copy our data over to state here...
+    });
+
+    //ajax 讀取本機資料夾圖片名稱 Local Server Approach
     // const folder = "products/";
 
     // let url2 = "";
