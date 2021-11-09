@@ -1479,6 +1479,7 @@ if (window.location.href.includes('form-apply')) {
                 thunder.attr('data-thunder', 'true');
                 tBlockGroup.addClass('thunder-locked');
                 $(this).find('._12px-500.for-thunder').text('解除鎖定以編輯');
+                $(this).find('._12px-500.for-thunder').css('minWidth', '80px');
 
                 thG1.css({
                     'transform': 'translate(4px,4px) rotate(40deg)'
@@ -1516,6 +1517,7 @@ if (window.location.href.includes('form-apply')) {
                 thunder.attr('data-thunder', 'false');
                 tBlockGroup.removeClass('thunder-locked');
                 $(this).find('._12px-500.for-thunder').text('套用自案型 1');
+                $(this).find('._12px-500.for-thunder').css('minWidth', '85px');
 
                 thG1.css({
                     'transform': 'translate(0px,0px) rotate(40deg)'
