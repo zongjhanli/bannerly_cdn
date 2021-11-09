@@ -1478,7 +1478,7 @@ if (window.location.href.includes('form-apply')) {
             if (thunder.attr('data-thunder') == 'false') {
                 thunder.attr('data-thunder', 'true');
                 tBlockGroup.addClass('thunder-locked');
-                $(this).find('._12px-500.for-thunder').text('解除鎖定以編輯');
+                $(this).find('._12px-500.for-thunder').text('解鎖以編輯');
                 $(this).find('._12px-500.for-thunder').css('minWidth', '80px');
 
                 thG1.css({
