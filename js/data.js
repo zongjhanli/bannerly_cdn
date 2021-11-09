@@ -140,64 +140,94 @@ if (window.location.href.includes('custom-apply')) {
 //@Form-apply input 專屬區塊
 if (window.location.href.includes('form-apply')) {
 
+    //Fetch 下拉選單常用選項
+    const gsUrl = 'https://docs.google.com/spreadsheets/d';
+    const query = `/gviz/tq?`; //google visualisation 
+    let ssidPD = '/1--Bm763Gd8DNq6egYKQgHyewISd7gn3vZzDisb8NUbQ';
+    const endpointPD = `${gsUrl}${ssidPD}${query}`;
+    fetch(endpointPD)
+        .then(res => res.text())
+        .then(data => {
+            let jsData = data.substr(47).slice(0, -2);
+            let json = JSON.parse(jsData);
+            let rows = json.table.rows;
+            let cols = json.table.cols;
+            let r;
+            let imgArr = [];
+            for (r = 1; r < rows.length; r++) {
+                imgArr.push(rows[r].c[0].v);
+            }
+            imgArr.sort(); //sheet當中為亂序
+
+            setTimeout(function() {
+                $('#Product').find('.drop-group').each((d) => {
+                    let i;
+                    for (i = 0; i < $(imgArr).length; i++) {
+                        let option = '<div class="a-button as-list"><div class="label full-touch">' + imgArr[i] + '</div><div class="custom-check tick-right"></div></div>'
+                        $('#Product').find('.drop-group').eq(d).append(option);
+                        // console.log(imgNameArr[i]);
+                    }
+                })
+            }, 1000);
+        })
 
 
     //ajax 讀取本機資料夾圖片名稱
-    const folder = "products/";
+    // const folder = "products/";
 
-    let url2 = "";
-    let imgNameArr = []
-    $.ajax({
-        url: folder,
-        success: function(data) {
-            console.log($(data).find('li a').text())
-            if ($(data).find("a").text().includes('AM') || $(data).find("a").text().includes('PM')) { //for VS code server
-                $(data).find("a").attr("href", function(i, val) {
-                    url2 = folder + val.replace('/%E5%B8%B8%E7%94%A8%E5%95%86%E5%93%81/', '') + '/'
-                    $.ajax({
-                        url: url2,
-                        success: function(data) {
-                            $(data).find("a").attr("href", function(i, imgName) {
-                                if (imgName.match(/\.(jpe?g|png|gif)$/)) {
-                                    imgName = imgName.replace('/%E5%B8%B8%E7%94%A8%E5%95%86%E5%93%81/', '');
-                                    let slashIndex = imgName.indexOf('/');
-                                    imgName = imgName.slice(slashIndex + 1, imgName.length);
-                                    imgNameArr.push(imgName);
-                                }
-                            });
-                        }
-                    });
-                });
-            } else if (!$(data).find("a").text().includes('AM') && !$(data).find("a").text().includes('PM')) { //for chrome web server
-                $(data).find('li a').each((a) => {
-                    urlLocal = folder + $(data).find('li a').eq(a).text();
-                    $.ajax({
-                        url: urlLocal,
-                        success: function(data) {
-                            $(data).find('li a').each((a) => {
-                                let imgName = $(data).find('li a').eq(a).text();
-                                if (imgName.match(/\.(jpe?g|png|gif)$/)) {
-                                    let slashIndex = imgName.indexOf('/');
-                                    imgName = imgName.slice(slashIndex + 1, imgName.length);
-                                    imgNameArr.push(imgName);
-                                }
-                            });
-                        }
-                    });
-                })
-            }
-        }
-    });
-    setTimeout(function() {
-        $('#Product').find('.drop-group').each((d) => {
-            let i;
-            for (i = 0; i < $(imgNameArr).length; i++) {
-                let option = '<div class="a-button as-list"><div class="label full-touch">' + imgNameArr[i] + '</div><div class="custom-check tick-right"></div></div>'
-                $('#Product').find('.drop-group').eq(d).append(option);
-                // console.log(imgNameArr[i]);
-            }
-        })
-    }, 1000);
+    // let url2 = "";
+    // let imgNameArr = []
+    // $.ajax({
+    //     url: folder,
+    //     success: function(data) {
+    //         // console.log($(data).find('li a').text())
+    //         if ($(data).find("a").text().includes('AM') || $(data).find("a").text().includes('PM')) { //for VS code server
+    //             $(data).find("a").attr("href", function(i, val) {
+    //                 url2 = val + '/'
+    //                 $.ajax({
+    //                     url: url2,
+    //                     success: function(data) {
+    //                         $(data).find("a").attr("href", function(i, imgName) {
+    //                             if (imgName.match(/\.(jpe?g|png|gif)$/)) {
+    //                                 imgName = imgName.replace('/products/', '');
+    //                                 let slashIndex = imgName.indexOf('/');
+    //                                 imgName = imgName.slice(slashIndex + 1, imgName.length);
+    //                                 imgNameArr.push(imgName);
+    //                             }
+    //                         });
+    //                     }
+    //                 });
+    //             });
+    //         } else if (!$(data).find("a").text().includes('AM') && !$(data).find("a").text().includes('PM')) { //for chrome web server
+    //             $(data).find('li a').each((a) => {
+    //                 urlLocal = folder + $(data).find('li a').eq(a).text();
+    //                 $.ajax({
+    //                     url: urlLocal,
+    //                     success: function(data) {
+    //                         $(data).find('li a').each((a) => {
+    //                             let imgName = $(data).find('li a').eq(a).text();
+    //                             if (imgName.match(/\.(jpe?g|png|gif)$/)) {
+    //                                 let slashIndex = imgName.indexOf('/');
+    //                                 imgName = imgName.slice(slashIndex + 1, imgName.length);
+    //                                 imgNameArr.push(imgName);
+    //                             }
+    //                         });
+    //                     }
+    //                 });
+    //             })
+    //         }
+    //     }
+    // });
+    // setTimeout(function() {
+    //     $('#Product').find('.drop-group').each((d) => {
+    //         let i;
+    //         for (i = 0; i < $(imgNameArr).length; i++) {
+    //             let option = '<div class="a-button as-list"><div class="label full-touch">' + imgNameArr[i] + '</div><div class="custom-check tick-right"></div></div>'
+    //             $('#Product').find('.drop-group').eq(d).append(option);
+    //             // console.log(imgNameArr[i]);
+    //         }
+    //     })
+    // }, 1000);
 
     //sheetDB API 上傳資料
     let submit = document.querySelector('input[type=submit]');
