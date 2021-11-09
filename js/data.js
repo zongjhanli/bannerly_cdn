@@ -173,43 +173,48 @@ if (window.location.href.includes('form-apply')) {
 
     //Fetch 常用商品清單 Github Repo Approach
     const pdFolder = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/trees/f749bc29069adbd0366e224df22cb42bcea7a0e0';
-    // const query = `/gviz/tq?`; //google visualisation 
-    // let ssidPD = '/1--Bm763Gd8DNq6egYKQgHyewISd7gn3vZzDisb8NUbQ';
-    const endpointGitPd = `${pdFolder}`;
+    let endpointGitPd = `${pdFolder}`;
+    let IDfolderArr = [];
     fetch(endpointGitPd)
         .then(async(response) => {
             const data = await response.json();
-            console.log($(data)[0].tree[2].url)
-                // We'll copy our data over to state here...
+            let IDfolderTree = $(data)[0].tree;
+            // console.log($(data)[0].tree)
+
+            $(IDfolderTree).each((i) => {
+                IDfolderArr.push($(IDfolderTree)[i].url)
+            })
         });
-    // let r;
-    // let imgArr = [];
-    // for (r = 1; r < rows.length; r++) {
-    //     imgArr.push(rows[r].c[0].v);
-    // }
-    // imgArr.sort(); //sheet當中為亂序
+    setTimeout(function() {
+        let imgNameArr = [];
+        let ia;
+        for (ia = 0; ia < IDfolderArr.length; ia++) {
+            const subFolder = IDfolderArr[ia];
+            endpointGitPd = `${subFolder}`;
+            fetch(endpointGitPd)
+                .then(async(response) => {
+                    const data = await response.json();
+                    let imgTree = $(data)[0].tree;
+                    // console.log()
+                    $(imgTree).each((i) => {
+                        imgNameArr.push($(imgTree)[i].path)
+                    })
+                });
+        }
+        setTimeout(function() {
+            $('#Product').find('.drop-group').each((d) => {
+                let img;
+                for (img = 0; img < imgNameArr.length; img++) {
+                    imgNameArr = imgNameArr.filter(x => x != '.DS_Store'); //by MAC users
+                    let option = '<div class="a-button as-list"><div class="label full-touch">' + imgNameArr[img] + '</div><div class="custom-check tick-right"></div></div>'
+                    $('#Product').find('.drop-group').eq(d).append(option);
+                }
+            })
+        }, 500)
+    }, 500)
 
-    // setTimeout(function() {
-    //     $('#Product').find('.drop-group').each((d) => {
-    //         let i;
-    //         for (i = 0; i < $(imgArr).length; i++) {
-    //             let option = '<div class="a-button as-list"><div class="label full-touch">' + imgArr[i] + '</div><div class="custom-check tick-right"></div></div>'
-    //             $('#Product').find('.drop-group').eq(d).append(option);
-    //             // console.log(imgNameArr[i]);
-    //         }
-    //     })
-    // }, 1000);
-    // })
 
-    fetch(
-        `https://api.github.com/repos/cheatcode/nodejs-server-boilerplate`
-    ).then(async(response) => {
-        const data = await response.json();
-
-        // We'll copy our data over to state here...
-    });
-
-    //ajax 讀取本機資料夾圖片名稱 Local Server Approach
+    //ajax 讀取本機資料夾圖片名稱 AJAX Local Server Approach
     // const folder = "products/";
 
     // let url2 = "";
