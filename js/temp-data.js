@@ -140,8 +140,10 @@ if (window.location.href.includes('custom-apply')) {
 //@Form-apply input 專屬區塊
 if (window.location.href.includes('form-apply')) {
 
+
+
     //ajax 讀取本機資料夾圖片名稱
-    const folder = "常用商品/";
+    const folder = "products/";
 
     let url2 = "";
     let imgNameArr = []
