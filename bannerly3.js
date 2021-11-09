@@ -966,12 +966,12 @@ if (window.location.href.includes('form-apply')) {
     });
 
 
-    //swiper 位置初始設定
-    $(document).ready(() => {
-        // $('.swiped').css('marginBottom', '64px');
-        // $('.swiper').css('bottom', 'calc(50vh - 230px)');
-        $('.swiper-title').css('left', -98 + 'px'); //(-98 + 22*2)
-    })
+    //swiper 位置初始設定 -> in case 放在旁側
+    // $(document).ready(() => {
+    //     $('.swiped').css('marginBottom', '64px');
+    //     $('.swiper').css('bottom', 'calc(50vh - 230px)');
+    //     $('.swiper-title').css('left', -104 + 'px'); 
+    // })
 
     //swiper-title 位置隨長度變化 (目前採align-center(flex)自動計算)
     // $(document).click((e) => {
