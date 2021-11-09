@@ -141,7 +141,7 @@ textarea {
     pointer-events: none;
 }
 
-.thunder-locked {
+.thunder-locked div {
     pointer-events: none;
 }
 
