@@ -148,23 +148,41 @@ if (window.location.href.includes('form-apply')) {
     $.ajax({
         url: folder,
         success: function(data) {
-            $(data).find("a").attr("href", function(i, val) {
-                url2 = folder + val.replace('/%E5%B8%B8%E7%94%A8%E5%95%86%E5%93%81/', '') + '/'
-                $.ajax({
-                    url: url2,
-                    success: function(data) {
-                        $(data).find("a").attr("href", function(i, imgName) {
-                            if (imgName.match(/\.(jpe?g|png|gif)$/)) {
-                                imgName = imgName.replace('/%E5%B8%B8%E7%94%A8%E5%95%86%E5%93%81/', '');
-                                let slashIndex = imgName.indexOf('/');
-                                imgName = imgName.slice(slashIndex + 1, imgName.length);
-                                imgNameArr.push(imgName);
-                                // $("body").append("<img src='" + url2 + val + "'>");
-                            }
-                        });
-                    }
+            if ($(data).find("a").text().includes('AM') || $(data).find("a").text().includes('PM')) { //for VS code server
+                $(data).find("a").attr("href", function(i, val) {
+                    url2 = folder + val.replace('/%E5%B8%B8%E7%94%A8%E5%95%86%E5%93%81/', '') + '/'
+                    $.ajax({
+                        url: url2,
+                        success: function(data) {
+                            $(data).find("a").attr("href", function(i, imgName) {
+                                if (imgName.match(/\.(jpe?g|png|gif)$/)) {
+                                    imgName = imgName.replace('/%E5%B8%B8%E7%94%A8%E5%95%86%E5%93%81/', '');
+                                    let slashIndex = imgName.indexOf('/');
+                                    imgName = imgName.slice(slashIndex + 1, imgName.length);
+                                    imgNameArr.push(imgName);
+                                }
+                            });
+                        }
+                    });
                 });
-            });
+            } else if (!$(data).find("a").text().includes('AM') && !$(data).find("a").text().includes('PM')) { //for chrome web server
+                $(data).find('li a').each((a) => {
+                    urlLocal = folder + $(data).find('li a').eq(a).text();
+                    $.ajax({
+                        url: urlLocal,
+                        success: function(data) {
+                            $(data).find('li a').each((a) => {
+                                let imgName = $(data).find('li a').eq(a).text();
+                                if (imgName.match(/\.(jpe?g|png|gif)$/)) {
+                                    let slashIndex = imgName.indexOf('/');
+                                    imgName = imgName.slice(slashIndex + 1, imgName.length);
+                                    imgNameArr.push(imgName);
+                                }
+                            });
+                        }
+                    });
+                })
+            }
         }
     });
     setTimeout(function() {
@@ -282,6 +300,8 @@ if (window.location.href.includes('form-apply')) {
             console.log(response.data);
         });
     })
+
+
 }
 
 //@Index output 專屬區塊
@@ -817,8 +837,9 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                             if (cols[i].label == '案型1-商品清單') {
                                                 let pdSerial = tCells[i].v.replaceAll('\n', ',');
                                                 pdSerial = pdSerial.split(',');
-                                                jQuery.each(pdSerial, function(i, value) {
-                                                    let url = "url(pd-temp/" + value + ".jpg)";
+                                                jQuery.each(pdSerial, function(i, imgName) {
+                                                    let brandID = imgName.slice(0, 2);
+                                                    let url = "url(常用商品/" + brandID + '/' + imgName + ")";
                                                     $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
@@ -879,9 +900,10 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                             if (cols[i].label == '案型2-商品清單') {
                                                 let pdSerial = tCells[i].v.replaceAll('\n', ',');
                                                 pdSerial = pdSerial.split(',');
-                                                jQuery.each(pdSerial, function(i, value) {
-                                                    let url = "url(pd-temp/" + value + ".jpg)";
-                                                    $("[data-output='P-B']").append($('<div></div>').addClass('img').css('background-image', url));
+                                                jQuery.each(pdSerial, function(i, imgName) {
+                                                    let brandID = imgName.slice(0, 2);
+                                                    let url = "url(常用商品/" + brandID + '/' + imgName + ")";
+                                                    $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
                                             if (cols[i].label == '案型2-尺寸總數') {
@@ -941,9 +963,10 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                             if (cols[i].label == '案型3-商品清單') {
                                                 let pdSerial = tCells[i].v.replaceAll('\n', ',');
                                                 pdSerial = pdSerial.split(',');
-                                                jQuery.each(pdSerial, function(i, value) {
-                                                    let url = "url(pd-temp/" + value + ".jpg)";
-                                                    $("[data-output='P-C']").append($('<div></div>').addClass('img').css('background-image', url));
+                                                jQuery.each(pdSerial, function(i, imgName) {
+                                                    let brandID = imgName.slice(0, 2);
+                                                    let url = "url(常用商品/" + brandID + '/' + imgName + ")";
+                                                    $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
                                             if (cols[i].label == '案型3-尺寸總數') {

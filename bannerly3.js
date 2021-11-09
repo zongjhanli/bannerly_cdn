@@ -18,6 +18,25 @@ $(document).ready(function() {
     $('.date-input').val('');
 })
 
+//section hover 觸發cardbox transfrom + padding 變化
+$('.section').each((s) => {
+    $('.section').eq(s).hover(mEnter, mLeave);
+
+    function mEnter() {
+        // let target = e.target;
+        $('.section').eq(s).find('.card').css('transform', 'translateY(-4px)');
+        $('.section').eq(s).find('.card').css('padding-left', '30px');
+        $('.section').eq(s).find('.card').css('padding-right', '30px');
+    }
+
+    function mLeave() {
+        // let target = e.target;
+        $('.section').eq(s).find('.card').css('transform', 'translateY(0px)');
+        $('.section').eq(s).find('.card').css('padding-left', '28px');
+        $('.section').eq(s).find('.card').css('padding-right', '28px');
+    }
+})
+
 //GLOBAL 每次頁面load完畢，刪除網址末尾可能包含的#href字串
 $(document).ready(function() {
     if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
@@ -1442,7 +1461,6 @@ if (window.location.href.includes('form-apply')) {
             }
         })
     }
-
     //thunder動畫
     $('.th-box').click(function thundering() {
             let thG1 = $(this).find('.g-1');
@@ -1455,11 +1473,12 @@ if (window.location.href.includes('form-apply')) {
             let thW4 = $(this).find('._w-4');
             let thAllW = $(this).find('.th-w');
             let thunder = $(this).find('.thunder');
-            let tBlockGroup = $(this).parentsUntil('.card-box').find('.height-318');
+            let tBlockGroup = $(this).closest('.card-box').find('.height-318');
 
             if (thunder.attr('data-thunder') == 'false') {
                 thunder.attr('data-thunder', 'true');
                 tBlockGroup.addClass('thunder-locked');
+                $(this).find('._12px-500.for-thunder').text('解除鎖定以編輯');
 
                 thG1.css({
                     'transform': 'translate(4px,4px) rotate(40deg)'
@@ -1496,6 +1515,7 @@ if (window.location.href.includes('form-apply')) {
             } else if (thunder.attr('data-thunder') == 'true') {
                 thunder.attr('data-thunder', 'false');
                 tBlockGroup.removeClass('thunder-locked');
+                $(this).find('._12px-500.for-thunder').text('套用自案型 1');
 
                 thG1.css({
                     'transform': 'translate(0px,0px) rotate(40deg)'
@@ -1530,6 +1550,26 @@ if (window.location.href.includes('form-apply')) {
                     })
                 }, 100)
             }
+
+            //thunder locking 提示
+            $('.thunder-locked').each((th) => {
+                $('.thunder-locked').eq(th).click(() => {
+                    console.log('??')
+                    $('.thunder-locked').eq(th).addClass('js-shake');
+                    setTimeout(function() {
+                        $('.thunder-locked').eq(th).removeClass("js-shake");
+                    }, 200);
+                })
+                $('.thunder-locked').eq(th).hover(mEnter, mLeave);
+
+                function mEnter() {
+                    $('.thunder-locked').eq(th).closest('.card').find('.hinter-box.for-thunder').css('display', 'block');
+                }
+
+                function mLeave() {
+                    $('.thunder-locked').eq(th).closest('.card').find('.hinter-box.for-thunder').css('display', 'none');
+                }
+            })
         }) //end of 快速套用主案型
 }
 
