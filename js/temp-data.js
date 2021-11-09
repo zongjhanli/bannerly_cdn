@@ -843,6 +843,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                 jQuery.each(pdSerial, function(i, imgName) {
                                                     let brandID = imgName.slice(0, 2);
                                                     let url = "url(products/" + brandID + '/' + imgName + ")";
+                                                    console.log('products');
                                                     $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
