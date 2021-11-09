@@ -214,7 +214,7 @@ if (window.location.href.includes('form-apply')) {
     }, 500)
 
 
-    //ajax 讀取本機資料夾圖片名稱 AJAX Local Server Approach
+    //AJAX讀取本機資料夾圖片名稱 AJAX Local Server Approach
     // const folder = "products/";
 
     // let url2 = "";
