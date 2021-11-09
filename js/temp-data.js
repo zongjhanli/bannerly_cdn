@@ -842,7 +842,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                 pdSerial = pdSerial.split(',');
                                                 jQuery.each(pdSerial, function(i, imgName) {
                                                     let brandID = imgName.slice(0, 2);
-                                                    let url = "url(常用商品/" + brandID + '/' + imgName + ")";
+                                                    let url = "url(products/" + brandID + '/' + imgName + ")";
                                                     $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
@@ -905,7 +905,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                 pdSerial = pdSerial.split(',');
                                                 jQuery.each(pdSerial, function(i, imgName) {
                                                     let brandID = imgName.slice(0, 2);
-                                                    let url = "url(常用商品/" + brandID + '/' + imgName + ")";
+                                                    let url = "url(products/" + brandID + '/' + imgName + ")";
                                                     $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
@@ -968,7 +968,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                 pdSerial = pdSerial.split(',');
                                                 jQuery.each(pdSerial, function(i, imgName) {
                                                     let brandID = imgName.slice(0, 2);
-                                                    let url = "url(常用商品/" + brandID + '/' + imgName + ")";
+                                                    let url = "url(products/" + brandID + '/' + imgName + ")";
                                                     $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
