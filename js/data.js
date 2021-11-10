@@ -140,28 +140,52 @@ if (window.location.href.includes('custom-apply')) {
 //@Form-apply input 專屬區塊
 if (window.location.href.includes('form-apply')) {
 
-    //Fetch 常用商品清單 Github Repo Approach
-    // const pdFolder = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/trees/f749bc29069adbd0366e224df22cb42bcea7a0e0';
+    //Github API via Personal Auth
+    const headers = {
+        "Authorization": `Token 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`
+    }
+
+    // Fetch 常用商品清單 Github Repo Approach
     const repoRefs = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/refs';
     let endpointGit = `${repoRefs}`;
     let IDfolderArr = [];
-    let sha;
-    fetch(endpointGit)
+    fetch(endpointGit, {
+            "method": "GET",
+            "headers": headers
+        })
         .then(async(response) => {
             const data = await response.json();
             // console.log()
-            sha = $(data)[0].object.sha;
+            let sha = $(data)[0].object.sha;
             let repoLatest = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/trees/' + sha;
             endpointGit = `${repoLatest}`;
-            // fetch(repoLatest)
-            //     .then(async(response) => {
-            //         const data = await response.json();
-            //         let IDfolderTree = $(data)[0].tree;
-            //         // console.log()
-            //         $(IDfolderTree).each((i) => {
-            //             IDfolderArr.push($(IDfolderTree)[i].url)
-            //         })
-            //     });
+            fetch(repoLatest, {
+                    "method": "GET",
+                    "headers": headers
+                })
+                .then(async(response) => {
+                    const data = await response.json();
+                    let repoTree = $(data)[0].tree;
+                    let pdFolder;
+                    $(repoTree).each((i) => {
+                            if (repoTree[i].path == 'products') {
+                                pdFolder = repoTree[i].url;
+                            }
+                        })
+                        // console.log(pdFolder)
+                    fetch(pdFolder, {
+                            "method": "GET",
+                            "headers": headers
+                        })
+                        .then(async(response) => {
+                            const data = await response.json();
+                            let pdFolderTree = $(data)[0].tree;
+                            // console.log($(data)[0].tree)
+                            $(pdFolderTree).each((i) => {
+                                IDfolderArr.push($(pdFolderTree)[i].url);
+                            })
+                        });
+                });
         });
     setTimeout(function() {
         let imgNameArr = [];
@@ -169,7 +193,10 @@ if (window.location.href.includes('form-apply')) {
         for (ia = 0; ia < IDfolderArr.length; ia++) {
             const subFolder = IDfolderArr[ia];
             endpointGit = `${subFolder}`;
-            fetch(endpointGit)
+            fetch(endpointGit, {
+                    "method": "GET",
+                    "headers": headers
+                })
                 .then(async(response) => {
                     const data = await response.json();
                     let imgTree = $(data)[0].tree;
