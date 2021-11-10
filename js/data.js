@@ -142,7 +142,7 @@ if (window.location.href.includes('form-apply')) {
 
     //Github API via Personal Auth
     const headers = {
-        "Authorization": `Token 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`
+        // "Authorization": `Token `
     }
 
     // Fetch 常用商品清單 Github Repo Approach
