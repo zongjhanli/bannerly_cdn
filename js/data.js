@@ -141,26 +141,35 @@ if (window.location.href.includes('custom-apply')) {
 if (window.location.href.includes('form-apply')) {
 
     //Fetch 常用商品清單 Github Repo Approach
-    const pdFolder = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/trees/f749bc29069adbd0366e224df22cb42bcea7a0e0';
-    let endpointGitPd = `${pdFolder}`;
+    // const pdFolder = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/trees/f749bc29069adbd0366e224df22cb42bcea7a0e0';
+    const repoRefs = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/refs';
+    let endpointGit = `${repoRefs}`;
     let IDfolderArr = [];
-    fetch(endpointGitPd)
+    let sha;
+    fetch(endpointGit)
         .then(async(response) => {
             const data = await response.json();
-            let IDfolderTree = $(data)[0].tree;
-            // console.log($(data)[0].tree)
-
-            $(IDfolderTree).each((i) => {
-                IDfolderArr.push($(IDfolderTree)[i].url)
-            })
+            // console.log()
+            sha = $(data)[0].object.sha;
+            let repoLatest = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/trees/' + sha;
+            endpointGit = `${repoLatest}`;
+            // fetch(repoLatest)
+            //     .then(async(response) => {
+            //         const data = await response.json();
+            //         let IDfolderTree = $(data)[0].tree;
+            //         // console.log()
+            //         $(IDfolderTree).each((i) => {
+            //             IDfolderArr.push($(IDfolderTree)[i].url)
+            //         })
+            //     });
         });
     setTimeout(function() {
         let imgNameArr = [];
         let ia;
         for (ia = 0; ia < IDfolderArr.length; ia++) {
             const subFolder = IDfolderArr[ia];
-            endpointGitPd = `${subFolder}`;
-            fetch(endpointGitPd)
+            endpointGit = `${subFolder}`;
+            fetch(endpointGit)
                 .then(async(response) => {
                     const data = await response.json();
                     let imgTree = $(data)[0].tree;
