@@ -240,9 +240,9 @@ if (window.location.href.includes('form-apply')) {
                         $('#Product').find('.drop-group').eq(d).append(option);
                     }
                 })
-            }, 1000)
-        }, 1500)
-    }, 500)
+            }, 2000)
+        }, 3000)
+    }, 1000)
 
     //Fetch 常用商品清單 G-Sheet Approach
     // const gsUrl = 'https://docs.google.com/spreadsheets/d';
