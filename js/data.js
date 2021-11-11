@@ -140,82 +140,108 @@ if (window.location.href.includes('custom-apply')) {
 //@Form-apply input 專屬區塊
 if (window.location.href.includes('form-apply')) {
 
-    //Github API via Personal Auth
-    const headers = {
-        // "Authorization": `Token `
-    }
+    const gsUrl = 'https://docs.google.com/spreadsheets/d';
+    const query = `/gviz/tq?`; //google visualisation 
+    let key = [];
 
-    // Fetch 常用商品清單 Github Repo Approach
-    const repoRefs = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/refs';
-    let endpointGit = `${repoRefs}`;
-    let IDfolderArr = [];
-    fetch(endpointGit, {
-            "method": "GET",
-            "headers": headers
-        })
-        .then(async(response) => {
-            const data = await response.json();
-            // console.log()
-            let sha = $(data)[0].object.sha;
-            let repoLatest = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/trees/' + sha;
-            endpointGit = `${repoLatest}`;
-            fetch(repoLatest, {
-                    "method": "GET",
-                    "headers": headers
-                })
-                .then(async(response) => {
-                    const data = await response.json();
-                    let repoTree = $(data)[0].tree;
-                    let pdFolder;
-                    $(repoTree).each((i) => {
-                            if (repoTree[i].path == 'products') {
-                                pdFolder = repoTree[i].url;
-                            }
-                        })
-                        // console.log(pdFolder)
-                    fetch(pdFolder, {
-                            "method": "GET",
-                            "headers": headers
-                        })
-                        .then(async(response) => {
-                            const data = await response.json();
-                            let pdFolderTree = $(data)[0].tree;
-                            // console.log($(data)[0].tree)
-                            $(pdFolderTree).each((i) => {
-                                IDfolderArr.push($(pdFolderTree)[i].url);
-                            })
-                        });
-                });
-        });
-    setTimeout(function() {
-        let imgNameArr = [];
-        let ia;
-        for (ia = 0; ia < IDfolderArr.length; ia++) {
-            const subFolder = IDfolderArr[ia];
-            endpointGit = `${subFolder}`;
-            fetch(endpointGit, {
-                    "method": "GET",
-                    "headers": headers
-                })
-                .then(async(response) => {
-                    const data = await response.json();
-                    let imgTree = $(data)[0].tree;
-                    // console.log()
-                    $(imgTree).each((i) => {
-                        imgNameArr.push($(imgTree)[i].path)
-                    })
-                });
-        }
-        setTimeout(function() {
-            $('#Product').find('.drop-group').each((d) => {
-                let img;
-                for (img = 0; img < imgNameArr.length; img++) {
-                    imgNameArr = imgNameArr.filter(x => x != '.DS_Store'); //by MAC users
-                    let option = '<div class="a-button as-list"><div class="label full-touch">' + imgNameArr[img] + '</div><div class="custom-check tick-right"></div></div>'
-                    $('#Product').find('.drop-group').eq(d).append(option);
+    //Fetch授權憑證
+    let ssidCode = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
+    const endpointCode = `${gsUrl}${ssidCode}${query}`;
+    fetch(endpointCode)
+        .then(res => res.text())
+        .then(data => {
+            let jsData = data.substr(47).slice(0, -2);
+            let json = JSON.parse(jsData);
+            let rows = json.table.rows;
+            let cols = json.table.cols;
+            let i;
+            for (i = 1; i < rows.length; i++) {
+                if (rows[i].c[1].v.indexOf('KEY') >= 0) {
+                    key.push(rows[i].c[2].v);
                 }
+            }
+        })
+
+
+
+    //Github API via Personal Auth
+    setTimeout(() => {
+        const headers = {
+                "Authorization": 'Token' + key
+            }
+            // Fetch 常用商品清單 Github Repo Approach
+        const repoRefs = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/refs';
+        let endpointGit = `${repoRefs}`;
+        let IDfolderArr = [];
+        fetch(endpointGit, {
+                "method": "GET",
+                "headers": headers
             })
-        }, 500)
+            .then(async(response) => {
+                const data = await response.json();
+                // console.log()
+                let sha = $(data)[0].object.sha;
+                let repoLatest = 'https://api.github.com/repos/zongjhanli/bannerly_cdn/git/trees/' + sha;
+                endpointGit = `${repoLatest}`;
+                fetch(repoLatest, {
+                        "method": "GET",
+                        "headers": headers
+                    })
+                    .then(async(response) => {
+                        const data = await response.json();
+                        let repoTree = $(data)[0].tree;
+                        let pdFolder;
+                        $(repoTree).each((i) => {
+                                if (repoTree[i].path == 'products') {
+                                    pdFolder = repoTree[i].url;
+                                }
+                            })
+                            // console.log(pdFolder)
+                        fetch(pdFolder, {
+                                "method": "GET",
+                                "headers": headers
+                            })
+                            .then(async(response) => {
+                                const data = await response.json();
+                                let pdFolderTree = $(data)[0].tree;
+                                // console.log($(data)[0].tree)
+                                $(pdFolderTree).each((i) => {
+                                    IDfolderArr.push($(pdFolderTree)[i].url);
+                                })
+                            });
+                    });
+            });
+
+        setTimeout(function() {
+            let imgNameArr = [];
+            let ia;
+            for (ia = 0; ia < IDfolderArr.length; ia++) {
+                const subFolder = IDfolderArr[ia];
+                endpointGit = `${subFolder}`;
+                fetch(endpointGit, {
+                        "method": "GET",
+                        "headers": headers
+                    })
+                    .then(async(response) => {
+                        const data = await response.json();
+                        let imgTree = $(data)[0].tree;
+                        // console.log()
+                        $(imgTree).each((i) => {
+                            imgNameArr.push($(imgTree)[i].path)
+                        })
+                    });
+            }
+            setTimeout(function() {
+                $('#Product').find('.drop-group').each((d) => {
+                    let img;
+                    for (img = 0; img < imgNameArr.length; img++) {
+                        imgNameArr = imgNameArr.filter(x => x != '.DS_Store'); //by MAC users
+                        let option = '<div class="a-button as-list"><div class="label full-touch">' + imgNameArr[img] + '</div><div class="custom-check tick-right"></div></div>'
+                        $('#Product').find('.drop-group').eq(d).append(option);
+                    }
+                })
+            }, 1000)
+        }, 1500)
     }, 500)
 
     //Fetch 常用商品清單 G-Sheet Approach
