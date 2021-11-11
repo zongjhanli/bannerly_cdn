@@ -446,38 +446,44 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     const gsUrl = 'https://docs.google.com/spreadsheets/d';
     const query = `/gviz/tq?`; //google visualisation 
 
-    //Fetch授權憑證
-    $(document).ready(() => {
-        $('.initial-bg').removeClass('js-hide');
-    })
-    let ssidCode = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
-    const endpointCode = `${gsUrl}${ssidCode}${query}`;
-    fetch(endpointCode)
-        .then(res => res.text())
-        .then(data => {
-            let jsData = data.substr(47).slice(0, -2);
-            let json = JSON.parse(jsData);
-            let rows = json.table.rows;
-            let cols = json.table.cols;
-            $('#validation').change((e) => {
-                let target = e.target;
-                let i;
-                let iArr = [];
-                for (i = 1; i < rows.length; i++) {
-                    if (rows[i].c[2].v.indexOf($(target).val()) >= 0) {
-                        $('.initial-bg').addClass('js-hide');
-                        iArr.push(i);
-                    }
-                }
-                if (rows[iArr[0]].c[0].v == 'applicant') {
-                    $('.send').parent().remove();
-                    console.log('applicant');
-                } else if (rows[iArr[0]].c[0].v == 'MASTER') {
-                    $('.end-case').parent().remove();
-                    console.log('MASTER');
-                }
-            })
+    let valKey = sessionStorage.getItem('key');
+    if (valKey == null) {
+        //Fetch授權憑證
+        $(document).ready(() => {
+            $('.initial-bg').removeClass('js-hide');
         })
+        let ssidCode = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
+        const endpointCode = `${gsUrl}${ssidCode}${query}`;
+        fetch(endpointCode)
+            .then(res => res.text())
+            .then(data => {
+                let jsData = data.substr(47).slice(0, -2);
+                let json = JSON.parse(jsData);
+                let rows = json.table.rows;
+                let cols = json.table.cols;
+                $('#validation').change((e) => {
+                    let target = e.target;
+                    sessionStorage.setItem('key', $(target).val());
+                    let i;
+                    let iArr = [];
+                    for (i = 1; i < rows.length; i++) {
+                        if (rows[i].c[2].v.indexOf($(target).val()) >= 0) {
+                            $('.initial-bg').addClass('js-hide');
+                            iArr.push(i);
+                        }
+                    }
+                    if (rows[iArr[0]].c[0].v == 'applicant') {
+                        $('.send').parent().remove();
+                        console.log('applicant');
+                    } else if (rows[iArr[0]].c[0].v == 'MASTER') {
+                        $('.end-case').parent().remove();
+                        console.log('MASTER');
+                    }
+                })
+            })
+    } else if (valKey != null) {
+        $('#validation').val(valKey);
+    }
 
     //Fetch下拉選單常用選項
     let ssidDrop = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
