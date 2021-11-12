@@ -869,16 +869,15 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
             function statsQuery() {
                 $('.dropdown-box').each(function() {
-                    let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
-
-                    if ($(this).parent().hasClass('stats-flex') && $(this).find('.js-selected').length > 0) {
-                        $('.a-list').each(function() {
-                            let statsStr =
-                                $(this).find('.stats-flex').find('._14px-500:nth-child(1)').text() +
-                                $(this).find('.stats-flex').find('._14px-500:nth-child(2)').text() +
-                                $(this).find('.stats-chip').text();
-                            if (statsStr.indexOf(filterKey) < 0) {
-                                $(this).css('display', 'none');
+                    if ($(this).attr('data-query') == 'status') {
+                        let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
+                        $('.a-list').each(function(l) {
+                            let statsStr = $('.a-list').eq(l).find('.stats-chip').text();
+                            if (filterKey == "已結案" && statsStr != "已結案") {
+                                $('.a-list').eq(l).css('display', 'none');
+                                console.log(statsStr)
+                            } else if (filterKey == "未完成" && statsStr == "已結案") {
+                                $('.a-list').eq(l).css('display', 'none');
                             }
                         })
                     }
