@@ -117,7 +117,9 @@ body {
     font-family: Rubik, sans-serif;
     color: #2f5a3a;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 h1 {
@@ -165,7 +167,7 @@ label {
     z-index: 3;
     display: block;
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .main-btn {
@@ -177,7 +179,7 @@ label {
     border-radius: 5px;
     background-color: #000;
     font-size: 28px;
-    font-weight: 700;
+    /* font-weight: 700; */
 }
 
 .radio-toggle {
@@ -323,9 +325,10 @@ label {
     border-radius: 16px;
 }
 
-._14px-500-ob {
+
+/* ._14px-500-ob {
     font-weight: 500;
-}
+} */
 
 ._14px-500-ob:focus {
     box-shadow: 0 0 0 4px #000;
@@ -394,7 +397,7 @@ label {
     color: #333;
     font-size: 18px;
     line-height: 24px;
-    font-weight: 600;
+    /* font-weight: 600; */
 }
 
 ._18px-700:focus {
@@ -561,7 +564,7 @@ label {
     border-radius: 8px;
     opacity: 1;
     color: rgba(47, 90, 58, 0.5);
-    font-weight: 500;
+    font-weight: 700;
     cursor: pointer;
 }
 
@@ -671,7 +674,7 @@ label {
     transition: all 100ms ease;
     color: #999;
     font-size: 16px;
-    font-weight: 700;
+    /* font-weight: 700; */
     cursor: pointer;
 }
 
@@ -1143,7 +1146,7 @@ label {
     color: #2f5a3a;
     font-size: 20px;
     line-height: 32px;
-    font-weight: 500;
+    /* font-weight: 500; */
 }
 
 ._20px-500.silver {
@@ -1407,7 +1410,7 @@ label {
     width: 100%;
     padding-right: 12px;
     padding-left: 12px;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .label.full-touch {
@@ -1482,7 +1485,7 @@ label {
     color: #2f5a3a;
     font-size: 14px;
     line-height: 20px;
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .body.for-input {
@@ -2377,7 +2380,7 @@ label {
     margin-bottom: 8px;
     font-size: 12px;
     line-height: 12px;
-    font-weight: 700;
+    /* font-weight: 700; */
     text-align: left;
 }
 
@@ -2410,7 +2413,7 @@ label {
     background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(59, 122, 71, 0.2)), to(rgba(59, 122, 71, 0.2)));
     background-image: linear-gradient(180deg, rgba(59, 122, 71, 0.2), rgba(59, 122, 71, 0.2));
     line-height: 20px;
-    font-weight: 500;
+    /* font-weight: 500; */
 }
 
 ._12px-500.as-counts.in-tab {
@@ -2431,7 +2434,7 @@ label {
     background-color: #333;
     color: #fff;
     line-height: 24px;
-    font-weight: 500;
+    /* font-weight: 500; */
 }
 
 ._12px-500.for-hinter.for-dropbox {
@@ -2482,7 +2485,7 @@ label {
     width: auto;
     margin-bottom: 0px;
     color: #999;
-    font-weight: 500;
+    /* font-weight: 500; */
     text-align: right;
 }
 
@@ -2563,7 +2566,7 @@ label {
     margin-right: 8px;
     font-size: 28px;
     line-height: 40px;
-    font-weight: 500;
+    /* font-weight: 500; */
 }
 
 ._28px-600.inform-title {
@@ -2733,13 +2736,13 @@ label {
     color: #333;
     font-size: 16px;
     line-height: 24px;
-    font-weight: 500;
+    /* font-weight: 500; */
 }
 
 ._16px-500.cap-title {
     margin-right: 8px;
     color: #fff;
-    font-weight: 700;
+    /* font-weight: 700; */
 }
 
 ._16px-500.in-card-title {
@@ -2763,7 +2766,7 @@ label {
     transition: all 200ms cubic-bezier(.165, .84, .44, 1);
     color: rgba(47, 90, 58, 0.8);
     line-height: 24px;
-    font-weight: 500;
+    /* font-weight: 500; */
 }
 
 .input:hover {
@@ -2815,7 +2818,7 @@ label {
 .input.as-text {
     width: 100%;
     height: 36px;
-    font-weight: 500;
+    /* font-weight: 500; */
 }
 
 .input.as-text::-webkit-input-placeholder {
@@ -2890,7 +2893,7 @@ label {
     -ms-flex-align: center;
     align-items: center;
     color: rgba(47, 90, 58, 0.5);
-    font-weight: 500;
+    /* font-weight: 500; */
 }
 
 .input.full-chip.date-box {
@@ -3512,7 +3515,7 @@ label {
     margin-top: 24px;
     padding-left: 20px;
     line-height: 32px;
-    font-weight: 500;
+    /* font-weight: 500; */
 }
 
 .h3.month-indicator.test {
