@@ -1103,12 +1103,11 @@ label {
 }
 
 .container.output {
-    position: fixed;
+    position: absolute;
     top: 0px;
     z-index: 10;
     display: none;
-    overflow: auto;
-    height: 100vh;
+    overflow: visible;
     background-color: transparent;
 }
 
@@ -3347,7 +3346,8 @@ label {
     display: -ms-flexbox;
     display: flex;
     width: auto;
-    height: auto;
+    min-height: 52px;
+    /* min-height: 52px; is for safari */
     max-width: 132px;
     min-width: auto;
     margin-right: auto;
