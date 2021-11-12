@@ -1329,6 +1329,8 @@ label {
     opacity: 0.4;
     -webkit-filter: blur(10px);
     filter: blur(10px);
+    display: none;
+    /* unknown flickering tbc */
 }
 
 .shadow.full {
