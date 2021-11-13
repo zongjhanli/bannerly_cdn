@@ -15,7 +15,7 @@
 
 //預設日期txtInput.value =""
 $(document).ready(function() {
-    $('.date-input').val('');
+    $('.date-input').not('.single-date').val('');
 })
 
 //section hover 觸發cardbox transfrom + padding 變化
@@ -710,34 +710,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         }
     })
 
-    $('.back-home').click(function() {
-        $('.container.output').removeClass('js-show');
 
-        //defaulting output blocks
-
-        //pd count area
-        $('[data-output=P-count-A], [data-output=P-count-B], [data-output=P-count-C]').text('0');
-
-        //img area
-        $('.img').remove();
-        $('.block-pool').each(function() {
-            if ($(this).find('.img').length == 0) {
-                // $(this).parent().css('display', 'none');
-                $(this).css({
-                    'padding-left': '8px',
-                    'color': 'rgba(47, 90, 58, 0.5)'
-                });
-                $(this).text('');
-            }
-        })
-
-        //tab area
-        $('.a-button.as-tab.indicator').css('top', '0px');
-        $('.col-left').find('.a-button').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
-        $('.col-left').find('.a-button').not('.indicator').first().css('color', 'rgba(47, 90, 58, 1)');
-        $('.col-right').find('[data-output]').css('display', 'none');
-        $('.col-right').find('[data-output]').first().css('display', 'block');
-    })
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -1796,7 +1769,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
             })
         })
 
-        let timestamp = moment().zone(0)._d;
+        let timestamp = moment().zone(-480)._d;
         timestamp = timestamp.toString().replace(' GMT+0800 (台北標準時間)', '').replace(/ /g, '-');
         $('.submit-box').attr('data-stamp', timestamp);
         // console.log(timestamp)

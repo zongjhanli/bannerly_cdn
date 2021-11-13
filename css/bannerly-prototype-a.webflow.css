@@ -449,6 +449,7 @@ label {
     font-weight: 700;
     text-align: center;
     text-decoration: none;
+    cursor: pointer;
 }
 
 .a-button:hover {
@@ -461,11 +462,15 @@ label {
     padding-right: 20px;
     padding-left: 20px;
     border-radius: 14px;
-    background-color: #3b7a47;
+    background-color: rgba(51, 51, 51, 0.85);
     opacity: 1;
     color: #fff;
     font-size: 18px;
     font-weight: 700;
+}
+
+.a-button.as_contained:hover {
+    background-color: rgba(51, 51, 51, 1);
 }
 
 .a-button.as_contained.w--current {
@@ -484,6 +489,7 @@ label {
     padding-right: 12px;
     padding-left: 10px;
     font-size: 16px;
+    background-color: #3B7A47;
 }
 
 .a-button.as_contained.new-case:hover {
@@ -649,14 +655,16 @@ label {
 
 .a-button.as-txt-btn.delete {
     position: absolute;
-    left: -20px;
+    left: -16px;
     padding-right: 8px;
     padding-left: 4px;
-    color: grey;
+    color: #FF7272;
+    filter: grayscale(100%);
 }
 
 .a-button.as-txt-btn.delete:hover {
-    color: #ff7272;
+    /* color: #ff7272; */
+    filter: grayscale(0%);
 }
 
 .a-button.as-txt-btn.delete.js-hide {
@@ -1104,11 +1112,14 @@ label {
 
 .container.output {
     position: absolute;
-    top: 0px;
-    z-index: 10;
+    top: 48px;
+    z-index: 6;
     display: none;
     overflow: visible;
     background-color: transparent;
+    opacity: 0;
+    -webkit-transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .container.output:hover {
@@ -1121,7 +1132,7 @@ label {
     display: -ms-flexbox;
     display: flex;
     padding-top: 132px;
-    background-color: #e5e5e5;
+    /* background-color: #e5e5e5; */
 }
 
 .container.for-output {
@@ -1133,6 +1144,8 @@ label {
     border-top-left-radius: 32px;
     border-top-right-radius: 32px;
     background-color: #fff;
+    -webkit-transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .container.for-form {
@@ -1997,6 +2010,12 @@ label {
     -ms-transform: rotate(90deg);
     transform: rotate(90deg);
     cursor: pointer;
+    position: fixed;
+    top: 40px;
+    left: calc(50vw - 240px);
+    -webkit-transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 99;
 }
 
 .icon_32x.for-search-query {
@@ -2045,6 +2064,7 @@ label {
 
 .icon_32x.btn-icon {
     margin-right: 4px;
+    margin-left: -10px;
 }
 
 .icon_32x.btn-icon.end-case {
@@ -2096,11 +2116,12 @@ label {
 
 .a-list {
     position: relative;
+    top: 0px;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    width: 100%;
+    width: 576px;
     height: 56px;
     padding-right: 0px;
     padding-left: 20px;
@@ -2116,16 +2137,48 @@ label {
     transition: all 200ms cubic-bezier(.165, .84, .44, 1);
     color: rgba(51, 51, 51, 0.85);
     cursor: pointer;
+    background-color: #fff;
+    border-radius: 16px;
 }
 
 .a-list:hover {
     overflow: hidden;
     padding-right: 2px;
     padding-left: 22px;
-    border-radius: 16px;
     background-color: #f3f7f4;
     box-shadow: 0 4px 8px 0 rgba(59, 122, 71, 0.04);
     color: #2f5a3a;
+}
+
+.a-list.js-topbar {
+    position: fixed;
+    top: 32px;
+    height: 48px;
+    /* font-size: 18px; */
+    padding-right: 0px;
+    padding-left: 20px;
+    animation-name: font;
+    animation-delay: 0.1s;
+    animation-duration: 0.2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes font {
+    0% {
+        font-size: 14px;
+        padding-left: 20px;
+    }
+    100% {
+        font-size: 18px;
+        padding-left: 16px;
+    }
+}
+
+.a-list.js-topbar:hover {
+    padding-right: 0px;
+    padding-left: 20px;
+    background-color: #fff;
 }
 
 .filter-query {
@@ -2164,6 +2217,23 @@ label {
     width: 246px;
     padding-right: 10px;
     background-color: transparent;
+}
+
+.stats-flex.in-list.js-topbar {
+    animation-name: paddingR;
+    animation-delay: 0.1s;
+    animation-duration: 0.2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes paddingR {
+    0% {
+        padding-right: 10px;
+    }
+    100% {
+        padding-right: 2px;
+    }
 }
 
 .stats-box {
@@ -3765,7 +3835,11 @@ label {
 
 .date-input {
     border: 0px solid #000;
-    color: #2f5a3a;
+    color: rgba(47, 90, 58, 0.8);
+}
+
+.date-input:hover {
+    color: rgba(47, 90, 58, 1);
 }
 
 .date-input:focus {

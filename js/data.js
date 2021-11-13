@@ -447,20 +447,20 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     const query = `/gviz/tq?`; //google visualisation 
 
     let valKey = sessionStorage.getItem('key');
-    if (valKey == null) {
-        //Fetch授權憑證
-        $(document).ready(() => {
-            $('.initial-bg').removeClass('js-hide');
-        })
-        let ssidCode = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
-        const endpointCode = `${gsUrl}${ssidCode}${query}`;
-        fetch(endpointCode)
-            .then(res => res.text())
-            .then(data => {
-                let jsData = data.substr(47).slice(0, -2);
-                let json = JSON.parse(jsData);
-                let rows = json.table.rows;
-                let cols = json.table.cols;
+    //Fetch授權憑證
+    $(document).ready(() => {
+        $('.initial-bg').removeClass('js-hide');
+    })
+    let ssidCode = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
+    const endpointCode = `${gsUrl}${ssidCode}${query}`;
+    fetch(endpointCode)
+        .then(res => res.text())
+        .then(data => {
+            let jsData = data.substr(47).slice(0, -2);
+            let json = JSON.parse(jsData);
+            let rows = json.table.rows;
+            let cols = json.table.cols;
+            if (valKey == null) {
                 $('#validation').change((e) => {
                     let target = e.target;
                     sessionStorage.setItem('key', $(target).val());
@@ -472,18 +472,28 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             iArr.push(i);
                         }
                     }
-                    if (rows[iArr[0]].c[0].v == 'applicant') {
-                        $('.send').parent().remove();
-                        console.log('applicant');
+                    if (rows[iArr[0]].c[0].v == 'applicant' || rows[iArr[0]].c[0].v == 'designer') {
+                        $('[data-validation=master]').remove();
                     } else if (rows[iArr[0]].c[0].v == 'MASTER') {
-                        $('.end-case').parent().remove();
-                        console.log('MASTER');
+                        $('[data-validation=applicant]').remove();
                     }
                 })
-            })
-    } else if (valKey != null) {
-        $('#validation').val(valKey);
-    }
+            } else if (valKey != null) {
+                $('#validation').val(valKey);
+                let i;
+                for (i = 1; i < rows.length; i++) {
+                    if (rows[i].c[2].v == valKey) {
+                        $('.initial-bg').addClass('js-hide');
+                        if (rows[i].c[0].v == 'applicant' || rows[i].c[0].v == 'designer') {
+                            $('[data-validation=master]').remove();
+                        } else if (rows[i].c[0].v == 'MASTER') {
+                            $('[data-validation=applicant]').remove();
+                        }
+                    }
+                }
+            }
+        })
+
 
     //Fetch下拉選單常用選項
     let ssidDrop = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
@@ -551,6 +561,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     designer.classList.add('_14px-500', 'as-stats');
                     status.classList.add('stats-chip')
                     listBox.insertBefore(list, null);
+                    list.dataset.output = "list";
 
 
                     // title.textContent = '00/00~00/00 品牌類型BN';
@@ -564,9 +575,11 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     if (cells[3] != null) {
                         title.textContent += ' (' + cells[3].v + ')';
                     }
-                    applicant.textContent = cells[cells.length - 7].v.slice(0, 3).trim();
+                    let slashA = cells[cells.length - 7].v.indexOf(' ');
+                    applicant.textContent = cells[cells.length - 7].v.slice(0, slashA + 1).trim();
                     if (cells[cells.length - 5] != null) {
-                        designer.textContent = cells[cells.length - 5].v.slice(0, 3).trim();
+                        let slashB = cells[cells.length - 5].v.indexOf(' ');
+                        designer.textContent = cells[cells.length - 5].v.slice(0, slashB + 1).trim();
                         if (cells[cells.length - 2] != null) {
                             status.textContent = '已結案';
                             status.classList.add('js-endcase');
@@ -919,32 +932,55 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     let output = document.querySelector('.container.output');
 
                     if (target.classList.contains('a-list')) {
-
-                        //tab區塊預設styling
-                        $('.col-left').find('.a-button').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
-                        $('.col-left').find('.a-button').not('.indicator').first().css('color', 'rgba(47, 90, 58, 1)');
-                        $('.col-right').find('[data-output]').css('display', 'none');
-                        $('.col-right').find('[data-output]').first().css('display', 'block');
-
                         output.classList.add('js-show');
+
                         let lists = document.querySelectorAll('.a-list');
                         outputData();
 
                         function outputData() {
+                            //tab區塊預設styling
+                            $('.col-left').find('.a-button').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
+                            $('.col-left').find('.a-button').not('.indicator').first().css('color', 'rgba(47, 90, 58, 1)');
+                            $('.col-right').find('[data-output]').css('display', 'none');
+                            $('.col-right').find('[data-output]').first().css('display', 'block');
 
                             let li;
                             for (li = 0; li < lists.length; li++) {
                                 if (target == lists[li]) {
+                                    $(lists[li]).addClass('js-topbar'); //css animation has @keyframe
+                                    $(lists[li]).find('.stats-flex').addClass('js-topbar'); //css animation has @keyframe
+                                    $(lists[li]).find('._14px-500.as-stats').css('opacity', '0');
+
+                                    $('.query-box').css({
+                                        'height': '0px',
+                                        'top': '72px',
+                                        'overflow': 'hidden',
+                                        'opacity': '0'
+                                    })
+                                    $('.container.for-output').css({
+                                        'bottom': '-100vh',
+                                        'position': 'fixed'
+                                    });
+                                    setTimeout(() => {
+                                        $('.container.output').css({
+                                            'opacity': '1',
+                                            'top': '0px'
+                                        });
+                                        setTimeout(() => {
+                                            $('.back-home').css('left', 'calc(50vw - 288px)')
+                                        }, 100)
+                                    }, 100)
+
                                     let cols = json.table.cols;
                                     let tCells = rows[li].c;
                                     let i;
                                     for (i = 0; i < cols.length; i++) {
                                         if (tCells[i] != null) {
                                             //標題output
-                                            $('[data-output=case-name]').text(tCells[0].v + '\u00a0\u00a0' + tCells[1].v + tCells[2].v);
-                                            if (tCells[3] != null) { //急件
-                                                $('[data-output=case-name]').text(($('[data-output=case-name]').text().concat(' (' + tCells[3].v + ')')));
-                                            }
+                                            // $('[data-output=case-name]').text(tCells[0].v + '\u00a0\u00a0' + tCells[1].v + tCells[2].v);
+                                            // if (tCells[3] != null) { //急件
+                                            //     $('[data-output=case-name]').text(($('[data-output=case-name]').text().concat(' (' + tCells[3].v + ')')));
+                                            // }
                                             //基本資訊output
                                             if (cols[i].label == '需求方') {
                                                 $("[data-output='applicant']").text(tCells[i].v);
@@ -953,13 +989,26 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                 $("[data-output='path']").text(tCells[i].v);
                                             }
                                             if (cols[i].label == '設計方') {
-                                                $("[data-output='designer']").val(tCells[i].v);
+                                                if ($("[data-output=designer]").is('input')) {
+                                                    $("[data-output=designer]").val(tCells[i].v);
+                                                } else {
+                                                    $("[data-output=designer]").text(tCells[i].v);
+                                                }
                                             }
                                             if (cols[i].label == '初稿交件日期') {
-                                                $("[data-output='ddl-1']").val(tCells[i].v);
+                                                if ($("[data-output=ddl-1]").is('input')) {
+                                                    $("[data-output=ddl-1]").val(tCells[i].v);
+                                                } else {
+                                                    $("[data-output=ddl-1]").text(tCells[i].v);
+                                                }
                                             }
                                             if (cols[i].label == '完成日期') {
-                                                $("[data-output='ddl-2']").val(tCells[i].v);
+                                                if ($("[data-output=ddl-2]").is('input')) {
+                                                    $("[data-output=ddl-2]").val(tCells[i].v);
+                                                } else {
+                                                    $("[data-output=ddl-2]").text(tCells[i].v);
+                                                }
+
                                             }
                                             //主視覺output
                                             if (cols[i].label == '指定色調') {
@@ -981,7 +1030,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                 jQuery.each(pdSerial, function(i, imgName) {
                                                     let brandID = imgName.slice(0, 2);
                                                     let url = "url(products/" + brandID + '/' + imgName + ")";
-                                                    console.log('products');
                                                     $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
@@ -1159,13 +1207,36 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                 }
                                             }
                                             if (cols[i].label == 'timestamp') {
-                                                $('[data-output=case-name]').attr('data-stamp', tCells[i].v);
+                                                $('[data-output=list]').attr('data-stamp', tCells[i].v);
                                             }
                                         }
                                     }
                                 }
                             }
                         }
+                        //交件日期若非空，隱藏placeholder
+                        if ($('.date-input').length != 0) {
+                            if ($('.date-input').val().length != 0) {
+                                $('.date-input').parent().siblings('.placeholder').css('display', 'none');
+                                $('.date-input').parent().css('opacity', '1');
+                            }
+                        }
+
+
+                        //資料更新區註明tbc
+                        if ($("[data-output=designer]").not('input').text() == "") {
+                            $("[data-output=designer]").not('input').text("未指派");
+                            $("[data-output=designer]").not('input').css('color', 'rgba(47, 90, 58, 0.5)');
+                        }
+                        if ($("[data-output=ddl-1]").not('input').text() == "") {
+                            $("[data-output=ddl-1]").not('input').text("未指派");
+                            $("[data-output=ddl-1]").not('input').css('color', 'rgba(47, 90, 58, 0.5)');
+                        }
+                        if ($("[data-output=ddl-2]").not('input').text() == "") {
+                            $("[data-output=ddl-2]").not('input').text("未指派");
+                            $("[data-output=ddl-2]").not('input').css('color', 'rgba(47, 90, 58, 0.5)');
+                        }
+
 
                         //隱藏空白的案型card
                         let sCards = $("[data-output='C-B'], [data-output='C-C']");
@@ -1194,18 +1265,125 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                 tabLabel.parentElement.style.display = 'none';
                             }
                         }
-                        $('.send').siblings().click(() => {
-                            let timestamp = $('[data-output=case-name]').attr('data-stamp');
-                            let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
-                            axios.patch(targetRow, {
-                                "data": {
-                                    "設計方": $('#designer').val(),
-                                    "初稿交件日期": $('#ddl-1').val(),
-                                    "完成日期": $('#ddl-2').val()
+                        $('[data-update=send]').click((e) => {
+                            let target = e.target;
+                            let input = $(target).closest('.card').find('input').not('.submit');
+                            input.each((i) => {
+                                console.log($(input).eq(2).val())
+
+                                if (($(input).eq(i).val() == "")) {
+                                    $(input).eq(i).closest('.f-block').find('.hinter-box').css('display', 'block');
+                                    $(input).eq(i).closest('.f-block').find('.hinter-box').addClass("js-shake");
+                                    $(target).addClass("js-shake");
+                                    setTimeout(function() {
+                                        $(input).eq(i).closest('.f-block').find('.hinter-box').removeClass("js-shake");
+                                        $(target).removeClass("js-shake");
+                                    }, 200);
                                 }
-                            }).then(response => {
-                                console.log(response.data);
+                            })
+
+                            if ($('.hinter-box:visible').length == 0) {
+                                let timestamp = $('[data-output=list]').attr('data-stamp');
+                                let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
+                                axios.patch(targetRow, {
+                                    "data": {
+                                        "設計方": $('#designer').val(),
+                                        "初稿交件日期": $('#ddl-1').val(),
+                                        "完成日期": $('#ddl-2').val()
+                                    }
+                                }).then(response => {
+                                    console.log(response.data);
+                                });
+                            }
+                        })
+                        $('[data-update=end-case]').click((e) => {
+                            let target = e.target;
+                            if ($("[data-output=designer]").text() == '未指派' || $("[data-output=ddl-1]").text() == '未指派' || $("[data-output=ddl-2]").text() == '未指派') {
+                                $(target).addClass("js-shake");
+                                setTimeout(function() {
+                                    $(target).removeClass("js-shake");
+                                }, 200);
+                            } else {
+                                let timestamp = $('[data-output=list]').attr('data-stamp');
+                                let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
+                                axios.patch(targetRow, {
+                                    "data": {
+                                        "結案": "true"
+                                    }
+                                }).then(response => {
+                                    console.log(response.data);
+                                    $(lists).each((l) => {
+                                        if ($(lists).eq(l).css('position') == 'fixed') {
+                                            $(lists).eq(l).find('.stats-chip').addClass('js-endcase');
+                                            $(lists).eq(l).find('.stats-chip').text('已結案');
+                                        }
+                                    })
+                                });
+                            }
+                        })
+                        $('.back-home').click(function() {
+                            $('.container.output').removeClass('js-show');
+
+                            //defaulting list[li]
+                            $(lists).each((l) => {
+                                if ($(lists).eq(l).css('position') == 'fixed') {
+                                    $(lists).eq(l).removeClass('js-topbar');
+                                    $(lists).eq(l).find('.stats-flex').removeClass('js-topbar');
+                                    $(lists).eq(l).find('._14px-500.as-stats').css('opacity', '1');
+                                }
+                            })
+                            $('.query-box').css({
+                                'height': '96px',
+                                'top': '92px',
+                                'overflow': 'visible',
+                                'opacity': '1'
+                            })
+                            $('.container.for-output').css({
+                                'bottom': '0px',
+                                'position': 'absolute'
                             });
+                            $('.container.output').css({
+                                'opacity': '0',
+                                'top': '48px'
+                            });
+                            $('.back-home').css('left', 'calc(50vw - 240px)');
+
+                            //defaulting hinters
+                            $('.hinter-box').css('display', 'none');
+
+                            //defaulting output blocks
+                            //info area
+                            $("[data-output='designer']").text('');
+                            $("[data-output='designer']").val('');
+                            $("[data-output='ddl-1']").text('');
+                            $("[data-output='ddl-1']").val('');
+                            $("[data-output='ddl-2']").text('');
+                            $("[data-output='ddl-2']").val('');
+                            $("[data-output=designer]").not('input').css('color', 'rgba(47, 90, 58, 1)');
+                            $("[data-output=ddl-1]").not('input').css('color', 'rgba(47, 90, 58, 1)');
+                            $("[data-output=ddl-2]").not('input').css('color', 'rgba(47, 90, 58, 1)');
+                            //pd count area
+                            $('[data-output=P-count-A], [data-output=P-count-B], [data-output=P-count-C]').text('0');
+
+                            //img area
+                            $('.img').remove();
+                            $('.block-pool').each(function() {
+                                if ($(this).find('.img').length == 0) {
+                                    // $(this).parent().css('display', 'none');
+                                    $(this).css({
+                                        'padding-left': '8px',
+                                        'color': 'rgba(47, 90, 58, 0.5)'
+                                    });
+                                    $(this).text('');
+                                }
+                            })
+
+                            //tab area
+                            $('.a-button.as-tab.indicator').css('top', '0px');
+                            $('.col-left').find('.a-button').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
+                            $('.col-left').find('.a-button').not('.indicator').first().css('color', 'rgba(47, 90, 58, 1)');
+                            $('.col-right').find('[data-output]').css('display', 'none');
+                            $('.col-right').find('[data-output]').first().css('display', 'block');
                         })
                     }
                 }) //end of Result欄位output
