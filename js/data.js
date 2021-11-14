@@ -450,32 +450,35 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     //Fetch授權憑證
     $(document).ready(() => {
         $('.portal-bg').removeClass('js-hide');
-        $('[data-portal]').css('display','none');
-        $('.back-portal').css('display','none');
+        $('[data-portal]').css('display', 'none');
+        $('.back-portal').css('display', 'none');
+        $('.icon_20x.for-portal').css('display', 'none');
+        $('#validation').val('');
     })
-    $('.sign-up').click(()=>{
-        $('[data-portal=sign-up]').css('display','block');
-        $('.sign-in').parent().css('display','none');
+    $('.sign-up').click(() => {
+        $('[data-portal=sign-up]').css('display', 'block');
+        $('.sign-in').parent().css('display', 'none');
         $('.sign-up').addClass('js-btn2text');
         $('.portal').removeClass('inactive');
-        $('.back-portal').css('display','block');
+        $('.back-portal').css('display', 'block');
     })
-    $('.sign-in').click(()=>{
-        $('[data-portal=sign-in]').css('display','block');
-        $('.sign-up').parent().css('display','none');
+    $('.sign-in').click(() => {
+        $('[data-portal=sign-in]').css('display', 'block');
+        $('.sign-up').parent().css('display', 'none');
         $('.sign-in').addClass('js-btn2text');
         $('.portal').removeClass('inactive');
-        $('.back-portal').css('display','block');
+        $('.back-portal').css('display', 'block');
+        $('#validation').focus();
     })
-    $('.back-portal').click(()=>{
+    $('.back-portal').click(() => {
         $('.portal').addClass('inactive');
-        $('[data-portal=sign-up]').css('display','none');
-        $('[data-portal=sign-in]').css('display','none');
-        $('.sign-up').parent().css('display','block');
-        $('.sign-in').parent().css('display','block');
+        $('[data-portal=sign-up]').css('display', 'none');
+        $('[data-portal=sign-in]').css('display', 'none');
+        $('.sign-up').parent().css('display', 'block');
+        $('.sign-in').parent().css('display', 'block');
         $('.sign-up').removeClass('js-btn2text');
         $('.sign-in').removeClass('js-btn2text');
-        $('.back-portal').css('display','none');
+        $('.back-portal').css('display', 'none');
     })
     $('[data-update=sign-up]').click((e) => {
         let target = e.target;
@@ -497,16 +500,16 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             $(radio).eq(0).closest('.f-block').find('.hinter-box').css('display', 'block');
             $(radio).eq(0).closest('.f-block').find('.hinter-box').addClass("js-shake");
             $(target).addClass("js-shake");
-                setTimeout(function() {
-                    $(radio).eq(0).closest('.f-block').find('.hinter-box').removeClass("js-shake");
-                    $(target).removeClass("js-shake");
-                }, 200);
+            setTimeout(function() {
+                $(radio).eq(0).closest('.f-block').find('.hinter-box').removeClass("js-shake");
+                $(target).removeClass("js-shake");
+            }, 200);
         }
 
         if ($('.hinter-box:visible').length == 0) {
             axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd', {
                 "data": {
-                    "user-type": $('[data-name=user-type]:checked').val(),
+                    "user-type": $('[data-name=user-type]:checked').attr('data-type'),
                     "user-name": $('#user-name').val() + ' ' + $('#user-code').val(),
                     "code": $('#user-code').val()
                 }
@@ -516,7 +519,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         }
     })
 
-    $('input[type=text], input[type=email], input[type=password]').keydown((e)=>{
+    $('input[type=text], input[type=email], input[type=password]').keydown((e) => {
         let target = e.target;
         if ($(target).val() != "") {
             if ($(target).closest('.f-block').find('.hinter-box').is(':visible')) {
@@ -526,19 +529,19 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         }
     })
 
-    $('input[type=radio]').click((e)=>{
+    $('input[type=radio]').click((e) => {
         let target = e.target;
         $(target).closest('.f-block').find('.hinter-box').css('display', 'none');
     })
 
-    $('#dbcheck-code').change(()=>{
+    $('#dbcheck-code').change(() => {
         if ($('#dbcheck-code').val() != $('#user-code').val()) {
             $('#dbcheck-code').closest('.f-block').find('.hinter-box').css('display', 'block');
-                $('#dbcheck-code').closest('.f-block').find('.hinter-box').addClass("js-shake");
-                $('#dbcheck-code').closest('.f-block').find('.for-hinter').text("輸入錯誤");
-                setTimeout(function() {
-                    $(input).eq(i).closest('.f-block').find('.hinter-box').removeClass("js-shake");
-                }, 200);
+            $('#dbcheck-code').closest('.f-block').find('.hinter-box').addClass("js-shake");
+            $('#dbcheck-code').closest('.f-block').find('.for-hinter').text("輸入錯誤");
+            setTimeout(function() {
+                $(input).eq(i).closest('.f-block').find('.hinter-box').removeClass("js-shake");
+            }, 200);
         }
     })
 
@@ -552,15 +555,43 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             let rows = json.table.rows;
             let cols = json.table.cols;
             if (valKey == null) {
-                $('#validation').change((e) => {
+                $('#validation').keyup((e) => {
                     let target = e.target;
-                    sessionStorage.setItem('key', $(target).val());
+                    if ($(target).val() != "") {
+                        $('.icon_20x.for-portal').css('display', 'block');
+                    } else {
+                        $('.icon_20x.for-portal').css('display', 'none');
+                    }
+                })
+
+                $('.icon_20x.for-portal').click((e) => {
+                    let target = e.target;
+                    $(target).css('display', 'none');
+                    $(target).siblings('input').val('');
+
+                    if ($(target).hasClass('js-clear-input')) {
+                        $(target).removeClass('js-clear-input').addClass('js-return');
+                    }
+                    $('#validation').focus();
+                })
+
+                $('#validation').change((e) => {
+                    $('.icon_20x.for-portal.js-return').removeClass('js-return').addClass('js-clear-input');
+                    let target = e.target;
                     let i;
                     let iArr = [];
                     for (i = 1; i < rows.length; i++) {
-                        if (rows[i].c[2].v.indexOf($(target).val()) >= 0) {
-                            $('.portal-bg').addClass('js-hide');
-                            iArr.push(i);
+                        if (rows[i].c[2] != null) {
+                            if (rows[i].c[2].v.indexOf($(target).val()) >= 0) {
+                                $('.portal-bg').addClass('js-hide');
+                                sessionStorage.setItem('key', $(target).val());
+                                iArr.push(i);
+                            } else {
+                                $(target).addClass('js-shake');
+                                setTimeout(() => {
+                                    $(target).removeClass('js-shake');
+                                }, 200)
+                            }
                         }
                     }
                     if (rows[iArr[0]].c[0].v == 'applicant') {
@@ -576,15 +607,17 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 $('#validation').val(valKey);
                 let i;
                 for (i = 1; i < rows.length; i++) {
-                    if (rows[i].c[2].v == valKey) {
-                        $('.portal-bg').addClass('js-hide');
-                        if (rows[i].c[0].v == 'applicant') {
-                            $('[data-validation=master]').remove();
-                        } else if (rows[i].c[0].v == 'MASTER') {
-                            $('[data-validation=applicant]').remove();
-                        } else if (rows[iArr[0]].c[0].v == 'designer') {
-                            $('[data-validation=master]').remove();
-                            $('[data-validation=applicant]').remove();
+                    if (rows[i].c[2] != null) {
+                        if (rows[i].c[2].v == valKey) {
+                            $('.portal-bg').addClass('js-hide');
+                            if (rows[i].c[0].v == 'applicant') {
+                                $('[data-validation=master]').remove();
+                            } else if (rows[i].c[0].v == 'MASTER') {
+                                $('[data-validation=applicant]').remove();
+                            } else if (rows[iArr[0]].c[0].v == 'designer') {
+                                $('[data-validation=master]').remove();
+                                $('[data-validation=applicant]').remove();
+                            }
                         }
                     }
                 }
@@ -1313,7 +1346,10 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         }
                         //交件日期若非空，隱藏placeholder
                         if ($('.date-input').length != 0) {
-                            if ($('.date-input').val().length != 0) {
+                            if ($('.date-input').val().length == 0) {
+                                $('.date-input').parent().siblings('.placeholder').css('display', 'block');
+                                $('.date-input').parent().css('opacity', '0');
+                            } else {
                                 $('.date-input').parent().siblings('.placeholder').css('display', 'none');
                                 $('.date-input').parent().css('opacity', '1');
                             }
@@ -1390,6 +1426,12 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                     }
                                 }).then(response => {
                                     console.log(response.data);
+                                    $(lists).each((l) => {
+                                        if ($(lists).eq(l).css('position') == 'fixed') {
+                                            $(lists).eq(l).find('.stats-chip').removeClass('js-tbc');
+                                            $(lists).eq(l).find('.stats-chip').text('製作中');
+                                        }
+                                    })
                                 });
                             }
                         })

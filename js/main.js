@@ -681,6 +681,19 @@ $(document).click(function(e) {
 
 //@Index 專屬區塊
 if (!window.location.href.includes('form-apply') && !window.location.href.includes('custom-apply')) {
+
+    //一般性radio btn
+    // $(document).click(() => {
+    //     $('.portal-radio').each((r) => {
+    //         if ($('.portal-radio').eq(r).is(':checked')) {
+    //             $('.portal-radio').eq(r).css({
+    //                 'border': '1px solid #2F5A3A',
+    //                 'background': '#2F5A3A',
+    //             })
+    //         }
+    //     })
+    // })
+
     //Result dropDown Label 點擊響應
     //!!!待解，jQuery不接受'js-'開頭的class name???
     $('[data-name=designer]').parent().find('.label').click(function() {
@@ -1096,7 +1109,7 @@ if (window.location.href.includes('form-apply')) {
         thunderBox.addEventListener('mouseenter', (e) => {
             let target = e.target;
             let hinter = target.querySelector('.hinter-box');
-            hinter.style.display = "block";
+            hinter.style.display = "flex";
         });
         thunderBox.addEventListener('mouseleave', (e) => {
             let target = e.target;
@@ -1452,6 +1465,7 @@ if (window.location.href.includes('form-apply')) {
                 thunder.attr('data-thunder', 'true');
                 tBlockGroup.addClass('thunder-locked');
                 $(this).find('._12px-500.for-thunder').text('解除鎖定以編輯');
+                $(this).find('._12px-500.for-thunder').css('width', '124px');
 
                 thG1.css({
                     'transform': 'translate(4px,4px) rotate(40deg)'
@@ -1489,6 +1503,7 @@ if (window.location.href.includes('form-apply')) {
                 thunder.attr('data-thunder', 'false');
                 tBlockGroup.removeClass('thunder-locked');
                 $(this).find('._12px-500.for-thunder').text('套用自案型 1');
+                $(this).find('._12px-500.for-thunder').css('width', 'auto');
 
                 thG1.css({
                     'transform': 'translate(0px,0px) rotate(40deg)'
@@ -1527,7 +1542,6 @@ if (window.location.href.includes('form-apply')) {
             //thunder locking 提示
             $('.thunder-locked').each((th) => {
                 $('.thunder-locked').eq(th).click(() => {
-                    console.log('??')
                     $('.thunder-locked').eq(th).addClass('js-shake');
                     setTimeout(function() {
                         $('.thunder-locked').eq(th).removeClass("js-shake");
@@ -1536,7 +1550,7 @@ if (window.location.href.includes('form-apply')) {
                 $('.thunder-locked').eq(th).hover(mEnter, mLeave);
 
                 function mEnter() {
-                    $('.thunder-locked').eq(th).closest('.card').find('.hinter-box.for-thunder').css('display', 'block');
+                    $('.thunder-locked').eq(th).closest('.card').find('.hinter-box.for-thunder').css('display', 'flex');
                 }
 
                 function mLeave() {
@@ -1769,20 +1783,18 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
             })
         })
 
-        let timestamp = moment().zone(-480)._d;
-        timestamp = timestamp.toString().replace(' GMT+0800 (台北標準時間)', '').replace(/ /g, '-');
+        let timestamp = moment().format();
+        // timestamp = timestamp.toString().replace(' GMT+0800 (台北標準時間)', '').replace(/ /g, '-');
         $('.submit-box').attr('data-stamp', timestamp);
-        // console.log(timestamp)
 
-
-        if ($('.hinter-box:visible').length == 0) {
-            $(target).siblings('.submit').trigger('click');
-        } else {
-            $(target).parent('.submit-box').addClass("js-shake");
-            setTimeout(function() {
-                $(target).parent('.submit-box').removeClass("js-shake");
-            }, 200);
-        }
+        // if ($('.hinter-box:visible').length == 0) {
+        //     $(target).siblings('.submit').trigger('click');
+        // } else {
+        //     $(target).parent('.submit-box').addClass("js-shake");
+        //     setTimeout(function() {
+        //         $(target).parent('.submit-box').removeClass("js-shake");
+        //     }, 200);
+        // }
     });
 
     //重新填寫觸發in-card hinter關閉
