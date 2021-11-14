@@ -577,20 +577,49 @@
         <div data-portal="sign-up">
             <div class="f-block">
             <div class="_12px-500">帳號名稱</div>
-            <div class="input-embed w-embed"><input type="text" class="input as-text"  autofocus autocomplete="off" maxlength="8" name="validation" data-name="validation" id="validation" placeholder="8字以內名稱"></div>
-            </div>
+            <div class="input-embed w-embed"><input type="text" class="input as-text"  autofocus autocomplete="off" maxlength="8" name="user-name" data-name="user-name" id="user-name" placeholder="8字以內名稱"></div>
+            <div class="hinter-box in-card temp-hide">
+                <div class="_12px-500 for-hinter">此欄必填</div>
+                <div class="hinter-triangle in-card"></div>
+            </div>    
+        </div>
             <div class="f-block">
             <div class="_12px-500">公司郵件地址</div>
-            <div class="input-embed w-embed"><input type="email" class="input as-text"  autofocus autocomplete="off" name="validation" data-name="validation" id="validation" placeholder="example.udnshopping.com"></div>
-            </div>
-            <div class="f-block">
+            <div class="input-embed w-embed"><input type="email" class="input as-text"  autofocus autocomplete="off" name="user-mail" data-name="user-mail" id="user-mail" placeholder="example.udnshopping.com"></div>
+            <div class="hinter-box in-card temp-hide">
+                <div class="_12px-500 for-hinter">此欄必填</div>
+                <div class="hinter-triangle in-card"></div>
+            </div>    
+        </div>
+        <div class="f-block">
+            <div class="_12px-500">人員身分</div>
+            <label class="input as-chip literally-radio">
+                <input type="radio" data-name="user-type" name="user-type" value="企劃人員"><span for="企劃人員" class="label">企劃人員</span>
+              </label>
+              <label class="input as-chip literally-radio">
+                <input type="radio" data-name="user-type" name="user-type" value="設計人員"><span for="設計人員" class="label">設計人員</span>
+              </label>
+            <div class="hinter-box in-card temp-hide">
+                <div class="_12px-500 for-hinter">此欄必填</div>
+                <div class="hinter-triangle in-card"></div>
+            </div>    
+        </div>
+        <div class="f-block">
             <div class="_12px-500">設定密碼</div>
-            <div class="input-embed w-embed"><input type="text" class="input as-text"  autofocus autocomplete="off" maxlength="6" name="validation" data-name="validation" id="validation" placeholder="6位英數字"></div>
-            </div>
+            <div class="input-embed w-embed"><input type="password" class="input as-text"  autofocus autocomplete="off" maxlength="6" name="user-code" data-name="user-code" id="user-code" placeholder="6位英數字"></div>
+            <div class="hinter-box in-card temp-hide">
+                <div class="_12px-500 for-hinter">此欄必填</div>
+                <div class="hinter-triangle in-card"></div>
+            </div>    
+        </div>
             <div class="f-block">
-            <div class="_12px-500">確認密碼</div>
-            <div class="input-embed w-embed"><input type="text" class="input as-text"  autofocus autocomplete="off" maxlength="6" name="validation" data-name="validation" id="validation" placeholder="6位英數字"></div>
-            </div>
+            <div class="_12px-500">再次確認密碼</div>
+            <div class="input-embed w-embed"><input type="password" class="input as-text"  autofocus autocomplete="off" maxlength="6" name="dbcheck-code" data-name="dbcheck-code" id="dbcheck-code" placeholder="6位英數字"></div>
+            <div class="hinter-box in-card temp-hide">
+                <div class="_12px-500 for-hinter">此欄必填</div>
+                <div class="hinter-triangle in-card"></div>
+            </div>    
+        </div>
             <div class="submit-box for-portal">
                 <input type="submit" value="確認送出" data-wait="Please wait..." class="a-button as_contained submit unclickable w-button">
                 <div data-update="sign-up" class="a-button as_contained submit-trigger">確認送出</div>

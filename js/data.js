@@ -477,7 +477,72 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         $('.sign-in').removeClass('js-btn2text');
         $('.back-portal').css('display','none');
     })
-    let ssidCode = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
+    $('[data-update=sign-up]').click((e) => {
+        let target = e.target;
+        let input = $(target).closest('.portal').find('input[type=text], input[type=email], input[type=password]');
+        input.each((i) => {
+            if (($(input).eq(i).val() == "")) {
+                $(input).eq(i).closest('.f-block').find('.hinter-box').css('display', 'block');
+                $(input).eq(i).closest('.f-block').find('.hinter-box').addClass("js-shake");
+                $(target).addClass("js-shake");
+                setTimeout(function() {
+                    $(input).eq(i).closest('.f-block').find('.hinter-box').removeClass("js-shake");
+                    $(target).removeClass("js-shake");
+                }, 200);
+            }
+        })
+        let radio = $(target).closest('.portal').find('input[type=radio]');
+        console.log($(radio).is(':checked'))
+        if (!$(radio).eq(0).is(':checked') && !$(radio).eq(1).is(':checked')) {
+            $(radio).eq(0).closest('.f-block').find('.hinter-box').css('display', 'block');
+            $(radio).eq(0).closest('.f-block').find('.hinter-box').addClass("js-shake");
+            $(target).addClass("js-shake");
+                setTimeout(function() {
+                    $(radio).eq(0).closest('.f-block').find('.hinter-box').removeClass("js-shake");
+                    $(target).removeClass("js-shake");
+                }, 200);
+        }
+
+        if ($('.hinter-box:visible').length == 0) {
+            axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd', {
+                "data": {
+                    "user-type": $('[data-name=user-type]:checked').val(),
+                    "user-name": $('#user-name').val() + ' ' + $('#user-code').val(),
+                    "code": $('#user-code').val()
+                }
+            }).then(response => {
+                console.log(response.data);
+            });
+        }
+    })
+
+    $('input[type=text], input[type=email], input[type=password]').keydown((e)=>{
+        let target = e.target;
+        if ($(target).val() != "") {
+            if ($(target).closest('.f-block').find('.hinter-box').is(':visible')) {
+                $(target).closest('.f-block').find('.hinter-box').css('display', 'none');
+                $(target).closest('.f-block').find('.for-hinter').text('此欄必填');
+            }
+        }
+    })
+
+    $('input[type=radio]').click((e)=>{
+        let target = e.target;
+        $(target).closest('.f-block').find('.hinter-box').css('display', 'none');
+    })
+
+    $('#dbcheck-code').change(()=>{
+        if ($('#dbcheck-code').val() != $('#user-code').val()) {
+            $('#dbcheck-code').closest('.f-block').find('.hinter-box').css('display', 'block');
+                $('#dbcheck-code').closest('.f-block').find('.hinter-box').addClass("js-shake");
+                $('#dbcheck-code').closest('.f-block').find('.for-hinter').text("輸入錯誤");
+                setTimeout(function() {
+                    $(input).eq(i).closest('.f-block').find('.hinter-box').removeClass("js-shake");
+                }, 200);
+        }
+    })
+
+    let ssidCode = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
     const endpointCode = `${gsUrl}${ssidCode}${query}`;
     fetch(endpointCode)
         .then(res => res.text())

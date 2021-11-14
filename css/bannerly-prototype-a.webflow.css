@@ -460,7 +460,8 @@ label {
     line-height: 30px;
 }
 
-.a-button.as_contained.new-case {
+.a-button.as_contained.new-case,
+.a-button.as_contained.new-case:hover {
     height: 40px;
     padding-right: 12px;
     padding-left: 10px;
@@ -469,7 +470,8 @@ label {
 }
 
 .a-button.as_contained.new-case:hover {
-    margin-right: -2px;
+    /* margin-right: -2px; */
+    transform: scale(0.98,0.98);
 }
 
 .a-button.as_contained.for-portal {
@@ -2967,6 +2969,33 @@ div::-webkit-scrollbar {
     background-color: #fff;
     box-shadow: 0 4px 8px 0 rgba(51, 51, 51, 0.05);
     color: #2f5a3a;
+}
+
+.input.as-chip.literally-radio {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-transition: all 200ms cubic-bezier(.165, .84, .44, 1);
+    transition: all 200ms cubic-bezier(.165, .84, .44, 1);
+}
+
+.input.as-chip.literally-radio input {
+    margin-left: 8px;
+    margin-right: -8px;
 }
 
 .input.as-chip.js-toggle {
