@@ -449,7 +449,33 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     let valKey = sessionStorage.getItem('key');
     //Fetch授權憑證
     $(document).ready(() => {
-        $('.initial-bg').removeClass('js-hide');
+        $('.portal-bg').removeClass('js-hide');
+        $('[data-portal]').css('display','none');
+        $('.back-portal').css('display','none');
+    })
+    $('.sign-up').click(()=>{
+        $('[data-portal=sign-up]').css('display','block');
+        $('.sign-in').parent().css('display','none');
+        $('.sign-up').addClass('js-btn2text');
+        $('.portal').removeClass('inactive');
+        $('.back-portal').css('display','block');
+    })
+    $('.sign-in').click(()=>{
+        $('[data-portal=sign-in]').css('display','block');
+        $('.sign-up').parent().css('display','none');
+        $('.sign-in').addClass('js-btn2text');
+        $('.portal').removeClass('inactive');
+        $('.back-portal').css('display','block');
+    })
+    $('.back-portal').click(()=>{
+        $('.portal').addClass('inactive');
+        $('[data-portal=sign-up]').css('display','none');
+        $('[data-portal=sign-in]').css('display','none');
+        $('.sign-up').parent().css('display','block');
+        $('.sign-in').parent().css('display','block');
+        $('.sign-up').removeClass('js-btn2text');
+        $('.sign-in').removeClass('js-btn2text');
+        $('.back-portal').css('display','none');
     })
     let ssidCode = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
     const endpointCode = `${gsUrl}${ssidCode}${query}`;
@@ -468,13 +494,16 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     let iArr = [];
                     for (i = 1; i < rows.length; i++) {
                         if (rows[i].c[2].v.indexOf($(target).val()) >= 0) {
-                            $('.initial-bg').addClass('js-hide');
+                            $('.portal-bg').addClass('js-hide');
                             iArr.push(i);
                         }
                     }
-                    if (rows[iArr[0]].c[0].v == 'applicant' || rows[iArr[0]].c[0].v == 'designer') {
+                    if (rows[iArr[0]].c[0].v == 'applicant') {
                         $('[data-validation=master]').remove();
                     } else if (rows[iArr[0]].c[0].v == 'MASTER') {
+                        $('[data-validation=applicant]').remove();
+                    } else if (rows[iArr[0]].c[0].v == 'designer') {
+                        $('[data-validation=master]').remove();
                         $('[data-validation=applicant]').remove();
                     }
                 })
@@ -483,10 +512,13 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 let i;
                 for (i = 1; i < rows.length; i++) {
                     if (rows[i].c[2].v == valKey) {
-                        $('.initial-bg').addClass('js-hide');
-                        if (rows[i].c[0].v == 'applicant' || rows[i].c[0].v == 'designer') {
+                        $('.portal-bg').addClass('js-hide');
+                        if (rows[i].c[0].v == 'applicant') {
                             $('[data-validation=master]').remove();
                         } else if (rows[i].c[0].v == 'MASTER') {
+                            $('[data-validation=applicant]').remove();
+                        } else if (rows[iArr[0]].c[0].v == 'designer') {
+                            $('[data-validation=master]').remove();
                             $('[data-validation=applicant]').remove();
                         }
                     }

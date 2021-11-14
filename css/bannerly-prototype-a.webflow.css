@@ -414,10 +414,10 @@ label {
     display: flex;
     overflow: visible;
     height: 48px;
-    min-width: 56px;
+    min-width: 64px;
     margin: 0px;
-    padding-right: 16px;
-    padding-left: 16px;
+    padding-right: 0px;
+    padding-left: 0px;
     -webkit-box-align: center;
     -webkit-align-items: center;
     -ms-flex-align: center;
@@ -444,10 +444,9 @@ label {
     color: #fff;
     font-size: 18px;
     font-weight: 700;
-}
-
-.a-button.as_contained:hover {
-    background-color: rgba(51, 51, 51, 1);
+    text-align: center;
+    -webkit-transition: all 200ms ease;
+    transition: all 200ms ease;
 }
 
 .a-button.as_contained.w--current {
@@ -471,6 +470,40 @@ label {
 
 .a-button.as_contained.new-case:hover {
     margin-right: -2px;
+}
+
+.a-button.as_contained.for-portal {
+    background-color: #3B7A47;
+    min-width: 76px;
+    text-align: center;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.a-button.as_contained.for-portal:hover {
+    background-color: #3B7A47;
+    padding-left: 19px;
+    padding-right: 19px;
+}
+.a-button.as_contained.for-portal.sign-up {
+    background-color: rgba(59, 122, 71, 0.2);
+    color: #3B7A47;
+}
+
+.a-button.as_contained.for-portal.sign-in.js-btn2text,
+.a-button.as_contained.for-portal.sign-in.js-btn2text:hover,
+.a-button.as_contained.for-portal.sign-up.js-btn2text,
+.a-button.as_contained.for-portal.sign-up.js-btn2text:hover {
+    background-color: transparent;
+    color: #2F5A3A;
+    min-width: 76px;
+    height: 24px;
+    text-align: left;
+    margin-left: -20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    transform: scale(1, 1);
+    font-size: 18px;
 }
 
 .a-button.as_contained.has-icon {
@@ -1018,6 +1051,24 @@ label {
     flex-wrap: wrap;
 }
 
+.f-block.portal-title {
+    position: absolute;
+    top:-72px;
+    left: 0px;
+}
+
+.f-block.portal-title h2 {
+    width:288px;
+    text-align: center;
+    margin-bottom: 4px;
+}
+
+.f-block.portal-title ._12px-500 {
+    width:288px;
+    text-align: center;
+    color: #333;
+}
+
 .f-block.width100 {
     width: 100%;
 }
@@ -1514,12 +1565,19 @@ label {
     font-size: 14px;
     line-height: 20px;
     font-weight: 700;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    overflow: overlay;
+    scrollbar-width: 8px;  /* Firefox */
 }
 
 .body::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+    width: 8px; /* Hide scrollbar for Chrome, Safari and Opera */
+    background: transparent;
+  }
+
+  /* Handle */
+.body::-webkit-scrollbar-thumb {
+    background: #808080;
+    /* border-radius: 4px; */
   }
 
 div {
@@ -1979,6 +2037,17 @@ div::-webkit-scrollbar {
     background-image: url('../images/bx_bx-search-alt-2.svg');
     background-position: 50% 50%;
     background-size: auto;
+}
+
+.icon-24x.back-portal {
+    z-index: 10;
+    background-image: url('../images/akar-icons_arrow-back.svg');
+    background-position: 50% 50%;
+    background-size: 20px;
+    position: absolute;
+    right:8px;
+    top:12px;
+    cursor: pointer;
 }
 
 .icon-24x.back-home {
@@ -3891,16 +3960,26 @@ div::-webkit-scrollbar {
     color: rgba(47, 90, 58, 0.5);
 }
 
-.log-in.inactive {
-    width: 200px;
+.portal {
+    width: 288px;
     height: auto;
-    margin: 45vh auto 16px;
-    padding: 14px 16px 1px;
-    border-radius: 12px;
+    margin: 0px auto 0px;
+    padding: 14px 16px 0px;
+    position: relative;
+    left: 0%;
+    right: 0%;
+    text-align: center;
+    border-radius: 16px;
     background-color: #f5f5f5;
     box-shadow: inset 0 0 6px 0 hsla(0, 0%, 66.3%, 0.1);
     -webkit-transition: all 200ms ease;
     transition: all 200ms ease;
+}
+
+.portal.inactive {
+    width: auto;
+    background-color: transparent;
+    box-shadow: none;
 }
 
 .updates.js-hide {
@@ -3930,6 +4009,13 @@ div::-webkit-scrollbar {
 
 .submit-box {
     position: relative;
+}
+
+.submit-box.for-portal,
+.submit-box.for-portal .as_contained:hover {
+    margin-bottom: 16px;
+    margin-top:24px;
+    transform: scale(1,1);
 }
 
 .submit-trigger {
@@ -4030,14 +4116,10 @@ div::-webkit-scrollbar {
     cursor: pointer;
 }
 
-.a-button.as_contained {
-    min-width: 56px;
-    -webkit-transition: all 200ms ease;
-    transition: all 200ms ease;
-}
-
 .a-button.as_contained:hover {
-    font-size: 17px;
+    background-color: rgba(51, 51, 51, 1);
+    font-size: 19px;
+    transform: scale(0.95, 0.95);
 }
 
 .a-button.as_contained.submit-trigger {
@@ -4045,16 +4127,24 @@ div::-webkit-scrollbar {
     cursor: pointer;
 }
 
-.initial-bg {
+.portal-bg {
     position: fixed;
     z-index: 99;
     display: block;
     width: 100vw;
     height: 100vh;
     background-color: #e5e5e5;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
 }
 
-.initial-bg.js-hide {
+.portal-bg.js-hide {
     display: none;
 }
 
