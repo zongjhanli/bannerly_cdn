@@ -2245,7 +2245,7 @@ div::-webkit-scrollbar {
     transition: all 200ms cubic-bezier(.165, .84, .44, 1);
     color: rgba(51, 51, 51, 0.85);
     cursor: pointer;
-    background-color: #fff;
+    background-color: transparent;
     border-radius: 16px;
 }
 
@@ -2270,6 +2270,7 @@ div::-webkit-scrollbar {
     animation-duration: 0.2s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
+    background-color: #fff;
 }
 
 @keyframes font {
@@ -4226,6 +4227,34 @@ div::-webkit-scrollbar {
 
 .portal-bg.js-hide {
     display: none;
+}
+
+.no-result {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    height: 240px;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-box-pack: end;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-image: url('../images/no_result.svg');
+    background-position: 50% 80%;
+    background-size: auto;
+    background-repeat: no-repeat;
+    color: #999;
+    text-align: center;
 }
 
 @font-face {

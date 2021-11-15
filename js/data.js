@@ -727,38 +727,63 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             }
 
             //List 標註月份（H3）
-            $(document).ready(function() {
-                let l;
-                for (l = 0; l < $('.a-list').length; l++) {
-                    let base = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2);
-                    let plus = $('.a-list').eq(l + 1).children('._14px-500').text().slice(0, 2);
-                    let minus = $('.a-list').eq(l - 1).children('._14px-500').text().slice(0, 2);
+            function monthH3() {
+                $('.month-indicator').remove();
+                let mArr = [];
+                $('.a-list').each((l) => {
+                    $('.a-list').eq(l).attr('data-m', '');
+                    if ($('.a-list').eq(l).css('display') == 'flex') {
 
-                    if (base - minus == 1 || plus - base == 1) {
-                        let month = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2) + '月';
-                        let mHeader = '<h3 class="h3 month-indicator" data-m="' + month + '">' + month + '</h3>';
-                        $(mHeader).attr('data-m', month);
-                        $('.a-list').eq(l).before($(mHeader));
-                        $('.a-list').eq(l).attr('data-m', month);
+                        let base = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2);
+                        let plus = $('.a-list').eq(l + 1).children('._14px-500').text().slice(0, 2);
+                        let minus = $('.a-list').eq(l - 1).children('._14px-500').text().slice(0, 2);
+
+                        if (base - minus == 1 || plus - base == 1) {
+                            let month = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2) + '月';
+                            let mHeader = '<h3 class="h3 month-indicator" data-m="' + month + '">' + month + '</h3>';
+                            $(mHeader).attr('data-m', month);
+                            $('.a-list').eq(l).before($(mHeader));
+                            $('.a-list').eq(l).attr('data-m', month);
+                            mArr.push(month);
+                        }
                     }
-                }
-                let firstMonth = $('.a-list').eq(0).children('._14px-500').text().slice(0, 2) + '月';
-                let firstHeader = '<h3 class="h3 month-indicator" data-m="' + firstMonth + '">' + firstMonth + '</h3>';
-                let lastMonth = $('.a-list').eq($('.a-list').length - 1).children('._14px-500').text().slice(0, 2) + '月';
-                let lastHeader = '<h3 class="h3 month-indicator" data-m="' + lastMonth + '">' + lastMonth + '</h3>';
-                $('.a-list').first().before(firstHeader);
-                $('.a-list').first().attr('data-m', firstMonth);
-                $('.a-list').last().before(lastHeader);
-                $('.a-list').last().attr('data-m', lastMonth);
-
-                //挖除月份標籤的"0"字樣
+                })
+                let dpM; //duplicated month
                 $('.month-indicator').each((i) => {
+                        if (mArr.filter(x => x == $('.month-indicator').eq(i).text()).length > 1) {
+                            dpM = $('.month-indicator').eq(i).text();
+                        }
+                    })
+                    // $('.month-indicator').filter(x => $(x).attr('data-m') == dpM).eq(1).remove();
+                let mH3 = document.querySelectorAll('h3');
+                let dpH3 = [...mH3].filter(x => x.dataset.m == dpM);
+                $(dpH3).eq(1).remove();
+
+
+                let firstMonth = $('.a-list').not(':hidden').eq(0).children('._14px-500').text().slice(0, 2) + '月';
+                let firstHeader = '<h3 class="h3 month-indicator" data-m="' + firstMonth + '">' + firstMonth + '</h3>';
+                let lastMonth = $('.a-list').not(':hidden').eq($('.a-list').not(':hidden').length - 1).children('._14px-500').text().slice(0, 2) + '月';
+                let lastHeader = '<h3 class="h3 month-indicator" data-m="' + lastMonth + '">' + lastMonth + '</h3>';
+                if ($('.a-list').not(':hidden').length != 1) {
+                    if ($('.a-list').not(':hidden').eq(0).prev('.month-indicator').length < 1) {
+                        $('.a-list').not(':hidden').first().before(firstHeader);
+                        $('.a-list').not(':hidden').first().attr('data-m', firstMonth);
+                    }
+                    if ($('.a-list').not(':hidden').eq($('.a-list').not(':hidden').length - 1).prev('.month-indicator').length < 1) {
+                        $('.a-list').not(':hidden').last().before(lastHeader);
+                        $('.a-list').not(':hidden').last().attr('data-m', lastMonth);
+                    }
+                } else if ($('.a-list').not(':hidden').length == 1) {
+                    $('.a-list').not(':hidden').first().before(firstHeader);
+                    $('.a-list').not(':hidden').first().attr('data-m', firstMonth);
+                }
+                $('.month-indicator').each((i) => {
+                    //刪除「0」字樣
                     if ($('.month-indicator').eq(i).text().slice(0, 1) == '0') {
                         $('.month-indicator').eq(i).text($('.month-indicator').eq(i).text().replace('0', ''));
                     }
                 })
-
-            })
+            }
 
             //List欄位-QUERY
             //quarter query 選項建置
@@ -813,11 +838,18 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 $('[data-query=quarter]').find('.label').last().text('全案件');
             })
 
+            $(document).ready(function() {
+                quarterQuery();
+                monthH3();
+            })
+
             //search input 響應
             $('.search-input').change(function() {
                 searchQuery();
                 quarterQuery();
                 statsQuery();
+                personQuery();
+                monthH3();
                 // sortQuery();
             })
 
@@ -825,6 +857,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 $(this).parent().parent().find('.icon_32x.for-search-query').addClass('js-return');
                 if (e.which == 13) {
                     $(this).parent().parent().find('.icon_32x.for-search-query').removeClass('js-return').addClass('js-clear-search');
+                    $(this).trigger('change');
                 }
                 if ($(this).val() == "") {
                     $(this).parent().parent().find('.icon_32x.for-search-query').removeClass('js-return').removeClass('js-clear-search');
@@ -832,6 +865,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     searchQuery();
                     quarterQuery();
                     statsQuery();
+                    personQuery();
+                    monthH3();
                 }
             })
 
@@ -843,6 +878,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         searchQuery();
                         quarterQuery();
                         statsQuery();
+                        personQuery();
+                        monthH3();
                         $(this).removeClass('js-return').addClass('js-clear-search');
                     }
                 }) //end of search input 響應
@@ -945,18 +982,14 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     searchQuery();
                     quarterQuery(); //除了click event 也用於document.ready
                     statsQuery();
+                    personQuery();
+                    monthH3();
                     if (target.hasClass('label')) {
                         if (target.parent().parent().parent().parent().attr('data-query') == 'sort') {
                             sortQuery();
                         }
                     }
                 }
-
-
-            })
-
-            $(document).ready(function() {
-                quarterQuery();
             })
 
             function searchQuery() {
@@ -1010,6 +1043,32 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 })
             }
 
+            function personQuery() {
+                $('.dropdown-box').each(function() {
+                    if ($(this).attr('data-query') == 'designer') {
+                        let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
+                        if (filterKey != "設計方") {
+                            $('.a-list').each(function(l) {
+                                let statsStr = $('.a-list').eq(l).find('._14px-500.as-stats').eq(1).text();
+                                if (statsStr == '未指派' || filterKey != statsStr) {
+                                    $('.a-list').eq(l).css('display', 'none');
+                                }
+                            })
+                        }
+                    } else if ($(this).attr('data-query') == 'applicant') {
+                        let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
+                        if (filterKey != "需求方") {
+                            $('.a-list').each(function(l) {
+                                let statsStr = $('.a-list').eq(l).find('._14px-500.as-stats').eq(0).text();
+                                if (filterKey != statsStr) {
+                                    $('.a-list').eq(l).css('display', 'none');
+                                }
+                            })
+                        }
+                    }
+                })
+            }
+
             function statsQuery() {
                 $('.dropdown-box').each(function() {
                     if ($(this).attr('data-query') == 'status') {
@@ -1039,22 +1098,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 });
             }
             //end of List欄位-QUERY
-
-
-            $(document).ready(function() { monthIndicator(); })
-            $(document).click(function() { monthIndicator(); })
-
-
-            function monthIndicator() {
-                //若list隱藏，月份標籤連帶隱藏
-                $('.a-list[data-m]').each((m) => {
-                    if ($('.a-list[data-m]').eq(m).is(':hidden')) {
-                        $('.month-indicator[data-m]').eq(m).css('display', 'none');
-                    } else {
-                        $('.month-indicator[data-m]').eq(m).css('display', 'block');
-                    }
-                })
-            }
 
             // Result欄位output
             document.addEventListener('click', (e) => {
@@ -1527,4 +1570,21 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     }
                 }) //end of Result欄位output
         })
+
+    $(document).ready(() => {
+        $('.no-result').css('display', 'none');
+    })
+    $('.dropdown-box.for-query').find('.label').mouseup(() => { noResult() })
+    $('.search-input').change(() => { noResult() })
+    $('.icon_32x.filter').mouseup(() => { noResult() })
+
+    function noResult() {
+        setTimeout(() => {
+            if ($('.a-list:visible').length == 0) {
+                $('.no-result').css('display', 'block');
+            } else {
+                $('.no-result').css('display', 'none');
+            }
+        }, 100)
+    }
 }
