@@ -1,0 +1,116 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<style>
+.Rectangle_50_613 {
+	animation: 1.5s linear 0s 1 normal forwards running Rectangle_50_613;
+		transform: translateX(8px) translateY(8px);
+		width: 80px;
+		height: 80px;
+		animation-iteration-count: infinite;
+}
+@keyframes Rectangle_50_613 {
+	0% {
+		transform: translateX(8px) translateY(8px);
+		width: 80px;
+		height: 80px;
+	}
+	53.33% {
+		transform: translateX(7px) translateY(7px);
+		width: 82px;
+		height: 82px;
+	}
+	100% {
+		transform: translateX(8px) translateY(8px);
+		width: 80px;
+		height: 80px;
+	}
+}
+.Rectangle_52_885 {
+	animation: 1.5s linear 0.4s 1 normal forwards running Rectangle_52_885;
+		width: 8px;
+		opacity: 0;
+		animation-iteration-count: infinite;
+}
+@keyframes Rectangle_52_885 {
+	0% {
+		width: 8px;
+		opacity: 0;
+	}
+	26.67% {
+		width: 8px;
+		opacity: 0;
+	}
+	60% {
+		width: 28px;
+		opacity: 1;
+	}
+	93.33% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+		width: 28px;
+	}
+}
+.Rectangle_51_414 {
+	animation: 1.5s linear 0.2s 1 normal forwards running Rectangle_51_414;
+		width: 8px;
+		opacity: 0;
+		animation-iteration-count: infinite;
+}
+@keyframes Rectangle_51_414 {
+	0% {
+		width: 8px;
+		opacity: 0;
+	}
+	13.33% {
+		width: 8px;
+		opacity: 0;
+	}
+	46.67% {
+		width: 48px;
+		opacity: 1;
+	}
+	80% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+		width: 48px;
+	}
+}
+.Rectangle_53_765 {
+	animation: 1.5s linear 0s 1 normal forwards running Rectangle_53_765;
+		width: 8px;
+		opacity: 0;
+		animation-iteration-count: infinite;
+}
+@keyframes Rectangle_53_765 {
+	0% {
+		width: 8px;
+		opacity: 0;
+	}
+	33.33% {
+		width: 48px;
+		opacity: 1;
+	}
+	66.67% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+		width: 48px;
+	}
+}
+</style>
+<g width="128" height="128" data-name="page-load">
+	<rect width="128" height="128" rx="32" fill="#3B7A47" data-name="Rectangle 61"/>
+	<g transform="translate(16 16)" clip-path="url(#clip_1_618)" width="96" height="96" data-name="majesticons:clipboard-list">
+		<rect width="81.9947" height="81.9947" rx="16" fill="white" data-name="Rectangle 50" class="Rectangle_50_613"/>
+		<rect opacity="0.938976" width="27.7681" height="8" rx="4" fill="#3B7A47" data-name="Rectangle 52" class="Rectangle_52_885" transform="translate(24.3 56)"/>
+		<rect opacity="0.911267" width="47.9991" height="8" rx="4" fill="#3B7A47" data-name="Rectangle 51" class="Rectangle_51_414" transform="translate(24 40)"/>
+		<rect opacity="0.504" width="47.9994" height="8" rx="4" fill="#3B7A47" data-name="Rectangle 53" class="Rectangle_53_765" transform="translate(24 24)"/>
+	</g>
+</g>
+<defs><clipPath id="clip_1_618"><rect width="96" height="96"/></clipPath>
+</defs>
+</svg>

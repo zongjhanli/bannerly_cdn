@@ -726,7 +726,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 }
             }
 
-            //List 標註月份（H3）
+            //List 標註月份（H3 .month-indicator）
             function monthH3() {
                 $('.month-indicator').remove();
                 let mArr = [];
@@ -737,14 +737,15 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         let base = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2);
                         let plus = $('.a-list').eq(l + 1).children('._14px-500').text().slice(0, 2);
                         let minus = $('.a-list').eq(l - 1).children('._14px-500').text().slice(0, 2);
-
-                        if (base - minus == 1 || plus - base == 1) {
-                            let month = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2) + '月';
-                            let mHeader = '<h3 class="h3 month-indicator" data-m="' + month + '">' + month + '</h3>';
-                            $(mHeader).attr('data-m', month);
-                            $('.a-list').eq(l).before($(mHeader));
-                            $('.a-list').eq(l).attr('data-m', month);
-                            mArr.push(month);
+                        if ($('.a-list').not(':hidden').length != 1) {
+                            if (base - minus == 1 || plus - base == 1) {
+                                let month = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2) + '月';
+                                let mHeader = '<h3 class="h3 month-indicator" data-m="' + month + '">' + month + '</h3>';
+                                $(mHeader).attr('data-m', month);
+                                $('.a-list').eq(l).before($(mHeader));
+                                $('.a-list').eq(l).attr('data-m', month);
+                                mArr.push(month);
+                            }
                         }
                     }
                 })
@@ -1572,7 +1573,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         })
 
     $(document).ready(() => {
-        $('.no-result').css('display', 'none');
+        $('.empty-state').css('display', 'none');
     })
     $('.dropdown-box.for-query').find('.label').mouseup(() => { noResult() })
     $('.search-input').change(() => { noResult() })
@@ -1581,9 +1582,9 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     function noResult() {
         setTimeout(() => {
             if ($('.a-list:visible').length == 0) {
-                $('.no-result').css('display', 'block');
+                $('.empty-state').css('display', 'block');
             } else {
-                $('.no-result').css('display', 'none');
+                $('.empty-state').css('display', 'none');
             }
         }, 100)
     }

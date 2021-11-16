@@ -4229,32 +4229,26 @@ div::-webkit-scrollbar {
     display: none;
 }
 
-.no-result {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    width: 100%;
-    height: 240px;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    -webkit-box-pack: end;
-    -webkit-justify-content: flex-end;
-    -ms-flex-pack: end;
-    justify-content: flex-end;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    background-image: url('../images/no_result.svg');
-    background-position: 50% 80%;
-    background-size: auto;
-    background-repeat: no-repeat;
-    color: #999;
+.empty-state {
     text-align: center;
+    width: auto;
+    height: 128px;
+    height: 240px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    top: 56px;
+    color: #999;
+}
+
+.empty-illus {
+    /* margin-bottom: 16px; */
+    width: 100%;
+    height: 128px;
+    background-image: url('../images/empty-state.svg');
+    background-position: 50% 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 @font-face {
