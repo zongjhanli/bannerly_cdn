@@ -449,7 +449,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     let valKey = sessionStorage.getItem('key');
     //Fetch授權憑證
     $(document).ready(() => {
-        $('.portal-bg').removeClass('js-hide');
         $('[data-portal]').css('display', 'none');
         $('.back-portal').css('display', 'none');
         $('.icon_20x.for-portal').css('display', 'none');
@@ -609,7 +608,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 for (i = 1; i < rows.length; i++) {
                     if (rows[i].c[2] != null) {
                         if (rows[i].c[2].v == valKey) {
-                            $('.portal-bg').addClass('js-hide');
                             if (rows[i].c[0].v == 'applicant') {
                                 $('[data-validation=master]').remove();
                             } else if (rows[i].c[0].v == 'MASTER') {
@@ -621,6 +619,9 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         }
                     }
                 }
+                // setTimeout(() => {
+                //     $('.portal-bg').addClass('js-hide');
+                // }, 1000)
             }
         })
 

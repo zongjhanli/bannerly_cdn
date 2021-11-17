@@ -13,6 +13,22 @@
 
 // ----------------------------------------------------------------------------------------------------
 
+//page-load animation
+$(document).ready(function() {
+    setTimeout(() => {
+        $('.page-load-illus').css('display', 'none')
+        if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
+            $('.page-load-illus').parent().addClass('js-hide');
+        } else {
+            $('.portal.inactive').removeClass('js-hide');
+            let valKey = sessionStorage.getItem('key');
+            if (valKey != null) {
+                $('.portal-bg').addClass('js-hide');
+            }
+        }
+    }, 1600)
+})
+
 //預設日期txtInput.value =""
 $(document).ready(function() {
     $('.date-input').not('.single-date').val('');
