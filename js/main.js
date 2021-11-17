@@ -1837,17 +1837,16 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
         })
 
         let timestamp = moment().format();
-        // timestamp = timestamp.toString().replace(' GMT+0800 (台北標準時間)', '').replace(/ /g, '-');
         $('.submit-box').attr('data-stamp', timestamp);
 
-        // if ($('.hinter-box:visible').length == 0) {
-        //     $(target).siblings('.submit').trigger('click');
-        // } else {
-        //     $(target).parent('.submit-box').addClass("js-shake");
-        //     setTimeout(function() {
-        //         $(target).parent('.submit-box').removeClass("js-shake");
-        //     }, 200);
-        // }
+        if ($('.hinter-box:visible').length == 0) {
+            $(target).siblings('.submit').trigger('click');
+        } else {
+            $(target).parent('.submit-box').addClass("js-shake");
+            setTimeout(function() {
+                $(target).parent('.submit-box').removeClass("js-shake");
+            }, 200);
+        }
     });
 
     //重新填寫觸發in-card hinter關閉

@@ -133,6 +133,17 @@ if (window.location.href.includes('custom-apply')) {
             }
         }).then(response => {
             console.log(response.data);
+
+            //redirect
+            let address = window.location.href;
+            setTimeout(() => {
+                if (address.indexOf('html') < 0) {
+                    address = address.replace('custom-apply', '');
+                } else if (address.indexOf('html') >= 0) {
+                    address = address.replace('custom-apply.html', '');
+                }
+                window.location.replace(address);
+            }, 1000)
         });
     })
 }
@@ -434,6 +445,17 @@ if (window.location.href.includes('form-apply')) {
             }
         }).then(response => {
             console.log(response.data);
+
+            //redirect
+            let address = window.location.href;
+            setTimeout(() => {
+                if (address.indexOf('html') < 0) {
+                    address = address.replace('form-apply', '');
+                } else if (address.indexOf('html') >= 0) {
+                    address = address.replace('form-apply.html', '');
+                }
+                window.location.replace(address);
+            }, 1000)
         });
     })
 
