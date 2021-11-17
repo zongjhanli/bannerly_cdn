@@ -280,6 +280,8 @@ if (window.location.href.includes('form-apply')) {
                         $('#Product').find('.drop-group').eq(d).append(option);
                         // console.log(imgNameArr[i]);
                     }
+                    let NOption = '<div class="a-button as-list"><div class="label full-touch">' + '無需曝光商品' + '</div><div class="custom-check tick-right"></div></div>'
+                    $('#Product').find('.drop-group').eq(d).find('.a-button.as-list').eq(0).before($(NOption));
                 })
             }, 1000);
         })
@@ -622,11 +624,11 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     }
                     if (rows[iArr[0]].c[0].v == 'applicant') {
                         $('[data-validation=master]').remove();
-                    } else if (rows[iArr[0]].c[0].v == 'MASTER') {
-                        $('[data-validation=applicant]').remove();
                     } else if (rows[iArr[0]].c[0].v == 'designer') {
                         $('[data-validation=master]').remove();
                         $('[data-validation=applicant]').remove();
+                    } else if (rows[iArr[0]].c[0].v == 'MASTER') {
+                        // $('[data-validation=applicant]').remove();
                     }
                 })
             } else if (valKey != null) {
@@ -1454,7 +1456,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                     'padding-left': '12px',
                                     'color': 'rgba(47, 90, 58, 0.5)'
                                 });
-                                $(this).text('曝光商品未選');
+                                $(this).text('無需曝光商品');
                             }
                         })
 

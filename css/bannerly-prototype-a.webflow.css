@@ -1179,6 +1179,7 @@ label {
 }
 
 .container.for-form {
+    position: absolute;
     width: 100vw;
     padding-top: 116px;
     padding-bottom: 30vh;
@@ -2772,7 +2773,7 @@ div::-webkit-scrollbar {
     left: 0px;
     top: 0px;
     right: -688px;
-    z-index: 99;
+    z-index: 10;
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -4273,6 +4274,13 @@ div::-webkit-scrollbar {
     background-position: 50% 50%;
     background-size: contain;
     background-repeat: no-repeat;
+    -webkit-transition: all 200ms ease;
+    transition: all 200ms ease;
+}
+
+.page-load-illus.js-hide {
+    transform: scale(0.8, 0.8);
+    opacity: 0;
 }
 
 @font-face {
