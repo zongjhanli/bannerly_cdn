@@ -583,6 +583,11 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         if (rows[i].c[2] != null) {
                             if (rows[i].c[2].v.indexOf($(target).val()) >= 0) {
                                 $('.portal-bg').addClass('js-hide');
+                                $('.query-box').removeClass('js-collapsed');
+                                $('.container.for-list').css({
+                                    'bottom': '0px',
+                                    'position': 'absolute'
+                                });
                                 sessionStorage.setItem('key', $(target).val());
                                 iArr.push(i);
                             } else {
@@ -1126,13 +1131,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                     $(lists[li]).find('.stats-flex').addClass('js-topbar'); //css animation has @keyframe
                                     $(lists[li]).find('._14px-500.as-stats').css('opacity', '0');
 
-                                    $('.query-box').css({
-                                        'height': '0px',
-                                        'top': '72px',
-                                        'overflow': 'hidden',
-                                        'opacity': '0'
-                                    })
-                                    $('.container.for-output').css({
+                                    $('.query-box').addClass('js-collapsed');
+                                    $('.container.for-list').css({
                                         'bottom': '-100vh',
                                         'position': 'fixed'
                                     });
@@ -1516,13 +1516,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                     $(lists).eq(l).find('._14px-500.as-stats').css('opacity', '1');
                                 }
                             })
-                            $('.query-box').css({
-                                'height': '96px',
-                                'top': '92px',
-                                'overflow': 'visible',
-                                'opacity': '1'
-                            })
-                            $('.container.for-output').css({
+                            $('.query-box').removeClass('js-collapsed');
+                            $('.container.for-list').css({
                                 'bottom': '0px',
                                 'position': 'absolute'
                             });

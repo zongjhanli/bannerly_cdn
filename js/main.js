@@ -15,15 +15,52 @@
 
 //page-load animation
 $(document).ready(function() {
+    if (!window.location.href.includes('form-apply') && !window.location.href.includes('custom-apply')) {
+        $('.container.for-list').css({
+            'bottom': '-100vh',
+            'position': 'fixed'
+        });
+        $('.query-box').addClass('js-collapsed');
+    } else {
+        $('.topbar-box.suspend').addClass('js-hide');
+        $('.container.for-form').css({
+            'opacity': '0',
+            'transform': 'translateY(48px)'
+        });
+        if (history.scrollRestoration) {
+            history.scrollRestoration = 'manual';
+        } else {
+            window.onbeforeunload = function() {
+                window.scrollTo(0, 0);
+            }
+        }
+    }
+
     setTimeout(() => {
         $('.page-load-illus').css('display', 'none')
         if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
             $('.page-load-illus').parent().addClass('js-hide');
+            $('.topbar-box.suspend').removeClass('js-hide');
+            $('.container.for-form').css({
+                'opacity': '1',
+                'transform': 'translateY(0px)'
+            });
         } else {
-            $('.portal.inactive').removeClass('js-hide');
             let valKey = sessionStorage.getItem('key');
-            if (valKey != null) {
+            if (valKey == null) {
+                $('.portal.inactive').removeClass('js-hide');
+                $('.container.for-list').css({
+                    'bottom': '-100vh',
+                    'position': 'fixed'
+                });
+                $('.query-box').addClass('js-collapsed');
+            } else if (valKey != null) {
                 $('.portal-bg').addClass('js-hide');
+                $('.container.for-list').css({
+                    'bottom': '0px',
+                    'position': 'absolute'
+                });
+                $('.query-box').removeClass('js-collapsed');
             }
         }
     }, 1600)

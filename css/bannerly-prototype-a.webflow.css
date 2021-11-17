@@ -298,7 +298,7 @@ label {
     color: #999;
 }
 
-.a-topbar.for-output {
+.a-topbar.suspend {
     border-radius: 16px;
 }
 
@@ -1140,6 +1140,8 @@ label {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
+    -webkit-transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .container.output {
@@ -1150,8 +1152,6 @@ label {
     overflow: visible;
     background-color: transparent;
     opacity: 0;
-    -webkit-transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .container.output:hover {
@@ -1167,7 +1167,7 @@ label {
     /* background-color: #e5e5e5; */
 }
 
-.container.for-output {
+.container.for-list {
     position: absolute;
     left: 0%;
     right: 0%;
@@ -1176,8 +1176,6 @@ label {
     border-top-left-radius: 32px;
     border-top-right-radius: 32px;
     background-color: #fff;
-    -webkit-transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .container.for-form {
@@ -1766,8 +1764,13 @@ div::-webkit-scrollbar {
     top: -48px;
 }
 
-.topbar-box.for-output {
+.topbar-box.suspend {
     top: 32px;
+}
+
+.topbar-box.suspend.js-hide {
+    top: -50px;
+    opacity: 0;
 }
 
 .anch-circ {
@@ -3989,6 +3992,13 @@ div::-webkit-scrollbar {
 .query-box:hover {
     top: 90px;
     box-shadow: 0 8px 10px 8px hsla(0, 0%, 89.8%, 0.2);
+}
+
+.query-box.js-collapsed {
+    height: 0px;
+    top: 72px;
+    overflow: hidden;
+    opacity: 0;
 }
 
 .search-query {
