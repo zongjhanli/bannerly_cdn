@@ -134,7 +134,7 @@ if (window.location.href.includes('custom-apply')) {
         }).then(response => {
             console.log(response.data);
 
-            //redirect
+            //redirect to home
             let address = window.location.href;
             setTimeout(() => {
                 if (address.indexOf('html') < 0) {
