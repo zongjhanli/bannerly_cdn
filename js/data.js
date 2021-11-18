@@ -1425,46 +1425,15 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
 
                         //隱藏空白的案型card
-                        let sCards = $("[data-output='C-A'], [data-output='C-B'], [data-output='C-C']");
-                        for (const sCard of sCards) {
-                            if (sCard.textContent.length == 0) {
-                                sCard.parentElement.parentElement.parentElement.style.display = "none";
-                            }
-                        }
-
-                        //隱藏空白的pd pool
-                        // $('.block-pool').each(function() {
-                        //     if ($(this).find('.img').length == 0) {
-                        //         // $(this).parent().css('display', 'none');
-                        //         $(this).css({
-                        //             'padding-left': '12px',
-                        //             'color': 'rgba(47, 90, 58, 0.5)'
-                        //         });
-                        //         $(this).text('無需曝光商品');
-                        //     }
-                        // })
-
-                        //隱藏空白的textarea
-                        let tArr = [];
-                        $('.col-right').each((c) => {
-                            let txtArea = $('.col-right').eq(c).find('.as-textarea[data-output]');
-                            $(txtArea).each((t) => {
-                                if ($(txtArea).eq(t).text().length == 0) {
-                                    $(txtArea).eq(t).css('display', 'none');
-                                } else if ($(txtArea).eq(t).text().length > 0) {
-                                    tArr.push(t);
+                        setTimeout(() => {
+                            let copyWright = $("[data-output='C-A'], [data-output='C-B'], [data-output='C-C']");
+                            $(copyWright).each((c) => {
+                                if ($(copyWright).eq(c).text().length == 0) {
+                                    $(copyWright).eq(c).closest('.card-box').css('display', 'none');
                                 }
                             })
-                            $(txtArea).eq(tArr[0]).css('display', 'block');
-                        })
+                        }, 1)
 
-                        //隱藏空白的tab
-                        let tabLabels = $(".a-button.as-tab .label");
-                        for (const tabLabel of tabLabels) {
-                            if (tabLabel.textContent == '') {
-                                tabLabel.parentElement.style.display = 'none';
-                            }
-                        }
                         $('[data-update=send]').click((e) => {
                             let target = e.target;
                             let input = $(target).closest('.card').find('input').not('.submit');
@@ -1553,6 +1522,9 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             $('.hinter-box').css('display', 'none');
 
                             //defaulting output blocks
+                            //card-box
+                            $('.container.output').find('.card-box').css('display', 'block');
+
                             //info area
                             $("[data-output='designer']").text('');
                             $("[data-output='designer']").val('');
