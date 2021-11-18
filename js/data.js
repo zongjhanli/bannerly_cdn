@@ -1427,7 +1427,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         //隱藏空白的案型card
                         let sCards = $("[data-output='C-A'], [data-output='C-B'], [data-output='C-C']");
                         for (const sCard of sCards) {
-                            if (sCard.textContent == "") {
+                            if (sCard.textContent.length == 0) {
                                 sCard.parentElement.parentElement.parentElement.style.display = "none";
                             }
                         }
