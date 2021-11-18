@@ -460,10 +460,13 @@ label {
     line-height: 30px;
 }
 
-.a-button.as_contained.new-case,
-.a-button.as_contained.new-case:hover {
+.a-button.as_contained.new-case.dropdown-box,
+.a-button.as_contained.new-case.dropdown-box:hover {
+    border-radius: 12px;
+    width: auto;
     height: 40px;
-    padding-right: 12px;
+    margin-right: -1px;
+    padding-right: 0px;
     padding-left: 10px;
     font-size: 16px;
     background-color: #3B7A47;
@@ -537,6 +540,10 @@ label {
     color: #2f5a3a;
     font-size: 14px;
     line-height: 24px;
+}
+
+a.a-button.as-list {
+    height: 40px;
 }
 
 .a-button.as-list:hover {
@@ -1147,7 +1154,7 @@ label {
 .container.output {
     position: absolute;
     top: 48px;
-    z-index: 6;
+    z-index: 8;
     display: none;
     overflow: visible;
     background-color: transparent;
@@ -1502,6 +1509,11 @@ label {
     height: 100%;
     line-height: 36px;
     text-align: left;
+}
+
+.label.full-touch.new-case {
+    font-size: 15px;
+    line-height: 40px;
 }
 
 .label.full-touch.tick-left {
@@ -2082,7 +2094,7 @@ div::-webkit-scrollbar {
 }
 
 .icon-24x.new-case {
-    margin-right: 4px;
+    margin-left: 4px;
     background-image: url('../images/fluent_form3.svg');
     background-position: 50% 0%;
     background-size: 24px;
@@ -2401,6 +2413,28 @@ div::-webkit-scrollbar {
     height: 20px;
 }
 
+.icon_20x.form-apply {
+    position: absolute;
+    right: 10px;
+    background-color: transparent;
+    background-image: url('../images/majesticons_form-apply.svg');
+    background-position: 40% 50%;
+    background-size: 18px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.icon_20x.custom-apply {
+    position: absolute;
+    right: 10px;
+    background-color: transparent;
+    background-image: url('../images/majesticons_custom-apply.svg');
+    background-position: 40% 50%;
+    background-size: 18px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
 .icon_20x.dropdown {
     position: absolute;
     top: 8px;
@@ -2548,6 +2582,7 @@ div::-webkit-scrollbar {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
+    z-index: 7;
 }
 
 .full-width-flex {
@@ -3328,6 +3363,7 @@ div::-webkit-scrollbar {
     border-color: #dcdcdc;
     border-radius: 8px;
     background-color: #fff;
+    box-shadow: 0 4px 8px 0 hsla(0, 0%, 89.8%, 0.4);
     -webkit-transition: all 200ms cubic-bezier(.165, .84, .44, 1), border-width 0ms linear;
     transition: all 200ms cubic-bezier(.165, .84, .44, 1), border-width 0ms linear;
 }
@@ -3343,7 +3379,6 @@ div::-webkit-scrollbar {
 .drop-card.extend {
     width: 130%;
     margin-left: -15%;
-    box-shadow: 0 4px 8px 0 hsla(0, 0%, 89.8%, 0.6);
 }
 
 .drop-card.shorter {

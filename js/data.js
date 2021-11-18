@@ -1177,6 +1177,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                     }, 100)
                                     $('.as-textarea[data-output]').text('');
                                     $('.as-counts').text('');
+                                    $('.home-title').css('z-index', '0');
 
                                     let cols = json.table.cols;
                                     let tCells = rows[li].c;
@@ -1498,6 +1499,9 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         })
                         $('.back-home').click(function() {
                             $('.container.output').removeClass('js-show');
+                            setTimeout(() => {
+                                $('.home-title').css('z-index', '7');
+                            }, 200)
 
                             //defaulting list[li]
                             $(lists).each((l) => {

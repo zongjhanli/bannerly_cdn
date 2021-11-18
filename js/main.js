@@ -629,7 +629,10 @@ for (const dropCard of dropCards) {
         document.addEventListener("click", (e) => {
             let target = e.target;
             let dropArrow = dropCard.parentElement.querySelector(".dropdown-arrow"); // for global collapse
-            let tDropCard = target.parentElement.parentElement.parentElement; // for expandByLabel
+            let tDropCard;
+            if (target.parentElement.parentElement != null) {
+                tDropCard = target.parentElement.parentElement.parentElement; // for expandByLabel
+            }
             let pendingOption = document.querySelector("[data-custom=pending]");
 
             function globalCollapse() {
