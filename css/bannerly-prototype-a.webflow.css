@@ -1154,7 +1154,7 @@ a.a-button.as-list {
 .container.output {
     position: absolute;
     top: 48px;
-    z-index: 8;
+    z-index: 6;
     display: none;
     overflow: visible;
     background-color: transparent;
@@ -2583,6 +2583,8 @@ div::-webkit-scrollbar {
     -ms-flex-align: center;
     align-items: center;
     z-index: 7;
+    -webkit-transition: all 200ms ease;
+    transition: all 200ms ease;
 }
 
 .full-width-flex {

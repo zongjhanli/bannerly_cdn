@@ -342,14 +342,14 @@ if (window.location.href.includes('form-apply')) {
 
         //reconstruct copywright value
         let AcopywrightStr = [];
-        AcopywrightStr.push($("#C-1-A").val(), $("#C-2-A").val(), $("#C-3-A").val(), $("#C-4-A").val());
+        AcopywrightStr.push($("#C-1-A").val(), $("#C-2-A").val(), $("#C-3-A").val(), '備註: ' + $("#C-4-A").val());
         let BcopywrightStr = [];
         if ($("#C-1-B").val() != "") {
-            BcopywrightStr.push($("#C-1-B").val(), $("#C-2-B").val(), $("#C-3-B").val(), $("#C-4-B").val());
+            BcopywrightStr.push($("#C-1-B").val(), $("#C-2-B").val(), $("#C-3-B").val(), '備註: ' + $("#C-4-B").val());
         }
         let CcopywrightStr = [];
         if ($("#C-1-C").val() != "") {
-            CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), $("#C-4-C").val());
+            CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), '備註: ' + $("#C-4-C").val());
         }
 
         //讀取各ec尺寸
@@ -1177,7 +1177,10 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                     }, 100)
                                     $('.as-textarea[data-output]').text('');
                                     $('.as-counts').text('');
-                                    $('.home-title').css('z-index', '0');
+                                    $('.home-title').css({
+                                        'z-index': '0',
+                                        'opacity': '0'
+                                    });
 
                                     let cols = json.table.cols;
                                     let tCells = rows[li].c;
@@ -1424,17 +1427,99 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             $("[data-output=ddl-2]").not('input').css('color', 'rgba(47, 90, 58, 0.5)');
                         }
 
-
                         //隱藏空白的案型card
                         setTimeout(() => {
-                            let copyWright = $("[data-output='C-A'], [data-output='C-B'], [data-output='C-C']");
-                            $(copyWright).each((c) => {
-                                if ($(copyWright).eq(c).text().length == 0) {
-                                    $(copyWright).eq(c).closest('.card-box').css('display', 'none');
+                                let copyWright = $("[data-output='C-A'], [data-output='C-B'], [data-output='C-C']");
+                                $(copyWright).each((c) => {
+                                    if ($(copyWright).eq(c).text().length == 0) {
+                                        $(copyWright).eq(c).closest('.card-box').css('display', 'none');
+                                    }
+                                })
+                            }, 1)
+                            //若多案型標註案型編號
+                        setTimeout(() => {
+                            $('[data-detail="true"]:visible').each((c) => {
+                                let capTitle = $('[data-detail="true"]:visible').eq(c).find('.cap-title');
+                                if ($('[data-detail="true"]:visible').length > 1) {
+                                    $(capTitle).text($(capTitle).text() + ' ' + (c + 1));
                                 }
                             })
-                        }, 1)
+                        }, 100)
 
+                        //返回主畫面
+                        $('.back-home').click(function() {
+                            $('.container.output').removeClass('js-show');
+                            // setTimeout(() => {
+                            $('.home-title').css({
+                                'z-index': '7',
+                                'opacity': '1'
+                            });
+                            // }, 200)
+
+                            //defaulting list[li]
+                            $(lists).each((l) => {
+                                if ($(lists).eq(l).css('position') == 'fixed') {
+                                    $(lists).eq(l).removeClass('js-topbar');
+                                    $(lists).eq(l).find('.stats-flex').removeClass('js-topbar');
+                                    $(lists).eq(l).find('._14px-500.as-stats').css('opacity', '1');
+                                }
+                            })
+                            $('.query-box').removeClass('js-collapsed');
+                            $('.container.for-list').css({
+                                'bottom': '0px',
+                                'position': 'absolute'
+                            });
+                            $('.container.output').css({
+                                'opacity': '0',
+                                'top': '48px'
+                            });
+                            $('.back-home').css('left', 'calc(50vw - 240px)');
+
+                            //defaulting hinters
+                            $('.hinter-box').css('display', 'none');
+
+                            ////defaulting output blocks
+                            //capTitle
+                            $('[data-detail="true"]').each((c) => {
+                                let capTitle = $('[data-detail="true"]').eq(c).find('.cap-title');
+                                if ($(capTitle).text().length > 4) {
+                                    $(capTitle).text($(capTitle).text().slice(0, ($(capTitle).text().length - 2)));
+                                }
+                            })
+
+                            //card-box
+                            $('.container.output').find('.card-box').css('display', 'block');
+
+                            //info area
+                            $("[data-output='designer']").text('');
+                            $("[data-output='designer']").val('');
+                            $("[data-output='ddl-1']").text('');
+                            $("[data-output='ddl-1']").val('');
+                            $("[data-output='ddl-2']").text('');
+                            $("[data-output='ddl-2']").val('');
+                            $("[data-output=designer]").not('input').css('color', 'rgba(47, 90, 58, 1)');
+                            $("[data-output=ddl-1]").not('input').css('color', 'rgba(47, 90, 58, 1)');
+                            $("[data-output=ddl-2]").not('input').css('color', 'rgba(47, 90, 58, 1)');
+                            //pd count area
+                            $('[data-output=P-count-A], [data-output=P-count-B], [data-output=P-count-C]').text('0');
+
+                            //img area
+                            $('.img').remove();
+                            $("[data-output='P-A']").each(function() {
+                                $(this).css({
+                                    'padding-left': '8px',
+                                    'color': 'rgba(47, 90, 58, 0.5)'
+                                });
+                                $(this).text('');
+                            })
+
+                            //tab area
+                            $('.a-button.as-tab.indicator').css('top', '0px');
+                            $('.col-left').find('.a-button').not('.indicator').remove();
+                            $('.col-right').find('[data-output]').remove();
+                        })
+
+                        //更新表單
                         $('[data-update=send]').click((e) => {
                             let target = e.target;
                             let input = $(target).closest('.card').find('input').not('.submit');
@@ -1496,66 +1581,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                     })
                                 });
                             }
-                        })
-                        $('.back-home').click(function() {
-                            $('.container.output').removeClass('js-show');
-                            setTimeout(() => {
-                                $('.home-title').css('z-index', '7');
-                            }, 200)
-
-                            //defaulting list[li]
-                            $(lists).each((l) => {
-                                if ($(lists).eq(l).css('position') == 'fixed') {
-                                    $(lists).eq(l).removeClass('js-topbar');
-                                    $(lists).eq(l).find('.stats-flex').removeClass('js-topbar');
-                                    $(lists).eq(l).find('._14px-500.as-stats').css('opacity', '1');
-                                }
-                            })
-                            $('.query-box').removeClass('js-collapsed');
-                            $('.container.for-list').css({
-                                'bottom': '0px',
-                                'position': 'absolute'
-                            });
-                            $('.container.output').css({
-                                'opacity': '0',
-                                'top': '48px'
-                            });
-                            $('.back-home').css('left', 'calc(50vw - 240px)');
-
-                            //defaulting hinters
-                            $('.hinter-box').css('display', 'none');
-
-                            //defaulting output blocks
-                            //card-box
-                            $('.container.output').find('.card-box').css('display', 'block');
-
-                            //info area
-                            $("[data-output='designer']").text('');
-                            $("[data-output='designer']").val('');
-                            $("[data-output='ddl-1']").text('');
-                            $("[data-output='ddl-1']").val('');
-                            $("[data-output='ddl-2']").text('');
-                            $("[data-output='ddl-2']").val('');
-                            $("[data-output=designer]").not('input').css('color', 'rgba(47, 90, 58, 1)');
-                            $("[data-output=ddl-1]").not('input').css('color', 'rgba(47, 90, 58, 1)');
-                            $("[data-output=ddl-2]").not('input').css('color', 'rgba(47, 90, 58, 1)');
-                            //pd count area
-                            $('[data-output=P-count-A], [data-output=P-count-B], [data-output=P-count-C]').text('0');
-
-                            //img area
-                            $('.img').remove();
-                            $("[data-output='P-A']").each(function() {
-                                $(this).css({
-                                    'padding-left': '8px',
-                                    'color': 'rgba(47, 90, 58, 0.5)'
-                                });
-                                $(this).text('');
-                            })
-
-                            //tab area
-                            $('.a-button.as-tab.indicator').css('top', '0px');
-                            $('.col-left').find('.a-button').not('.indicator').remove();
-                            $('.col-right').find('[data-output]').remove();
                         })
                     }
                 }) //end of Result欄位output

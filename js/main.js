@@ -975,20 +975,34 @@ if (window.location.href.includes('form-apply')) {
             }
 
             //新增or刪除案型「之後」產生案型編號
+            shownSwipers = $(swiper).find(".a-button[data-handle=true]");
             let i;
             for (i = 0; i < shownSwipers.length; i++) {
                 let n = i + 1;
                 shownSwipers[i].firstElementChild.textContent = n;
                 // !!無法同步數值至capTitle
-                // let shownBoxes = section.querySelectorAll('.card-box[data-handle=true]');
-                // let m = shownSwipers[i].firstElementChild.textContent.charAt(3);
-                // let capTitle = shownBoxes[i].querySelector('.cap-title');
-                // if (capTitle.textContent.length < 5) {
-                //     capTitle.textContent = '案型 ' + m + '\xa0\xa0' + capTitle.textContent;
-                // } else {
-                //     capTitle.textContent.replace(4, m);
-                // }
+                $('.section.in-swiped').each((s) => {
+                    let m = $(shownSwipers).eq(i).find('.unclickable').text();
+                    let capTitle = $('.section.in-swiped').eq(s).find('.card-box[data-handle=true]').eq(i).find('.cap-title');
+                    if ($(shownSwipers).length > 1 && $(capTitle).text().length < 5) {
+                        $(capTitle).text('案型 ' + m + '\xa0\xa0' + $(capTitle).text());
+                    }
+                    if ($(target).hasClass('js-remove')) {
+                        if ($(shownSwipers).length == 1) {
+                            let sliced = $(capTitle).text().slice(6, $(capTitle).text().length);
+                            setTimeout(() => {
+                                $(capTitle).text(sliced);
+                            }, 100)
+                        } else if ($(shownSwipers).length > 1) {
+                            // m = $(shownSwipers).eq(i).find('.unclickable').text();
+                            $(capTitle).text($(capTitle).text().replace(/[0-9]/g, m));
+                        }
+                    } else if ($(target).hasClass('js-add')) {
+                        $(capTitle).text($(capTitle).text().replace(/[0-9]/g, m));
+                    }
+                })
             }
+
         }
 
         //點按swiper -> swiper-indicator + 全頁swiped移動
