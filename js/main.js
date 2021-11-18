@@ -1691,7 +1691,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
     })
 
     //date-range-picker 年份處理
-    $(document).click(function() {
+    $('.date-input').change(() => {
         if ($('.date-input').val().length > 0) {
             let year = $('.date-input').val().slice(0, 4);
             $('.date-input').attr('data-year', year);
