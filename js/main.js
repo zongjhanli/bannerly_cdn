@@ -826,6 +826,30 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 //@Form-apply專屬區塊
 if (window.location.href.includes('form-apply')) {
 
+    //product 若選擇「無需曝光商品」，其他選項將被鎖定
+    $(document).click(() => {
+        $('#Product').each((p) => {
+            let pOption = $('#Product').eq(p).find('.label.full-touch');
+            $(pOption).each((o) => {
+                $(pOption).eq(o).click((e) => {
+                    let target = e.target;
+                    setTimeout(() => {
+                        if ($(target).text() == '無需曝光商品' && $(target).attr('data-select') == 'true') {
+                            $(target).parent().siblings().css('opacity', '0.5');
+                            $(target).parent().siblings().find('.label').addClass('unclickable');
+                            $(target).css('opacity', '1');
+                            $(target).removeClass('unclickable');
+                        }
+                        if ($(target).text() == '無需曝光商品' && $(target).attr('data-select') == '') {
+                            $(target).parent().siblings().css('opacity', '1');
+                            $(target).parent().siblings().find('.label').removeClass('unclickable');
+                        }
+                    }, 100)
+                })
+            })
+        })
+    })
+
     //tab indicator 在沒有ec tab顯現時隱藏
     $(document).click(() => {
         $('[data-group=ecTabs]').each((t) => {

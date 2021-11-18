@@ -1232,13 +1232,21 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                 $("[data-output='P-count-A']").text(tCells[i].v.slice(2, 3) + '商品');
                                             }
                                             if (cols[i].label == '案型1-商品清單') {
-                                                let pdSerial = tCells[i].v.replaceAll('\n', ',');
-                                                pdSerial = pdSerial.split(',');
-                                                jQuery.each(pdSerial, function(i, imgName) {
-                                                    let brandID = imgName.slice(0, 2);
-                                                    let url = "url(products/" + brandID + '/' + imgName + ")";
-                                                    $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
-                                                })
+                                                if (tCells[i].v != '無需曝光商品') {
+                                                    let pdSerial = tCells[i].v.replaceAll('\n', ',');
+                                                    pdSerial = pdSerial.split(',');
+                                                    jQuery.each(pdSerial, function(i, imgName) {
+                                                        let brandID = imgName.slice(0, 2);
+                                                        let url = "url(products/" + brandID + '/' + imgName + ")";
+                                                        $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
+                                                    })
+                                                } else {
+                                                    $("[data-output='P-A']").css({
+                                                        'padding-left': '12px',
+                                                        'color': 'rgba(47, 90, 58, 0.5)'
+                                                    });
+                                                    $("[data-output='P-A']").text('無需曝光商品');
+                                                }
                                             }
                                             if (cols[i].label.indexOf('案型1') >= 0 && cols[i].label.indexOf('尺寸') >= 0) {
                                                 sizeIndexA.push(i);
@@ -1259,13 +1267,21 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                 $("[data-output='P-count-B']").text(tCells[i].v.slice(2, 3) + '商品');
                                             }
                                             if (cols[i].label == '案型2-商品清單') {
-                                                let pdSerial = tCells[i].v.replaceAll('\n', ',');
-                                                pdSerial = pdSerial.split(',');
-                                                jQuery.each(pdSerial, function(i, imgName) {
-                                                    let brandID = imgName.slice(0, 2);
-                                                    let url = "url(products/" + brandID + '/' + imgName + ")";
-                                                    $("[data-output='P-B']").append($('<div></div>').addClass('img').css('background-image', url));
-                                                })
+                                                if (tCells[i].v != '無需曝光商品') {
+                                                    let pdSerial = tCells[i].v.replaceAll('\n', ',');
+                                                    pdSerial = pdSerial.split(',');
+                                                    jQuery.each(pdSerial, function(i, imgName) {
+                                                        let brandID = imgName.slice(0, 2);
+                                                        let url = "url(products/" + brandID + '/' + imgName + ")";
+                                                        $("[data-output='P-B']").append($('<div></div>').addClass('img').css('background-image', url));
+                                                    })
+                                                } else {
+                                                    $("[data-output='P-B']").css({
+                                                        'padding-left': '12px',
+                                                        'color': 'rgba(47, 90, 58, 0.5)'
+                                                    });
+                                                    $("[data-output='P-B']").text('無需曝光商品');
+                                                }
                                             }
                                             if (cols[i].label.indexOf('案型2') >= 0 && cols[i].label.indexOf('尺寸') >= 0) {
                                                 sizeIndexB.push(i);
@@ -1285,13 +1301,21 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                 $("[data-output='P-count-C']").text(tCells[i].v.slice(2, 3) + '商品');
                                             }
                                             if (cols[i].label == '案型3-商品清單') {
-                                                let pdSerial = tCells[i].v.replaceAll('\n', ',');
-                                                pdSerial = pdSerial.split(',');
-                                                jQuery.each(pdSerial, function(i, imgName) {
-                                                    let brandID = imgName.slice(0, 2);
-                                                    let url = "url(products/" + brandID + '/' + imgName + ")";
-                                                    $("[data-output='P-C']").append($('<div></div>').addClass('img').css('background-image', url));
-                                                })
+                                                if (tCells[i].v != '無需曝光商品') {
+                                                    let pdSerial = tCells[i].v.replaceAll('\n', ',');
+                                                    pdSerial = pdSerial.split(',');
+                                                    jQuery.each(pdSerial, function(i, imgName) {
+                                                        let brandID = imgName.slice(0, 2);
+                                                        let url = "url(products/" + brandID + '/' + imgName + ")";
+                                                        $("[data-output='P-C']").append($('<div></div>').addClass('img').css('background-image', url));
+                                                    })
+                                                } else {
+                                                    $("[data-output='P-C']").css({
+                                                        'padding-left': '12px',
+                                                        'color': 'rgba(47, 90, 58, 0.5)'
+                                                    });
+                                                    $("[data-output='P-C']").text('無需曝光商品');
+                                                }
                                             }
                                             if (cols[i].label.indexOf('案型3') >= 0 && cols[i].label.indexOf('尺寸') >= 0) {
                                                 sizeIndexC.push(i);
@@ -1401,7 +1425,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
 
                         //隱藏空白的案型card
-                        let sCards = $("[data-output='C-B'], [data-output='C-C']");
+                        let sCards = $("[data-output='C-A'], [data-output='C-B'], [data-output='C-C']");
                         for (const sCard of sCards) {
                             if (sCard.textContent == "") {
                                 sCard.parentElement.parentElement.parentElement.style.display = "none";
@@ -1409,16 +1433,16 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         }
 
                         //隱藏空白的pd pool
-                        $('.block-pool').each(function() {
-                            if ($(this).find('.img').length == 0) {
-                                // $(this).parent().css('display', 'none');
-                                $(this).css({
-                                    'padding-left': '12px',
-                                    'color': 'rgba(47, 90, 58, 0.5)'
-                                });
-                                $(this).text('無需曝光商品');
-                            }
-                        })
+                        // $('.block-pool').each(function() {
+                        //     if ($(this).find('.img').length == 0) {
+                        //         // $(this).parent().css('display', 'none');
+                        //         $(this).css({
+                        //             'padding-left': '12px',
+                        //             'color': 'rgba(47, 90, 58, 0.5)'
+                        //         });
+                        //         $(this).text('無需曝光商品');
+                        //     }
+                        // })
 
                         //隱藏空白的textarea
                         let tArr = [];
@@ -1544,22 +1568,18 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
                             //img area
                             $('.img').remove();
-                            $('.block-pool').each(function() {
-                                if ($(this).find('.img').length == 0) {
-                                    // $(this).parent().css('display', 'none');
-                                    $(this).css({
-                                        'padding-left': '8px',
-                                        'color': 'rgba(47, 90, 58, 0.5)'
-                                    });
-                                    $(this).text('');
-                                }
+                            $("[data-output='P-A']").each(function() {
+                                $(this).css({
+                                    'padding-left': '8px',
+                                    'color': 'rgba(47, 90, 58, 0.5)'
+                                });
+                                $(this).text('');
                             })
 
                             //tab area
                             $('.a-button.as-tab.indicator').css('top', '0px');
-                            $('.col-left').find('.a-button').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
-                            $('.col-right').find('[data-output]').css('display', 'none');
-                            $('.col-right').find('[data-output]').first().css('display', 'block');
+                            $('.col-left').find('.a-button').not('.indicator').remove();
+                            $('.col-right').find('[data-output]').remove();
                         })
                     }
                 }) //end of Result欄位output
