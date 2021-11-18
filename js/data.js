@@ -749,20 +749,22 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             function monthH3() {
                 $('.month-indicator').remove();
                 let mArr = [];
-                $('.a-list').each((l) => {
-                    $('.a-list').eq(l).attr('data-m', '');
-                    if ($('.a-list').eq(l).css('display') == 'flex') {
+                $('.a-list:visible').each((l) => {
+                    $('.a-list:visible').eq(l).attr('data-m', '');
+                    if ($('.a-list:visible').eq(l).css('display') == 'flex') {
 
-                        let base = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2);
-                        let plus = $('.a-list').eq(l + 1).children('._14px-500').text().slice(0, 2);
-                        let minus = $('.a-list').eq(l - 1).children('._14px-500').text().slice(0, 2);
-                        if ($('.a-list').not(':hidden').length != 1) {
-                            if (base - minus >= 1) {
-                                let month = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2) + '月';
+                        let base = $('.a-list:visible').eq(l).children('._14px-500').text().slice(0, 2);
+                        let minus = $('.a-list:visible').eq(l - 1).children('._14px-500').text().slice(0, 2);
+                        if ($('.a-list:visible').not(':hidden').length != 1) {
+                            let offset = base - minus;
+                            offset = Math.abs(offset);
+                            // console.log(offset)
+                            if (offset >= 1) {
+                                let month = $('.a-list:visible').eq(l).children('._14px-500').text().slice(0, 2) + '月';
                                 let mHeader = '<h3 class="h3 month-indicator" data-m="' + month + '">' + month + '</h3>';
                                 $(mHeader).attr('data-m', month);
-                                $('.a-list').eq(l).before($(mHeader));
-                                $('.a-list').eq(l).attr('data-m', month);
+                                $('.a-list:visible').eq(l).before($(mHeader));
+                                $('.a-list:visible').eq(l).attr('data-m', month);
                                 mArr.push(month);
                             }
                         }
@@ -989,10 +991,12 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     sortDropBox.find('.label').removeClass('unclickable');
                     sortDropBox.find('.label').first().addClass('unclickable');
                     if (!target.hasClass('js-filtering')) {
+                        // setTimeout(() => {
                         if (sortKey.text() === '新件置頂') {
                             sortQuery();
                             monthH3();
                         }
+                        // }, 10)
                     }
                     sortKey.text(sortDropBox.find('.label').first().text()); //在sortKey更換回default前，先執行sortQuery回復初始排序
                 }
@@ -1019,8 +1023,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 if (keyedTxt.includes(' ')) {
                     keyedTxt = keyedTxt.replace(/ /g, ',');
                     keyedTxt = keyedTxt.split(',');
-                    // let t;
-                    // for (t = 0; t < keyedTxt.length; t++) {
                     $(keyedTxt).each((i) => {
                         $('.a-list').css('display', 'flex');
                         $('.a-list').each((l) => {
@@ -1029,8 +1031,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             }
                         })
                     })
-
-                    // }
                 } else {
                     $('.a-list').css('display', 'flex');
                     $('.a-list').each(function() {
@@ -1039,11 +1039,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         }
                     })
                 }
-                // $('.a-list').each(function() {
-                //     if ($(this).children('._14px-500').text().toLowerCase().indexOf(keyedTxt.toLowerCase()) < 0) {
-                //         $(this).css('display', 'none');
-                //     }
-                // })
             }
 
             function quarterQuery() {
@@ -1109,15 +1104,13 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             }
 
             function sortQuery() {
-                $('.dropdown-box[data-query=sort]').each(function() {
-                    let sortKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
-                    let lists = document.querySelectorAll('.a-list');
-                    let listBox = document.querySelector('.list-box');
-                    let l;
-                    for (l = lists.length - 1; l >= 0; l--) {
-                        listBox.insertBefore(lists[l], null);
-                    }
-                });
+                let lists = document.querySelectorAll('.a-list');
+                let listBox = document.querySelector('.list-box');
+                let l;
+                for (l = lists.length - 1; l >= 0; l--) {
+                    lists[l].remove();
+                    listBox.insertBefore(lists[l], null);
+                }
                 monthH3();
             }
             //end of List欄位-QUERY
