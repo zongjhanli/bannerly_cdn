@@ -151,28 +151,6 @@ if (window.location.href.includes('custom-apply')) {
 //@Form-apply input 專屬區塊
 if (window.location.href.includes('form-apply')) {
 
-    // const gsUrl = 'https://docs.google.com/spreadsheets/d';
-    // const query = `/gviz/tq?`; //google visualisation 
-    // let key = [];
-
-    // //Fetch授權憑證
-    // let ssidCode = '/1AYelUO9rGPO3OSuxlWHLB5S2Z7NDg6D4j83gsvx6vS4';
-    // const endpointCode = `${gsUrl}${ssidCode}${query}`;
-    // fetch(endpointCode)
-    //     .then(res => res.text())
-    //     .then(data => {
-    //         let jsData = data.substr(47).slice(0, -2);
-    //         let json = JSON.parse(jsData);
-    //         let rows = json.table.rows;
-    //         let cols = json.table.cols;
-    //         let i;
-    //         for (i = 1; i < rows.length; i++) {
-    //             if (rows[i].c[1].v.indexOf('KEY') >= 0) {
-    //                 key.push(rows[i].c[2].v);
-    //             }
-    //         }
-    //     })
-
     // //Github API via Personal Auth
     // setTimeout(() => {
     //     const headers = {
@@ -254,8 +232,11 @@ if (window.location.href.includes('form-apply')) {
     // }, 1000)
 
     // Fetch 常用商品清單 G - Sheet Approach
+
+
     const gsUrl = 'https://docs.google.com/spreadsheets/d';
     const query = `/gviz/tq?`; //google visualisation 
+    // G-sheet 讀取圖片名稱
     let ssidPD = '/1--Bm763Gd8DNq6egYKQgHyewISd7gn3vZzDisb8NUbQ';
     const endpointPD = `${gsUrl}${ssidPD}${query}`;
     fetch(endpointPD)
@@ -285,7 +266,6 @@ if (window.location.href.includes('form-apply')) {
                 })
             }, 1000);
         })
-
 
     //AJAX讀取本機資料夾圖片名稱 AJAX Local Server Approach
     // const folder = "products/";
@@ -356,6 +336,9 @@ if (window.location.href.includes('form-apply')) {
         let AecStr = Array.from(Alabels, (x) => x.textContent);
         let BecStr = Array.from(Blabels, (x) => x.textContent);
         let CecStr = Array.from(Clabels, (x) => x.textContent);
+        let AecData = Array.from(Alabels, (x) => x.dataset.tab);
+        let BecData = Array.from(Blabels, (x) => x.dataset.tab);
+        let CecData = Array.from(Clabels, (x) => x.dataset.tab);
 
         //reconstruct copywright value
         let AcopywrightStr = [];
@@ -368,6 +351,12 @@ if (window.location.href.includes('form-apply')) {
         if ($("#C-1-C").val() != "") {
             CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), $("#C-4-C").val());
         }
+
+        //讀取各ec尺寸
+        let sizeA = $('.col-right').eq(0).find('textarea');
+        let sizeB = $('.col-right').eq(1).find('textarea');
+        let sizeC = $('.col-right').eq(2).find('textarea');
+
 
         axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
             "data": {
@@ -387,60 +376,60 @@ if (window.location.href.includes('form-apply')) {
                 "案型1-商品總數": $("#P-count-A").val(),
                 "案型1-商品清單": $("#P-A").val(),
                 //
-                "案型1-尺寸總數": $("#S-count2-A").val(),
-                "案型1-momo尺寸": $("#momo-A").val(),
-                "案型1-pchome尺寸": $("#pchome-A").val(),
-                "案型1-friday尺寸": $("#friday-A").val(),
-                "案型1-book尺寸": $("#book-A").val(),
-                "案型1-shopee尺寸": $("#shopee-A").val(),
-                "案型1-yahoo尺寸": $("#yahoo-A").val(),
-                "案型1-etmall尺寸": $("#etmall-A").val(),
-                "案型1-buy123尺寸": $("#buy123-A").val(),
-                "案型1-meimaii尺寸": $("#meimaii-A").val(),
+                "案型1-尺寸1": $(sizeA).eq(0).val(),
+                "案型1-尺寸2": $(sizeA).eq(1).val(),
+                "案型1-尺寸3": $(sizeA).eq(2).val(),
+                "案型1-尺寸4": $(sizeA).eq(3).val(),
+                "案型1-尺寸5": $(sizeA).eq(4).val(),
+                "案型1-尺寸6": $(sizeA).eq(5).val(),
+                "案型1-尺寸7": $(sizeA).eq(6).val(),
+                "案型1-尺寸8": $(sizeA).eq(7).val(),
+                "案型1-尺寸9": $(sizeA).eq(8).val(),
                 "案型1-自定義1尺寸": $("#custom1-A").val(),
                 "案型1-自定義2尺寸": $("#custom2-A").val(),
                 "案型1-自定義3尺寸": $("#custom3-A").val(),
                 "案型1-通路名稱": AecStr.toString(),
+                "案型1-通路data": AecData.toString(),
                 ////案型2
                 "案型2-活動文案": BcopywrightStr.toString(),
                 //
                 "案型2-商品總數": $("#P-count-B").val(),
                 "案型2-商品清單": $("#P-B").val(),
                 //
-                "案型2-尺寸總數": $("#S-count2-B").val(),
-                "案型2-momo尺寸": $("#momo-B").val(),
-                "案型2-pchome尺寸": $("#pchome-B").val(),
-                "案型2-friday尺寸": $("#friday-B").val(),
-                "案型2-book尺寸": $("#book-B").val(),
-                "案型2-shopee尺寸": $("#shopee-B").val(),
-                "案型2-yahoo尺寸": $("#yahoo-B").val(),
-                "案型2-etmall尺寸": $("#etmall-B").val(),
-                "案型2-buy123尺寸": $("#buy123-B").val(),
-                "案型2-meimaii尺寸": $("#meimaii-B").val(),
-                "案型2-自定義1尺寸": $("#custom1-A").val(),
-                "案型2-自定義2尺寸": $("#custom2-A").val(),
-                "案型2-自定義3尺寸": $("#custom3-A").val(),
+                "案型2-尺寸1": $(sizeB).eq(0).val(),
+                "案型2-尺寸2": $(sizeB).eq(1).val(),
+                "案型2-尺寸3": $(sizeB).eq(2).val(),
+                "案型2-尺寸4": $(sizeB).eq(3).val(),
+                "案型2-尺寸5": $(sizeB).eq(4).val(),
+                "案型2-尺寸6": $(sizeB).eq(5).val(),
+                "案型2-尺寸7": $(sizeB).eq(6).val(),
+                "案型2-尺寸8": $(sizeB).eq(7).val(),
+                "案型2-尺寸9": $(sizeB).eq(8).val(),
+                "案型2-自定義1尺寸": $("#custom1-B").val(),
+                "案型2-自定義2尺寸": $("#custom2-B").val(),
+                "案型2-自定義3尺寸": $("#custom3-B").val(),
                 "案型2-通路名稱": BecStr,
+                "案型2-通路data": BecData.toString(),
                 ////案型3
                 "案型3-活動文案": CcopywrightStr.toString(),
                 //
                 "案型3-商品總數": $("#P-count-C").val(),
                 "案型3-商品清單": $("#P-C").val(),
                 //
-                "案型3-尺寸總數": $("#S-count2-C").val(),
-                "案型3-momo尺寸": $("#momo-C").val(),
-                "案型3-pchome尺寸": $("#pchome-C").val(),
-                "案型3-friday尺寸": $("#friday-C").val(),
-                "案型3-book尺寸": $("#book-C").val(),
-                "案型3-shopee尺寸": $("#shopee-C").val(),
-                "案型3-yahoo尺寸": $("#yahoo-C").val(),
-                "案型3-etmall尺寸": $("#etmall-C").val(),
-                "案型3-buy123尺寸": $("#buy123-C").val(),
-                "案型3-meimaii尺寸": $("#meimaii-C").val(),
-                "案型3-自定義1尺寸": $("#custom1-A").val(),
-                "案型3-自定義2尺寸": $("#custom2-A").val(),
-                "案型3-自定義3尺寸": $("#custom3-A").val(),
+                "案型3-尺寸1": $(sizeC).eq(0).val(),
+                "案型3-尺寸2": $(sizeC).eq(1).val(),
+                "案型3-尺寸3": $(sizeC).eq(2).val(),
+                "案型3-尺寸4": $(sizeC).eq(3).val(),
+                "案型3-尺寸5": $(sizeC).eq(4).val(),
+                "案型3-尺寸6": $(sizeC).eq(5).val(),
+                "案型3-尺寸7": $(sizeC).eq(6).val(),
+                "案型3-尺寸8": $(sizeC).eq(7).val(),
+                "案型3-尺寸9": $(sizeC).eq(8).val(),
+                "案型3-自定義1尺寸": $("#custom1-C").val(),
+                "案型3-自定義2尺寸": $("#custom2-C").val(),
+                "案型3-自定義3尺寸": $("#custom3-C").val(),
                 "案型3-通路名稱": CecStr,
+                "案型3-通路data": CecData.toString(),
                 ////送出前確認訊息
                 "需求方": $("#applicant").val(),
                 "相關路徑": $("#path").val(),
@@ -518,7 +507,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             }
         })
         let radio = $(target).closest('.portal').find('input[type=radio]');
-        console.log($(radio).is(':checked'))
+        // console.log($(radio).is(':checked'))
         if (!$(radio).eq(0).is(':checked') && !$(radio).eq(1).is(':checked')) {
             $(radio).eq(0).closest('.f-block').find('.hinter-box').css('display', 'block');
             $(radio).eq(0).closest('.f-block').find('.hinter-box').addClass("js-shake");
@@ -1108,7 +1097,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             let statsStr = $('.a-list').eq(l).find('.stats-chip').text();
                             if (filterKey == "已結案" && statsStr != "已結案") {
                                 $('.a-list').eq(l).css('display', 'none');
-                                console.log(statsStr)
+                                // console.log(statsStr)
                             } else if (filterKey == "未完成" && statsStr == "已結案") {
                                 $('.a-list').eq(l).css('display', 'none');
                             }
@@ -1146,15 +1135,27 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             $('.col-left').find('.a-button').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
                             setTimeout(() => {
                                 $('.col-left').each((cl) => {
-                                    console.log($('.col-left').eq(cl).find('.a-button:visible').eq(0))
+                                    // console.log($('.col-left').eq(cl).find('.a-button:visible').eq(0))
                                     $('.col-left').eq(cl).find('.a-button:visible').eq(0).css('color', 'rgba(47, 90, 58, 1)');
                                 })
                             }, 100)
                             $('.col-right').find('[data-output]').css('display', 'none');
                             $('.col-right').find('[data-output]').first().css('display', 'block');
 
+
+                            let sizeIndexA = [];
+                            let sizeIndexB = [];
+                            let sizeIndexC = [];
+                            let ecDataA = 0;
+                            let ecDataB = 0;
+                            let ecDataC = 0;
+                            let ecNameA = 0;
+                            let ecNameB = 0;
+                            let ecNameC = 0;
+
                             let li;
                             for (li = 0; li < lists.length; li++) {
+
                                 if (target == lists[li]) {
                                     $(lists[li]).addClass('js-topbar'); //css animation has @keyframe
                                     $(lists[li]).find('.stats-flex').addClass('js-topbar'); //css animation has @keyframe
@@ -1239,73 +1240,17 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                     $("[data-output='P-A']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
-                                            if (cols[i].label == '案型1-momo尺寸') {
-                                                $("[data-output='momo-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='momo-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(0).find(".a-button.as-tab .label[data-ec=momo-A]").text('momo');
-                                            }
-                                            if (cols[i].label == '案型1-pchome尺寸') {
-                                                $("[data-output='pchome-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='pchome-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(0).find(".a-button.as-tab .label[data-ec=pchome-A]").text('PChome');
-                                            }
-                                            if (cols[i].label == '案型1-friday尺寸') {
-                                                $("[data-output='friday-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='friday-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(0).find(".a-button.as-tab .label[data-ec=friday-A]").text('friDay');
-                                            }
-                                            if (cols[i].label == '案型1-book尺寸') {
-                                                $("[data-output='book-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='book-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(0).find(".a-button.as-tab .label[data-ec=book-A]").text('博客來');
-                                            }
-                                            if (cols[i].label == '案型1-shopee尺寸') {
-                                                $("[data-output='shopee-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='shopee-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(0).find(".a-button.as-tab .label[data-ec=shopee-A]").text('蝦皮');
-                                            }
-                                            if (cols[i].label == '案型1-yahoo尺寸') {
-                                                $("[data-output='yahoo-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='yahoo-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(0).find(".a-button.as-tab .label[data-ec=yahoo-A]").text('Yahoo');
-                                            }
-                                            if (cols[i].label == '案型1-etmall尺寸') {
-                                                $("[data-output='etmall-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='etmall-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(0).find(".a-button.as-tab .label[data-ec=etmall-A]").text('東森');
-                                            }
-                                            if (cols[i].label == '案型1-buy123尺寸') {
-                                                $("[data-output='buy123-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='buy123-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(0).find(".a-button.as-tab .label[data-ec=buy123-A]").text('生活市集');
-                                            }
-                                            if (cols[i].label == '案型1-meimaii尺寸') {
-                                                $("[data-output='meimaii-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='meimaii-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(0).find(".a-button.as-tab .label[data-ec=meimaii-A]").text('美賣');
-                                            }
-                                            if (cols[i].label == '案型1-自定義1尺寸') {
-                                                $("[data-output='custom1-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='custom1-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                            }
-                                            if (cols[i].label == '案型1-自定義2尺寸') {
-                                                $("[data-output='custom2-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='custom2-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                            }
-                                            if (cols[i].label == '案型1-自定義3尺寸') {
-                                                $("[data-output='custom3-A']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='custom3-A']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
+                                            if (cols[i].label.indexOf('案型1') >= 0 && cols[i].label.indexOf('尺寸') >= 0) {
+                                                sizeIndexA.push(i);
                                             }
                                             if (cols[i].label == '案型1-通路名稱') {
-                                                // $('.div-266h.side-184w').eq(0).find(".a-button.as-tab .label").text('');
-                                                // let ecNames = tCells[i].v.split(','); //values truned into an array
-                                                // let ec;
-                                                // for (ec = 0; ec < ecNames.length; ec++) {
-                                                //     let labels = $('.div-266h.side-184w').eq(0).find(".a-button.as-tab .label");
-                                                //     labels[ec].textContent = ecNames[ec];
-                                                // }
+                                                ecNameA += i;
                                                 $("[data-output='S-count2-A']").text((tCells[i].v.match(/,/g) || []).length + 1 + '通路');
                                             }
+                                            if (cols[i].label == '案型1-通路data') {
+                                                ecDataA += i;
+                                            }
+
                                             //案型2 output
                                             if (cols[i].label == '案型2-活動文案') {
                                                 $("[data-output='C-B']").html(tCells[i].v.replaceAll(',', '<br>'));
@@ -1322,72 +1267,15 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                     $("[data-output='P-B']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
-                                            if (cols[i].label == '案型2-momo尺寸') {
-                                                $("[data-output='momo-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='momo-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(1).find(".a-button.as-tab .label[data-ec=momo-B]").text('momo');
-                                            }
-                                            if (cols[i].label == '案型2-pchome尺寸') {
-                                                $("[data-output='pchome-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='pchome-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(1).find(".a-button.as-tab .label[data-ec=pchome-B]").text('PChome');
-                                            }
-                                            if (cols[i].label == '案型2-friday尺寸') {
-                                                $("[data-output='friday-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='friday-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(1).find(".a-button.as-tab .label[data-ec=friday-B]").text('friDay');
-                                            }
-                                            if (cols[i].label == '案型2-book尺寸') {
-                                                $("[data-output='book-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='book-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(1).find(".a-button.as-tab .label[data-ec=book-B]").text('博客來');
-                                            }
-                                            if (cols[i].label == '案型2-shopee尺寸') {
-                                                $("[data-output='shopee-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='shopee-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(1).find(".a-button.as-tab .label[data-ec=shopee-B]").text('蝦皮');
-                                            }
-                                            if (cols[i].label == '案型2-yahoo尺寸') {
-                                                $("[data-output='yahoo-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='yahoo-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(1).find(".a-button.as-tab .label[data-ec=yahoo-B]").text('Yahoo');
-                                            }
-                                            if (cols[i].label == '案型2-etmall尺寸') {
-                                                $("[data-output='etmall-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='etmall-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(1).find(".a-button.as-tab .label[data-ec=etmall-A]").text('東森');
-                                            }
-                                            if (cols[i].label == '案型2-buy123尺寸') {
-                                                $("[data-output='buy123-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='buy123-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(1).find(".a-button.as-tab .label[data-ec=buy123-B]").text('生活市集');
-                                            }
-                                            if (cols[i].label == '案型2-meimaii尺寸') {
-                                                $("[data-output='meimaii-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='meimaii-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(1).find(".a-button.as-tab .label[data-ec=meimaii-B]").text('美賣');
-                                            }
-                                            if (cols[i].label == '案型2-自定義1尺寸') {
-                                                $("[data-output='custom1-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='custom1-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                            }
-                                            if (cols[i].label == '案型2-自定義2尺寸') {
-                                                $("[data-output='custom2-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='custom2-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                            }
-                                            if (cols[i].label == '案型2-自定義3尺寸') {
-                                                $("[data-output='custom3-B']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='custom3-B']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
+                                            if (cols[i].label.indexOf('案型2') >= 0 && cols[i].label.indexOf('尺寸') >= 0) {
+                                                sizeIndexB.push(i);
                                             }
                                             if (cols[i].label == '案型2-通路名稱') {
-                                                // $('.div-266h.side-184w').eq(1).find(".a-button.as-tab .label").text('');
-                                                // let ecNames = tCells[i].v.split(','); //values truned into an array
-                                                // let ec;
-                                                // for (ec = 0; ec < ecNames.length; ec++) {
-                                                //     let labels = $('.div-266h.side-184w').eq(1).find(".a-button.as-tab .label");
-                                                //     labels[ec].textContent = ecNames[ec];
-                                                // }
+                                                ecNameB += i;
                                                 $("[data-output='S-count2-B']").text((tCells[i].v.match(/,/g) || []).length + 1 + '通路');
+                                            }
+                                            if (cols[i].label == '案型2-通路data') {
+                                                ecDataB += i;
                                             }
                                             //案型3 output
                                             if (cols[i].label == '案型3-活動文案') {
@@ -1405,81 +1293,87 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                                     $("[data-output='P-C']").append($('<div></div>').addClass('img').css('background-image', url));
                                                 })
                                             }
-                                            if (cols[i].label == '案型3-momo尺寸') {
-                                                $("[data-output='momo-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='momo-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(2).find(".a-button.as-tab .label[data-ec=momo-C]").text('momo');
-                                            }
-                                            if (cols[i].label == '案型3-pchome尺寸') {
-                                                $("[data-output='pchome-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='pchome-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(2).find(".a-button.as-tab .label[data-ec=pchome-C]").text('PChome');
-                                            }
-                                            if (cols[i].label == '案型3-friday尺寸') {
-                                                $("[data-output='friday-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='friday-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(2).find(".a-button.as-tab .label[data-ec=friday-C]").text('friDay');
-                                            }
-                                            if (cols[i].label == '案型3-book尺寸') {
-                                                $("[data-output='book-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='book-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(2).find(".a-button.as-tab .label[data-ec=book-C]").text('博客來');
-                                            }
-                                            if (cols[i].label == '案型3-shopee尺寸') {
-                                                $("[data-output='shopee-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='shopee-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(2).find(".a-button.as-tab .label[data-ec=shopee-C]").text('蝦皮');
-                                            }
-                                            if (cols[i].label == '案型3-yahoo尺寸') {
-                                                $("[data-output='yahoo-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='yahoo-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(2).find(".a-button.as-tab .label[data-ec=yahoo-C]").text('Yahoo');
-                                            }
-                                            if (cols[i].label == '案型3-etmall尺寸') {
-                                                $("[data-output='etmall-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='etmall-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(2).find(".a-button.as-tab .label[data-ec=etmall-C]").text('東森');
-                                            }
-                                            if (cols[i].label == '案型3-buy123尺寸') {
-                                                $("[data-output='buy123-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='buy123-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(2).find(".a-button.as-tab .label[data-ec=buy123-C]").text('生活市集');
-                                            }
-                                            if (cols[i].label == '案型3-meimaii尺寸') {
-                                                $("[data-output='meimaii-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='meimaii-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                                $('.div-266h.side-184w').eq(2).find(".a-button.as-tab .label[data-ec=meimaii-C]").text('美賣');
-                                            }
-                                            if (cols[i].label == '案型3-自定義1尺寸') {
-                                                $("[data-output='custom1-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='custom1-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                            }
-                                            if (cols[i].label == '案型3-自定義2尺寸') {
-                                                $("[data-output='custom2-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='custom2-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
-                                            }
-                                            if (cols[i].label == '案型3-自定義3尺寸') {
-                                                $("[data-output='custom3-C']").html(tCells[i].v.replaceAll('\n', '<br>'));
-                                                $("[data-ec='custom3-C']").siblings('.as-counts').html((tCells[i].v.match(/\n/g) || []).length + 1);
+                                            if (cols[i].label.indexOf('案型3') >= 0 && cols[i].label.indexOf('尺寸') >= 0) {
+                                                sizeIndexC.push(i);
                                             }
                                             if (cols[i].label == '案型3-通路名稱') {
-                                                // $('.div-266h.side-184w').eq(2).find(".a-button.as-tab .label").text('');
-                                                // let ecNames = tCells[i].v.split(','); //values truned into an array
-                                                // let ec;
-                                                // for (ec = 0; ec < ecNames.length; ec++) {
-                                                //     let labels = $('.div-266h.side-184w').eq(2).find(".a-button.as-tab .label");
-                                                //     labels[ec].textContent = ecNames[ec];
-                                                // }
+                                                ecNameC += i;
                                                 $("[data-output='S-count2-C']").text((tCells[i].v.match(/,/g) || []).length + 1 + '通路');
+                                            }
+                                            if (cols[i].label == '案型3-通路data') {
+                                                ecDataC += i;
                                             }
                                             if (cols[i].label == 'timestamp') {
                                                 $('[data-output=list]').attr('data-stamp', tCells[i].v);
                                             }
                                         }
                                     }
+                                    //案型1-製作尺寸 + ec tab
+                                    let ecNamesA = tCells[ecNameA].v.split(','); //values truned into an array
+                                    let ecDatasA = tCells[ecDataA].v.split(',');
+                                    let sa;
+                                    for (sa = 0; sa < sizeIndexA.length; sa++) {
+                                        let tabBtn = '<div class="a-button as-tab"><div data-ec="' + ecDatasA[sa] + '" class="label full-touch">' + ecNamesA[sa] + '</div><div class="_12px-500 as-counts in-tab">' + ((tCells[sizeIndexA[sa]].v.match(/\n/g) || []).length + 1) + '</div></div>';
+                                        let sizeOutput = '<div data-output="' + ecDatasA[sa] + '" class="output as-textarea bulk">' + tCells[sizeIndexA[sa]].v.replaceAll('\n', '<br>') + '</div>';
+                                        $('.height-extended').eq(0).append(sizeOutput);
+                                        $('.side-184w').eq(0).append(tabBtn);
+                                        $('.height-extended').eq(0).find('textarea').css('display', 'none');
+                                        $('.height-extended').eq(0).find('textarea').css('display', 'block');
+                                        $('.side-184w').eq(0).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
+                                        $('.side-184w').eq(0).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
+                                    }
+                                    //案型2-製作尺寸 + ec tab
+                                    let ecNamesB = tCells[ecNameB].v.split(','); //values truned into an array
+                                    let ecDatasB = tCells[ecDataB].v.split(',');
+                                    let sb;
+                                    for (sb = 0; sb < sizeIndexB.length; sb++) {
+                                        let tabBtn = '<div class="a-button as-tab"><div data-ec="' + ecDatasB[sb] + '" class="label full-touch">' + ecNamesB[sb] + '</div><div class="_12px-500 as-counts in-tab">' + ((tCells[sizeIndexB[sb]].v.match(/\n/g) || []).length + 1) + '</div></div>';
+                                        let sizeOutput = '<div data-output="' + ecDatasB[sb] + '" class="output as-textarea bulk">' + tCells[sizeIndexB[sb]].v.replaceAll('\n', '<br>') + '</div>';
+                                        $('.height-extended').eq(1).append(sizeOutput);
+                                        $('.side-184w').eq(1).append(tabBtn);
+                                        $('.height-extended').eq(1).find('textarea').css('display', 'none');
+                                        $('.height-extended').eq(1).find('textarea').css('display', 'block');
+                                        $('.side-184w').eq(1).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
+                                        $('.side-184w').eq(1).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
+                                    }
+                                    //案型3-製作尺寸 + ec tab
+                                    let ecNamesC = tCells[ecNameC].v.split(','); //values truned into an array
+                                    let ecDatasC = tCells[ecDataC].v.split(',');
+                                    let sc;
+                                    for (sa = 0; sc < sizeIndexC.length; sc++) {
+                                        let tabBtn = '<div class="a-button as-tab"><div data-ec="' + ecDatasC[sa] + '" class="label full-touch">' + ecNamesC[sc] + '</div><div class="_12px-500 as-counts in-tab">' + ((tCells[sizeIndexC[sc]].v.match(/\n/g) || []).length + 1) + '</div></div>';
+                                        let sizeOutput = '<div data-output="' + ecDatasC[sc] + '" class="output as-textarea bulk">' + tCells[sizeIndexC[sc]].v.replaceAll('\n', '<br>') + '</div>';
+                                        $('.height-extended').eq(2).append(sizeOutput);
+                                        $('.side-184w').eq(2).append(tabBtn);
+                                        $('.height-extended').eq(2).find('textarea').css('display', 'none');
+                                        $('.height-extended').eq(2).find('textarea').css('display', 'block');
+                                        $('.side-184w').eq(2).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
+                                        $('.side-184w').eq(2).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
+                                    }
                                 }
-                            }
-                        }
+                            } // end of list for-loop
+                        } //end of function OutputData()
+
+                        //!! tab 點按響應
+                        $('.side-184w').each((t) => {
+                            let shownLabel = $('.side-184w').eq(t).find('.label[data-ec]:visible');
+                            $(shownLabel).click((e) => {
+                                $(shownLabel).parent().css('color', 'rgba(47, 90, 58, 0.5)');
+                                let target = e.target;
+                                let s;
+                                for (s = 0; s < shownLabel.length; s++) {
+                                    if (shownLabel.eq(s).text() == $(target).text()) {
+                                        $('.side-184w').eq(t).find('.a-button.as-tab.indicator').css('top', s * 36 + 'px');
+                                        $(target).parent().css('color', 'rgba(47, 90, 58, 1)');
+
+                                        let textarea = $(target).closest('.height-318').find('.as-textarea');
+                                        $(textarea).css('display', 'none');
+                                        $(textarea).eq(s).css('display', 'block');
+                                    }
+                                }
+                            })
+                        })
+
                         //交件日期若非空，隱藏placeholder
                         if ($('.date-input').length != 0) {
                             if ($('.date-input').val().length == 0) {
@@ -1490,7 +1384,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                 $('.date-input').parent().css('opacity', '1');
                             }
                         }
-
 
                         //資料更新區註明tbc
                         if ($("[data-output=designer]").not('input').text() == "") {
@@ -1552,7 +1445,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             let target = e.target;
                             let input = $(target).closest('.card').find('input').not('.submit');
                             input.each((i) => {
-                                console.log($(input).eq(2).val())
+                                // console.log($(input).eq(2).val())
 
                                 if (($(input).eq(i).val() == "")) {
                                     $(input).eq(i).closest('.f-block').find('.hinter-box').css('display', 'block');

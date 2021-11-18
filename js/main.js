@@ -411,6 +411,7 @@ document.addEventListener("click", (e) => {
         if (target.dataset.custom == "pending") {
             confirmAppended();
             revealAll();
+            // 不可額外添加超過三個通路
             if (tInput.dataset.drop == "ec") {
                 if (colL.querySelectorAll('[data-nth]').length < 3) {
                     newTab();
@@ -791,35 +792,33 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     })
 
     //Result Tab 點擊響應
-    $('.label[data-ec]').click(function() {
-        $(this).parent().siblings().not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
-        $(this).parent().css('color', 'rgba(47, 90, 58, 1)');
+    // $('.label[data-ec]').click(function() {
+    //     $(this).parent().siblings().not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
+    //     $(this).parent().css('color', 'rgba(47, 90, 58, 1)');
 
-        let tabGroup = $(this).parent().parent();
-        let eachLabel = tabGroup.find('.label[data-ec]');
-        let eachResult = tabGroup.parent().parent().find('[data-output]');
-        let i;
-        for (i = 0; i < eachLabel.length; i++) {
-            if (eachLabel.eq(i).text() == $(this).text()) {
-                // eachLabel.parent().is(':visible').css('color', 'color: rgb(47, 90, 58)');
-                eachResult.css('display', 'none');
-                eachResult.eq(i).css('display', 'block');
+    //     let tabGroup = $(this).parent().parent();
+    //     let eachLabel = tabGroup.find('.label[data-ec]');
+    //     let eachResult = tabGroup.parent().parent().find('[data-output]');
+    //     let i;
+    //     for (i = 0; i < eachLabel.length; i++) {
+    //         if (eachLabel.eq(i).text() == $(this).text()) {
+    //             // eachLabel.parent().is(':visible').css('color', 'color: rgb(47, 90, 58)');
+    //             eachResult.css('display', 'none');
+    //             eachResult.eq(i).css('display', 'block');
 
-                // i = i * 36 + 'px';
-                // tabGroup.find('.a-button.as-tab.indicator').css('top', i);
-            }
-        }
-        let shownLabel = tabGroup.find('.label[data-ec]:visible');
-        let s;
-        for (s = 0; s < shownLabel.length; s++) {
-            if (shownLabel.eq(s).text() == $(this).text()) {
-                s = s * 36 + 'px';
-                tabGroup.find('.a-button.as-tab.indicator').css('top', s);
-            }
-        }
-    })
-
-
+    //             // i = i * 36 + 'px';
+    //             // tabGroup.find('.a-button.as-tab.indicator').css('top', i);
+    //         }
+    //     }
+    //     let shownLabel = tabGroup.find('.label[data-ec]:visible');
+    //     let s;
+    //     for (s = 0; s < shownLabel.length; s++) {
+    //         if (shownLabel.eq(s).text() == $(this).text()) {
+    //             s = s * 36 + 'px';
+    //             tabGroup.find('.a-button.as-tab.indicator').css('top', s);
+    //         }
+    //     }
+    // })
 }
 
 // ----------------------------------------------------------------------------------------------------
