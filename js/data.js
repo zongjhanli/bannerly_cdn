@@ -757,7 +757,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         let plus = $('.a-list').eq(l + 1).children('._14px-500').text().slice(0, 2);
                         let minus = $('.a-list').eq(l - 1).children('._14px-500').text().slice(0, 2);
                         if ($('.a-list').not(':hidden').length != 1) {
-                            if (base - minus == 1) {
+                            if (base - minus >= 1) {
                                 let month = $('.a-list').eq(l).children('._14px-500').text().slice(0, 2) + '月';
                                 let mHeader = '<h3 class="h3 month-indicator" data-m="' + month + '">' + month + '</h3>';
                                 $(mHeader).attr('data-m', month);
@@ -793,17 +793,16 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     }
                 })
 
-                let dpM; //duplicated month
-                $('.month-indicator').each((i) => {
-                        if (mArr.filter(x => x == $('.month-indicator').eq(i).text()).length > 1) {
-                            dpM = $('.month-indicator').eq(i).text();
-                        }
-                    })
-                    // $('.month-indicator').filter(x => $(x).attr('data-m') == dpM).eq(1).remove();
-                console.log(mArr)
-                let mH3 = document.querySelectorAll('h3');
-                let dpH3 = [...mH3].filter(x => x.dataset.m == dpM);
-                $(dpH3).eq(1).remove();
+                // let dpM; //duplicated month
+                // $('.month-indicator').each((i) => {
+                //         if (mArr.filter(x => x == $('.month-indicator').eq(i).text()).length > 1) {
+                //             dpM = $('.month-indicator').eq(i).text();
+                //         }
+                //     })
+                //     // $('.month-indicator').filter(x => $(x).attr('data-m') == dpM).eq(1).remove();
+                // let mH3 = document.querySelectorAll('h3');
+                // let dpH3 = [...mH3].filter(x => x.dataset.m == dpM);
+                // $(dpH3).eq(1).remove();
             }
 
             //List欄位-QUERY
@@ -992,6 +991,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     if (!target.hasClass('js-filtering')) {
                         if (sortKey.text() === '新件置頂') {
                             sortQuery();
+                            monthH3();
                         }
                     }
                     sortKey.text(sortDropBox.find('.label').first().text()); //在sortKey更換回default前，先執行sortQuery回復初始排序
@@ -1008,6 +1008,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     if (target.hasClass('label')) {
                         if (target.parent().parent().parent().parent().attr('data-query') == 'sort') {
                             sortQuery();
+                            monthH3();
                         }
                     }
                 }
@@ -1117,6 +1118,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         listBox.insertBefore(lists[l], null);
                     }
                 });
+                monthH3();
             }
             //end of List欄位-QUERY
 
