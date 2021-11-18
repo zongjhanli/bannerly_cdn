@@ -617,7 +617,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         $('[data-validation=master]').remove();
                         $('[data-validation=applicant]').remove();
                     } else if (rows[iArr[0]].c[0].v == 'MASTER') {
-                        $('.submit-box[data-validation=applicant]').remove();
+                        // $('.submit-box[data-validation=applicant]').remove();
+                        $('.card-box').eq(0).find('[data-validation=applicant]').remove();
                     }
                 })
             } else if (valKey != null) {
@@ -632,7 +633,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                 $('[data-validation=master]').remove();
                                 $('[data-validation=applicant]').remove();
                             } else if (rows[i].c[0].v == 'MASTER') {
-                                $('.submit-box[data-validation=applicant]').remove();
+                                $('.card-box').eq(0).find('[data-validation=applicant]').remove();
                             }
                         }
                     }
@@ -1104,6 +1105,14 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             }
 
             function sortQuery() {
+                //翻轉rows順序
+                let r;
+                for (r = rows.length - 1; r >= 0; r--) {
+                    console.log(r)
+                    rows.push(rows[r]);
+                }
+                rows.splice(0, rows.length / 2);
+
                 let lists = document.querySelectorAll('.a-list');
                 let listBox = document.querySelector('.list-box');
                 let l;
@@ -1125,6 +1134,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
                         let lists = document.querySelectorAll('.a-list');
                         outputData();
+
 
                         function outputData() {
                             //tab區塊預設styling
