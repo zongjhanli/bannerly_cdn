@@ -1958,14 +1958,14 @@ div::-webkit-scrollbar {
 }
 
 .icon_32x.btn-icon.end-case {
-    background-image: url('../images/akar-icons_double-check.svg');
+    background-image: url('../images/fluent_end-case.svg');
     background-position: 50% 50%;
     background-size: auto;
     background-repeat: no-repeat;
 }
 
 .icon_32x.btn-icon.send {
-    background-image: url('../images/carbon_send-alt-1.svg');
+    background-image: url('../images/fluent_send.svg');
     background-position: 50% 50%;
     background-size: auto;
     background-repeat: no-repeat;
