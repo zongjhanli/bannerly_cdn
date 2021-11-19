@@ -2347,6 +2347,16 @@ div::-webkit-scrollbar {
     transition: all 200ms ease;
 }
 
+.identity {
+    background-color: #606060;
+    border-radius: 4px;
+    color: white;
+    padding: 2px 8px;
+    font-size: 12px;
+    position: absolute;
+    left: 128px;
+}
+
 .full-width-flex {
     display: -webkit-box;
     display: -webkit-flex;

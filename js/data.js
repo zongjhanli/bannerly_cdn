@@ -611,29 +611,43 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             }
                         }
                     }
+                    let nameMail = rows[iArr[0]].c[1].v;
+                    sessionStorage.setItem('nameMail', nameMail);
+                    let space = nameMail.indexOf(' ');
+                    let name = nameMail.slice(0, space + 1).trim();
+
                     if (rows[iArr[0]].c[0].v == 'applicant') {
                         $('[data-validation=master]').remove();
+                        $('.identity').text('企劃人員｜' + name);
                     } else if (rows[iArr[0]].c[0].v == 'designer') {
                         $('[data-validation=master]').remove();
                         $('[data-validation=applicant]').remove();
+                        $('.identity').text('設計人員｜' + name);
                     } else if (rows[iArr[0]].c[0].v == 'MASTER') {
                         // $('.submit-box[data-validation=applicant]').remove();
                         $('.card-box').eq(0).find('[data-validation=applicant]').remove();
+                        $('.identity').text('管理人員｜' + name);
                     }
                 })
             } else if (valKey != null) {
                 $('#validation').val(valKey);
+                let nameMail = sessionStorage.getItem('nameMail');
+                let space = nameMail.indexOf(' ');
+                let name = nameMail.slice(0, space + 1).trim();
                 let i;
                 for (i = 1; i < rows.length; i++) {
                     if (rows[i].c[2] != null) {
                         if (rows[i].c[2].v == valKey) {
                             if (rows[i].c[0].v == 'applicant') {
                                 $('[data-validation=master]').remove();
+                                $('.identity').text('企劃人員｜' + name);
                             } else if (rows[i].c[0].v == 'designer') {
                                 $('[data-validation=master]').remove();
                                 $('[data-validation=applicant]').remove();
+                                $('.identity').text('設計人員｜' + name);
                             } else if (rows[i].c[0].v == 'MASTER') {
                                 $('.card-box').eq(0).find('[data-validation=applicant]').remove();
+                                $('.identity').text('管理人員｜' + name);
                             }
                         }
                     }
@@ -725,11 +739,11 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     if (cells[3] != null) {
                         title.textContent += ' (' + cells[3].v + ')';
                     }
-                    let slashA = cells[cells.length - 7].v.indexOf(' ');
-                    applicant.textContent = cells[cells.length - 7].v.slice(0, slashA + 1).trim();
+                    let spaceA = cells[cells.length - 7].v.indexOf(' ');
+                    applicant.textContent = cells[cells.length - 7].v.slice(0, spaceA + 1).trim();
                     if (cells[cells.length - 5] != null) {
-                        let slashB = cells[cells.length - 5].v.indexOf(' ');
-                        designer.textContent = cells[cells.length - 5].v.slice(0, slashB + 1).trim();
+                        let spaceB = cells[cells.length - 5].v.indexOf(' ');
+                        designer.textContent = cells[cells.length - 5].v.slice(0, spaceB + 1).trim();
                         if (cells[cells.length - 2] != null) {
                             status.textContent = '已結案';
                             status.classList.add('js-endcase');
