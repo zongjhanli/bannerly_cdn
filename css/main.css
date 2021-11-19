@@ -22,10 +22,6 @@ comment前綴說明:
     color: #2F5A3A;
 }
 
-.custom-check.w--redirected-checked~.check-border {
-    background-color: rgba(255, 234, 0, 0.2);
-}
-
 
 /* GLOBAL ----- css標的物的背景模糊, 模擬玻璃效果 */
 

@@ -69,7 +69,7 @@ $(document).ready(function() {
         $('.page-load-illus').addClass('js-hide');
         setTimeout(() => {
             $('.page-load-illus').css('display', 'none');
-        }, 200)
+        }, 100)
     }, 1500)
 
     setTimeout(() => {
@@ -82,7 +82,11 @@ $(document).ready(function() {
             });
         } else {
             if (valKey == null) {
+                $('.portal.inactive').css('opacity', '0');
                 $('.portal.inactive').removeClass('js-hide');
+                setTimeout(() => {
+                    $('.portal.inactive').css('opacity', '1');
+                }, 200)
                 $('.container.for-list').css({
                     'bottom': '-100vh',
                     'position': 'fixed'
@@ -111,9 +115,7 @@ $('.section').each((s) => {
 
     function mEnter() {
         // let target = e.target;
-        $('.section').eq(s).find('.card').css('transform', 'translateY(-4px)');
-        $('.section').eq(s).find('.card').css('padding-left', '30px');
-        $('.section').eq(s).find('.card').css('padding-right', '30px');
+        $('.section').eq(s).find('.card').css('transform', 'translateY(-2px)');
     }
 
     function mLeave() {
@@ -682,7 +684,7 @@ for (const dropCard of dropCards) {
             }
 
             //如果點按在unclickable的input（#Size）
-            if (target.classList.contains('dropdown-box') && target.dataset.query == undefined) { //排除filter query//!!!新舊衝突
+            if (target.classList.contains('dropdown-box') && !target.classList.contains('new-case') && target.dataset.query == undefined) { //排除newcase、filter query//!!!新舊衝突
                 if (target.firstElementChild.classList.contains("unclickable")) {
                     //若是點按尚未選擇通路的尺寸input
                     let colL = target.parentElement.parentElement.previousElementSibling; //in this case, target=dropdown-box
