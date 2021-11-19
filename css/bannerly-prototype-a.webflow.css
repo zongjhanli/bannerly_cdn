@@ -1943,6 +1943,20 @@ div::-webkit-scrollbar {
     margin-left: 4px;
 }
 
+.icon_32x.btn-icon.js-loading {
+    background-image: url('../images/loading-dots.svg');
+    background-position: 50% 50%;
+    background-size: auto;
+    background-repeat: no-repeat;
+}
+
+.icon_32x.btn-icon.js-complete {
+    background-image: url('../images/akar-icons_double-check.svg');
+    background-position: 50% 50%;
+    background-size: auto;
+    background-repeat: no-repeat;
+}
+
 .icon_32x.btn-icon.end-case {
     background-image: url('../images/akar-icons_double-check.svg');
     background-position: 50% 50%;

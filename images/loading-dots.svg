@@ -1,0 +1,71 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<style>
+._1_593 {
+	animation: 0.8s linear 0s 1 normal forwards running _1_593;
+		transform: translateX(2px) translateY(12px);
+		animation-iteration-count: infinite;
+}
+@keyframes _1_593 {
+	0% {
+		transform: translateX(2px) translateY(12px);
+	}
+	37.5% {
+		transform: translateX(2px) translateY(8px);
+	}
+	75% {
+		transform: translateX(2px) translateY(12px);
+	}
+	100% {
+		transform: translateX(2px) translateY(12px);
+	}
+}
+._2_519 {
+	animation: 0.8s linear 0.1s 1 normal forwards running _2_519;
+		transform: translateX(10px) translateY(12px);
+		animation-iteration-count: infinite;
+}
+@keyframes _2_519 {
+	0% {
+		transform: translateX(10px) translateY(12px);
+	}
+	12.5% {
+		transform: translateX(10px) translateY(12px);
+	}
+	50% {
+		transform: translateX(10px) translateY(8px);
+	}
+	87.5% {
+		transform: translateX(10px) translateY(12px);
+	}
+	100% {
+		transform: translateX(10px) translateY(12px);
+	}
+}
+._3_119 {
+	animation: 0.8s linear 0.2s 1 normal forwards running _3_119;
+		transform: translateX(18px) translateY(12px);
+		animation-iteration-count: infinite;
+}
+@keyframes _3_119 {
+	0% {
+		transform: translateX(18px) translateY(12px);
+	}
+	25% {
+		transform: translateX(18px) translateY(12px);
+	}
+	62.5% {
+		transform: translateX(18px) translateY(8px);
+	}
+	100% {
+		transform: translateX(18px) translateY(12px);
+	}
+}
+</style>
+<g clip-path="url(#clip_0_899)" width="24" height="24" data-name="loading-dots">
+	<ellipse fill="white" data-name="1" class="_1_593" rx="2" ry="2"/>
+	<ellipse fill="white" data-name="2" class="_2_519" rx="2" ry="2"/>
+	<ellipse fill="white" data-name="3" class="_3_119" rx="2" ry="2"/>
+</g>
+<defs><clipPath id="clip_0_899"><rect width="24" height="24"/></clipPath>
+</defs>
+</svg>

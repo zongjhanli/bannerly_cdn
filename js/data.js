@@ -105,46 +105,51 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
 if (window.location.href.includes('custom-apply')) {
     let submit = document.querySelector('input[type=submit]');
     submit.addEventListener('click', () => {
-
-        //reconstruct copywright value
-        let AcopywrightStr = [];
-        AcopywrightStr.push($("#C-1-A").val(), $("#C-2-A").val(), $("#C-3-A").val(), $("#C-4-A").val());
-        let BcopywrightStr = [];
-        if ($("#C-1-B").val() != "") {
-            BcopywrightStr.push($("#C-1-B").val(), $("#C-2-B").val(), $("#C-3-B").val(), $("#C-4-B").val());
-        }
-        let CcopywrightStr = [];
-        if ($("#C-1-C").val() != "") {
-            CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), $("#C-4-C").val());
-        }
-
-        axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
-            "data": {
-                "timestamp": $('.submit-box').attr('data-stamp'),
-                ////基本資訊
-                "曝光日期": $('#date-exposure_range').val(),
-                "主打品牌": $('#brand').val(),
-                "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
-                "急迫度": $("[name=urgency]").siblings(".w--redirected-checked").siblings(".label").text().slice(3, 4),
-                "曝光年份": $('[data-year]').attr('data-year'),
-                ////送出前確認訊息
-                "需求方": $("#applicant").val(),
-                "相關路徑": $("#path").val(),
+        $('.icon_32x.btn-icon').removeClass('submit').addClass('js-loading');
+        setTimeout(() => {
+            //reconstruct copywright value
+            let AcopywrightStr = [];
+            AcopywrightStr.push($("#C-1-A").val(), $("#C-2-A").val(), $("#C-3-A").val(), $("#C-4-A").val());
+            let BcopywrightStr = [];
+            if ($("#C-1-B").val() != "") {
+                BcopywrightStr.push($("#C-1-B").val(), $("#C-2-B").val(), $("#C-3-B").val(), $("#C-4-B").val());
             }
-        }).then(response => {
-            console.log(response.data);
+            let CcopywrightStr = [];
+            if ($("#C-1-C").val() != "") {
+                CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), $("#C-4-C").val());
+            }
 
-            //redirect to home
-            let address = window.location.href;
-            setTimeout(() => {
-                if (address.indexOf('html') < 0) {
-                    address = address.replace('custom-apply', '');
-                } else if (address.indexOf('html') >= 0) {
-                    address = address.replace('custom-apply.html', '');
+            axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
+                "data": {
+                    "timestamp": $('.submit-box').attr('data-stamp'),
+                    ////基本資訊
+                    "曝光日期": $('#date-exposure_range').val(),
+                    "主打品牌": $('#brand').val(),
+                    "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
+                    "急迫度": $("[name=urgency]").siblings(".w--redirected-checked").siblings(".label").text().slice(3, 4),
+                    "曝光年份": $('[data-year]').attr('data-year'),
+                    ////送出前確認訊息
+                    "需求方": $("#applicant").val(),
+                    "相關路徑": $("#path").val(),
                 }
-                window.location.replace(address);
-            }, 1000)
-        });
+            }).then(response => {
+                console.log(response.data);
+                $('.icon_32x.btn-icon').remove();
+                let reIco = '<div class="icon_32x btn-icon js-complete"></div>'
+                $('.submit-trigger').html('申請成功' + reIco);
+
+                // redirect to home
+                let address = window.location.href;
+                setTimeout(() => {
+                    if (address.indexOf('html') < 0) {
+                        address = address.replace('custom-apply', '');
+                    } else if (address.indexOf('html') >= 0) {
+                        address = address.replace('custom-apply.html', '');
+                    }
+                    window.location.replace(address);
+                }, 1000)
+            });
+        }, 2000)
     })
 }
 
@@ -328,129 +333,133 @@ if (window.location.href.includes('form-apply')) {
 
     let submit = document.querySelector('input[type=submit]');
     submit.addEventListener('click', () => {
-        //lookup ec names
-        let tabBoxes = $('[data-box=tab]');
-        let Alabels = tabBoxes[0].querySelectorAll('.a-button.js-show .label');
-        let Blabels = tabBoxes[1].querySelectorAll('.a-button.js-show .label');
-        let Clabels = tabBoxes[2].querySelectorAll('.a-button.js-show .label');
-        let AecStr = Array.from(Alabels, (x) => x.textContent);
-        let BecStr = Array.from(Blabels, (x) => x.textContent);
-        let CecStr = Array.from(Clabels, (x) => x.textContent);
-        let AecData = Array.from(Alabels, (x) => x.dataset.tab);
-        let BecData = Array.from(Blabels, (x) => x.dataset.tab);
-        let CecData = Array.from(Clabels, (x) => x.dataset.tab);
+        $('.icon_32x.btn-icon').removeClass('submit').addClass('js-loading');
+        setTimeout(() => {
+            //lookup ec names
+            let tabBoxes = $('[data-box=tab]');
+            let Alabels = tabBoxes[0].querySelectorAll('.a-button.js-show .label');
+            let Blabels = tabBoxes[1].querySelectorAll('.a-button.js-show .label');
+            let Clabels = tabBoxes[2].querySelectorAll('.a-button.js-show .label');
+            let AecStr = Array.from(Alabels, (x) => x.textContent);
+            let BecStr = Array.from(Blabels, (x) => x.textContent);
+            let CecStr = Array.from(Clabels, (x) => x.textContent);
+            let AecData = Array.from(Alabels, (x) => x.dataset.tab);
+            let BecData = Array.from(Blabels, (x) => x.dataset.tab);
+            let CecData = Array.from(Clabels, (x) => x.dataset.tab);
 
-        //reconstruct copywright value
-        let AcopywrightStr = [];
-        AcopywrightStr.push($("#C-1-A").val(), $("#C-2-A").val(), $("#C-3-A").val(), '備註: ' + $("#C-4-A").val());
-        let BcopywrightStr = [];
-        if ($("#C-1-B").val() != "") {
-            BcopywrightStr.push($("#C-1-B").val(), $("#C-2-B").val(), $("#C-3-B").val(), '備註: ' + $("#C-4-B").val());
-        }
-        let CcopywrightStr = [];
-        if ($("#C-1-C").val() != "") {
-            CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), '備註: ' + $("#C-4-C").val());
-        }
-
-        //讀取各ec尺寸
-        let sizeA = $('.col-right').eq(0).find('textarea');
-        let sizeB = $('.col-right').eq(1).find('textarea');
-        let sizeC = $('.col-right').eq(2).find('textarea');
-
-
-        axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
-            "data": {
-                "timestamp": $('.submit-box').attr('data-stamp'),
-                ////基本資訊
-                "曝光日期": $('#date-exposure_range').val(),
-                "主打品牌": $('#brand').val(),
-                "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
-                "急迫度": $("[name=urgency]").siblings(".w--redirected-checked").siblings(".label").text().slice(3, 4),
-                "曝光年份": $('[data-year]').attr('data-year'),
-                ////主視覺
-                "指定色調": $("[name=color-tone]").siblings(".w--redirected-checked").siblings("[name=color-tone]").val(),
-                "指定氛圍": $("[name=theme]").siblings(".w--redirected-checked").siblings("[name=theme]").val(),
-                ////案型1
-                "案型1-活動文案": AcopywrightStr.toString(),
-                //
-                "案型1-商品總數": $("#P-count-A").val(),
-                "案型1-商品清單": $("#P-A").val(),
-                //
-                "案型1-尺寸1": $(sizeA).eq(0).val(),
-                "案型1-尺寸2": $(sizeA).eq(1).val(),
-                "案型1-尺寸3": $(sizeA).eq(2).val(),
-                "案型1-尺寸4": $(sizeA).eq(3).val(),
-                "案型1-尺寸5": $(sizeA).eq(4).val(),
-                "案型1-尺寸6": $(sizeA).eq(5).val(),
-                "案型1-尺寸7": $(sizeA).eq(6).val(),
-                "案型1-尺寸8": $(sizeA).eq(7).val(),
-                "案型1-尺寸9": $(sizeA).eq(8).val(),
-                "案型1-自定義1尺寸": $("#custom1-A").val(),
-                "案型1-自定義2尺寸": $("#custom2-A").val(),
-                "案型1-自定義3尺寸": $("#custom3-A").val(),
-                "案型1-通路名稱": AecStr.toString(),
-                "案型1-通路data": AecData.toString(),
-                ////案型2
-                "案型2-活動文案": BcopywrightStr.toString(),
-                //
-                "案型2-商品總數": $("#P-count-B").val(),
-                "案型2-商品清單": $("#P-B").val(),
-                //
-                "案型2-尺寸1": $(sizeB).eq(0).val(),
-                "案型2-尺寸2": $(sizeB).eq(1).val(),
-                "案型2-尺寸3": $(sizeB).eq(2).val(),
-                "案型2-尺寸4": $(sizeB).eq(3).val(),
-                "案型2-尺寸5": $(sizeB).eq(4).val(),
-                "案型2-尺寸6": $(sizeB).eq(5).val(),
-                "案型2-尺寸7": $(sizeB).eq(6).val(),
-                "案型2-尺寸8": $(sizeB).eq(7).val(),
-                "案型2-尺寸9": $(sizeB).eq(8).val(),
-                "案型2-自定義1尺寸": $("#custom1-B").val(),
-                "案型2-自定義2尺寸": $("#custom2-B").val(),
-                "案型2-自定義3尺寸": $("#custom3-B").val(),
-                "案型2-通路名稱": BecStr,
-                "案型2-通路data": BecData.toString(),
-                ////案型3
-                "案型3-活動文案": CcopywrightStr.toString(),
-                //
-                "案型3-商品總數": $("#P-count-C").val(),
-                "案型3-商品清單": $("#P-C").val(),
-                //
-                "案型3-尺寸1": $(sizeC).eq(0).val(),
-                "案型3-尺寸2": $(sizeC).eq(1).val(),
-                "案型3-尺寸3": $(sizeC).eq(2).val(),
-                "案型3-尺寸4": $(sizeC).eq(3).val(),
-                "案型3-尺寸5": $(sizeC).eq(4).val(),
-                "案型3-尺寸6": $(sizeC).eq(5).val(),
-                "案型3-尺寸7": $(sizeC).eq(6).val(),
-                "案型3-尺寸8": $(sizeC).eq(7).val(),
-                "案型3-尺寸9": $(sizeC).eq(8).val(),
-                "案型3-自定義1尺寸": $("#custom1-C").val(),
-                "案型3-自定義2尺寸": $("#custom2-C").val(),
-                "案型3-自定義3尺寸": $("#custom3-C").val(),
-                "案型3-通路名稱": CecStr,
-                "案型3-通路data": CecData.toString(),
-                ////送出前確認訊息
-                "需求方": $("#applicant").val(),
-                "相關路徑": $("#path").val(),
+            //reconstruct copywright value
+            let AcopywrightStr = [];
+            AcopywrightStr.push($("#C-1-A").val(), $("#C-2-A").val(), $("#C-3-A").val(), '備註: ' + $("#C-4-A").val());
+            let BcopywrightStr = [];
+            if ($("#C-1-B").val() != "") {
+                BcopywrightStr.push($("#C-1-B").val(), $("#C-2-B").val(), $("#C-3-B").val(), '備註: ' + $("#C-4-B").val());
             }
-        }).then(response => {
-            console.log(response.data);
+            let CcopywrightStr = [];
+            if ($("#C-1-C").val() != "") {
+                CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), '備註: ' + $("#C-4-C").val());
+            }
 
-            //redirect
-            let address = window.location.href;
-            setTimeout(() => {
-                if (address.indexOf('html') < 0) {
-                    address = address.replace('form-apply', '');
-                } else if (address.indexOf('html') >= 0) {
-                    address = address.replace('form-apply.html', '');
+            //讀取各ec尺寸
+            let sizeA = $('.col-right').eq(0).find('textarea');
+            let sizeB = $('.col-right').eq(1).find('textarea');
+            let sizeC = $('.col-right').eq(2).find('textarea');
+
+
+            axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
+                "data": {
+                    "timestamp": $('.submit-box').attr('data-stamp'),
+                    ////基本資訊
+                    "曝光日期": $('#date-exposure_range').val(),
+                    "主打品牌": $('#brand').val(),
+                    "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
+                    "急迫度": $("[name=urgency]").siblings(".w--redirected-checked").siblings(".label").text().slice(3, 4),
+                    "曝光年份": $('[data-year]').attr('data-year'),
+                    ////主視覺
+                    "指定色調": $("[name=color-tone]").siblings(".w--redirected-checked").siblings("[name=color-tone]").val(),
+                    "指定氛圍": $("[name=theme]").siblings(".w--redirected-checked").siblings("[name=theme]").val(),
+                    ////案型1
+                    "案型1-活動文案": AcopywrightStr.toString(),
+                    //
+                    "案型1-商品總數": $("#P-count-A").val(),
+                    "案型1-商品清單": $("#P-A").val(),
+                    //
+                    "案型1-尺寸1": $(sizeA).eq(0).val(),
+                    "案型1-尺寸2": $(sizeA).eq(1).val(),
+                    "案型1-尺寸3": $(sizeA).eq(2).val(),
+                    "案型1-尺寸4": $(sizeA).eq(3).val(),
+                    "案型1-尺寸5": $(sizeA).eq(4).val(),
+                    "案型1-尺寸6": $(sizeA).eq(5).val(),
+                    "案型1-尺寸7": $(sizeA).eq(6).val(),
+                    "案型1-尺寸8": $(sizeA).eq(7).val(),
+                    "案型1-尺寸9": $(sizeA).eq(8).val(),
+                    "案型1-自定義1尺寸": $("#custom1-A").val(),
+                    "案型1-自定義2尺寸": $("#custom2-A").val(),
+                    "案型1-自定義3尺寸": $("#custom3-A").val(),
+                    "案型1-通路名稱": AecStr.toString(),
+                    "案型1-通路data": AecData.toString(),
+                    ////案型2
+                    "案型2-活動文案": BcopywrightStr.toString(),
+                    //
+                    "案型2-商品總數": $("#P-count-B").val(),
+                    "案型2-商品清單": $("#P-B").val(),
+                    //
+                    "案型2-尺寸1": $(sizeB).eq(0).val(),
+                    "案型2-尺寸2": $(sizeB).eq(1).val(),
+                    "案型2-尺寸3": $(sizeB).eq(2).val(),
+                    "案型2-尺寸4": $(sizeB).eq(3).val(),
+                    "案型2-尺寸5": $(sizeB).eq(4).val(),
+                    "案型2-尺寸6": $(sizeB).eq(5).val(),
+                    "案型2-尺寸7": $(sizeB).eq(6).val(),
+                    "案型2-尺寸8": $(sizeB).eq(7).val(),
+                    "案型2-尺寸9": $(sizeB).eq(8).val(),
+                    "案型2-自定義1尺寸": $("#custom1-B").val(),
+                    "案型2-自定義2尺寸": $("#custom2-B").val(),
+                    "案型2-自定義3尺寸": $("#custom3-B").val(),
+                    "案型2-通路名稱": BecStr,
+                    "案型2-通路data": BecData.toString(),
+                    ////案型3
+                    "案型3-活動文案": CcopywrightStr.toString(),
+                    //
+                    "案型3-商品總數": $("#P-count-C").val(),
+                    "案型3-商品清單": $("#P-C").val(),
+                    //
+                    "案型3-尺寸1": $(sizeC).eq(0).val(),
+                    "案型3-尺寸2": $(sizeC).eq(1).val(),
+                    "案型3-尺寸3": $(sizeC).eq(2).val(),
+                    "案型3-尺寸4": $(sizeC).eq(3).val(),
+                    "案型3-尺寸5": $(sizeC).eq(4).val(),
+                    "案型3-尺寸6": $(sizeC).eq(5).val(),
+                    "案型3-尺寸7": $(sizeC).eq(6).val(),
+                    "案型3-尺寸8": $(sizeC).eq(7).val(),
+                    "案型3-尺寸9": $(sizeC).eq(8).val(),
+                    "案型3-自定義1尺寸": $("#custom1-C").val(),
+                    "案型3-自定義2尺寸": $("#custom2-C").val(),
+                    "案型3-自定義3尺寸": $("#custom3-C").val(),
+                    "案型3-通路名稱": CecStr,
+                    "案型3-通路data": CecData.toString(),
+                    ////送出前確認訊息
+                    "需求方": $("#applicant").val(),
+                    "相關路徑": $("#path").val(),
                 }
-                window.location.replace(address);
-            }, 1000)
-        });
+            }).then(response => {
+                console.log(response.data);
+                $('.icon_32x.btn-icon').remove();
+                let reIco = '<div class="icon_32x btn-icon js-complete"></div>'
+                $('.submit-trigger').html('申請成功' + reIco);
+
+                //redirect
+                let address = window.location.href;
+                setTimeout(() => {
+                    if (address.indexOf('html') < 0) {
+                        address = address.replace('form-apply', '');
+                    } else if (address.indexOf('html') >= 0) {
+                        address = address.replace('form-apply.html', '');
+                    }
+                    window.location.replace(address);
+                }, 1000)
+            });
+        }, 2000)
     })
-
-
 }
 
 //@Index output 專屬區塊
