@@ -104,9 +104,21 @@ $(document).ready(function() {
     }, 1600)
 })
 
-//預設日期txtInput.value =""
+//datepicker widget
 $(document).ready(function() {
-    $('.date-input').not('.single-date').val('');
+    $('.date-input').not('.single-date').val(''); //預設日期txtInput.value =""
+    if ($('.ranges')) {
+        $('.ranges').find('li').last().css('display', 'none');
+    }
+})
+
+$(document).click(() => {
+    if ($('.daterangepicker').is(':visible')) {
+        console.log('opened')
+        $('.daterangepicker').css('boxShadow', '0 4px 8px 0 hsla(0, 0%, 89.8%, 0.8)');
+    } else {
+        $('.daterangepicker').css('boxShadow', '0 4px 8px 0 hsla(0, 0%, 89.8%, 0)');
+    }
 })
 
 //section hover 觸發cardbox transfrom + padding 變化
@@ -591,6 +603,31 @@ for (const dropInput of dropInputs) {
 //end of GLOBAL input輸入時/輸入後響應
 
 //Global general dropdown behaviours
+
+//expand by hovering
+$('.dropdown-box[data-query]').each((dp) => {
+    $('.dropdown-box[data-query]').eq(dp).hover(
+        function() {
+            if ($(this).hasClass('dropdown-box')) {
+                $(this).find('.drop-card').removeClass('js-collapsed');
+            } else if ($(this).closest('.drop-card') != null) {
+                $(this).closest('.drop-card').removeClass('js-collapsed');
+            }
+            if ($(this).find('.dropdown-arrow') != null) {
+                $(this).find('.dropdown-arrow').addClass('js-rotated');
+            }
+        },
+        function() {
+            $(this).find('.drop-card').addClass('js-collapsed');
+            if ($(this).find('.dropdown-arrow') != null) {
+                $(this).find('.dropdown-arrow').removeClass('js-rotated');
+            }
+        }
+    );
+})
+
+
+//further response !!!冗余段落待檢查
 var dropCards = document.querySelectorAll(".drop-card");
 for (const dropCard of dropCards) {
     //排除filter query //!!!新舊衝突

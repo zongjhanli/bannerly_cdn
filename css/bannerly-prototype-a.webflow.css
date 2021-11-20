@@ -345,7 +345,7 @@ label {
     border-radius: 12px;
     width: auto;
     height: 40px;
-    margin-right: -1px;
+    margin-right: 0px;
     padding-right: 0px;
     padding-left: 10px;
     font-size: 16px;
@@ -1828,12 +1828,13 @@ div::-webkit-scrollbar {
     cursor: pointer;
 }
 
-.icon-24x.back-home {
+
+/* .icon-24x.back-home {
     background-image: url('../images/akar-icons_arrow-down-1.svg');
     background-position: 50% 50%;
     background-size: auto;
     background-repeat: no-repeat;
-}
+} */
 
 .icon-24x.filter {
     position: absolute;
@@ -1875,23 +1876,41 @@ div::-webkit-scrollbar {
 }
 
 .icon_32x.back-home {
-    position: relative;
-    margin-right: 12px;
-    margin-left: -44px;
+    /* position: absolute; */
+    /* margin-right: 12px;
+    margin-left: -44px; */
     background-image: url('../images/akar-icons_arrow-down-1.svg');
     background-position: 50% 50%;
-    background-size: 28px;
+    background-size: 24px;
     background-repeat: no-repeat;
-    -webkit-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    transform: rotate(90deg);
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
     cursor: pointer;
     position: fixed;
-    top: 40px;
-    left: calc(50vw - 240px);
+    top: 32px;
+    left: calc(50vw + 240px);
     -webkit-transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     z-index: 99;
+}
+
+.annotate.back-home {
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
+    display: inline-block;
+    width: 48px;
+    height: 48px;
+    padding-top: 44px;
+    padding-left: 4px;
+    color: #333;
+}
+
+.annotate.h3-year {
+    display: inline-block;
+    padding-left: 0px;
+    font-size: 14px;
 }
 
 .icon_32x.for-search-query {
@@ -2100,6 +2119,7 @@ div::-webkit-scrollbar {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+    padding-right: 4px;
     width: 242px;
     height: 100%;
     -webkit-justify-content: space-around;
@@ -2164,8 +2184,15 @@ div::-webkit-scrollbar {
     text-align: center;
 }
 
+.as-stats {
+    min-width: 56px;
+    max-width: 56px;
+    text-align: center;
+}
+
 .stats-chip.state-a {
     min-width: 56px;
+    max-width: 56px;
     border: 1px solid #000;
 }
 
@@ -2343,6 +2370,7 @@ div::-webkit-scrollbar {
 
 .cta-flex.home-title {
     position: fixed;
+    padding: 0px 8px;
     left: 0%;
     right: 0%;
     height: 92px;
@@ -2361,14 +2389,35 @@ div::-webkit-scrollbar {
     transition: all 200ms ease;
 }
 
-.identity {
-    background-color: #606060;
+.annotate {
     border-radius: 4px;
-    color: white;
     padding: 2px 8px;
     font-size: 12px;
+}
+
+.annotate.identity {
+    background-color: #606060;
+    color: white;
     position: absolute;
-    left: 128px;
+    left: calc(128px + 8px);
+    /* 包含home-title 的padding */
+}
+
+.annotate.case-note {
+    display: inline-block;
+    padding: 0px 3px;
+    line-height: 18px;
+    max-width: 24px;
+    background-color: rgba(47, 90, 58, 1);
+    color: white;
+    margin-right: 2px;
+    font-size: 8px;
+    border-radius: 2px;
+}
+
+.case-note {
+    display: inline;
+    font-size: 13px;
 }
 
 .full-width-flex {
@@ -2972,6 +3021,7 @@ div::-webkit-scrollbar {
 
 .input.full-chip.date-box {
     padding-left: 0px;
+    padding-right: 0px;
 }
 
 .input.as-textarea {
@@ -3078,7 +3128,7 @@ div::-webkit-scrollbar {
     z-index: 11;
     width: 110px;
     margin-top: 6px;
-    padding-left: 20px;
+    padding-left: 18px;
     -webkit-box-pack: start;
     -webkit-justify-content: flex-start;
     -ms-flex-pack: start;
@@ -3090,6 +3140,10 @@ div::-webkit-scrollbar {
     color: #333;
     font-size: 16px;
     cursor: pointer;
+}
+
+.dropdown-box.for-query.max-size {
+    width: 128px;
 }
 
 .dropdown-box.for-query.min-size {
@@ -3119,7 +3173,6 @@ div::-webkit-scrollbar {
     width: 76px;
     padding-right: 0px;
     padding-left: 2px;
-    color: #3b7a47;
 }
 
 .dropdown-box.for-query.min-size.sort-query.js-hide {
@@ -3149,7 +3202,7 @@ div::-webkit-scrollbar {
     border-color: #dcdcdc;
     border-radius: 8px;
     background-color: #fff;
-    box-shadow: 0 4px 8px 0 hsla(0, 0%, 89.8%, 0.4);
+    box-shadow: 0 4px 8px 0 hsla(0, 0%, 89.8%, 0.8);
     -webkit-transition: all 200ms cubic-bezier(.165, .84, .44, 1), border-width 0ms linear;
     transition: all 200ms cubic-bezier(.165, .84, .44, 1), border-width 0ms linear;
 }
@@ -3249,11 +3302,12 @@ div::-webkit-scrollbar {
 
 .output.as-textarea {
     max-height: none;
-    min-height: 56px;
+    min-height: 64px;
     padding: 8px 12px;
     border-width: 0px;
     background-color: rgba(59, 122, 71, 0.04);
     box-shadow: inset 0 0 6px 0 rgba(59, 122, 71, 0.04);
+    line-height: 24px;
 }
 
 .output.as-textarea:hover {
@@ -3333,6 +3387,7 @@ div::-webkit-scrollbar {
     background-image: url('../images/akar-icons_circle-chevron-down-fill.svg');
     background-position: 50% 40%;
     background-size: 24px;
+    margin-right: 2px;
 }
 
 .icon-36x.dropdown-arrow.min-size {
@@ -3527,6 +3582,11 @@ div::-webkit-scrollbar {
 
 .hinter-box.in-card.lower-pos {
     top: 6px;
+}
+
+.hinter-box.in-card.for-filter {
+    left: -80px;
+    top: 10px;
 }
 
 .hinter-box.in-card.temp-hide {
@@ -3743,7 +3803,7 @@ div::-webkit-scrollbar {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    width: 466px;
+    width: 448px;
     height: 100%;
     padding-left: 16px;
     -webkit-box-align: center;
@@ -4103,6 +4163,19 @@ div::-webkit-scrollbar {
 .page-load-illus.js-hide {
     transform: scale(0.8, 0.8);
     opacity: 0;
+}
+
+.q-chr {
+    font-family: Inter, sans-serif;
+    display: inline-block;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter-VariableFont_slntwght.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
 }
 
 @font-face {

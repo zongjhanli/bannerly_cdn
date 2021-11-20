@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>填表申請</title>
-    <meta content="填表申請" property="og:title">
-    <meta content="填表申請" property="twitter:title">
+    <title>詳細表單</title>
+    <meta content="詳細表單" property="og:title">
+    <meta content="詳細表單" property="twitter:title">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="Webflow" name="generator">
     <link href="css/normalize.css" rel="stylesheet" type="text/css">
@@ -129,7 +129,7 @@
                             <div class="input full-chip date-box">
                                 <div class="date-input-embed w-embed"><input type="text" id="date-exposure_range" class="date-input" name="" value="" autocomplete="off"></div>
                                 <div class="label full-touch unclickable placeholder">選擇日期區間</div>
-                                <div class="icon-36x calendar"></div>
+                                <div class="icon-36x calendar unclickable"></div>
                             </div>
                             <div class="hinter-box in-card">
                                 <div class="_12px-500 for-hinter">此欄必填</div>
@@ -797,7 +797,7 @@
             "minDate": moment(),
             "opens": "right",
             locale: {
-                format: 'YYYY/MM/DD'
+                format: 'YYYY/MM/DD',
             }
         }, function(start, end, label) {});
         // date-input placeholder被按下後即隱藏

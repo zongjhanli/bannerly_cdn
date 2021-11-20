@@ -349,14 +349,14 @@ if (window.location.href.includes('form-apply')) {
 
             //reconstruct copywright value
             let AcopywrightStr = [];
-            AcopywrightStr.push($("#C-1-A").val(), $("#C-2-A").val(), $("#C-3-A").val(), '備註: ' + $("#C-4-A").val());
+            AcopywrightStr.push($("#C-1-A").val(), $("#C-2-A").val(), $("#C-3-A").val(), '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-A").val()) + '</div>';
             let BcopywrightStr = [];
             if ($("#C-1-B").val() != "") {
-                BcopywrightStr.push($("#C-1-B").val(), $("#C-2-B").val(), $("#C-3-B").val(), '備註: ' + $("#C-4-B").val());
+                BcopywrightStr.push($("#C-1-B").val(), $("#C-2-B").val(), $("#C-3-B").val(), '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-B").val()) + '</div>';
             }
             let CcopywrightStr = [];
             if ($("#C-1-C").val() != "") {
-                CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), '備註: ' + $("#C-4-C").val());
+                CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-C").val()) + '</div>';
             }
 
             //讀取各ec尺寸
@@ -761,7 +761,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         }
                     } else {
                         designer.textContent = '未指派';
-                        designer.style.color = '#808080';
+                        designer.style.color = '#A9A9A9';
                         status.textContent = '未發單';
                         status.classList.add('js-tbc');
                     }
@@ -814,8 +814,17 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 }
                 $('.month-indicator').each((i) => {
                     //刪除「0」字樣
-                    if ($('.month-indicator').eq(i).text().slice(0, 1) == '0') {
-                        $('.month-indicator').eq(i).text($('.month-indicator').eq(i).text().replace('0', ''));
+                    if ($('.month-indicator').eq(i).text() == '01月') {
+                        if ($('.month-indicator').eq(i - 1).text() == '12月' || $('.month-indicator').eq(i + 1).text() == '12月') {
+                            let annotateY = '<div class="annotate h3-year">/' + $('.month-indicator').eq(i).next().attr('data-year') + '</div>';
+                            $('.month-indicator').eq(i).html($('.month-indicator').eq(i).html() + annotateY);
+                        }
+                    }
+                })
+                $('.month-indicator').each((i) => {
+                    //刪除「0」字樣
+                    if ($('.month-indicator').eq(i).html().slice(0, 1) == '0') {
+                        $('.month-indicator').eq(i).html($('.month-indicator').eq(i).html().replace('0', ''));
                     }
                 })
 
@@ -859,7 +868,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     for (q = 4; q > 0; q--) { //利用4的倍數區間找出需要的Quarter值
                         for (m = monthArr.length - 1; m >= 0; m--) { //!!!影響順序
                             if ((q - 1) * 3 < monthArr[m] && q * 3 >= monthArr[m]) {
-                                let labelText = 'Q' + q + '/' + monthArr.key.slice(2, 4); //利用「Quarter值」搭配「year」製造選項文字
+                                // let labelText = 'Q' + q + '/' + monthArr.key.slice(2, 4); //利用「Quarter值」搭配「year」製造選項文字
+                                let labelText = '<div class="q-chr">Q</div>' + q + '/' + monthArr.key; //利用「Quarter值」搭配「year」製造選項文字
                                 labelArr.push(labelText);
                             }
                         }
@@ -870,23 +880,27 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 for (label = 0; label < labelArr.length; label++) {
                     let newQ = '<div class="a-button as-list"><div class="label full-touch"></div><div class="custom-check tick-right"></div></div>';
                     $('[data-query=quarter]').find('.drop-group').append(newQ);
-                    $('[data-query=quarter]').find('.label').eq(label).text(labelArr[label]);
+                    $('[data-query=quarter]').find('.label').eq(label).html(labelArr[label]);
                 }
 
                 //頁面load預設第一選項被選中
                 let first = $('[data-query=quarter]').find('.drop-group').find('.label').first();
-                $('[data-query=quarter]').children('.unclickable').not('.dropdown-arrow').text(first.text());
+                $('[data-query=quarter]').children('.unclickable').not('.dropdown-arrow').html(first.html());
                 first.siblings('.custom-check').addClass('js-selected');
 
                 //添加「全案件」選項
                 let newQ = '<div class="a-button as-list"><div class="label full-touch"></div><div class="custom-check tick-right"></div></div>';
                 $('[data-query=quarter]').find('.drop-group').append(newQ);
-                $('[data-query=quarter]').find('.label').last().text('全案件');
+                $('[data-query=quarter]').find('.label').last().text('全季度');
             })
 
+            let quarterQueryRan = false; //edge-case! 若目前季度皆已結案，預設顯示上一季度案件
+
             $(document).ready(function() {
+                statsQuery();
                 quarterQuery();
                 monthH3();
+                noResult();
             })
 
             //search input 響應
@@ -896,6 +910,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 statsQuery();
                 personQuery();
                 monthH3();
+                noResult();
                 // sortQuery();
             })
 
@@ -918,6 +933,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
             $('.icon_32x.for-search-query').click(function(e) {
                     if ($(this).hasClass('js-clear-search')) {
+                        noResult();
                         $(this).parent().find('.search-input').val('');
                         $(this).removeClass('js-clear-search');
                     } else if ($(this).hasClass('js-return')) {
@@ -930,27 +946,31 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     }
                 }) //end of search input 響應
 
+            let hinted = false; //for clear-filter hint
+
             //filter 響應區塊
             $(document).click(function(e) {
                 let target = $(e.target);
 
                 // dropdown之間僅保留一個顯現，其餘收合
-                if (target.hasClass('dropdown-box')) {
-                    collapseAll();
-                    target.find('.drop-card').toggleClass('js-collapsed');
-                    target.find('.dropdown-arrow').toggleClass('js-rotated');
-                    // sortQuery(); //!-- 這邊不叫喚的話會暫時跑掉，疑惑待解
-                } else {
-                    collapseAll();
-                }
+                // if (target.hasClass('dropdown-box')) {
+                //     collapseAll();
+                //     target.find('.drop-card').toggleClass('js-collapsed');
+                //     target.find('.dropdown-arrow').toggleClass('js-rotated');
+                //     // sortQuery(); //!-- 這邊不叫喚的話會暫時跑掉，疑惑待解
+                // } else {
+                //     collapseAll();
+                // }
 
-                function collapseAll() {
-                    $('.dropdown-box.for-query').not(target).find('.drop-card').addClass('js-collapsed');
-                    $('.dropdown-box.for-query').not(target).find('.dropdown-arrow').removeClass('js-rotated');
-                }
+                // function collapseAll() {
+                //     $('.dropdown-box.for-query').not(target).find('.drop-card').addClass('js-collapsed');
+                //     $('.dropdown-box.for-query').not(target).find('.dropdown-arrow').removeClass('js-rotated');
+                // }
 
                 // drop option 轉換文字
                 if (target.hasClass('label', 'full-touch') && target.parentsUntil('.query-box') != null) {
+                    noResult();
+                    // quarterQuery();
                     target.parentsUntil('.drop-group').siblings().find('.custom-check').removeClass('js-selected');
                     let tDropdownBox = target.parent().parent().parent().parent();
 
@@ -967,7 +987,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     //clear all filters
                     let tFilterKey = tDropdownBox.children('.unclickable').not('.dropdown-arrow');
                     if (tDropdownBox.find('.js-selected').length != 0) {
-                        tFilterKey.text(target.text());
+                        tFilterKey.html(target.html());
                         tDropdownBox.not('[data-query=quarter]').addClass('js-filtering'); //quarter query 顏色維持charcoal，其他為prm B
                         tDropdownBox.not('[data-query=quarter]').find('.dropdown-arrow').addClass('js-filtering');
                     } else if (tDropdownBox.find('.js-selected').length == 0) {
@@ -978,19 +998,49 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         } else if (tDropdownBox.attr('data-query') == 'designer') {
                             tFilterKey.text('設計方');
                         } else if (tDropdownBox.attr('data-query') == 'status') {
-                            tFilterKey.text('狀態');
+                            tFilterKey.text('未完成');
                         }
                     }
                 }
 
+                if ($('.dropdown-box[data-query]').hasClass('js-filtering')) {
+                    $('.icon_32x.filter').addClass('js-filtering');
+                }
+
+                //「清除filter」 提示顯現
+                if ($('.icon_32x.filter').hasClass('js-filtering')) {
+                    $('.icon_32x.filter').hover(mEnter, mLeave);
+                }
+                if (!hinted) {
+                    if ($('.js-filtering[data-query]').length == 1 || $('.search-input').val().length != 0) {
+                        mEnter();
+                        setTimeout(() => {
+                            mLeave();
+                        }, 1500)
+                        hinted = true;
+                    }
+                }
+
+                function mEnter() {
+                    $('.icon_32x.filter').find('.hinter-box').css('display', 'block');
+                }
+
+                function mLeave() {
+                    $('.icon_32x.filter').find('.hinter-box').css('display', 'none');
+                }
+
                 //filter 模式開關
                 if (target.hasClass('filter')) {
-                    target.toggleClass('js-filtering');
-                    target.parent().find('.dropdown-box').toggleClass('unclickable');
-                    target.parent().find('.dropdown-arrow').toggleClass('js-hide');
-                    target.parent().find('[data-query=sort]').toggleClass('js-hide');
+                    if (target.hasClass('js-filtering')) {
+                        noResult()
+                        target.removeClass('js-filtering');
+                        if ($('.search-input').val() != '') {
+                            $('.search-input').val('');
+                            $('.icon_32x.for-search-query').removeClass('js-clear-search');
+                        }
+                    }
                     //defaulting query conditions
-                    let tDropdownBox = target.parent().find('.dropdown-box').not('[data-query=sort]');
+                    let tDropdownBox = target.parent().find('.dropdown-box');
 
                     tDropdownBox.find('.custom-check').removeClass('js-selected');
                     tDropdownBox.removeClass('js-filtering'); //quarter query 顏色維持charcoal，其他為prm B
@@ -1003,7 +1053,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         } else if ($(this).attr('data-query') == 'designer') {
                             tFilterKey.text('設計方');
                         } else if ($(this).attr('data-query') == 'status') {
-                            tFilterKey.text('狀態');
+                            tFilterKey.text('未完成');
                         }
                     })
 
@@ -1069,16 +1119,32 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 $('.dropdown-box').each(function() {
                     if ($(this).attr('data-query') == 'quarter') {
                         let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
-                        let qKey = filterKey.slice(1, 2);
-                        if (filterKey.indexOf('全季') < 0) {
-                            $('.a-list').each(function() {
-                                let month = $(this).children('._14px-500').text().slice(0, 2);
-                                if (month <= (qKey - 1) * 3 || month > qKey * 3) {
-                                    $(this).css('display', 'none');
-                                }
-                            })
-                        } else {
+
+                        execute();
+
+                        if (!quarterQueryRan && $('.a-list:visible').length == 0) {
+                            quarterQueryRan = true;
                             $('.a-list').css('display', 'flex');
+                            $(this).find('.unclickable').not('.dropdown-arrow').html($(this).find('.label').eq(1).html());
+                            filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
+                            $(this).find('.label').eq(0).siblings().removeClass('js-selected');
+                            $(this).find('.label').eq(1).siblings().addClass('js-selected');
+                            execute();
+                            statsQuery();
+                        }
+
+                        function execute() {
+                            let qKey = filterKey.slice(1, 2);
+                            if (filterKey.indexOf('全季') < 0) {
+                                $('.a-list').each(function() {
+                                    let month = $(this).children('._14px-500').text().slice(0, 2);
+                                    if (month <= (qKey - 1) * 3 || month > qKey * 3) {
+                                        $(this).css('display', 'none');
+                                    }
+                                })
+                            } else if (filterKey == '全案件') {
+                                $('.a-list').css('display', 'flex');
+                            }
                         }
                     }
                 })
@@ -1116,10 +1182,13 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
                         $('.a-list').each(function(l) {
                             let statsStr = $('.a-list').eq(l).find('.stats-chip').text();
-                            if (filterKey == "已結案" && statsStr != "已結案") {
+                            if (filterKey == "未完成" && statsStr == "已結案") { //default
                                 $('.a-list').eq(l).css('display', 'none');
-                                // console.log(statsStr)
-                            } else if (filterKey == "未完成" && statsStr == "已結案") {
+                            } else if (filterKey == "已結案" && statsStr != "已結案") {
+                                $('.a-list').eq(l).css('display', 'none');
+                            } else if (filterKey == "製作中" && statsStr != "製作中") {
+                                $('.a-list').eq(l).css('display', 'none');
+                            } else if (filterKey == "未發單" && statsStr != "未發單") {
                                 $('.a-list').eq(l).css('display', 'none');
                             }
                         })
@@ -1145,7 +1214,22 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 }
                 monthH3();
             }
+            // $('.dropdown-box.for-query').find('.label').mouseup(() => { noResult() })
+            // $('.search-input').change(() => { noResult() })
+            // $('.icon_32x.filter.js-filtering').click(() => { noResult() })
+
+            function noResult() {
+                setTimeout(() => {
+                    if ($('.a-list:visible').length == 0) {
+                        $('.empty-state').css('display', 'block');
+                    }
+                    if ($('.a-list:visible').length > 0) {
+                        $('.empty-state').css('display', 'none');
+                    }
+                }, 50)
+            }
             //end of List欄位-QUERY
+
 
             // Result欄位output
             document.addEventListener('click', (e) => {
@@ -1201,7 +1285,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                             'top': '0px'
                                         });
                                         setTimeout(() => {
-                                            $('.back-home').css('left', 'calc(50vw - 288px)')
+                                            $('.back-home').css('left', 'calc(50vw + 296px)')
                                         }, 100)
                                     }, 100)
                                     $('.as-textarea[data-output]').text('');
@@ -1260,6 +1344,19 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                             //案型1 output
                                             if (cols[i].label == '案型1-活動文案') {
                                                 $("[data-output='C-A']").html(tCells[i].v.replaceAll(',', '<br>'));
+                                                // if (tCells[i].v.indexOf(',,,') > 0) {
+                                                //     if (tCells[i].v.indexOf(',,,') == tCells[i].v.length - 3) {
+                                                //         brChecked = tCells[i].v.replace(',,,', '');
+                                                //     } else if (tCells[i].v.indexOf(',,,') != tCells[i].v.length - 3) {
+                                                //         brChecked = tCells[i].v.replace(',,,', ',');
+                                                //     }
+                                                // } else if (tCells[i].v.indexOf(',,') > 0) {
+                                                //     if (tCells[i].v.indexOf(',,') == tCells[i].v.length - 2) {
+                                                //         brChecked = tCells[i].v.replace(',,', '');
+                                                //     } else if (tCells[i].v.indexOf(',,') != tCells[i].v.length - 2) {
+                                                //         brChecked = tCells[i].v.replace(',,', ',');
+                                                //     }
+                                                // }
                                             }
                                             if (cols[i].label == '案型1-商品總數') {
                                                 $("[data-output='P-count-A']").text(tCells[i].v.slice(2, 3) + '商品');
@@ -1502,7 +1599,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                 'opacity': '0',
                                 'top': '48px'
                             });
-                            $('.back-home').css('left', 'calc(50vw - 240px)');
+                            $('.back-home').css('left', 'calc(50vw + 240px)');
 
                             //defaulting hinters
                             $('.hinter-box').css('display', 'none');
@@ -1550,85 +1647,104 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
                         //更新表單
                         $('[data-update=send]').click((e) => {
-                            let target = e.target;
-                            let input = $(target).closest('.card').find('input').not('.submit');
-                            input.each((i) => {
-                                // console.log($(input).eq(2).val())
+                            $('.icon_32x.btn-icon').removeClass('send').addClass('js-loading');
+                            setTimeout(() => {
+                                let target = e.target;
+                                let input = $(target).closest('.card').find('input').not('.submit');
+                                input.each((i) => {
+                                    // console.log($(input).eq(2).val())
 
-                                if (($(input).eq(i).val() == "")) {
-                                    $(input).eq(i).closest('.f-block').find('.hinter-box').css('display', 'block');
-                                    $(input).eq(i).closest('.f-block').find('.hinter-box').addClass("js-shake");
-                                    $(target).addClass("js-shake");
-                                    setTimeout(function() {
-                                        $(input).eq(i).closest('.f-block').find('.hinter-box').removeClass("js-shake");
-                                        $(target).removeClass("js-shake");
-                                    }, 200);
-                                }
-                            })
-
-                            if ($('.hinter-box:visible').length == 0) {
-                                let timestamp = $('[data-output=list]').attr('data-stamp');
-                                let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
-                                axios.patch(targetRow, {
-                                    "data": {
-                                        "設計方": $('#designer').val(),
-                                        "初稿交件日期": $('#ddl-1').val(),
-                                        "完成日期": $('#ddl-2').val()
+                                    if (($(input).eq(i).val() == "")) {
+                                        $(input).eq(i).closest('.f-block').find('.hinter-box').css('display', 'block');
+                                        $(input).eq(i).closest('.f-block').find('.hinter-box').addClass("js-shake");
+                                        $(target).addClass("js-shake");
+                                        setTimeout(function() {
+                                            $(input).eq(i).closest('.f-block').find('.hinter-box').removeClass("js-shake");
+                                            $(target).removeClass("js-shake");
+                                        }, 200);
                                     }
-                                }).then(response => {
-                                    console.log(response.data);
-                                    $(lists).each((l) => {
-                                        if ($(lists).eq(l).css('position') == 'fixed') {
-                                            $(lists).eq(l).find('.stats-chip').removeClass('js-tbc');
-                                            $(lists).eq(l).find('.stats-chip').text('製作中');
+                                })
+
+                                if ($('.hinter-box:visible').length == 0) {
+                                    let timestamp = $('[data-output=list]').attr('data-stamp');
+                                    let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
+                                    axios.patch(targetRow, {
+                                        "data": {
+                                            "設計方": $('#designer').val(),
+                                            "初稿交件日期": $('#ddl-1').val(),
+                                            "完成日期": $('#ddl-2').val()
                                         }
-                                    })
-                                });
-                            }
+                                    }).then(response => {
+                                        console.log(response.data);
+                                        $('.icon_32x.btn-icon').remove();
+                                        let reIco = '<div class="icon_32x btn-icon js-complete"></div>'
+                                        $('.submit-trigger').html('申請成功' + reIco);
+                                        setTimeout(() => {
+                                                $(lists).each((l) => {
+                                                    if ($(lists).eq(l).css('position') == 'fixed') {
+                                                        $(lists).eq(l).find('.stats-chip').removeClass('js-tbc');
+                                                        $(lists).eq(l).find('.stats-chip').text('製作中');
+                                                    }
+                                                })
+                                            }, 200)
+                                            // redirect to home
+                                        let address = window.location.href;
+                                        setTimeout(() => {
+                                            if (address.indexOf('html') < 0) {
+                                                address = address.replace('custom-apply', '');
+                                            } else if (address.indexOf('html') >= 0) {
+                                                address = address.replace('custom-apply.html', '');
+                                            }
+                                            window.location.replace(address);
+                                        }, 1000)
+                                    });
+                                }
+                            }, 2000)
                         })
                         $('[data-update=end-case]').click((e) => {
-                            let target = e.target;
-                            if ($("[data-output=designer]").text() == '未指派' || $("[data-output=ddl-1]").text() == '未指派' || $("[data-output=ddl-2]").text() == '未指派') {
-                                $(target).addClass("js-shake");
-                                setTimeout(function() {
-                                    $(target).removeClass("js-shake");
-                                }, 200);
-                            } else {
-                                let timestamp = $('[data-output=list]').attr('data-stamp');
-                                let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
-                                axios.patch(targetRow, {
-                                    "data": {
-                                        "結案": "true"
-                                    }
-                                }).then(response => {
-                                    console.log(response.data);
-                                    $(lists).each((l) => {
-                                        if ($(lists).eq(l).css('position') == 'fixed') {
-                                            $(lists).eq(l).find('.stats-chip').addClass('js-endcase');
-                                            $(lists).eq(l).find('.stats-chip').text('已結案');
+                            $('.icon_32x.btn-icon').removeClass('end-case').addClass('js-loading');
+                            setTimeout(() => {
+                                let target = e.target;
+                                if ($("[data-output=designer]").text() == '未指派' || $("[data-output=ddl-1]").text() == '未指派' || $("[data-output=ddl-2]").text() == '未指派') {
+                                    $(target).addClass("js-shake");
+                                    setTimeout(function() {
+                                        $(target).removeClass("js-shake");
+                                    }, 200);
+                                } else {
+                                    let timestamp = $('[data-output=list]').attr('data-stamp');
+                                    let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
+                                    axios.patch(targetRow, {
+                                        "data": {
+                                            "結案": "true"
                                         }
-                                    })
-                                });
-                            }
+                                    }).then(response => {
+                                        console.log(response.data);
+                                        $('.icon_32x.btn-icon').remove();
+                                        let reIco = '<div class="icon_32x btn-icon js-complete"></div>'
+                                        $('.submit-trigger').html('申請成功' + reIco);
+                                        setTimeout(() => {
+                                                $(lists).each((l) => {
+                                                    if ($(lists).eq(l).css('position') == 'fixed') {
+                                                        $(lists).eq(l).find('.stats-chip').addClass('js-endcase');
+                                                        $(lists).eq(l).find('.stats-chip').text('已結案');
+                                                    }
+                                                })
+                                            }, 200)
+                                            // redirect to home
+                                        let address = window.location.href;
+                                        setTimeout(() => {
+                                            if (address.indexOf('html') < 0) {
+                                                address = address.replace('custom-apply', '');
+                                            } else if (address.indexOf('html') >= 0) {
+                                                address = address.replace('custom-apply.html', '');
+                                            }
+                                            window.location.replace(address);
+                                        }, 1000)
+                                    });
+                                }
+                            }, 2000)
                         })
                     }
                 }) //end of Result欄位output
         })
-
-    $(document).ready(() => {
-        $('.empty-state').css('display', 'none');
-    })
-    $('.dropdown-box.for-query').find('.label').mouseup(() => { noResult() })
-    $('.search-input').change(() => { noResult() })
-    $('.icon_32x.filter').mouseup(() => { noResult() })
-
-    function noResult() {
-        setTimeout(() => {
-            if ($('.a-list:visible').length == 0) {
-                $('.empty-state').css('display', 'block');
-            } else {
-                $('.empty-state').css('display', 'none');
-            }
-        }, 100)
-    }
 }

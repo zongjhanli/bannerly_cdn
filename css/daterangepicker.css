@@ -22,7 +22,7 @@
 /* branded styling: 整體外框線＋圓角＋overflow */
 
 .daterangepicker {
-    overflow: hidden;
+    overflow: visible;
     position: absolute;
     color: inherit;
     background-color: #fff;
@@ -31,10 +31,11 @@
     width: 278px;
     max-width: none;
     padding: 0;
+    padding-left: 16px;
     margin-top: 0px;
     top: 100px;
     left: 20px;
-    z-index: 3001;
+    z-index: 9;
     display: none;
     /* font-family: arial; */
     font-size: 15px;
@@ -129,9 +130,13 @@
     display: block;
 }
 
-.daterangepicker.show-calendar .drp-buttons {
-    display: block;
-}
+
+/* 移除「確認、‘取消」更新value機制 */
+
+
+/* .daterangepicker.show-calendar .drp-buttons {
+    display: none;
+} */
 
 .daterangepicker.auto-apply .drp-buttons {
     display: none;
@@ -146,13 +151,20 @@
     padding: 8px 0 8px 8px;
 }
 
-
-/* 強制將right calendar 寬縮為零 */
-
 .daterangepicker .drp-calendar.right {
-    padding: 0px;
-    width: 0px;
+    padding: 8px 0 8px 8px;
+    border-left: 1px solid #eee;
 }
+
+
+/* .calendar-table table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.calendar-table table:hover {
+    background-color: rgba(47, 90, 58, 0.05);
+} */
 
 .daterangepicker .drp-calendar.single .calendar-table {
     border: none;
@@ -164,7 +176,7 @@
 .daterangepicker .calendar-table .next span,
 .daterangepicker .calendar-table .prev span {
     color: #fff;
-    border: solid rgba(47, 90, 58, 0.5);
+    border: solid rgba(47, 90, 58, 0.3);
     border-width: 0 1px 1px 0;
     border-radius: 0;
     display: inline-block;
@@ -198,10 +210,10 @@
     white-space: nowrap;
     text-align: center;
     vertical-align: middle;
-    min-width: 32px;
-    width: 32px;
-    height: 32px;
-    line-height: 32px;
+    min-width: 28px;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
     font-size: 12px;
     border-radius: 8px;
     border: 0px solid transparent;
@@ -283,15 +295,13 @@ th.prev.available:hover {
 }
 
 .daterangepicker td.off.ends.in-range {
-    background-color: rgba(47, 90, 58, 0.1);
-    border-color: transparent;
-    color: rgba(47, 90, 58, 0.6);
-    border-radius: 0;
+    background-image: none;
 }
 
-.daterangepicker td.off.ends.in-range.available {
+
+/* .daterangepicker td.off.ends.in-range.available {
     background-color: rgba(255, 234, 0, 0.2);
-}
+} */
 
 .daterangepicker td.start-date {
     border-radius: 8px 0 0 8px;
@@ -302,34 +312,26 @@ th.prev.available:hover {
 }
 
 .daterangepicker td.start-date.end-date {
-    border-radius: 100%;
+    border-radius: 8px;
 }
 
 
 /* 失敗！！ 在start date下方放置圓形div，但會蓋住當下日期 */
 
-
-/* td.active.start-date.available::after {
-  content: ".";
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 32px;
-  height: 32px;
-  line-height: 32px;
-  background-color: #683ab7;
-  color:#fff;
-  border-radius: 0%;
-  z-index: 0;
-} */
+.daterangepicker::after,
+.daterangepicker::before {
+    content: "";
+    display: none;
+}
 
 
 /* 承上的替代方案，在start date, end date當中放置圓形svg檔案 */
 
+
+/* 原先隱藏右側時，.daterangepicker td.off.ends.active也要比照處理 */
+
 .daterangepicker td.active,
-.daterangepicker td.off.ends.active,
-.daterangepicker td.active:hover,
-.daterangepicker td.off.ends.active:hover {
+.daterangepicker td.active:hover {
     /* background-color: rgba(47, 90, 58, 0.1); */
     background-color: rgba(255, 234, 0, 0.2);
     background-image: url('https://uploads-ssl.webflow.com/61848ae267375ffd688ac5d3/6186992ea5d0a48bbadd6fe6_date-ends.svg');
@@ -346,7 +348,7 @@ th.prev.available:hover {
 
 .daterangepicker td.disabled,
 .daterangepicker option.disabled {
-    color: rgba(47, 90, 58, 0.5);
+    color: rgba(47, 90, 58, 0.3);
     cursor: not-allowed;
     text-decoration: line-through;
 }
@@ -357,7 +359,7 @@ th.prev.available:hover {
 .daterangepicker td.disabled:hover,
 .daterangepicker option.disabled:hover {
     background-color: transparent;
-    color: rgba(47, 90, 58, 0.5);
+    color: rgba(47, 90, 58, 0.3);
 }
 
 .daterangepicker select.monthselect,
@@ -430,6 +432,10 @@ th.prev.available:hover {
     bottom: 8px;
 }
 
+.daterangepicker .drp-selected::before {
+    content: "目前所選： ";
+}
+
 
 /* 選項按鈕 */
 
@@ -459,14 +465,6 @@ th.prev.available:hover {
     color: #fff;
 }
 
-.daterangepicker.show-ranges.single.rtl .drp-calendar.left {
-    border-left: 1px solid #2F5A3A;
-}
-
-.daterangepicker.show-ranges.single.ltr .drp-calendar.left {
-    border-left: 1px solid #2F5A3A;
-}
-
 
 /* right calendar的右側線條 */
 
@@ -475,17 +473,11 @@ th.prev.available:hover {
   border-right: 1px solid #2F5A3A;
 } */
 
-
-/* branded styling: left calendar 的左側邊線 */
-
-.daterangepicker.show-ranges.ltr .drp-calendar.left {
-    border-left: 1px solid rgba(47, 90, 58, 0.1);
-}
-
 .daterangepicker .ranges {
     float: none;
     text-align: left;
     margin: 0;
+    margin-left: -16px;
 }
 
 .daterangepicker.show-calendar .ranges {
@@ -543,10 +535,14 @@ th.prev.available:hover {
 
 @media (min-width: 564px) {
     .daterangepicker {
-        width: auto;
+        width: 520px;
+    }
+    .daterangepicker.single {
+        width: 250px;
+        /* margin-left: 6px; */
     }
     .daterangepicker .ranges ul {
-        width: 140px;
+        width: 80px;
     }
     .daterangepicker.single .ranges ul {
         width: 100%;
@@ -582,11 +578,11 @@ th.prev.available:hover {
         border-bottom-left-radius: 0;
     }
     /* 去掉right calendar 除了箭標以外的所有物件 */
-    .daterangepicker .drp-calendar.right tbody,
+    /* .daterangepicker .drp-calendar.right tbody,
     .daterangepicker .drp-calendar.right .calendar-table thead tr:nth-child(2),
     .daterangepicker .drp-calendar.right .calendar-table thead tr:nth-child(1) th:nth-child(-n+2) {
         display: none;
-    }
+    } */
     .daterangepicker .drp-calendar.left .calendar-table {
         padding-right: 8px;
     }

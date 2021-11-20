@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="utf-8">
-    <title>自製簡報申請</title>
-    <meta content="自製簡報申請" property="og:title">
-    <meta content="自製簡報申請" property="twitter:title">
+    <title>簡易表單</title>
+    <meta content="簡易表單" property="og:title">
+    <meta content="簡易表單" property="twitter:title">
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta content="Webflow" name="generator">
     <link href="css/normalize.css" rel="stylesheet" type="text/css">
@@ -53,7 +53,7 @@
                                 <div class="input full-chip date-box">
                                     <div class="date-input-embed w-embed"><input type="text" id="date-exposure_range" class="date-input" name="" value="" autocomplete="off"></div>
                                     <div class="label full-touch unclickable placeholder">選擇日期區間</div>
-                                    <div class="icon-36x calendar"></div>
+                                    <div class="icon-36x calendar unclickable"></div>
                                 </div>
                                 <div class="hinter-box in-card">
                                     <div class="_12px-500 for-hinter">此欄必填</div>
@@ -172,7 +172,7 @@
             "startDate": moment(),
             "endDate": moment().add(0, 'week').endOf('week'),
             "minDate": moment(),
-            "opens": "right",
+            "opens": "center",
             locale: {
                 format: 'YYYY/MM/DD'
             }
