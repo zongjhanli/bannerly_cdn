@@ -681,18 +681,37 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
             let i;
             let designer = 0;
+            let applicant = 0;
             for (i = 0; i < cols.length; i++) {
                 if (rows[0].c[i].v == '設計方') {
                     designer += i;
+                }
+                if (rows[0].c[i].v == '需求方') {
+                    applicant += i;
                 }
             }
             let r;
             for (r = 1; r < rows.length; r++) {
                 if (rows[r].c[designer] != null) {
+                    //output designer list for admin
                     let option = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[designer].v + '</div><div class="custom-check tick-right"></div></div>'
                     $('#designer').closest('.dropdown-box').find('.drop-group').append(option);
+
+                    //output designer query
+                    let space = rows[r].c[designer].v.indexOf(' ');
+                    let designerName = rows[r].c[designer].v.slice(0, space + 1).trim();
+                    let designerQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + designerName + '</div><div class="custom-check tick-right min-size"></div></div>'
+                    $('[data-query=designer]').find('.drop-group').append(designerQueryOption);
+
+                    //output applicant query
+                    space = rows[r].c[applicant].v.indexOf(' ');
+                    let applicantName = rows[r].c[applicant].v.slice(0, space + 1).trim();
+                    let applicantQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + applicantName + '</div><div class="custom-check tick-right min-size"></div></div>'
+                    $('[data-query=applicant]').find('.drop-group').append(applicantQueryOption);
                 }
             }
+
+
         })
 
     //Fetch案件資料
