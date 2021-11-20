@@ -3083,6 +3083,7 @@ div::-webkit-scrollbar {
 }
 
 .img {
+    position: relative;
     max-height: 68px;
     max-width: 68px;
     min-height: 68px;
@@ -4168,6 +4169,26 @@ div::-webkit-scrollbar {
 .q-chr {
     font-family: Inter, sans-serif;
     display: inline-block;
+}
+
+.img-magnifier {
+    overflow: hidden;
+    display: 'none';
+    z-index: 999;
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    /* border-radius: 4px; */
+    border-radius: 100%;
+    left: 0px;
+    top: 0px;
+    border: 1px solid #dcdcdc;
+    background-color: #333;
+    cursor: none;
+    background-position: 50% 50%;
+    background-size: 100px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 @font-face {

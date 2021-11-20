@@ -1526,6 +1526,31 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                 }
                             } // end of list for-loop
                         } //end of function OutputData()
+                        let magnifier = '<div class="img-magnifier"></div>';
+                        $('.block-pool').append(magnifier);
+
+                        //img 放大鏡
+                        // $('.img').each((img) => {
+                        $('.img').mousemove((e) => {
+                            let target = e.target;
+                            let posX = e.clientX - 16 + 'px';
+                            let posY = e.clientY - 16 + 'px';
+                            let imgX = e.clientX - 50 + 'px';
+                            let imgY = e.clientY - 50 + 'px';
+                            let imgUrl = $(target).css('backgroundImage');
+                            // console.log(imgUrl)
+                            $('.img-magnifier').css({
+                                    'display': 'block',
+                                    'top': posY,
+                                    'left': posX,
+                                })
+                                // $('.img-magnifier .img').remove();
+                                // $('.img-magnifier').insertBefore($(target), null);
+                        });
+
+                        // })
+
+
 
                         //!! tab 點按響應
                         $('.side-184w').each((t) => {
