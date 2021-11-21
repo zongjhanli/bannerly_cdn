@@ -1744,7 +1744,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                         console.log(response.data);
                                         $('.icon_32x.btn-icon').remove();
                                         let reIco = '<div class="icon_32x btn-icon js-complete"></div>'
-                                        $('.submit-trigger').html('申請成功' + reIco);
+                                        $('.submit-trigger').html('發單成功' + reIco);
                                         setTimeout(() => {
                                                 $(lists).each((l) => {
                                                     if ($(lists).eq(l).css('position') == 'fixed') {
@@ -1787,7 +1787,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                         console.log(response.data);
                                         $('.icon_32x.btn-icon').remove();
                                         let reIco = '<div class="icon_32x btn-icon js-complete"></div>'
-                                        $('.submit-trigger').html('申請成功' + reIco);
+                                        $('.submit-trigger').html('結案成功' + reIco);
                                         setTimeout(() => {
                                                 $(lists).each((l) => {
                                                     if ($(lists).eq(l).css('position') == 'fixed') {

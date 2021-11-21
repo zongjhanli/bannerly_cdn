@@ -52,27 +52,6 @@ $(document).scroll(() => {
     }
 })
 
-// $('.container.output').scroll((e) => {
-//     let target = e.target;
-//     let scrollY = $(target).scrollTop();
-//     if (scrollY > 100) {
-//         $('.a-list.js-topbar').addClass('to-ceiling');
-//         $('.back-home').find('.annotate').css('display','none');
-//         $('.back-home').css({
-//             'top':'8px',
-//             'marginLeft': '8px'
-//         });
-//     } else if (scrollY < 100) {
-//         $('.back-home').find('.annotate').css('display','block');
-//         $('.back-home').css({
-//             'top':'32px',
-//             'marginLeft': '0px'
-//         });
-//         $('.a-list.js-topbar').removeClass('to-ceiling');
-//     }
-// })
-
-
 //page-load animation
 $(document).ready(function() {
     //頁面預設捲動至頂
@@ -214,7 +193,7 @@ $(document).ready(function() {
     }
 })
 
-//GLOBAL 新增自定義選項（適用於radio select、color picker）
+//GLOBAL 自訂選項（適用於radio select、color picker）
 $(document).ready(() => {
         let minihinters = $(".js-custom-input").parent().find('.js-limit-hinter , .icon_20x.for-custom-input');
         minihinters.css('display', 'none');
@@ -878,18 +857,6 @@ $(document).click(function(e) {
 //@Index 專屬區塊
 if (!window.location.href.includes('form-apply') && !window.location.href.includes('custom-apply')) {
 
-    //一般性radio btn
-    // $(document).click(() => {
-    //     $('.portal-radio').each((r) => {
-    //         if ($('.portal-radio').eq(r).is(':checked')) {
-    //             $('.portal-radio').eq(r).css({
-    //                 'border': '1px solid #2F5A3A',
-    //                 'background': '#2F5A3A',
-    //             })
-    //         }
-    //     })
-    // })
-
     //Result dropDown Label 點擊響應
     //!!!待解，jQuery不接受'js-'開頭的class name???
     $('[data-name=designer]').parent().find('.label').click(function() {
@@ -898,35 +865,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             $(this).siblings('.custom-check').addClass('j-selected');
         }
     })
-
-    //Result Tab 點擊響應
-    // $('.label[data-ec]').click(function() {
-    //     $(this).parent().siblings().not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
-    //     $(this).parent().css('color', 'rgba(47, 90, 58, 1)');
-
-    //     let tabGroup = $(this).parent().parent();
-    //     let eachLabel = tabGroup.find('.label[data-ec]');
-    //     let eachResult = tabGroup.parent().parent().find('[data-output]');
-    //     let i;
-    //     for (i = 0; i < eachLabel.length; i++) {
-    //         if (eachLabel.eq(i).text() == $(this).text()) {
-    //             // eachLabel.parent().is(':visible').css('color', 'color: rgb(47, 90, 58)');
-    //             eachResult.css('display', 'none');
-    //             eachResult.eq(i).css('display', 'block');
-
-    //             // i = i * 36 + 'px';
-    //             // tabGroup.find('.a-button.as-tab.indicator').css('top', i);
-    //         }
-    //     }
-    //     let shownLabel = tabGroup.find('.label[data-ec]:visible');
-    //     let s;
-    //     for (s = 0; s < shownLabel.length; s++) {
-    //         if (shownLabel.eq(s).text() == $(this).text()) {
-    //             s = s * 36 + 'px';
-    //             tabGroup.find('.a-button.as-tab.indicator').css('top', s);
-    //         }
-    //     }
-    // })
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -1085,7 +1023,6 @@ if (window.location.href.includes('form-apply')) {
             for (i = 0; i < shownSwipers.length; i++) {
                 let n = i + 1;
                 shownSwipers[i].firstElementChild.textContent = n;
-                // !!無法同步數值至capTitle
                 $('.section.in-swiped').each((s) => {
                     let m = $(shownSwipers).eq(i).find('.unclickable').text();
                     let capTitle = $('.section.in-swiped').eq(s).find('.card-box[data-handle=true]').eq(i).find('.cap-title');
@@ -1814,6 +1751,36 @@ if (window.location.href.includes('form-apply')) {
 
 //@Form-apply、@Custom-apply 共用區塊
 if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
+
+    //基本資訊填畢即更新topbar標題
+    $('#Info').find('.card').click(function() {
+        setTimeout(()=>{
+        let titleReady = false;
+        let titleBlock = $('#Info').find('.f-block[data-required=true]');
+        if (titleBlock.find('input[type=text]').val() != '' && titleBlock.find('.w--redirected-checked').length == 1) {
+            titleReady = true;
+        } else {
+            titleReady = false;
+        }
+
+        if(titleReady){
+            let date = $(titleBlock).eq(0).find('input').val();
+            let brand = $(titleBlock).eq(1).find('input').val();
+            let type = $(titleBlock).eq(2).find('.w--redirected-checked').siblings('input').val();
+            let urgency = $('#Info').find('.f-block').eq(3).find('.w--redirected-checked').siblings('span').text();
+            if (urgency != "") {
+                urgency = ' (' + urgency.slice(0,1) + ')';
+            }
+            $('._18px-700.for-topbar').text(date + '\u00a0\u00a0' + brand + type + urgency);
+            $('._18px-700.for-topbar').css('fontSize','16px');
+            setTimeout(()=>{
+                $('._18px-700.for-topbar').css('fontSize','18px');
+            },200)
+        } else {
+            $('._18px-700.for-topbar').text('新件申請');
+        }
+    },10)
+    })
 
     //按下enter後防止（瀏覽器預設）送出表單
     $(document).ready(function() {
