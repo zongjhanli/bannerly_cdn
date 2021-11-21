@@ -1530,26 +1530,43 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         $('.block-pool').append(magnifier);
 
                         //img 放大鏡
-                        // $('.img').each((img) => {
-                        $('.img').mousemove((e) => {
+                        $('.img').each((i)=>{
+                        $('.img').eq(i).mousemove((e) => {
                             let target = e.target;
-                            let posX = e.clientX - 16 + 'px';
-                            let posY = e.clientY - 16 + 'px';
-                            let imgX = e.clientX - 50 + 'px';
-                            let imgY = e.clientY - 50 + 'px';
+                            let posX = e.clientX;
+                            let posY = e.clientY;
+                            let pool = document.querySelector('.block-pool');
+                            let poolOffset = pool.getBoundingClientRect();
+                            let poolX = poolOffset.left;
+                            let poolY = poolOffset.top;
+                            let offset = target.getBoundingClientRect();
+                            let imgX = offset.left;
+                            let imgY = offset.top;
                             let imgUrl = $(target).css('backgroundImage');
-                            // console.log(imgUrl)
+                            console.log('posX: '+ posX)
+                            console.log('imgX: '+ imgX)
+                            // console.log(Math.round((posX - imgX)))
+
                             $('.img-magnifier').css({
                                     'display': 'block',
-                                    'top': posY,
-                                    'left': posX,
+                                    'top':  Math.round((posY - poolY)-32) + 'px', //減去放大鏡本身的一半以及block-pool的一半
+                                    'left':  Math.round((posX - poolX)-32) + 'px',
                                 })
-                                // $('.img-magnifier .img').remove();
-                                // $('.img-magnifier').insertBefore($(target), null);
+
+                                $('.img-magnifier .img.big').remove();
+                                let newImg = '<div class="img big"></div>';
+                                $('.img-magnifier').append(newImg);
+                                $('.img-magnifier').find('.img.big').css('backgroundImage',imgUrl);
+                                $('.img-magnifier').find('.img.big').css({
+                                    'margin-left': Math.round(-(posX - imgX)*2.5+32) + 'px',
+                                    'margin-top': Math.round(-(posY - imgY)*2.5+32) + 'px',
+                                })
                         });
+                    })
 
-                        // })
-
+                        $('div').not('.img, .img-magnifier').mouseenter(() => {
+                            $('.img-magnifier').css('display', 'none');
+                        })
 
 
                         //!! tab 點按響應
