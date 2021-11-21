@@ -1760,7 +1760,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
     // })
     $('.back-home.trigger').click(()=>{
         // let target = e.target;
-        if ($('input[type=text]').val() != '' || $('.w--redirected-checked').length > 0) {
+        if ($('input[type=text]').val() != '' || $('textarea').val() != '' || $('.w--redirected-checked').length > 0) {
             let confirm = window.confirm('確定離開表單? 已填寫的欄位將不會儲存!');
             if (confirm) {
                 jQuery('.back-home').not('.trigger').trigger('click');
