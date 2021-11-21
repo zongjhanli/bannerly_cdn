@@ -17,38 +17,38 @@
 $(document).scroll(() => {
     let scrollY = $(document).scrollTop();
     if ($('.topbar-box')) {
-    if (scrollY > 100) {
-        $('.topbar-box').addClass('to-ceiling');
-        $('.back-home').find('.annotate').css('display','none');
-        $('.back-home').css({
-            'top':'8px',
-            'marginLeft': '8px'
-        });
-    } else if (scrollY < 100) {
-        $('.back-home').find('.annotate').css('display','block');
-        $('.back-home').css({
-            'top':'32px',
-            'marginLeft': '0px'
-        });
-        $('.topbar-box').removeClass('to-ceiling');
+        if (scrollY > 100) {
+            $('.topbar-box').addClass('to-ceiling');
+            // $('.back-home').find('.annotate').css('display', 'none');
+            $('.back-home').css({
+                'top': '8px',
+                // 'marginLeft': '8px'
+            });
+        } else if (scrollY < 100) {
+            $('.back-home').find('.annotate').css('display', 'block');
+            $('.back-home').css({
+                'top': '32px',
+                'marginLeft': '0px'
+            });
+            $('.topbar-box').removeClass('to-ceiling');
+        }
     }
-}
     if ($('.a-list.js-topbar')) {
         if (scrollY > 100) {
-        $('.a-list.js-topbar').addClass('to-ceiling');
-        $('.back-home').find('.annotate').css('display','none');
-        $('.back-home').css({
-            'top':'8px',
-            'marginLeft': '8px'
-        });
-    } else if (scrollY < 100) {
-        $('.back-home').find('.annotate').css('display','block');
-        $('.back-home').css({
-            'top':'32px',
-            'marginLeft': '0px'
-        });
-        $('.a-list.js-topbar').removeClass('to-ceiling');
-    }
+            $('.a-list.js-topbar').addClass('to-ceiling');
+            // $('.back-home').find('.annotate').css('display','none');
+            $('.back-home').css({
+                'top': '0px',
+                // 'marginLeft': '8px'
+            });
+        } else if (scrollY < 100) {
+            $('.back-home').find('.annotate').css('display', 'block');
+            $('.back-home').css({
+                'top': '32px',
+                'marginLeft': '0px'
+            });
+            $('.a-list.js-topbar').removeClass('to-ceiling');
+        }
     }
 })
 
@@ -96,12 +96,12 @@ $(document).ready(function() {
                 'opacity': '0',
                 'transform': 'translateY(48px)'
             });
-            setTimeout(()=>{
-            $('.back-home').css({
-                'left': 'calc(50vw + 296px)',
-                'opacity': 1
-            });
-        },1500)
+            setTimeout(() => {
+                $('.back-home').css({
+                    'left': 'calc(50vw + 296px)',
+                    'opacity': 1
+                });
+            }, 1500)
         }
     } else {
         $('.container.for-list').css({
@@ -1758,7 +1758,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
     //         $('.back-home.trigger').css('display','block');
     //     }
     // })
-    $('.back-home.trigger').click(()=>{
+    $('.back-home.trigger').click(() => {
         // let target = e.target;
         if ($('input[type=text]').val() != '' || $('textarea').val() != '' || $('.w--redirected-checked').length > 0) {
             let confirm = window.confirm('確定離開表單? 已填寫的欄位將不會儲存!');
@@ -1773,32 +1773,32 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
 
     //基本資訊填畢即更新topbar標題
     $('#Info').find('.card').click(function() {
-        setTimeout(()=>{
-        let titleReady = false;
-        let titleBlock = $('#Info').find('.f-block[data-required=true]');
-        if (titleBlock.find('input[type=text]').val() != '' && titleBlock.find('.w--redirected-checked').length > 0) {
-            titleReady = true;
-        } else {
-            titleReady = false;
-        }
-
-        if(titleReady){
-            let date = $(titleBlock).eq(0).find('input').val();
-            let brand = $(titleBlock).eq(1).find('input').val();
-            let type = $(titleBlock).eq(2).find('.w--redirected-checked').siblings('input').val();
-            let urgency = $('#Info').find('.f-block').eq(3).find('.w--redirected-checked').siblings('span').text();
-            if (urgency != "") {
-                urgency = ' (' + urgency.slice(0,1) + ')';
+        setTimeout(() => {
+            let titleReady = false;
+            let titleBlock = $('#Info').find('.f-block[data-required=true]');
+            if (titleBlock.find('input[type=text]').val() != '' && titleBlock.find('.w--redirected-checked').length > 0) {
+                titleReady = true;
+            } else {
+                titleReady = false;
             }
-            $('._18px-700.for-topbar').text(date + '\u00a0\u00a0' + brand + type + urgency);
-            $('._18px-700.for-topbar').css('fontSize','16px');
-            setTimeout(()=>{
-                $('._18px-700.for-topbar').css('fontSize','18px');
-            },200)
-        } else {
-            $('._18px-700.for-topbar').text('新件申請');
-        }
-    },10)
+
+            if (titleReady) {
+                let date = $(titleBlock).eq(0).find('input').val();
+                let brand = $(titleBlock).eq(1).find('input').val();
+                let type = $(titleBlock).eq(2).find('.w--redirected-checked').siblings('input').val();
+                let urgency = $('#Info').find('.f-block').eq(3).find('.w--redirected-checked').siblings('span').text();
+                if (urgency != "") {
+                    urgency = ' (' + urgency.slice(0, 1) + ')';
+                }
+                $('._18px-700.for-topbar').text(date + '\u00a0\u00a0' + brand + type + urgency);
+                $('._18px-700.for-topbar').css('fontSize', '16px');
+                setTimeout(() => {
+                    $('._18px-700.for-topbar').css('fontSize', '18px');
+                }, 200)
+            } else {
+                $('._18px-700.for-topbar').text('新件申請');
+            }
+        }, 10)
     })
 
     //按下enter後防止（瀏覽器預設）送出表單
