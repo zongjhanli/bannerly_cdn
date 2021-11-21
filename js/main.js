@@ -19,16 +19,23 @@ $(document).scroll(() => {
     if ($('.topbar-box')) {
         if (scrollY > 100) {
             $('.topbar-box').addClass('to-ceiling');
-            // $('.back-home').find('.annotate').css('display', 'none');
-            $('.back-home').css({
+            $('.back-home').find('.annotate').css({
+                'marginTop': '-3px'
+            });
+            $('.back-home').not('.annotate').css({
                 'top': '8px',
-                // 'marginLeft': '8px'
+                'marginLeft': '8px',
+                'backgroundSize': '20px'
             });
         } else if (scrollY < 100) {
-            $('.back-home').find('.annotate').css('display', 'block');
+            $('.back-home').find('.annotate').css({
+                'display': 'block',
+                'marginTop': 'auto'
+            });
             $('.back-home').css({
                 'top': '32px',
-                'marginLeft': '0px'
+                'marginLeft': '0px',
+                'backgroundSize': '24px'
             });
             $('.topbar-box').removeClass('to-ceiling');
         }
@@ -36,16 +43,23 @@ $(document).scroll(() => {
     if ($('.a-list.js-topbar')) {
         if (scrollY > 100) {
             $('.a-list.js-topbar').addClass('to-ceiling');
-            // $('.back-home').find('.annotate').css('display','none');
-            $('.back-home').css({
+            $('.back-home').find('.annotate').css({
+                'marginTop': '-3px'
+            });
+            $('.back-home').not('.annotate').css({
                 'top': '0px',
-                // 'marginLeft': '8px'
+                'marginLeft': '8px',
+                'backgroundSize': '20px'
             });
         } else if (scrollY < 100) {
-            $('.back-home').find('.annotate').css('display', 'block');
+            $('.back-home').find('.annotate').css({
+                'display': 'block',
+                'marginTop': 'auto'
+            });
             $('.back-home').css({
                 'top': '32px',
-                'marginLeft': '0px'
+                'marginLeft': '0px',
+                'backgroundSize': '24px'
             });
             $('.a-list.js-topbar').removeClass('to-ceiling');
         }

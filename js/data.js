@@ -635,6 +635,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     } else if (rows[iArr[0]].c[0].v == 'MASTER') {
                         // $('.submit-box[data-validation=applicant]').remove();
                         $('.card-box').eq(0).find('[data-validation=applicant]').remove();
+                        $('[data-validation=share]').remove();
                         $('.identity').text('管理人員｜' + name);
                     }
                 })
@@ -655,6 +656,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                 $('[data-validation=applicant]').remove();
                                 $('.identity').text('設計人員｜' + name);
                             } else if (rows[i].c[0].v == 'MASTER') {
+                                $('[data-validation=share]').remove();
                                 $('.card-box').eq(0).find('[data-validation=applicant]').remove();
                                 $('.identity').text('管理人員｜' + name);
                             }
@@ -832,25 +834,25 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     $('.a-list').not(':hidden').first().attr('data-m', firstMonth);
                 }
                 $('.month-indicator').each((i) => {
-                    //所有H3加上[年份] 格式: yyyy/mm
-                    let annotateY = '<div class="annotate h3-year">' + $('.month-indicator').eq(i).next().attr('data-year') + '/</div>';
-                    $('.month-indicator').eq(i).html(annotateY + $('.month-indicator').eq(i).html());
-                })
-                // $('.month-indicator').each((i) => {
-                //     //只有1月加上[年份] 格式: yyyy/mm
-                //     if ($('.month-indicator').eq(i).text() == '01月') {
-                //         if ($('.month-indicator').eq(i - 1).text() == '12月' || $('.month-indicator').eq(i + 1).text() == '12月') {
-                //             let annotateY = '<div class="annotate h3-year">/' + $('.month-indicator').eq(i).next().attr('data-year') + '</div>';
-                //             $('.month-indicator').eq(i).html($('.month-indicator').eq(i).html() + annotateY);
-                //         }
-                //     }
-                // })
-                // $('.month-indicator').each((i) => {
-                //     //刪除「0」字樣
-                //     if ($('.month-indicator').eq(i).html().slice(0, 1) == '0') {
-                //         $('.month-indicator').eq(i).html($('.month-indicator').eq(i).html().replace('0', ''));
-                //     }
-                // })
+                        //所有H3加上[年份] 格式: yyyy/mm
+                        let annotateY = '<div class="annotate h3-year">' + $('.month-indicator').eq(i).next().attr('data-year') + '/</div>';
+                        $('.month-indicator').eq(i).html(annotateY + $('.month-indicator').eq(i).html());
+                    })
+                    // $('.month-indicator').each((i) => {
+                    //     //只有1月加上[年份] 格式: yyyy/mm
+                    //     if ($('.month-indicator').eq(i).text() == '01月') {
+                    //         if ($('.month-indicator').eq(i - 1).text() == '12月' || $('.month-indicator').eq(i + 1).text() == '12月') {
+                    //             let annotateY = '<div class="annotate h3-year">/' + $('.month-indicator').eq(i).next().attr('data-year') + '</div>';
+                    //             $('.month-indicator').eq(i).html($('.month-indicator').eq(i).html() + annotateY);
+                    //         }
+                    //     }
+                    // })
+                    // $('.month-indicator').each((i) => {
+                    //     //刪除「0」字樣
+                    //     if ($('.month-indicator').eq(i).html().slice(0, 1) == '0') {
+                    //         $('.month-indicator').eq(i).html($('.month-indicator').eq(i).html().replace('0', ''));
+                    //     }
+                    // })
 
                 // let dpM; //duplicated month
                 // $('.month-indicator').each((i) => {
@@ -893,7 +895,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         for (m = monthArr.length - 1; m >= 0; m--) { //!!!影響順序
                             if ((q - 1) * 3 < monthArr[m] && q * 3 >= monthArr[m]) {
                                 // let labelText = 'Q' + q + '/' + monthArr.key.slice(2, 4); //利用「Quarter值」搭配「year」製造選項文字
-                                let labelText = monthArr.key + '/' + '<div class="q-chr">Q</div>' + q ; //利用「Quarter值」搭配「year」製造選項文字
+                                let labelText = monthArr.key + '/' + '<div class="q-chr">Q</div>' + q; //利用「Quarter值」搭配「year」製造選項文字
                                 labelArr.push(labelText);
                             }
                         }
@@ -1158,7 +1160,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         }
 
                         function execute() {
-                            let qKey = filterKey.slice(filterKey.length-1, filterKey.length);
+                            let qKey = filterKey.slice(filterKey.length - 1, filterKey.length);
                             if (filterKey.indexOf('全案件') < 0) {
                                 $('.a-list').each(function() {
                                     let month = $(this).children('._14px-500').text().slice(0, 2);
@@ -1535,39 +1537,39 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         $('.block-pool').append(magnifier);
 
                         //img 放大鏡
-                        $('.img').each((i)=>{
-                        $('.img').eq(i).mousemove((e) => {
-                            let target = e.target;
-                            let posX = e.clientX;
-                            let posY = e.clientY;
-                            let pool = document.querySelector('.block-pool');
-                            let poolOffset = pool.getBoundingClientRect();
-                            let poolX = poolOffset.left;
-                            let poolY = poolOffset.top;
-                            let offset = target.getBoundingClientRect();
-                            let imgX = offset.left;
-                            let imgY = offset.top;
-                            let imgUrl = $(target).css('backgroundImage');
-                            console.log('posX: '+ posX)
-                            console.log('imgX: '+ imgX)
-                            // console.log(Math.round((posX - imgX)))
+                        $('.img').each((i) => {
+                            $('.img').eq(i).mousemove((e) => {
+                                let target = e.target;
+                                let posX = e.clientX;
+                                let posY = e.clientY;
+                                let pool = document.querySelector('.block-pool');
+                                let poolOffset = pool.getBoundingClientRect();
+                                let poolX = poolOffset.left;
+                                let poolY = poolOffset.top;
+                                let offset = target.getBoundingClientRect();
+                                let imgX = offset.left;
+                                let imgY = offset.top;
+                                let imgUrl = $(target).css('backgroundImage');
+                                console.log('posX: ' + posX)
+                                console.log('imgX: ' + imgX)
+                                    // console.log(Math.round((posX - imgX)))
 
-                            $('.img-magnifier').css({
+                                $('.img-magnifier').css({
                                     'display': 'block',
-                                    'top':  Math.round((posY - poolY)-32) + 'px', //減去放大鏡本身的一半以及block-pool的一半
-                                    'left':  Math.round((posX - poolX)-32) + 'px',
+                                    'top': Math.round((posY - poolY) - 32) + 'px', //減去放大鏡本身的一半以及block-pool的一半
+                                    'left': Math.round((posX - poolX) - 32) + 'px',
                                 })
 
                                 $('.img-magnifier .img.big').remove();
                                 let newImg = '<div class="img big"></div>';
                                 $('.img-magnifier').append(newImg);
-                                $('.img-magnifier').find('.img.big').css('backgroundImage',imgUrl);
+                                $('.img-magnifier').find('.img.big').css('backgroundImage', imgUrl);
                                 $('.img-magnifier').find('.img.big').css({
-                                    'margin-left': Math.round(-(posX - imgX)*2.5+32) + 'px',
-                                    'margin-top': Math.round(-(posY - imgY)*2.5+32) + 'px',
+                                    'margin-left': Math.round(-(posX - imgX) * 2.5 + 32) + 'px',
+                                    'margin-top': Math.round(-(posY - imgY) * 2.5 + 32) + 'px',
                                 })
-                        });
-                    })
+                            });
+                        })
 
                         $('div').not('.img, .img-magnifier').mouseenter(() => {
                             $('.img-magnifier').css('display', 'none');

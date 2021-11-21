@@ -209,6 +209,7 @@ label {
     background-image: none;
 }
 
+
 /* .a-topbar.suspend.to-ceiling {
     border-radius: 0px 0px 16px 16px;
 } */
@@ -288,7 +289,7 @@ label {
 
 .a-button.as_contained {
     height: 48px;
-    min-width: 114px;
+    min-width: 80px;
     width: 140px;
     padding-right: 20px;
     padding-left: 20px;
@@ -327,6 +328,7 @@ label {
 .a-button.as_contained.new-case.dropdown-box,
 .a-button.as_contained.new-case.dropdown-box:hover {
     border-radius: 12px;
+    min-width: 114px;
     width: auto;
     height: 40px;
     margin-right: 0px;
@@ -1895,6 +1897,7 @@ div::-webkit-scrollbar {
     z-index: 0;
     opacity: 0;
 }
+
 .icon_32x.back-home.for-form.trigger {
     background-image: none;
     height: 48px;
@@ -2101,7 +2104,6 @@ div::-webkit-scrollbar {
     border-radius: 0px 0px 16px 16px;
     margin-left: -8px;
 }
-
 
 @keyframes font {
     0% {

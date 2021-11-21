@@ -143,53 +143,14 @@
                         <div class="_16px-500 cap-title">案件資訊</div>
                     </div>
                     <div class="f-block">
+                        <div class="_12px-500">相關路徑</div>
+                        <div data-output="path" class="output as-textarea"></div>
+                    </div>
+                    <div class="f-block">
                         <div class="_12px-500">需求方</div>
                         <div data-output="applicant" class="output as-text"></div>
                     </div>
-                    <div data-validation="master">
-                        <div class="f-block">
-                            <div class="_12px-500">設計方</div>
-                            <div class="dropdown-box">
-                                <div class="input-embed w-embed"><input type="text" class="input as-text js-custom-input dropdown" autocomplete="off" maxlength="256" data-output="designer" name="designer" data-name="designer" id="designer" placeholder="尚未指派" data-drop="single"></div>
-                                <div class="icon-36x dropdown-arrow unclickable"></div>
-                                <div data-drop="single" class="drop-card js-collapsed">
-                                    <div class="drop-group js-hide js-show">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="hinter-box in-card temp-hide">
-                                <div class="_12px-500 for-hinter">此欄必填</div>
-                                <div class="hinter-triangle in-card"></div>
-                            </div>
-                        </div>
-                        <div class="f-block combo">
-                            <div class="f-block in-combo">
-                                <div class="_12px-500">初稿交件日期</div>
-                                <div class="input full-chip date-box">
-                                    <div class="date-input-embed w-embed"><input type="text" id="ddl-1" class="date-input single-date" data-output="ddl-1" name="" value="" autocomplete="off"></div>
-                                    <div class="label full-touch unclickable placeholder">選擇日期</div>
-                                    <div class="icon-36x calendar unclickable"></div>
-                                </div>
-                                <div class="hinter-box in-card temp-hide">
-                                    <div class="_12px-500 for-hinter">此欄必填</div>
-                                    <div class="hinter-triangle in-card"></div>
-                                </div>
-                            </div>
-                            <div class="f-block in-combo">
-                                <div class="_12px-500">完成日期</div>
-                                <div class="input full-chip date-box">
-                                    <div class="date-input-embed w-embed"><input type="text" id="ddl-2" class="date-input single-date" data-output="ddl-2" name="" value="" autocomplete="off"></div>
-                                    <div class="label full-touch unclickable placeholder">選擇日期</div>
-                                    <div class="icon-36x calendar unclickable"></div>
-                                </div>
-                                <div class="hinter-box in-card temp-hide">
-                                    <div class="_12px-500 for-hinter">此欄必填</div>
-                                    <div class="hinter-triangle in-card"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div data-validation="applicant">
+                    <div data-validation="share">
                         <div class="f-block">
                             <div class="_12px-500">設計方</div>
                             <div data-output="designer" class="output as-text"></div>
@@ -205,28 +166,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="f-block">
-                        <div class="_12px-500">相關路徑</div>
-                        <div data-output="path" class="output as-textarea"></div>
-                    </div>
-                    <div class="cta-flex in-card">
-                        <div class="submit-box" data-validation="master">
-                            <input type="submit" value="確認發單" data-wait="Please wait..." class="a-button as_contained submit unclickable w-button">
-                            <div data-update="send" class="a-button as_contained submit-trigger">
-                                確認發單
-                                <div class="icon_32x btn-icon send unclickable"></div>
-                            </div>
-                        </div>
-                        <div class="submit-box" data-validation="applicant">
+                    <div data-validation="applicant" class="cta-flex in-card">
+                        <div class="submit-box">
                             <input type="submit" value="確認結案" data-wait="Please wait..." class="a-button as_contained submit unclickable w-button">
                             <div data-update="end-case" class="a-button as_contained submit-trigger">
                                 確認結案
                                 <div class="icon_32x btn-icon end-case unclickable"></div>
                             </div>
-                        </div>
-                        <div data-update="delete" class="a-button as-txt-btn delete" data-validation="master">
-                            刪除案件
-                            <div class="icon_32x btn-icon delete unclickable"></div>
                         </div>
                     </div>
                 </div>
@@ -350,6 +296,71 @@
                 </div>
             </div>
         </div>
+        <div data-validation="master" class="section justify-top">
+            <div class="card-box">
+                <div class="card">
+                    <div class="card-cap">
+                        <div class="_16px-500 cap-title">發單資訊</div>
+                    </div>
+                    <div data-validation="master">
+                        <div class="f-block">
+                            <div class="_12px-500">設計方</div>
+                            <div class="dropdown-box">
+                                <div class="input-embed w-embed"><input type="text" class="input as-text js-custom-input dropdown" autocomplete="off" maxlength="256" data-output="designer" name="designer" data-name="designer" id="designer" placeholder="尚未指派" data-drop="single"></div>
+                                <div class="icon-36x dropdown-arrow unclickable"></div>
+                                <div data-drop="single" class="drop-card js-collapsed">
+                                    <div class="drop-group js-hide js-show">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hinter-box in-card temp-hide">
+                                <div class="_12px-500 for-hinter">此欄必填</div>
+                                <div class="hinter-triangle in-card"></div>
+                            </div>
+                        </div>
+                        <div class="f-block combo">
+                            <div class="f-block in-combo">
+                                <div class="_12px-500">初稿交件日期</div>
+                                <div class="input full-chip date-box">
+                                    <div class="date-input-embed w-embed"><input type="text" id="ddl-1" class="date-input single-date" data-output="ddl-1" name="" value="" autocomplete="off"></div>
+                                    <div class="label full-touch unclickable placeholder">選擇日期</div>
+                                    <div class="icon-36x calendar unclickable"></div>
+                                </div>
+                                <div class="hinter-box in-card temp-hide">
+                                    <div class="_12px-500 for-hinter">此欄必填</div>
+                                    <div class="hinter-triangle in-card"></div>
+                                </div>
+                            </div>
+                            <div class="f-block in-combo">
+                                <div class="_12px-500">完成日期</div>
+                                <div class="input full-chip date-box">
+                                    <div class="date-input-embed w-embed"><input type="text" id="ddl-2" class="date-input single-date" data-output="ddl-2" name="" value="" autocomplete="off"></div>
+                                    <div class="label full-touch unclickable placeholder">選擇日期</div>
+                                    <div class="icon-36x calendar unclickable"></div>
+                                </div>
+                                <div class="hinter-box in-card temp-hide">
+                                    <div class="_12px-500 for-hinter">此欄必填</div>
+                                    <div class="hinter-triangle in-card"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cta-flex in-card">
+                        <div class="submit-box">
+                            <input type="submit" value="確認發單" data-wait="Please wait..." class="a-button as_contained submit unclickable w-button">
+                            <div data-update="send" class="a-button as_contained submit-trigger">
+                                確認發單
+                                <div class="icon_32x btn-icon send unclickable"></div>
+                            </div>
+                        </div>
+                        <div data-update="delete" class="a-button as-txt-btn delete">
+                            刪除案件
+                            <div class="icon_32x btn-icon delete unclickable"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="cta-flex home-title">
         <h2>設計申請站</h2>
@@ -358,7 +369,7 @@
             <div class="icon-24x new-case"></div>
             <div>新件申請</div>
         </a> -->
-        <div data-query="null" data-drop="single" class="a-button as_contained new-case dropdown-box">
+        <div data-validation="applicant" data-query="null" data-drop="single" class="a-button as_contained new-case dropdown-box">
             <div class="unclickable">新件申請</div>
             <div class="icon-24x new-case unclickable"></div>
             <div class="icon-36x dropdown-arrow min-size unclickable js-filtering js-hide"></div>
