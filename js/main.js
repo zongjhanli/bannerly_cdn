@@ -13,6 +13,66 @@
 
 // ----------------------------------------------------------------------------------------------------
 
+//topbar 在頁面捲動時收斂
+$(document).scroll(() => {
+    let scrollY = $(document).scrollTop();
+    if ($('.topbar-box')) {
+    if (scrollY > 100) {
+        $('.topbar-box').addClass('to-ceiling');
+        $('.back-home').find('.annotate').css('display','none');
+        $('.back-home').css({
+            'top':'8px',
+            'marginLeft': '8px'
+        });
+    } else if (scrollY < 100) {
+        $('.back-home').find('.annotate').css('display','block');
+        $('.back-home').css({
+            'top':'32px',
+            'marginLeft': '0px'
+        });
+        $('.topbar-box').removeClass('to-ceiling');
+    }
+}
+    if ($('.a-list.js-topbar')) {
+        if (scrollY > 100) {
+        $('.a-list.js-topbar').addClass('to-ceiling');
+        $('.back-home').find('.annotate').css('display','none');
+        $('.back-home').css({
+            'top':'8px',
+            'marginLeft': '8px'
+        });
+    } else if (scrollY < 100) {
+        $('.back-home').find('.annotate').css('display','block');
+        $('.back-home').css({
+            'top':'32px',
+            'marginLeft': '0px'
+        });
+        $('.a-list.js-topbar').removeClass('to-ceiling');
+    }
+    }
+})
+
+// $('.container.output').scroll((e) => {
+//     let target = e.target;
+//     let scrollY = $(target).scrollTop();
+//     if (scrollY > 100) {
+//         $('.a-list.js-topbar').addClass('to-ceiling');
+//         $('.back-home').find('.annotate').css('display','none');
+//         $('.back-home').css({
+//             'top':'8px',
+//             'marginLeft': '8px'
+//         });
+//     } else if (scrollY < 100) {
+//         $('.back-home').find('.annotate').css('display','block');
+//         $('.back-home').css({
+//             'top':'32px',
+//             'marginLeft': '0px'
+//         });
+//         $('.a-list.js-topbar').removeClass('to-ceiling');
+//     }
+// })
+
+
 //page-load animation
 $(document).ready(function() {
     //頁面預設捲動至頂
@@ -57,6 +117,12 @@ $(document).ready(function() {
                 'opacity': '0',
                 'transform': 'translateY(48px)'
             });
+            setTimeout(()=>{
+            $('.back-home').css({
+                'left': 'calc(50vw + 296px)',
+                'opacity': 1
+            });
+        },1500)
         }
     } else {
         $('.container.for-list').css({
