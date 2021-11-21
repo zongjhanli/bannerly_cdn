@@ -1895,17 +1895,25 @@ div::-webkit-scrollbar {
     z-index: 0;
     opacity: 0;
 }
+.icon_32x.back-home.for-form.trigger {
+    background-image: none;
+    height: 48px;
+    z-index: 2;
+    /* display: none; */
+}
 
 .annotate.back-home {
     /* -webkit-transform: rotate(90deg);
     -ms-transform: rotate(90deg);
     transform: rotate(90deg); */
     display: inline-block;
-    width: 48px;
+    width: 32px;
     height: 48px;
     padding-top: 28px;
-    padding-left: 4px;
+    padding-left: 0px;
+    padding-right: 0px;
     color: #333;
+    text-align: center;
 }
 
 .annotate.h3-year {

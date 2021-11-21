@@ -1752,12 +1752,31 @@ if (window.location.href.includes('form-apply')) {
 //@Form-apply、@Custom-apply 共用區塊
 if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
 
+    //back-home觸發前彈跳提醒視窗
+    // $(document).click(()=>{
+    //     if ($('input:text').not(':empty').length > 0 || $('.w--redirected-checked').length > 0) {
+    //         $('.back-home.trigger').css('display','block');
+    //     }
+    // })
+    $('.back-home.trigger').click(()=>{
+        // let target = e.target;
+        if ($('input[type=text]').val() != '' || $('.w--redirected-checked').length > 0) {
+            let confirm = window.confirm('確定離開表單? 已填寫的欄位將不會儲存!');
+            if (confirm) {
+                jQuery('.back-home').not('.trigger').trigger('click');
+            }
+        } else {
+            jQuery('.back-home').not('.trigger').trigger('click');
+        }
+    })
+
+
     //基本資訊填畢即更新topbar標題
     $('#Info').find('.card').click(function() {
         setTimeout(()=>{
         let titleReady = false;
         let titleBlock = $('#Info').find('.f-block[data-required=true]');
-        if (titleBlock.find('input[type=text]').val() != '' && titleBlock.find('.w--redirected-checked').length == 1) {
+        if (titleBlock.find('input[type=text]').val() != '' && titleBlock.find('.w--redirected-checked').length > 0) {
             titleReady = true;
         } else {
             titleReady = false;
