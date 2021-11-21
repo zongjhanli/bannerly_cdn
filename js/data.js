@@ -803,7 +803,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             offset = Math.abs(offset);
                             // console.log(offset)
                             if (offset >= 1) {
-                                let month = $('.a-list:visible').eq(l).children('._14px-500').text().slice(0, 2) + '月';
+                                let month = $('.a-list:visible').eq(l).children('._14px-500').text().slice(0, 2);
                                 let mHeader = '<h3 class="h3 month-indicator" data-m="' + month + '">' + month + '</h3>';
                                 $(mHeader).attr('data-m', month);
                                 $('.a-list:visible').eq(l).before($(mHeader));
@@ -813,9 +813,9 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         }
                     }
                 })
-                let firstMonth = $('.a-list').not(':hidden').eq(0).children('._14px-500').text().slice(0, 2) + '月';
+                let firstMonth = $('.a-list').not(':hidden').eq(0).children('._14px-500').text().slice(0, 2);
                 let firstHeader = '<h3 class="h3 month-indicator" data-m="' + firstMonth + '">' + firstMonth + '</h3>';
-                let lastMonth = $('.a-list').not(':hidden').eq($('.a-list').not(':hidden').length - 1).children('._14px-500').text().slice(0, 2) + '月';
+                let lastMonth = $('.a-list').not(':hidden').eq($('.a-list').not(':hidden').length - 1).children('._14px-500').text().slice(0, 2);
                 let lastHeader = '<h3 class="h3 month-indicator" data-m="' + lastMonth + '">' + lastMonth + '</h3>';
                 if ($('.a-list').not(':hidden').length != 1) {
                     if ($('.a-list').not(':hidden').eq(0).prev('.month-indicator').length < 1) {
@@ -832,20 +832,25 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     $('.a-list').not(':hidden').first().attr('data-m', firstMonth);
                 }
                 $('.month-indicator').each((i) => {
-                    //刪除「0」字樣
-                    if ($('.month-indicator').eq(i).text() == '01月') {
-                        if ($('.month-indicator').eq(i - 1).text() == '12月' || $('.month-indicator').eq(i + 1).text() == '12月') {
-                            let annotateY = '<div class="annotate h3-year">/' + $('.month-indicator').eq(i).next().attr('data-year') + '</div>';
-                            $('.month-indicator').eq(i).html($('.month-indicator').eq(i).html() + annotateY);
-                        }
-                    }
+                    //所有H3加上[年份] 格式: yyyy/mm
+                    let annotateY = '<div class="annotate h3-year">' + $('.month-indicator').eq(i).next().attr('data-year') + '/</div>';
+                    $('.month-indicator').eq(i).html(annotateY + $('.month-indicator').eq(i).html());
                 })
-                $('.month-indicator').each((i) => {
-                    //刪除「0」字樣
-                    if ($('.month-indicator').eq(i).html().slice(0, 1) == '0') {
-                        $('.month-indicator').eq(i).html($('.month-indicator').eq(i).html().replace('0', ''));
-                    }
-                })
+                // $('.month-indicator').each((i) => {
+                //     //只有1月加上[年份] 格式: yyyy/mm
+                //     if ($('.month-indicator').eq(i).text() == '01月') {
+                //         if ($('.month-indicator').eq(i - 1).text() == '12月' || $('.month-indicator').eq(i + 1).text() == '12月') {
+                //             let annotateY = '<div class="annotate h3-year">/' + $('.month-indicator').eq(i).next().attr('data-year') + '</div>';
+                //             $('.month-indicator').eq(i).html($('.month-indicator').eq(i).html() + annotateY);
+                //         }
+                //     }
+                // })
+                // $('.month-indicator').each((i) => {
+                //     //刪除「0」字樣
+                //     if ($('.month-indicator').eq(i).html().slice(0, 1) == '0') {
+                //         $('.month-indicator').eq(i).html($('.month-indicator').eq(i).html().replace('0', ''));
+                //     }
+                // })
 
                 // let dpM; //duplicated month
                 // $('.month-indicator').each((i) => {
@@ -888,7 +893,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         for (m = monthArr.length - 1; m >= 0; m--) { //!!!影響順序
                             if ((q - 1) * 3 < monthArr[m] && q * 3 >= monthArr[m]) {
                                 // let labelText = 'Q' + q + '/' + monthArr.key.slice(2, 4); //利用「Quarter值」搭配「year」製造選項文字
-                                let labelText = '<div class="q-chr">Q</div>' + q + '/' + monthArr.key; //利用「Quarter值」搭配「year」製造選項文字
+                                let labelText = monthArr.key + '/' + '<div class="q-chr">Q</div>' + q ; //利用「Quarter值」搭配「year」製造選項文字
                                 labelArr.push(labelText);
                             }
                         }
@@ -1153,8 +1158,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         }
 
                         function execute() {
-                            let qKey = filterKey.slice(1, 2);
-                            if (filterKey.indexOf('全季') < 0) {
+                            let qKey = filterKey.slice(filterKey.length-1, filterKey.length);
+                            if (filterKey.indexOf('全案件') < 0) {
                                 $('.a-list').each(function() {
                                     let month = $(this).children('._14px-500').text().slice(0, 2);
                                     if (month <= (qKey - 1) * 3 || month > qKey * 3) {
