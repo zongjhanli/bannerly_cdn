@@ -892,7 +892,9 @@ if (window.location.href.includes('form-apply')) {
         let top = $('#Swiped')[0].getBoundingClientRect().top;
         let bottom = $('#Swiped')[0].getBoundingClientRect().bottom;
         let wHeight = window.innerHeight;
-        console.log(top + '/' + window.innerHeight)
+        console.log('top: ' + top + '/' + window.innerHeight)
+        console.log('bottom: ' + bottom + '/' + window.innerHeight)
+
         if (bottom - wHeight > 50 || top < 0) {
             target.scrollIntoView({
                 behavior: 'smooth',
