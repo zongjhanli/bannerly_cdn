@@ -335,6 +335,7 @@ document.addEventListener("click", (e) => {
     //for labels in dropCards
     if (target.classList.contains("label") &&
         !target.parentElement.parentElement.classList.contains("f-block") &&
+        !target.parentElement.parentElement.classList.contains("drop-group-s") &&
         !target.parentElement.parentElement.classList.contains("div-266h") &&
         !target.parentElement.parentElement.parentElement.parentElement.classList.contains("for-query")) {
         let tChecker = target.parentElement.querySelector(".custom-check");
@@ -374,6 +375,8 @@ document.addEventListener("click", (e) => {
             tInput.dataset.drop == "single"
         ) {
             tInput.value = target.textContent;
+        } else if (tInput.id == 'brand-id') {
+            return;
         } else {
             tInput.value = "";
         }
@@ -710,15 +713,6 @@ for (const dropCard of dropCards) {
                             input.value = "已選" + checkCount + "項";
                         }
                     }
-                    //!!!瀏覽器讀取if condition延遲
-                    // if (target.nextElementSibling.nextElementSibling.classList.contains('drop-card')) {
-                    //     let tDropcard = target.nextElementSibling.nextElementSibling;
-                    //     if( tDropcard.style.height = '0px'){
-                    //         tDropcard.style.borderWidth = '0px';
-                    //     } else {
-                    //         tDropcard.style.borderWidth = '1px';
-                    //     }
-                    // }
                 }
             }
         });
@@ -889,11 +883,10 @@ if (window.location.href.includes('form-apply')) {
     //消除scroll stuck
     $('#Swiped').scroll((e) => {
         let target = e.target;
-        let top = $('#Swiped')[0].getBoundingClientRect().top;
         let bottom = $('#Swiped')[0].getBoundingClientRect().bottom;
         let wHeight = window.innerHeight;
-        console.log('top: ' + top + '/' + window.innerHeight)
-        console.log('bottom: ' + bottom + '/' + window.innerHeight)
+        // console.log('top: ' + top + '/' + window.innerHeight)
+        // console.log('bottom: ' + bottom + '/' + window.innerHeight)
 
         if (bottom - wHeight > 50) {
             // target.scrollIntoView({
@@ -906,12 +899,13 @@ if (window.location.href.includes('form-apply')) {
                 top: bottom - wHeight + 32,
             });
         }
-        if (top < 0) {
-            window.scrollBy({
-                behavior: 'smooth',
-                top: top - 32,
-            });
-        }
+        //此段與下方衝突，替代方案為click event
+        // if (top < 0) {
+        //     window.scrollBy({
+        //         behavior: 'smooth',
+        //         top: top - 32,
+        //     });
+        // }
 
         if ($(target).scrollTop() > 1080) {
             let submitTop = $('#Submit')[0].getBoundingClientRect().top;
@@ -920,6 +914,31 @@ if (window.location.href.includes('form-apply')) {
             window.scrollBy({
                 behavior: 'smooth',
                 top: submitTop - submitHeight / 2,
+            });
+        }
+    })
+
+    $('#Swiped').click(() => {
+        let top = $('#Swiped')[0].getBoundingClientRect().top;
+        let bottom = $('#Swiped')[0].getBoundingClientRect().bottom;
+        let wHeight = window.innerHeight;
+
+        if (top < 0) {
+            window.scrollBy({
+                behavior: 'smooth',
+                top: top - 32,
+            });
+        }
+
+        if (bottom - wHeight > 50) {
+            // target.scrollIntoView({
+            //     behavior: 'smooth',
+            //     block: "center",
+            //     inline: "nearest"
+            // });
+            window.scrollBy({
+                behavior: 'smooth',
+                top: bottom - wHeight + 32,
             });
         }
     })

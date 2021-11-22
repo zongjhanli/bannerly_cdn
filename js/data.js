@@ -15,14 +15,14 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
             let cols = json.table.cols;
 
             let i;
-            let applicant = 0; //需求方
+            // let applicant = 0; //需求方
             let brand = 0; //品牌列表
             let ecName = 0; //通路列表
             let ecData = 0; //通路列表-data
             for (i = 0; i < cols.length; i++) {
-                if (rows[0].c[i].v == '需求方') {
-                    applicant += i;
-                }
+                // if (rows[0].c[i].v == '需求方') {
+                //     applicant += i;
+                // }
                 if (rows[0].c[i].v == '品牌列表') {
                     brand += i;
                 }
@@ -45,10 +45,10 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                     }
                     $('#brand').parent().find('.drop-group').append(brandOption);
                 }
-                if (rows[r].c[applicant] != null) {
-                    let option = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[applicant].v + '</div><div class="custom-check tick-right"></div></div>'
-                    $('#applicant').parent().find('.drop-group').append(option);
-                }
+                // if (rows[r].c[applicant] != null) {
+                //     let option = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[applicant].v + '</div><div class="custom-check tick-right"></div></div>'
+                //     $('#applicant').parent().find('.drop-group').append(option);
+                // }
                 //@Form-apply 專屬段落
                 if (window.location.href.includes('form-apply')) {
                     if (rows[r].c[ecName] != null && rows[r].c[ecData] != null) {
@@ -119,6 +119,8 @@ if (window.location.href.includes('custom-apply')) {
                 CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), $("#C-4-C").val());
             }
 
+            let nameMail = sessionStorage.getItem('nameMail');
+
             axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
                 "data": {
                     "timestamp": $('.submit-box').attr('data-stamp'),
@@ -129,7 +131,7 @@ if (window.location.href.includes('custom-apply')) {
                     "急迫度": $("[name=urgency]").siblings(".w--redirected-checked").siblings(".label").text().slice(3, 4),
                     "曝光年份": $('[data-year]').attr('data-year'),
                     ////送出前確認訊息
-                    "需求方": $("#applicant").val(),
+                    "需求方": nameMail,
                     "相關路徑": $("#path").val(),
                 }
             }).then(response => {
@@ -364,6 +366,7 @@ if (window.location.href.includes('form-apply')) {
             let sizeB = $('.col-right').eq(1).find('textarea');
             let sizeC = $('.col-right').eq(2).find('textarea');
 
+            let nameMail = sessionStorage.getItem('nameMail');
 
             axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
                 "data": {
@@ -438,7 +441,7 @@ if (window.location.href.includes('form-apply')) {
                     "案型3-通路名稱": CecStr,
                     "案型3-通路data": CecData.toString(),
                     ////送出前確認訊息
-                    "需求方": $("#applicant").val(),
+                    "需求方": nameMail,
                     "相關路徑": $("#path").val(),
                 }
             }).then(response => {
@@ -465,6 +468,33 @@ if (window.location.href.includes('form-apply')) {
 //@Index output 專屬區塊
 if (!window.location.href.includes('form-apply') && !window.location.href.includes('custom-apply')) {
 
+    //品牌代號dropdown 另行處理
+    $('.dropdown-s').click(() => { sDrop(); });
+    $('.portal-bg').click((e) => {
+        let target = e.target;
+        if (!$(target).hasClass('label') && !$(target).hasClass('dropdown-s')) {
+            sCollapse();
+        }
+        setTimeout(() => {
+            $('.dropdown-arrow-s').text('');
+        }, 1)
+    });
+    $('.dropdown-arrow-s').click(() => {
+        sCollapse();
+    })
+
+    function sDrop() {
+        $('.drop-card-s').removeClass('js-collapsed');
+        $('.dropdown-arrow-s').addClass('js-rotated');
+        $('.dropdown-arrow-s').removeClass('unclickable');
+    }
+
+    function sCollapse() {
+        $('.drop-card-s').addClass('js-collapsed');
+        $('.dropdown-arrow-s').removeClass('js-rotated');
+        $('.dropdown-arrow-s').addClass('unclickable');
+    }
+
     const gsUrl = 'https://docs.google.com/spreadsheets/d';
     const query = `/gviz/tq?`; //google visualisation 
 
@@ -482,20 +512,22 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         $('.sign-up').addClass('js-btn2text');
         $('.portal').removeClass('inactive');
         $('.back-portal').css('display', 'block');
+        $('.portal').css('paddingBottom', '72px');
     })
     $('.sign-in').click(() => {
         $('[data-portal=sign-in]').css('display', 'block');
-        $('.sign-up').parent().css('display', 'none');
+        $('.sign-up').not('.icon_32x').parent().css('display', 'none');
         $('.sign-in').addClass('js-btn2text');
         $('.portal').removeClass('inactive');
         $('.back-portal').css('display', 'block');
         $('#validation').focus();
+        $('.portal').css('paddingBottom', '0px');
     })
     $('.back-portal').click(() => {
         $('.portal').addClass('inactive');
         $('[data-portal=sign-up]').css('display', 'none');
         $('[data-portal=sign-in]').css('display', 'none');
-        $('.sign-up').parent().css('display', 'block');
+        $('.sign-up').not('.icon_32x').parent().css('display', 'block');
         $('.sign-in').parent().css('display', 'block');
         $('.sign-up').removeClass('js-btn2text');
         $('.sign-in').removeClass('js-btn2text');
@@ -528,15 +560,33 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         }
 
         if ($('.hinter-box:visible').length == 0) {
-            axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd', {
-                "data": {
-                    "user-type": $('[data-name=user-type]:checked').attr('data-type'),
-                    "user-name": $('#user-name').val() + ' ' + $('#user-code').val(),
-                    "code": $('#user-code').val()
-                }
-            }).then(response => {
-                console.log(response.data);
-            });
+            $('.icon_32x.btn-icon').removeClass('sign-up').addClass('js-loading');
+            setTimeout(() => {
+                axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd', {
+                    "data": {
+                        "user-type": $('[data-name=user-type]:checked').attr('data-type'),
+                        "user-name": $('#user-name').val() + ' ' + $('#user-code').val(),
+                        "code": $('#user-code').val(),
+                        "brand-id": $('#brand-id').val()
+                    }
+                }).then(response => {
+                    console.log(response.data);
+                    $('.icon_32x.btn-icon').remove();
+                    let reIco = '<div class="icon_32x btn-icon js-complete"></div>'
+                    $('.submit-trigger').html('註冊成功' + reIco);
+
+                    //redirect
+                    let address = window.location.href;
+                    setTimeout(() => {
+                        if (address.indexOf('html') < 0) {
+                            address = address.replace('form-apply', '');
+                        } else if (address.indexOf('html') >= 0) {
+                            address = address.replace('form-apply.html', '');
+                        }
+                        window.location.replace(address);
+                    }, 1000)
+                });
+            }, 2000)
         }
     })
 
@@ -684,6 +734,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             let i;
             let designer = 0;
             let applicant = 0;
+            let brandID = 0;
             for (i = 0; i < cols.length; i++) {
                 if (rows[0].c[i].v == '設計方') {
                     designer += i;
@@ -691,29 +742,50 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 if (rows[0].c[i].v == '需求方') {
                     applicant += i;
                 }
+                if (rows[0].c[i].v == '品牌列表-data') {
+                    brandID += i;
+                }
             }
             let r;
             for (r = 1; r < rows.length; r++) {
                 if (rows[r].c[designer] != null) {
                     //output designer list for admin
-                    let option = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[designer].v + '</div><div class="custom-check tick-right"></div></div>'
-                    $('#designer').closest('.dropdown-box').find('.drop-group').append(option);
+                    let designerOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[designer].v + '</div><div class="custom-check tick-right"></div></div>'
+                    $('#designer').closest('.dropdown-box').find('.drop-group').append(designerOption);
 
                     //output designer query
                     let space = rows[r].c[designer].v.indexOf(' ');
                     let designerName = rows[r].c[designer].v.slice(0, space + 1).trim();
                     let designerQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + designerName + '</div><div class="custom-check tick-right min-size"></div></div>'
                     $('[data-query=designer]').find('.drop-group').append(designerQueryOption);
-
+                }
+                if (rows[r].c[applicant] != null) {
                     //output applicant query
                     space = rows[r].c[applicant].v.indexOf(' ');
                     let applicantName = rows[r].c[applicant].v.slice(0, space + 1).trim();
                     let applicantQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + applicantName + '</div><div class="custom-check tick-right min-size"></div></div>'
                     $('[data-query=applicant]').find('.drop-group').append(applicantQueryOption);
                 }
+                if (rows[r].c[brandID] != null) {
+                    //output brand-id (sign-up)
+                    let brandIdOption = '<div class="a-button as-list"><div class="label-s full-touch">' + rows[r].c[brandID].v + '</div><div class="custom-check tick-right"></div></div>'
+                    $('input#brand-id').parent().find('.drop-group-s').append(brandIdOption);
+                }
             }
+            $('.label-s').click((e) => {
+                let target = e.target;
+                let tCheck = $(target).siblings('.custom-check');
+                let tInput = document.querySelector('.dropdown-s');
+                let tCard = $(target).closest('.drop-card-s');
+                $(tCard).removeClass('js-collapsed');
 
-
+                if (tCheck.hasClass('js-selected')) {
+                    tCheck.removeClass('js-selected');
+                } else if (!tCheck.hasClass('js-selected')) {
+                    tCheck.addClass('js-selected');
+                    tInput.value += target.textContent + ',';
+                }
+            });
         })
 
     //Fetch案件資料
@@ -994,37 +1066,39 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 // }
 
                 // drop option 轉換文字
-                if (target.hasClass('label', 'full-touch') && target.parentsUntil('.query-box') != null) {
-                    noResult();
-                    // quarterQuery();
-                    target.parentsUntil('.drop-group').siblings().find('.custom-check').removeClass('js-selected');
-                    let tDropdownBox = target.parent().parent().parent().parent();
+                if (!target.parent().parent().hasClass('brand-id')) {
+                    if (target.hasClass('label', 'full-touch') && target.parentsUntil('.query-box') != null) {
+                        noResult();
+                        // quarterQuery();
+                        target.parentsUntil('.drop-group').siblings().find('.custom-check').removeClass('js-selected');
+                        let tDropdownBox = target.parent().parent().parent().parent();
 
-                    if (tDropdownBox.attr('data-query') == 'sort') { //sort、quarter不可同項目取消點選
-                        target.siblings('.custom-check').addClass('js-selected');
-                        target.addClass('unclickable');
-                        target.parent().siblings().find('.label').removeClass('unclickable');
-                    } else if (tDropdownBox.attr('data-query') == 'quarter') {
-                        target.siblings('.custom-check').addClass('js-selected');
-                    } else {
-                        target.siblings('.custom-check').toggleClass('js-selected');
-                    }
+                        if (tDropdownBox.attr('data-query') == 'sort') { //sort、quarter不可同項目取消點選
+                            target.siblings('.custom-check').addClass('js-selected');
+                            target.addClass('unclickable');
+                            target.parent().siblings().find('.label').removeClass('unclickable');
+                        } else if (tDropdownBox.attr('data-query') == 'quarter') {
+                            target.siblings('.custom-check').addClass('js-selected');
+                        } else {
+                            target.siblings('.custom-check').toggleClass('js-selected');
+                        }
 
-                    //clear all filters
-                    let tFilterKey = tDropdownBox.children('.unclickable').not('.dropdown-arrow');
-                    if (tDropdownBox.find('.js-selected').length != 0) {
-                        tFilterKey.html(target.html());
-                        tDropdownBox.not('[data-query=quarter]').addClass('js-filtering'); //quarter query 顏色維持charcoal，其他為prm B
-                        tDropdownBox.not('[data-query=quarter]').find('.dropdown-arrow').addClass('js-filtering');
-                    } else if (tDropdownBox.find('.js-selected').length == 0) {
-                        tDropdownBox.not('[data-query=quarter]').removeClass('js-filtering'); //quarter query 顏色維持charcoal，其他為prm B
-                        tDropdownBox.not('[data-query=quarter]').find('.dropdown-arrow').removeClass('js-filtering');
-                        if (tDropdownBox.attr('data-query') == 'applicant') {
-                            tFilterKey.text('需求方');
-                        } else if (tDropdownBox.attr('data-query') == 'designer') {
-                            tFilterKey.text('設計方');
-                        } else if (tDropdownBox.attr('data-query') == 'status') {
-                            tFilterKey.text('未完成');
+                        //clear all filters
+                        let tFilterKey = tDropdownBox.children('.unclickable').not('.dropdown-arrow');
+                        if (tDropdownBox.find('.js-selected').length != 0) {
+                            tFilterKey.html(target.html());
+                            tDropdownBox.not('[data-query=quarter]').addClass('js-filtering'); //quarter query 顏色維持charcoal，其他為prm B
+                            tDropdownBox.not('[data-query=quarter]').find('.dropdown-arrow').addClass('js-filtering');
+                        } else if (tDropdownBox.find('.js-selected').length == 0) {
+                            tDropdownBox.not('[data-query=quarter]').removeClass('js-filtering'); //quarter query 顏色維持charcoal，其他為prm B
+                            tDropdownBox.not('[data-query=quarter]').find('.dropdown-arrow').removeClass('js-filtering');
+                            if (tDropdownBox.attr('data-query') == 'applicant') {
+                                tFilterKey.text('需求方');
+                            } else if (tDropdownBox.attr('data-query') == 'designer') {
+                                tFilterKey.text('設計方');
+                            } else if (tDropdownBox.attr('data-query') == 'status') {
+                                tFilterKey.text('未完成');
+                            }
                         }
                     }
                 }
@@ -1726,25 +1800,25 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
                         //更新表單
                         $('[data-update=send]').click((e) => {
-                            $('.icon_32x.btn-icon').removeClass('send').addClass('js-loading');
-                            setTimeout(() => {
-                                let target = e.target;
-                                let input = $(target).closest('.card').find('input').not('.submit');
-                                input.each((i) => {
-                                    // console.log($(input).eq(2).val())
+                            let target = e.target;
+                            let input = $(target).closest('.card').find('input').not('.submit');
+                            input.each((i) => {
+                                // console.log($(input).eq(2).val())
 
-                                    if (($(input).eq(i).val() == "")) {
-                                        $(input).eq(i).closest('.f-block').find('.hinter-box').css('display', 'block');
-                                        $(input).eq(i).closest('.f-block').find('.hinter-box').addClass("js-shake");
-                                        $(target).addClass("js-shake");
-                                        setTimeout(function() {
-                                            $(input).eq(i).closest('.f-block').find('.hinter-box').removeClass("js-shake");
-                                            $(target).removeClass("js-shake");
-                                        }, 200);
-                                    }
-                                })
+                                if (($(input).eq(i).val() == "")) {
+                                    $(input).eq(i).closest('.f-block').find('.hinter-box').css('display', 'block');
+                                    $(input).eq(i).closest('.f-block').find('.hinter-box').addClass("js-shake");
+                                    $(target).addClass("js-shake");
+                                    setTimeout(function() {
+                                        $(input).eq(i).closest('.f-block').find('.hinter-box').removeClass("js-shake");
+                                        $(target).removeClass("js-shake");
+                                    }, 200);
+                                }
+                            })
 
-                                if ($('.hinter-box:visible').length == 0) {
+                            if ($('.hinter-box:visible').length == 0) {
+                                $('.icon_32x.btn-icon').removeClass('send').addClass('js-loading');
+                                setTimeout(() => {
                                     let timestamp = $('[data-output=list]').attr('data-stamp');
                                     let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
                                     axios.patch(targetRow, {
@@ -1777,19 +1851,19 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                             window.location.replace(address);
                                         }, 1000)
                                     });
-                                }
-                            }, 2000)
+                                }, 2000)
+                            }
                         })
                         $('[data-update=end-case]').click((e) => {
-                            $('.icon_32x.btn-icon').removeClass('end-case').addClass('js-loading');
-                            setTimeout(() => {
-                                let target = e.target;
-                                if ($("[data-output=designer]").text() == '未指派' || $("[data-output=ddl-1]").text() == '未指派' || $("[data-output=ddl-2]").text() == '未指派') {
-                                    $(target).addClass("js-shake");
-                                    setTimeout(function() {
-                                        $(target).removeClass("js-shake");
-                                    }, 200);
-                                } else {
+                            let target = e.target;
+                            if ($("[data-output=designer]").text() == '未指派' || $("[data-output=ddl-1]").text() == '未指派' || $("[data-output=ddl-2]").text() == '未指派') {
+                                $(target).addClass("js-shake");
+                                setTimeout(function() {
+                                    $(target).removeClass("js-shake");
+                                }, 200);
+                            } else {
+                                $('.icon_32x.btn-icon').removeClass('end-case').addClass('js-loading');
+                                setTimeout(() => {
                                     let timestamp = $('[data-output=list]').attr('data-stamp');
                                     let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
                                     axios.patch(targetRow, {
@@ -1820,8 +1894,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                             window.location.replace(address);
                                         }, 1000)
                                     });
-                                }
-                            }, 2000)
+                                }, 2000)
+                            }
                         })
                     }
                 }) //end of Result欄位output

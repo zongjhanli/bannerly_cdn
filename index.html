@@ -410,10 +410,10 @@
                     <div class="icon_20x for-custom-input for-portal js-return"></div>
                 </div>
             </div>
-            <div data-portal="sign-up">
+            <div data-portal="sign-up" class="sign-up-section">
                 <div class="f-block">
                     <div class="_12px-500">帳號名稱</div>
-                    <div class="input-embed w-embed"><input type="text" class="input as-text" autocomplete="off" maxlength="8" name="user-name" data-name="user-name" id="user-name" placeholder="8字以內名稱"></div>
+                    <div class="input-embed w-embed"><input type="text" class="input as-text" autocomplete="off" maxlength="4" name="user-name" data-name="user-name" id="user-name" placeholder="4字以內名稱"></div>
                     <div class="hinter-box in-card temp-hide">
                         <div class="_12px-500 for-hinter">此欄必填</div>
                         <div class="hinter-triangle in-card"></div>
@@ -441,6 +441,19 @@
                     </div>
                 </div>
                 <div class="f-block">
+                    <div class="_12px-500">當責品牌代號 (多選)</div>
+                    <div class="dropdown-box-s"><input type="text" class="input as-text js-custom-input dropdown-s w-input" autocomplete="off" maxlength="256" name="brand-id" data-name="brand-id" data-drop="multi" placeholder="請選擇" id="brand-id">
+                        <div class="icon-36x dropdown-arrow-s unclickable"></div>
+                        <div data-drop="brand-id" class="drop-card-s shortest js-collapsed">
+                            <div class="drop-group-s js-hide js-show"></div>
+                        </div>
+                    </div>
+                    <div class="hinter-box in-card temp-hide">
+                        <div class="_12px-500 for-hinter">此欄必填</div>
+                        <div class="hinter-triangle in-card"></div>
+                    </div>
+                </div>
+                <div class="f-block">
                     <div class="_12px-500">設定密碼</div>
                     <div class="input-embed w-embed"><input type="password" class="input as-text" autocomplete="off" maxlength="6" name="user-code" data-name="user-code" id="user-code" placeholder="6位英數字"></div>
                     <div class="hinter-box in-card temp-hide">
@@ -458,8 +471,10 @@
                 </div>
                 <div class="submit-box for-portal">
                     <input type="submit" value="確認送出" data-wait="Please wait..." class="a-button as_contained submit unclickable w-button">
-                    <div data-update="sign-up" class="a-button as_contained submit-trigger extend">確認送出</div>
-                    <div class="icon-24x js-submit unclickable"></div>
+                    <div data-update="sign-up" class="a-button as_contained submit-trigger signing-up">
+                        確認送出
+                        <div class="icon_32x btn-icon sign-up unclickable"></div>
+                    </div>
                 </div>
             </div>
         </div>
