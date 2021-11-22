@@ -895,11 +895,21 @@ if (window.location.href.includes('form-apply')) {
         console.log('top: ' + top + '/' + window.innerHeight)
         console.log('bottom: ' + bottom + '/' + window.innerHeight)
 
-        if (bottom - wHeight > 50 || top < 0) {
-            target.scrollIntoView({
+        if (bottom - wHeight > 50) {
+            // target.scrollIntoView({
+            //     behavior: 'smooth',
+            //     block: "center",
+            //     inline: "nearest"
+            // });
+            window.scrollBy({
                 behavior: 'smooth',
-                block: "center",
-                inline: "nearest"
+                top: bottom - wHeight + 32,
+            });
+        }
+        if (top < 0) {
+            window.scrollBy({
+                behavior: 'smooth',
+                top: top - 32,
             });
         }
 
