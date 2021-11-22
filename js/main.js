@@ -886,6 +886,52 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 //@Form-apply專屬區塊
 if (window.location.href.includes('form-apply')) {
 
+    //消除scroll stuck
+    $('#Swiped').scroll((e) => {
+        let target = e.target;
+        let top = $('#Swiped')[0].getBoundingClientRect().top;
+        let bottom = $('#Swiped')[0].getBoundingClientRect().bottom;
+        let wHeight = window.innerHeight;
+        console.log(top + '/' + window.innerHeight)
+        if (bottom - wHeight > 50 || top < 0) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: "center",
+                inline: "nearest"
+            });
+        }
+
+        if ($(target).scrollTop() > 1080) {
+            let submitTop = $('#Submit')[0].getBoundingClientRect().top;
+            let submitHeight = $('#Submit')[0].getBoundingClientRect().height;
+            // console.log($('#Submit')[0].getBoundingClientRect())
+            window.scrollBy({
+                behavior: 'smooth',
+                top: submitTop - submitHeight / 2,
+            });
+        }
+    })
+
+    //案型增減區always置中，以下判斷前一區塊在畫外的比例來猜測使用者行為
+    // $(document).scroll(() => {
+    //     let visualTop = $('#Visual')[0].getBoundingClientRect().top;
+    //     let offsetBttm = $('#Swiped')[0].getBoundingClientRect().bottom;
+    //     console.log(visualTop)
+    //     if (visualTop > -80 && visualTop < 24) {
+    //         scrollCenter();
+    //     }
+
+    //     function scrollCenter() {
+    //         $('#Swiped')[0].scrollIntoView({
+    //             behavior: 'smooth',
+    //             block: "center",
+    //             inline: "nearest"
+    //         });
+    //     }
+    // })
+
+    //案型增減區always置中，改為偵測#Swiped當中的任何scrollTop變化
+
     //product 若選擇「無需曝光商品」，其他選項將被鎖定
     $(document).click(() => {
         $('#Product').each((p) => {
@@ -1774,7 +1820,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
     // })
     $('.back-home.trigger').click(() => {
         // let target = e.target;
-        if ($('input[type=text]').val() != '' || $('textarea').val() != '' || $('.w--redirected-checked').length > 0) {
+        if ($('input[type=text]').val() != '' || $('textarea').text() != '' || $('.w--redirected-checked').length > 0) {
             let confirm = window.confirm('確定離開表單? 已填寫的欄位將不會儲存!');
             if (confirm) {
                 jQuery('.back-home').not('.trigger').trigger('click');
