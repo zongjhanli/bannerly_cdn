@@ -1491,6 +1491,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                     //案型1-製作尺寸 + ec tab
                                     let ecNamesA = tCells[ecNameA].v.split(','); //values truned into an array
                                     let ecDatasA = tCells[ecDataA].v.split(',');
+                                    let totalSizeA = 0;
                                     let sa;
                                     for (sa = 0; sa < sizeIndexA.length; sa++) {
                                         let tabBtn = '<div class="a-button as-tab"><div data-ec="' + ecDatasA[sa] + '" class="label full-touch">' + ecNamesA[sa] + '</div><div class="_12px-500 as-counts in-tab">' + ((tCells[sizeIndexA[sa]].v.match(/\n/g) || []).length + 1) + '</div></div>';
@@ -1501,10 +1502,14 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                         $('.height-extended').eq(0).find('textarea').css('display', 'block');
                                         $('.side-184w').eq(0).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
                                         $('.side-184w').eq(0).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
+                                        totalSizeA += (tCells[sizeIndexA[sa]].v.match(/\n/g) || []).length + 1;
                                     }
+                                    $('[data-output=S-count2-A]').text($('[data-output=S-count2-A]').text() + '/ ' + totalSizeA + '尺寸');
+
                                     //案型2-製作尺寸 + ec tab
                                     let ecNamesB = tCells[ecNameB].v.split(','); //values truned into an array
                                     let ecDatasB = tCells[ecDataB].v.split(',');
+                                    let totalSizeB = 0;
                                     let sb;
                                     for (sb = 0; sb < sizeIndexB.length; sb++) {
                                         let tabBtn = '<div class="a-button as-tab"><div data-ec="' + ecDatasB[sb] + '" class="label full-touch">' + ecNamesB[sb] + '</div><div class="_12px-500 as-counts in-tab">' + ((tCells[sizeIndexB[sb]].v.match(/\n/g) || []).length + 1) + '</div></div>';
@@ -1515,10 +1520,14 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                         $('.height-extended').eq(1).find('textarea').css('display', 'block');
                                         $('.side-184w').eq(1).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
                                         $('.side-184w').eq(1).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
+                                        totalSizeB += (tCells[sizeIndexB[sb]].v.match(/\n/g) || []).length + 1;
                                     }
+                                    $('[data-output=S-count2-B]').text($('[data-output=S-count2-B]').text() + '/ ' + totalSizeB + '尺寸');
+
                                     //案型3-製作尺寸 + ec tab
                                     let ecNamesC = tCells[ecNameC].v.split(','); //values truned into an array
                                     let ecDatasC = tCells[ecDataC].v.split(',');
+                                    let totalSizeC = 0;
                                     let sc;
                                     for (sa = 0; sc < sizeIndexC.length; sc++) {
                                         let tabBtn = '<div class="a-button as-tab"><div data-ec="' + ecDatasC[sa] + '" class="label full-touch">' + ecNamesC[sc] + '</div><div class="_12px-500 as-counts in-tab">' + ((tCells[sizeIndexC[sc]].v.match(/\n/g) || []).length + 1) + '</div></div>';
@@ -1529,7 +1538,9 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                         $('.height-extended').eq(2).find('textarea').css('display', 'block');
                                         $('.side-184w').eq(2).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
                                         $('.side-184w').eq(2).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
+                                        totalSizeC += (tCells[sizeIndexC[sc]].v.match(/\n/g) || []).length + 1;
                                     }
+                                    $('[data-output=S-count2-C]').text($('[data-output=S-count2-C]').text() + '/ ' + totalSizeC + '尺寸');
                                 }
                             } // end of list for-loop
                         } //end of function OutputData()
