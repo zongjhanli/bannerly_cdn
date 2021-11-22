@@ -509,7 +509,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     $('.sign-up').click(() => {
         $('[data-portal=sign-up]').css('display', 'block');
         $('.sign-in').parent().css('display', 'none');
-        $('.sign-up').addClass('js-btn2text');
+        $('.sign-up').not('.icon_32x').addClass('js-btn2text');
         $('.portal').removeClass('inactive');
         $('.back-portal').css('display', 'block');
         $('.portal').css('paddingBottom', '72px');
@@ -529,37 +529,54 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         $('[data-portal=sign-in]').css('display', 'none');
         $('.sign-up').not('.icon_32x').parent().css('display', 'block');
         $('.sign-in').parent().css('display', 'block');
-        $('.sign-up').removeClass('js-btn2text');
+        $('.sign-up').not('.icon_32x').removeClass('js-btn2text');
         $('.sign-in').removeClass('js-btn2text');
         $('.back-portal').css('display', 'none');
     })
     $('[data-update=sign-up]').click((e) => {
         let target = e.target;
         let input = $(target).closest('.portal').find('input[type=text], input[type=email], input[type=password]');
+        let allSet = true;
         input.each((i) => {
             if (($(input).eq(i).val() == "")) {
-                $(input).eq(i).closest('.f-block').find('.hinter-box').css('display', 'block');
-                $(input).eq(i).closest('.f-block').find('.hinter-box').addClass("js-shake");
+                $(input).eq(i).closest('.f-block')[0].scrollIntoView();
+                $(input).eq(i).closest('.f-block').addClass("js-shake");
                 $(target).addClass("js-shake");
                 setTimeout(function() {
-                    $(input).eq(i).closest('.f-block').find('.hinter-box').removeClass("js-shake");
+                    $(input).eq(i).closest('.f-block').removeClass("js-shake");
                     $(target).removeClass("js-shake");
                 }, 200);
+                allSet = false;
+            } else {
+                allSet = true;
             }
         })
         let radio = $(target).closest('.portal').find('input[type=radio]');
         // console.log($(radio).is(':checked'))
         if (!$(radio).eq(0).is(':checked') && !$(radio).eq(1).is(':checked')) {
-            $(radio).eq(0).closest('.f-block').find('.hinter-box').css('display', 'block');
-            $(radio).eq(0).closest('.f-block').find('.hinter-box').addClass("js-shake");
+            // $(radio).eq(0).closest('.f-block')[0].scrollIntoView()
+            $(radio).eq(0).closest('.f-block').addClass("js-shake");
             $(target).addClass("js-shake");
             setTimeout(function() {
-                $(radio).eq(0).closest('.f-block').find('.hinter-box').removeClass("js-shake");
+                $(radio).eq(0).closest('.f-block').removeClass("js-shake");
                 $(target).removeClass("js-shake");
             }, 200);
+            allSet = false;
+        } else {
+            allSet = true;
         }
 
-        if ($('.hinter-box:visible').length == 0) {
+        if ($('#dbcheck-code').val() != $('#user-code').val()) {
+            $('#dbcheck-code').closest('.f-block').find('._12px-500').text('再次確認密碼\u00a0\u00a0輸入錯誤！');
+            setTimeout(function() {
+                $('#dbcheck-code').closest('.f-block').find('._12px-500').text('再次確認密碼');
+            }, 1500);
+            allSet = false;
+        } else {
+            allSet = true;
+        }
+
+        if (allSet) {
             $('.icon_32x.btn-icon').removeClass('sign-up').addClass('js-loading');
             setTimeout(() => {
                 axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd', {
@@ -603,17 +620,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     $('input[type=radio]').click((e) => {
         let target = e.target;
         $(target).closest('.f-block').find('.hinter-box').css('display', 'none');
-    })
-
-    $('#dbcheck-code').change(() => {
-        if ($('#dbcheck-code').val() != $('#user-code').val()) {
-            $('#dbcheck-code').closest('.f-block').find('.hinter-box').css('display', 'block');
-            $('#dbcheck-code').closest('.f-block').find('.hinter-box').addClass("js-shake");
-            $('#dbcheck-code').closest('.f-block').find('.for-hinter').text("輸入錯誤");
-            setTimeout(function() {
-                $(input).eq(i).closest('.f-block').find('.hinter-box').removeClass("js-shake");
-            }, 200);
-        }
     })
 
     let ssidCode = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
@@ -1395,6 +1401,15 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                         'opacity': '0'
                                     });
 
+                                    //針對已發單、已結案的案件，cta顯示「已發單、已結案」
+                                    if ($(lists[li]).find('.stats-chip').text() == '製作中' ||
+                                        $(lists[li]).find('.stats-chip').text() == '已結案') {
+                                        assignInactive();
+                                    }
+                                    if ($(lists[li]).find('.stats-chip').text() == '已結案') {
+                                        endCaseInactive();
+                                    }
+
                                     let cols = json.table.cols;
                                     let tCells = rows[li].c;
                                     let i;
@@ -1725,8 +1740,79 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             })
                         }, 100)
 
+                        let currDesigner = $('input[data-output="designer"]').val();
+                        let currDDL1 = $('input[data-output="ddl-1"]').val();
+                        let currDDL2 = $('input[data-output="ddl-2"]').val();
+
+                        $('[data-output="designer"]').parent().parent().find('.label').click((e) => {
+                            let target = e.target;
+                            let tInput = $(target).closest('.dropdown-box').find('.input');
+                            setTimeout(() => {
+                                if ($(tInput).val() != currDesigner) {
+                                    readyToAssign();
+                                } else {
+                                    assignInactive();
+                                }
+                            }, 50)
+                        })
+                        $('[data-output="ddl-1"]').change((e) => {
+                            let target = e.target;
+                            if ($(target).val() != currDDL1) {
+                                readyToAssign();
+                            } else {
+                                assignInactive();
+                            }
+                        })
+                        $('[data-output="ddl-2"]').change((e) => {
+                            let target = e.target;
+                            if ($(target).val() != currDDL2) {
+                                readyToAssign();
+                            } else {
+                                assignInactive();
+                            }
+                        })
+
+                        function assignInactive() {
+                            $('[data-update="send"]').html('已發單<div class="icon_32x btn-icon js-complete unclickable"></div>');
+                            $('[data-update="send"]').addClass('unclickable');
+                            $('[data-update="send"]').css({
+                                'maxWidth': '124px',
+                                'backgroundColor': '#808080'
+                            })
+                        }
+
+                        function readyToAssign() {
+                            $('[data-update="send"]').html('確認發單<div class="icon_32x btn-icon send unclickable"></div>');
+                            $('[data-update="send"]').addClass('unclickable');
+                            $('[data-update="send"]').css({
+                                'maxWidth': 'none',
+                                'backgroundColor': 'rgba(51, 51, 51, 0.85)'
+                            })
+                        }
+
+                        function endCaseInactive() {
+                            $('[data-update="end-case"]').html('已結案<div class="icon_32x btn-icon js-complete unclickable"></div>');
+                            $('[data-update="end-case"]').addClass('unclickable');
+                            $('[data-update="end-case"]').css({
+                                'maxWidth': '124px',
+                                'backgroundColor': '#808080'
+                            })
+                        }
+
+                        function readyToEndCase() {
+                            $('[data-update="end-case"]').html('確認結案<div class="icon_32x btn-icon end-case unclickable"></div>');
+                            $('[data-update="end-case"]').addClass('unclickable');
+                            $('[data-update="end-case"]').css({
+                                'maxWidth': 'none',
+                                'backgroundColor': 'rgba(51, 51, 51, 0.85)'
+                            })
+                        }
+
                         //返回主畫面
                         $('.back-home').click(function() {
+                            readyToAssign();
+                            readyToEndCase();
+
                             $('.container.output').removeClass('js-show');
                             // setTimeout(() => {
                             $('.home-title').css({

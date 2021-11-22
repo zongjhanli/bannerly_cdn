@@ -173,7 +173,6 @@ $(document).ready(function() {
 
 $(document).click(() => {
     if ($('.daterangepicker').is(':visible')) {
-        console.log('opened')
         $('.daterangepicker').css('boxShadow', '0 4px 8px 0 hsla(0, 0%, 89.8%, 0.8)');
     } else {
         $('.daterangepicker').css('boxShadow', '0 4px 8px 0 hsla(0, 0%, 89.8%, 0)');
