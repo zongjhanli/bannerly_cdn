@@ -349,16 +349,32 @@ if (window.location.href.includes('form-apply')) {
             let BecData = Array.from(Blabels, (x) => x.dataset.tab);
             let CecData = Array.from(Clabels, (x) => x.dataset.tab);
 
+            let noteA = '';
+            if ($("#C-4-A").text() != '') {
+                noteA = '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-A").text() + '</div>';
+            }
+            let noteB = '';
+            if ($("#C-4-B").text() != '') {
+                noteB = '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-B").text() + '</div>';
+            }
+            let noteC = '';
+            if ($("#C-4-C").text() != '') {
+                noteC = '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-C").text() + '</div>';
+            }
+
             //reconstruct copywright value
             let AcopywrightStr = [];
-            AcopywrightStr.push($("#C-1-A").val(), $("#C-2-A").val(), $("#C-3-A").val(), '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-A").val()) + '</div>';
+            AcopywrightStr.push($("#C-1-A").val(), $("#C-2-A").val(), $("#C-3-A").val(), noteA);
+            AcopywrightStr = AcopywrightStr.filter((a) => a);
             let BcopywrightStr = [];
             if ($("#C-1-B").val() != "") {
-                BcopywrightStr.push($("#C-1-B").val(), $("#C-2-B").val(), $("#C-3-B").val(), '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-B").val()) + '</div>';
+                BcopywrightStr.push($("#C-1-B").val(), $("#C-2-B").val(), $("#C-3-B").val(), noteB);
+                BcopywrightStr = BcopywrightStr.filter((b) => b);
             }
             let CcopywrightStr = [];
             if ($("#C-1-C").val() != "") {
-                CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-C").val()) + '</div>';
+                CcopywrightStr.push($("#C-1-C").val(), $("#C-2-C").val(), $("#C-3-C").val(), noteC);
+                CcopywrightStr = CcopywrightStr.filter((c) => c);
             }
 
             //讀取各ec尺寸
