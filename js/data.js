@@ -835,18 +835,21 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 if (rows[r].c[brandID] != null) {
                     //output brand-id (sign-up)
                     brandIDarr.push(rows[r].c[brandID].v);
-                    // let brandIdOption = '<div class="a-button as-list"><div class="label-s full-touch">' + rows[r].c[brandID].v + '</div><div class="custom-check tick-right"></div></div>'
-                    // $('input#brand-id').parent().find('.drop-group-s').append(brandIdOption);
                 }
-                // brandIDarr = jQuery.unique(brandIDarr);
-                // function unique(brandIDarr) {
-                //     return $.grep(brandIDarr, function(el, index) {
-                //         return index == $.inArray(el, brandIDarr);
-                //     });
-                // }
-                // unique(brandIDarr);
-                // console.log(brandIDarr)
             }
+
+            function uniq(a) {
+                return a.sort().filter(function(item, pos, ary) {
+                    return !pos || item != ary[pos - 1];
+                });
+            }
+            brandIDarr = uniq(brandIDarr);
+            let br;
+            for (br = 0; br < brandIDarr.length; br++) {
+                let brandIdOption = '<div class="a-button as-list"><div class="label-s full-touch">' + brandIDarr[br] + '</div><div class="custom-check tick-right"></div></div>'
+                $('input#brand-id').parent().find('.drop-group-s').append(brandIdOption);
+            }
+
             $('.label-s').click((e) => {
                 let target = e.target;
                 let tCheck = $(target).siblings('.custom-check');
