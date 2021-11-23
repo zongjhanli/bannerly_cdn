@@ -1876,7 +1876,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
                         function readyToAssign() {
                             $('[data-update="send"]').html('確認發單<div class="icon_32x btn-icon send unclickable"></div>');
-                            $('[data-update="send"]').addClass('unclickable');
+                            $('[data-update="send"]').removeClass('unclickable');
                             $('[data-update="send"]').css({
                                 'maxWidth': 'none',
                                 'backgroundColor': 'rgba(51, 51, 51, 0.85)'
@@ -1894,7 +1894,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
                         function readyToEndCase() {
                             $('[data-update="end-case"]').html('確認結案<div class="icon_32x btn-icon end-case unclickable"></div>');
-                            $('[data-update="end-case"]').addClass('unclickable');
+                            $('[data-update="end-case"]').removeClass('unclickable');
                             $('[data-update="end-case"]').css({
                                 'maxWidth': 'none',
                                 'backgroundColor': 'rgba(51, 51, 51, 0.85)'
