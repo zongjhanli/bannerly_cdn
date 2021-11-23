@@ -600,7 +600,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd?sheet=members', {
                     "data": {
                         "user-type": $('[data-name=user-type]:checked').attr('data-type'),
-                        "user-name": $('#user-name').val() + ' ' + $('#user-code').val(),
+                        "user-name": $('#user-name').val() + ' ' + $('#user-mail').val(),
                         "code": $('#user-code').val(),
                         "brand-id": $('#brand-id').val()
                     }
@@ -800,6 +800,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             let designer = 0;
             let applicant = 0;
             let brandID = 0;
+            let brandIDarr = [];
             for (i = 0; i < cols.length; i++) {
                 if (rows[0].c[i].v == '設計方') {
                     designer += i;
@@ -833,9 +834,18 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 }
                 if (rows[r].c[brandID] != null) {
                     //output brand-id (sign-up)
-                    let brandIdOption = '<div class="a-button as-list"><div class="label-s full-touch">' + rows[r].c[brandID].v + '</div><div class="custom-check tick-right"></div></div>'
-                    $('input#brand-id').parent().find('.drop-group-s').append(brandIdOption);
+                    brandIDarr.push(rows[r].c[brandID].v);
+                    // let brandIdOption = '<div class="a-button as-list"><div class="label-s full-touch">' + rows[r].c[brandID].v + '</div><div class="custom-check tick-right"></div></div>'
+                    // $('input#brand-id').parent().find('.drop-group-s').append(brandIdOption);
                 }
+                // brandIDarr = jQuery.unique(brandIDarr);
+                // function unique(brandIDarr) {
+                //     return $.grep(brandIDarr, function(el, index) {
+                //         return index == $.inArray(el, brandIDarr);
+                //     });
+                // }
+                // unique(brandIDarr);
+                // console.log(brandIDarr)
             }
             $('.label-s').click((e) => {
                 let target = e.target;
