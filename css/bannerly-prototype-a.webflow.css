@@ -3675,6 +3675,17 @@ div::-webkit-scrollbar {
     margin-left: auto;
 }
 
+.inline-hinter {
+    position: absolute;
+    right: 2px;
+    top: -3px;
+    /* float: right; */
+    color: #fff;
+    background-color: #333;
+    padding: 3px 6px;
+    border-radius: 4px;
+}
+
 .hinter-box {
     position: absolute;
     left: 8px;

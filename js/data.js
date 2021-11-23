@@ -549,53 +549,55 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         $('.sign-in').removeClass('js-btn2text');
         $('.back-portal').css('display', 'none');
     })
+    $('#dbcheck-code').change(() => {
+        if ($('#dbcheck-code').val() != $('#user-code').val()) {
+            let hinter = '<div class="inline-hinter">輸入錯誤</div>';
+            $('#dbcheck-code').closest('.f-block').find('._12px-500').html('再次確認密碼' + hinter);
+            setTimeout(function() {
+                $('#dbcheck-code').closest('.f-block').find('.inline-hinter').remove();
+            }, 1500);
+        }
+    })
     $('[data-update=sign-up]').click((e) => {
         let target = e.target;
         let input = $(target).closest('.portal').find('input[type=text], input[type=email], input[type=password]');
-        let allSet = true;
         input.each((i) => {
             if (($(input).eq(i).val() == "")) {
-                $(input).eq(i).closest('.f-block')[0].scrollIntoView();
+                let hinter = '<div class="inline-hinter">此欄必填</div>';
+                $(input).eq(i).closest('.f-block').find('._12px-500').append(hinter);
                 $(input).eq(i).closest('.f-block').addClass("js-shake");
                 $(target).addClass("js-shake");
                 setTimeout(function() {
                     $(input).eq(i).closest('.f-block').removeClass("js-shake");
                     $(target).removeClass("js-shake");
                 }, 200);
-                allSet = false;
-            } else {
-                allSet = true;
             }
         })
         let radio = $(target).closest('.portal').find('input[type=radio]');
         // console.log($(radio).is(':checked'))
         if (!$(radio).eq(0).is(':checked') && !$(radio).eq(1).is(':checked')) {
             // $(radio).eq(0).closest('.f-block')[0].scrollIntoView()
+            let hinter = '<div class="inline-hinter">此欄必填</div>';
+            $(radio).eq(0).closest('.f-block').find('._12px-500').append(hinter);
             $(radio).eq(0).closest('.f-block').addClass("js-shake");
             $(target).addClass("js-shake");
             setTimeout(function() {
                 $(radio).eq(0).closest('.f-block').removeClass("js-shake");
                 $(target).removeClass("js-shake");
             }, 200);
-            allSet = false;
-        } else {
-            allSet = true;
         }
-
         if ($('#dbcheck-code').val() != $('#user-code').val()) {
-            $('#dbcheck-code').closest('.f-block').find('._12px-500').text('再次確認密碼\u00a0\u00a0輸入錯誤！');
-            setTimeout(function() {
-                $('#dbcheck-code').closest('.f-block').find('._12px-500').text('再次確認密碼');
-            }, 1500);
-            allSet = false;
-        } else {
-            allSet = true;
+            let hinter = '<div class="inline-hinter">輸入錯誤</div>';
+            $('#dbcheck-code').closest('.f-block').find('._12px-500').html('再次確認密碼' + hinter);
+            // setTimeout(function() {
+            //     $('#dbcheck-code').closest('.f-block').find('.inline-hinter').remove();
+            // }, 1500);
         }
 
-        if (allSet) {
+        if ($('.inline-hinter:visible').length == 0) {
             $('.icon_32x.btn-icon').removeClass('sign-up').addClass('js-loading');
             setTimeout(() => {
-                axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd', {
+                axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd?sheet=members', {
                     "data": {
                         "user-type": $('[data-name=user-type]:checked').attr('data-type'),
                         "user-name": $('#user-name').val() + ' ' + $('#user-code').val(),
@@ -620,26 +622,34 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     }, 1000)
                 });
             }, 2000)
+        } else {
+            $(target).addClass("js-shake");
+            setTimeout(function() {
+                $(target).removeClass("js-shake");
+            }, 200);
         }
     })
-
-    $('input[type=text], input[type=email], input[type=password]').keydown((e) => {
+    $('.sign-up-section').find('input[type=text], input[type=email], input[type=password]').keydown((e) => {
         let target = e.target;
-        if ($(target).val() != "") {
-            if ($(target).closest('.f-block').find('.hinter-box').is(':visible')) {
-                $(target).closest('.f-block').find('.hinter-box').css('display', 'none');
-                $(target).closest('.f-block').find('.for-hinter').text('此欄必填');
+        setTimeout(() => {
+            if ($(target).val() != "") {
+                if ($(target).closest('.f-block').find('.inline-hinter').is(':visible')) {
+                    $(target).closest('.f-block').find('.inline-hinter').remove();
+                }
             }
-        }
+        }, 50)
     })
 
-    $('input[type=radio]').click((e) => {
-        let target = e.target;
-        $(target).closest('.f-block').find('.hinter-box').css('display', 'none');
-    })
-
+    $('.sign-up-section').find('input[type=radio]').click((e) => {
+            let target = e.target;
+            if ($(target).closest('.f-block').find('.inline-hinter').is(':visible')) {
+                $(target).closest('.f-block').find('.inline-hinter').remove();
+            }
+        })
+        // https://docs.google.com/spreadsheets/d/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0/edit#gid=251577508
     let ssidCode = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
-    const endpointCode = `${gsUrl}${ssidCode}${query}`;
+    const sheetID = `gid=251577508`;
+    const endpointCode = `${gsUrl}${ssidCode}${query}${sheetID}`;
     fetch(endpointCode)
         .then(res => res.text())
         .then(data => {
@@ -647,6 +657,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             let json = JSON.parse(jsData);
             let rows = json.table.rows;
             let cols = json.table.cols;
+
             if (valKey == null) {
                 $('#validation').keyup((e) => {
                     let target = e.target;
@@ -692,23 +703,25 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             }
                         }
                     }
-                    let nameMail = rows[iArr[0]].c[1].v;
-                    sessionStorage.setItem('nameMail', nameMail);
-                    let space = nameMail.indexOf(' ');
-                    let name = nameMail.slice(0, space + 1).trim();
+                    if (rows[iArr[0]] != null) {
+                        let nameMail = rows[iArr[0]].c[1].v;
+                        sessionStorage.setItem('nameMail', nameMail);
+                        let space = nameMail.indexOf(' ');
+                        let name = nameMail.slice(0, space + 1).trim();
 
-                    if (rows[iArr[0]].c[0].v == 'applicant') {
-                        $('[data-validation=master]').remove();
-                        $('.identity').text('企劃人員｜' + name);
-                    } else if (rows[iArr[0]].c[0].v == 'designer') {
-                        $('[data-validation=master]').remove();
-                        $('[data-validation=applicant]').remove();
-                        $('.identity').text('設計人員｜' + name);
-                    } else if (rows[iArr[0]].c[0].v == 'MASTER') {
-                        // $('.submit-box[data-validation=applicant]').remove();
-                        $('.card-box').eq(0).find('[data-validation=applicant]').remove();
-                        $('[data-validation=share]').remove();
-                        $('.identity').text('管理人員｜' + name);
+                        if (rows[iArr[0]].c[0].v == 'applicant') {
+                            $('[data-validation=master]').remove();
+                            $('.identity').text('企劃人員｜' + name);
+                        } else if (rows[iArr[0]].c[0].v == 'designer') {
+                            $('[data-validation=master]').remove();
+                            $('[data-validation=applicant]').remove();
+                            $('.identity').text('設計人員｜' + name);
+                        } else if (rows[iArr[0]].c[0].v == 'MASTER') {
+                            // $('.submit-box[data-validation=applicant]').remove();
+                            $('.card-box').eq(0).find('[data-validation=applicant]').remove();
+                            $('[data-validation=share]').remove();
+                            $('.identity').text('管理人員｜' + name);
+                        }
                     }
                 })
             } else if (valKey != null) {
@@ -735,9 +748,39 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         }
                     }
                 }
-                // setTimeout(() => {
-                //     $('.portal-bg').addClass('js-hide');
-                // }, 1000)
+            }
+
+            let userType = 0;
+            let nameMail = 0;
+            for (i = 0; i < cols.length; i++) {
+                if (rows[0].c[i].v == 'user-type') {
+                    userType += i;
+                }
+                if (rows[0].c[i].v == 'user-name') {
+                    nameMail += i;
+                }
+            }
+            let r;
+            for (r = 1; r < rows.length; r++) {
+                if (rows[r].c[nameMail] != null) {
+                    //TBC output applicant query
+                    if (rows[r].c[userType].v == 'applicant') {
+                        // space = rows[r].c[nameMail].v.indexOf(' ');
+                        // let applicantName = rows[r].c[nameMail].v.slice(0, space + 1).trim();
+                        // let applicantQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + applicantName + '</div><div class="custom-check tick-right min-size"></div></div>'
+                        // $('[data-query=applicant]').find('.drop-group').append(applicantQueryOption);
+                    }
+                    //TBC output designer assign options & designer query
+                    if (rows[r].c[userType].v == 'MASTER' || rows[r].c[userType].v == 'designer') {
+                        // let designerOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[nameMail].v + '</div><div class="custom-check tick-right"></div></div>'
+                        // $('#designer').closest('.dropdown-box').find('.drop-group').append(designerOption);
+
+                        // let space = rows[r].c[nameMail].v.indexOf(' ');
+                        // let designerName = rows[r].c[nameMail].v.slice(0, space + 1).trim();
+                        // let designerQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + designerName + '</div><div class="custom-check tick-right min-size"></div></div>'
+                        // $('[data-query=designer]').find('.drop-group').append(designerQueryOption);
+                    }
+                }
             }
         })
 
@@ -799,13 +842,37 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 let tCheck = $(target).siblings('.custom-check');
                 let tInput = document.querySelector('.dropdown-s');
                 let tCard = $(target).closest('.drop-card-s');
-                $(tCard).removeClass('js-collapsed');
+                let tHinter = $(tInput).closest('.f-block').find('.inline-hinter');
+
+                if (tHinter != null) {
+                    tHinter.remove();
+                }
+
+                setTimeout(() => {
+                    $(tCard).removeClass('js-collapsed');
+                    $(tCard).siblings('.dropdown-arrow-s').addClass('js-rotated');
+                }, 1)
 
                 if (tCheck.hasClass('js-selected')) {
                     tCheck.removeClass('js-selected');
+                    let text = target.textContent;
+                    let textIndex = tInput.value.indexOf(text);
+                    if (textIndex > 0) {
+                        tInput.value = tInput.value.replaceAll("," + text, "");
+                    } else if (textIndex == 0) {
+                        if (tInput.value.length > 2) {
+                            tInput.value = tInput.value.replaceAll(text + ",", "");
+                        } else if (tInput.value.length == 2) {
+                            tInput.value = tInput.value.replaceAll(text, "");
+                        }
+                    }
                 } else if (!tCheck.hasClass('js-selected')) {
                     tCheck.addClass('js-selected');
-                    tInput.value += target.textContent + ',';
+                    if (tInput.value == '') {
+                        tInput.value += target.textContent;
+                    } else {
+                        tInput.value += (',' + target.textContent);
+                    }
                 }
             });
         })
