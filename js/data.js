@@ -560,7 +560,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     })
     $('[data-update=sign-up]').click((e) => {
         let target = e.target;
-        let input = $(target).closest('.portal').find('input[type=text], input[type=email], input[type=password]');
+        let input = $(target).closest('.portal').find('.sign-up-section').find('input[type=text], input[type=email], input[type=password]');
         input.each((i) => {
             if (($(input).eq(i).val() == "")) {
                 let hinter = '<div class="inline-hinter">此欄必填</div>';
