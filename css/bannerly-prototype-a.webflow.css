@@ -4078,13 +4078,14 @@ div::-webkit-scrollbar {
 }
 
 .sign-up-section {
-    max-height: 216px;
+    max-height: 215.5px;
     overflow-y: scroll;
     overflow-x: visible;
     width: calc(100% + 8px);
     margin-left: -4px;
     padding-left: 4px;
     padding-right: 4px;
+    padding-top: 4px;
 }
 
 .portal.inactive {

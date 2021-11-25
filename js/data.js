@@ -137,7 +137,7 @@ if (window.location.href.includes('custom-apply')) {
             }).then(response => {
                 console.log(response.data);
                 $('.icon_32x.btn-icon').remove();
-                let reIco = '<div class="icon_32x btn-icon js-complete"></div>'
+                let reIco = '<div class="icon_32x btn-icon fit-right js-complete"></div>'
                 $('.submit-trigger').html('申請成功' + reIco);
 
                 // redirect to home
@@ -623,6 +623,25 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 });
             }, 2000)
         } else {
+            //find the first one of unfilled inputs
+            let firstIndex = 0;
+            let sfBlock = $('.sign-up-section').find('.f-block');
+            let sf;
+            let checked = false;
+            for (sf = 0; sf < sfBlock.length; sf++) {
+                if (!checked && sfBlock.eq(sf).find('.inline-hinter').is(':visible')) {
+                    firstIndex += sf;
+                    checked = true;
+                }
+            }
+            console.log(firstIndex);
+            $('.sign-up-section')[0].scroll({
+                top: 71.81 * firstIndex,
+                behavior: 'smooth',
+                block: "start",
+                inline: "nearest"
+            });
+
             $(target).addClass("js-shake");
             setTimeout(function() {
                 $(target).removeClass("js-shake");
