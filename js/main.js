@@ -13,6 +13,37 @@
 
 // ----------------------------------------------------------------------------------------------------
 
+//畫面尺寸過小提醒
+window.addEventListener('resize', () => {
+    screenToSmall();
+})
+
+$(document).ready(() => {
+    screenToSmall();
+})
+
+$(document).click(() => {
+    screenToSmall();
+})
+
+function screenToSmall() {
+    let valKey = sessionStorage.getItem('key');
+    if (valKey != null) {
+        let width = window.innerWidth;
+        if (width < 540) {
+            $('.portal-bg').css('display', 'flex');
+            $('.portal-bg div').css('display', 'none');
+            $('.screensize-illus').css('display', 'block');
+            $('.screensize-illus div').css('display', 'block');
+        } else {
+            $('.portal-bg').css('display', 'none');
+            $('.portal-bg div').css('display', 'block');
+            $('.screensize-illus').css('display', 'none');
+            $('.screensize-illus div').css('display', 'none');
+        }
+    }
+}
+
 //topbar 在頁面捲動時收斂
 $(document).scroll(() => {
     let scrollY = $(document).scrollTop();
@@ -77,6 +108,7 @@ $(document).ready(function() {
         }
     }
 
+    let width = window.innerWidth;
     $('.page-load-illus').css('display', 'block');
     setTimeout(() => {
         $('.page-load-illus').removeClass('js-hide');

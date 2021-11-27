@@ -1307,7 +1307,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             } else if (tDropdownBox.attr('data-query') == 'designer') {
                                 tFilterKey.text('設計方');
                             } else if (tDropdownBox.attr('data-query') == 'status') {
-                                tFilterKey.text('未完成');
+                                tFilterKey.text('進度');
                             }
                         }
                     }
@@ -1315,6 +1315,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
                 if ($('.dropdown-box[data-query]').hasClass('js-filtering')) {
                     $('.icon_32x.filter').addClass('js-filtering');
+                } else {
+                    $('.icon_32x.filter').removeClass('js-filtering');
                 }
 
                 //「清除filter」 提示顯現
@@ -1363,7 +1365,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         } else if ($(this).attr('data-query') == 'designer') {
                             tFilterKey.text('設計方');
                         } else if ($(this).attr('data-query') == 'status') {
-                            tFilterKey.text('未完成');
+                            tFilterKey.text('進度');
                         }
                     })
 
@@ -1492,7 +1494,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
                         $('.a-list').each(function(l) {
                             let statsStr = $('.a-list').eq(l).find('.stats-chip').text();
-                            if (filterKey == "未完成" && statsStr == "已結案") { //default
+                            if (filterKey == "進度" && statsStr == "已結案") { //default
                                 $('.a-list').eq(l).css('display', 'none');
                             } else if (filterKey == "已結案" && statsStr != "已結案") {
                                 $('.a-list').eq(l).css('display', 'none');
@@ -1799,8 +1801,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                         let sizeOutput = '<div data-output="' + ecDatasA[sa] + '" class="output as-textarea bulk">' + tCells[sizeIndexA[sa]].v.replaceAll('\n', '<br>') + '</div>';
                                         $('.height-extended').eq(0).append(sizeOutput);
                                         $('.side-184w').eq(0).append(tabBtn);
-                                        $('.height-extended').eq(0).find('textarea').css('display', 'none');
-                                        $('.height-extended').eq(0).find('textarea').css('display', 'block');
+                                        $('.height-extended').eq(0).find('.as-textarea').css('display', 'none');
+                                        $('.height-extended').eq(0).find('.as-textarea').eq(0).css('display', 'block');
                                         $('.side-184w').eq(0).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
                                         $('.side-184w').eq(0).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
                                         totalSizeA += (tCells[sizeIndexA[sa]].v.match(/\n/g) || []).length + 1;
@@ -1817,8 +1819,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                         let sizeOutput = '<div data-output="' + ecDatasB[sb] + '" class="output as-textarea bulk">' + tCells[sizeIndexB[sb]].v.replaceAll('\n', '<br>') + '</div>';
                                         $('.height-extended').eq(1).append(sizeOutput);
                                         $('.side-184w').eq(1).append(tabBtn);
-                                        $('.height-extended').eq(1).find('textarea').css('display', 'none');
-                                        $('.height-extended').eq(1).find('textarea').css('display', 'block');
+                                        $('.height-extended').eq(1).find('.as-textarea').css('display', 'none');
+                                        $('.height-extended').eq(1).find('.as-textarea').eq(0).css('display', 'block');
                                         $('.side-184w').eq(1).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
                                         $('.side-184w').eq(1).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
                                         totalSizeB += (tCells[sizeIndexB[sb]].v.match(/\n/g) || []).length + 1;
@@ -1835,8 +1837,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                         let sizeOutput = '<div data-output="' + ecDatasC[sc] + '" class="output as-textarea bulk">' + tCells[sizeIndexC[sc]].v.replaceAll('\n', '<br>') + '</div>';
                                         $('.height-extended').eq(2).append(sizeOutput);
                                         $('.side-184w').eq(2).append(tabBtn);
-                                        $('.height-extended').eq(2).find('textarea').css('display', 'none');
-                                        $('.height-extended').eq(2).find('textarea').css('display', 'block');
+                                        $('.height-extended').eq(2).find('.as-textarea').css('display', 'none');
+                                        $('.height-extended').eq(2).find('.as-textarea').eq(0).css('display', 'block');
                                         $('.side-184w').eq(2).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
                                         $('.side-184w').eq(2).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
                                         totalSizeC += (tCells[sizeIndexC[sc]].v.match(/\n/g) || []).length + 1;
@@ -2022,7 +2024,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
                         //返回主畫面
                         $('.back-home').click(function() {
-                            $('.cta-flex.in-card').css('display', 'block');
+                            $('.cta-flex.in-card').css('display', 'flex');
 
                             readyToAssign();
                             readyToEndCase();
@@ -2197,6 +2199,24 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                                 }, 2000)
                             }
                         })
+                        $('[data-update=delete]').click(() => {
+                            let confirm = window.confirm('確定刪除本案件? 刪除後不可復原!');
+                            if (confirm) {
+                                let timestamp = $('[data-output=list]').attr('data-stamp');
+                                let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
+                                axios.delete(targetRow)
+                                    .then(response => {
+                                        console.log(response.data);
+                                        let address = window.location.href;
+                                        if (address.indexOf('html') < 0) {
+                                            address = address.replace('custom-apply', '');
+                                        } else if (address.indexOf('html') >= 0) {
+                                            address = address.replace('custom-apply.html', '');
+                                        }
+                                        window.location.replace(address);
+                                    });
+                            }
+                        });
                     }
                 }) //end of Result欄位output
         })
