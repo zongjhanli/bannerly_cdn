@@ -319,6 +319,12 @@ label {
     cursor: pointer;
 }
 
+.a-button.as_contained.submit-trigger.signing-in,
+.a-button.as_contained.submit-trigger.signing-in:hover {
+    width: 100%;
+    cursor: pointer;
+}
+
 .a-button.as_contained.submit {
     z-index: 0;
     display: none;
@@ -4077,7 +4083,7 @@ div::-webkit-scrollbar {
     overflow-x: visible;
 }
 
-.sign-up-section {
+.portal-block-group {
     max-height: 215.5px;
     overflow-y: scroll;
     overflow-x: visible;

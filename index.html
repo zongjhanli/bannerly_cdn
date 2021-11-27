@@ -403,14 +403,26 @@
                 </div>
             </div>
             <div class="icon-24x back-portal"></div>
-            <div class="f-block" data-portal="sign-in">
-                <div class="_12px-500">請輸入授權碼：</div>
-                <div class="input-embed w-embed">
-                    <input type="text" class="input as-text" autocomplete="off" maxlength="6" name="validation" data-name="validation" id="validation" placeholder="6位英數字">
-                    <div class="icon_20x for-custom-input for-portal js-return"></div>
+            <div data-portal="sign-in" class="portal-block-group">
+                <div class="f-block">
+                    <div class="_12px-500">帳號名稱</div>
+                    <input type="text" class="input as-text js-custom-input w-input" autocomplete="on" maxlength="256" name="employee" data-name="employee" placeholder="請選擇" id="employee">
+                </div>
+                <div class="f-block">
+                    <div class="_12px-500">密碼</div>
+                    <div class="input-embed w-embed">
+                        <input type="text" class="input as-text" autocomplete="off" maxlength="6" name="password" data-name="password" id="password" placeholder="6位英數字">
+                        <div class="icon_20x for-custom-input for-portal js-return"></div>
+                    </div>
+                </div>
+                <div class="submit-box for-portal">
+                    <div data-update="sign-in" class="a-button as_contained submit-trigger signing-in">
+                        登入系統
+                        <div class="icon_32x btn-icon fit-right sign-up unclickable"></div>
+                    </div>
                 </div>
             </div>
-            <div data-portal="sign-up" class="sign-up-section">
+            <div data-portal="sign-up" class="portal-block-group">
                 <div class="f-block">
                     <div class="_12px-500">帳號名稱</div>
                     <div class="input-embed w-embed"><input type="text" class="input as-text" autocomplete="off" maxlength="4" name="user-name" data-name="user-name" id="user-name" placeholder="4字以內名稱"></div>

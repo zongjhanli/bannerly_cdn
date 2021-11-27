@@ -17,6 +17,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
             let i;
             // let applicant = 0; //需求方
             let brand = 0; //品牌列表
+            let brandData = 0; //品牌列表-data
             let ecName = 0; //通路列表
             let ecData = 0; //通路列表-data
             for (i = 0; i < cols.length; i++) {
@@ -26,6 +27,9 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                 if (rows[0].c[i].v == '品牌列表') {
                     brand += i;
                 }
+                if (rows[0].c[i].v == '品牌列表-data') {
+                    brandData += i;
+                }
                 if (rows[0].c[i].v == '通路列表') {
                     ecName += i;
                 }
@@ -33,22 +37,34 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                     ecData += i;
                 }
             }
+
+            let brandID = sessionStorage.getItem('brandID');
+            if (brandID != 'ALL') {
+                brandID = brandID.split(',');
+            }
+
             let r;
             for (r = 1; r < rows.length; r++) {
                 if (rows[r].c[brand] != null) {
-                    let brandOption;
-                    if (!rows[r].c[brand].v.includes('*')) {
-                        brandOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[brand].v + '</div><div class="custom-check tick-right"></div></div>';
-                    } else if (rows[r].c[brand].v.includes('*')) {
-                        rows[r].c[brand].v = rows[r].c[brand].v.replace('*', '');
-                        brandOption = '<div class="a-button as-list drop-div"><div class="label drop-div">' + rows[r].c[brand].v + '</div></div>';
+                    if (rows[r].c[brandData] != null || brandID == 'ALL') {
+                        let brandOption;
+                        let id;
+                        for (id = 0; id < brandID.length; id++) {
+                            if (brandID == 'ALL' || brandID[id] == rows[r].c[brandData].v) {
+                                if (!rows[r].c[brand].v.includes('*')) {
+                                    brandOption = '<div class="a-button as-list" data-brandData="' + rows[r].c[brandData].v + '"><div class="label full-touch">' + rows[r].c[brand].v + '</div><div class="custom-check tick-right"></div></div>';
+                                }
+                            }
+                        }
+                        if (brandID == 'ALL') {
+                            if (rows[r].c[brand].v.includes('*')) {
+                                rows[r].c[brand].v = rows[r].c[brand].v.replace('*', '');
+                                brandOption = '<div class="a-button as-list drop-div"><div class="label drop-div">' + rows[r].c[brand].v + '</div></div>';
+                            }
+                        }
+                        $('#brand').parent().find('.drop-group').append(brandOption);
                     }
-                    $('#brand').parent().find('.drop-group').append(brandOption);
                 }
-                // if (rows[r].c[applicant] != null) {
-                //     let option = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[applicant].v + '</div><div class="custom-check tick-right"></div></div>'
-                //     $('#applicant').parent().find('.drop-group').append(option);
-                // }
                 //@Form-apply 專屬段落
                 if (window.location.href.includes('form-apply')) {
                     if (rows[r].c[ecName] != null && rows[r].c[ecData] != null) {
@@ -120,6 +136,7 @@ if (window.location.href.includes('custom-apply')) {
             }
 
             let nameMail = sessionStorage.getItem('nameMail');
+            let brandID = $('#brand').parent().find('.js-selected').parent().attr('data-branddata');
 
             axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
                 "data": {
@@ -130,6 +147,7 @@ if (window.location.href.includes('custom-apply')) {
                     "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
                     "急迫度": $("[name=urgency]").siblings(".w--redirected-checked").siblings(".label").text().slice(3, 4),
                     "曝光年份": $('[data-year]').attr('data-year'),
+                    "brandID": brandID,
                     ////送出前確認訊息
                     "需求方": nameMail,
                     "相關路徑": $("#path").val(),
@@ -260,16 +278,28 @@ if (window.location.href.includes('form-apply')) {
             }
             imgArr.sort(); //sheet當中為亂序
 
+            let brandID = sessionStorage.getItem('brandID');
+            if (brandID != 'ALL') {
+                brandID = brandID.split(',');
+            }
+
             setTimeout(function() {
                 $('#Product').find('.drop-group').each((d) => {
-                    let i;
-                    for (i = 0; i < $(imgArr).length; i++) {
-                        let option = '<div class="a-button as-list"><div class="label full-touch">' + imgArr[i] + '</div><div class="custom-check tick-right"></div></div>'
-                        $('#Product').find('.drop-group').eq(d).append(option);
-                        // console.log(imgNameArr[i]);
+                    let id;
+                    for (id = 0; id < brandID.length; id++) {
+                        let i;
+                        for (i = 0; i < $(imgArr).length; i++) {
+                            if (imgArr[i].indexOf(brandID[id]) >= 0 || brandID == 'ALL') {
+                                let option = '<div class="a-button as-list"><div class="label full-touch">' + imgArr[i] + '</div><div class="custom-check tick-right"></div></div>'
+                                $('#Product').find('.drop-group').eq(d).append(option);
+                            }
+                        }
                     }
                     let NOption = '<div class="a-button as-list"><div class="label full-touch">' + '無需曝光商品' + '</div><div class="custom-check tick-right"></div></div>'
                     $('#Product').find('.drop-group').eq(d).find('.a-button.as-list').eq(0).before($(NOption));
+                    // if ($('#Product').find('.drop-group').eq(d).find('.label').text().indexOf(brandID)<0) {
+                    //     $('#Product').find('.drop-group').eq(d).find('.label')
+                    // }
                 })
             }, 1000);
         })
@@ -383,6 +413,8 @@ if (window.location.href.includes('form-apply')) {
             let sizeC = $('.col-right').eq(2).find('textarea');
 
             let nameMail = sessionStorage.getItem('nameMail');
+            let brandID = $('#brand').parent().find('.js-selected').parent().attr('data-branddata');
+            console.log(brandID);
 
             axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
                 "data": {
@@ -393,6 +425,7 @@ if (window.location.href.includes('form-apply')) {
                     "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
                     "急迫度": $("[name=urgency]").siblings(".w--redirected-checked").siblings(".label").text().slice(3, 4),
                     "曝光年份": $('[data-year]').attr('data-year'),
+                    "brandID": brandID,
                     ////主視覺
                     "指定色調": $("[name=color-tone]").siblings(".w--redirected-checked").siblings("[name=color-tone]").val(),
                     "指定氛圍": $("[name=theme]").siblings(".w--redirected-checked").siblings("[name=theme]").val(),
@@ -537,7 +570,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         $('.portal').removeClass('inactive');
         $('.back-portal').css('display', 'block');
         $('#validation').focus();
-        $('.portal').css('paddingBottom', '0px');
+        $('.portal').css('paddingBottom', '72px');
     })
     $('.back-portal').click(() => {
         $('.portal').addClass('inactive');
@@ -560,7 +593,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
     })
     $('[data-update=sign-up]').click((e) => {
         let target = e.target;
-        let input = $(target).closest('.portal').find('.sign-up-section').find('input[type=text], input[type=email], input[type=password]');
+        let input = $(target).closest('.portal').find('[data-portal=sign-up]').find('input[type=text], input[type=email], input[type=password]');
         input.each((i) => {
             if (($(input).eq(i).val() == "")) {
                 let hinter = '<div class="inline-hinter">此欄必填</div>';
@@ -607,7 +640,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 }).then(response => {
                     console.log(response.data);
                     $('.icon_32x.btn-icon').remove();
-                    let reIco = '<div class="icon_32x btn-icon js-complete"></div>'
+                    let reIco = '<div class="icon_32x btn-icon fit-right js-complete"></div>'
                     $('.submit-trigger').html('註冊成功' + reIco);
 
                     //redirect
@@ -648,7 +681,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             }, 200);
         }
     })
-    $('.sign-up-section').find('input[type=text], input[type=email], input[type=password]').keydown((e) => {
+
+    $('.portal').find('input[type=text], input[type=email], input[type=password]').keydown((e) => {
         let target = e.target;
         setTimeout(() => {
             if ($(target).val() != "") {
@@ -659,13 +693,14 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
         }, 50)
     })
 
-    $('.sign-up-section').find('input[type=radio]').click((e) => {
-            let target = e.target;
-            if ($(target).closest('.f-block').find('.inline-hinter').is(':visible')) {
-                $(target).closest('.f-block').find('.inline-hinter').remove();
-            }
-        })
-        // https://docs.google.com/spreadsheets/d/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0/edit#gid=251577508
+    $('.portal').find('input[type=radio]').click((e) => {
+        let target = e.target;
+        if ($(target).closest('.f-block').find('.inline-hinter').is(':visible')) {
+            $(target).closest('.f-block').find('.inline-hinter').remove();
+        }
+    })
+
+    // https://docs.google.com/spreadsheets/d/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0/edit#gid=251577508
     let ssidCode = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
     const sheetID = `gid=251577508`;
     const endpointCode = `${gsUrl}${ssidCode}${query}${sheetID}`;
@@ -698,51 +733,104 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     $('#validation').focus();
                 })
 
-                $('#validation').change((e) => {
+                $('[data-update=sign-in]').click((e) => {
+                    validating();
+                })
+
+                $('#password').change((e) => {
                     $('.icon_20x.for-portal.js-return').removeClass('js-return').addClass('js-clear-input');
-                    let target = e.target;
+                    validating();
+                })
+
+                function validating() {
+                    let input = $('[data-portal=sign-in]').find('input[type=text]');
+                    input.each((i) => {
+                        if (($(input).eq(i).val() == "")) {
+                            let hinter = '<div class="inline-hinter">此欄必填</div>';
+                            $(input).eq(i).closest('.f-block').find('._12px-500').append(hinter);
+                            $(input).eq(i).closest('.f-block').addClass("js-shake");
+                            $('[data-update=sign-in]').addClass("js-shake");
+                            setTimeout(function() {
+                                $(input).eq(i).closest('.f-block').removeClass("js-shake");
+                                $('[data-update=sign-in]').removeClass("js-shake");
+                            }, 200);
+                        }
+                    })
+
+                    let employee = $('[data-portal="sign-in"]').find('#employee');
+                    let password = $('[data-portal="sign-in"]').find('#password');
                     let i;
                     let iArr = [];
+                    let validated = false;
                     for (i = 1; i < rows.length; i++) {
-                        if (rows[i].c[2] != null) {
-                            if (rows[i].c[2].v.indexOf($(target).val()) >= 0) {
-                                $('.portal-bg').addClass('js-hide');
-                                $('.query-box').removeClass('js-collapsed');
-                                $('.container.for-list').css({
-                                    'bottom': '0px',
-                                    'position': 'absolute'
-                                });
-                                sessionStorage.setItem('key', $(target).val());
-                                iArr.push(i);
-                            } else {
-                                $(target).addClass('js-shake');
-                                setTimeout(() => {
-                                    $(target).removeClass('js-shake');
-                                }, 200)
+                        if (rows[i].c[1] != null) {
+                            if ($(employee).val() != '') {
+                                let allNameMail = rows[i].c[1].v;
+                                let space = allNameMail.indexOf(' ');
+                                let name = allNameMail.slice(0, space + 1).trim();
+                                if (name == $(employee).val()) {
+                                    iArr.push(i);
+                                }
                             }
                         }
                     }
-                    if (rows[iArr[0]] != null) {
-                        let nameMail = rows[iArr[0]].c[1].v;
-                        sessionStorage.setItem('nameMail', nameMail);
-                        let space = nameMail.indexOf(' ');
-                        let name = nameMail.slice(0, space + 1).trim();
+                    if (rows[iArr[0]] == null) {
+                        let hinter = '<div class="inline-hinter">此帳號不存在</div>';
+                        $(employee).closest('.f-block').find('._12px-500').append(hinter);
+                        $('[data-update=sign-in]').addClass('js-shake');
+                        setTimeout(() => {
+                            $('[data-update=sign-in]').removeClass('js-shake');
+                        }, 200)
+                    } else if (rows[iArr[0]] != null) {
+                        if ($(password).val() != '') {
+                            if (rows[iArr[0]].c[2].v.indexOf($(password).val()) == 0) {
+                                validated = true;
+                            } else {
+                                let hinter = '<div class="inline-hinter">密碼錯誤</div>';
+                                $(password).closest('.f-block').find('._12px-500').append(hinter);
+                                $('[data-update=sign-in]').addClass('js-shake');
+                                setTimeout(() => {
+                                    $('[data-update=sign-in]').removeClass('js-shake');
+                                }, 200)
+                            }
+                        }
+                        if (validated) {
+                            $('.portal-bg').addClass('js-hide');
+                            $('.query-box').removeClass('js-collapsed');
+                            $('.container.for-list').css({
+                                'bottom': '0px',
+                                'position': 'absolute'
+                            });
+                            sessionStorage.setItem('type', rows[iArr[0]].c[0].v);
+                            sessionStorage.setItem('nameMail', rows[iArr[0]].c[1].v);
+                            sessionStorage.setItem('key', rows[iArr[0]].c[2].v);
+                            sessionStorage.setItem('brandID', rows[iArr[0]].c[3].v);
+                            // console.log(rows[iArr[0]].c[0].v + ',' + rows[iArr[0]].c[1].v + ',' + rows[iArr[0]].c[2].v + ',' + rows[iArr[0]].c[3].v)
 
-                        if (rows[iArr[0]].c[0].v == 'applicant') {
-                            $('[data-validation=master]').remove();
-                            $('.identity').text('企劃人員｜' + name);
-                        } else if (rows[iArr[0]].c[0].v == 'designer') {
-                            $('[data-validation=master]').remove();
-                            $('[data-validation=applicant]').remove();
-                            $('.identity').text('設計人員｜' + name);
-                        } else if (rows[iArr[0]].c[0].v == 'MASTER') {
-                            // $('.submit-box[data-validation=applicant]').remove();
-                            $('.card-box').eq(0).find('[data-validation=applicant]').remove();
-                            $('[data-validation=share]').remove();
-                            $('.identity').text('管理人員｜' + name);
+                            let nameMail = rows[iArr[0]].c[1].v;
+                            let space = nameMail.indexOf(' ');
+                            let name = nameMail.slice(0, space + 1).trim();
+
+                            let type = rows[iArr[0]].c[0].v;
+
+                            let brandID = rows[iArr[0]].c[3].v;
+
+                            if (type == 'applicant') {
+                                $('[data-validation=master]').remove();
+                                $('.identity').text('企劃人員｜' + name);
+                            } else if (type == 'designer') {
+                                $('[data-validation=master]').remove();
+                                $('[data-validation=applicant]').remove();
+                                $('.identity').text('設計人員｜' + name);
+                            } else if (type == 'MASTER') {
+                                // $('.submit-box[data-validation=applicant]').remove();
+                                $('.card-box').eq(0).find('[data-validation=applicant]').remove();
+                                $('[data-validation=share]').remove();
+                                $('.identity').text('管理人員｜' + name);
+                            }
                         }
                     }
-                })
+                }
             } else if (valKey != null) {
                 $('#validation').val(valKey);
                 let nameMail = sessionStorage.getItem('nameMail');
@@ -980,6 +1068,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         status.classList.add('js-tbc');
                     }
                     list.dataset.year = cells[4].v;
+                    list.dataset.brand = cells[5].v;
                 }
             }
 
@@ -1476,7 +1565,6 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             $('.col-right').find('[data-output]').css('display', 'none');
                             $('.col-right').find('[data-output]').first().css('display', 'block');
 
-
                             let sizeIndexA = [];
                             let sizeIndexB = [];
                             let sizeIndexC = [];
@@ -1491,6 +1579,15 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                             for (li = 0; li < lists.length; li++) {
 
                                 if (target == lists[li]) {
+                                    let brandID = sessionStorage.getItem('brandID');
+                                    let brandData = $(lists).eq(li).attr('data-brand');
+                                    if (brandID != 'ALL') {
+                                        if (brandID.indexOf(brandData) < 0) {
+                                            $('.cta-flex.in-card').css('display', 'none');
+                                        }
+                                    }
+
+
                                     $(lists[li]).addClass('js-topbar'); //css animation has @keyframe
                                     $(lists[li]).find('.stats-flex').addClass('js-topbar'); //css animation has @keyframe
                                     $(lists[li]).find('._14px-500.as-stats').css('opacity', '0');
@@ -1925,6 +2022,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
                         //返回主畫面
                         $('.back-home').click(function() {
+                            $('.cta-flex.in-card').css('display', 'block');
+
                             readyToAssign();
                             readyToEndCase();
 
