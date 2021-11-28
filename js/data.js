@@ -1179,7 +1179,7 @@ if (!window.location.href.includes('form-apply') &&
                         for (m = monthArr.length - 1; m >= 0; m--) { //!!!影響順序
                             if ((q - 1) * 3 < monthArr[m] && q * 3 >= monthArr[m]) {
                                 // let labelText = 'Q' + q + '/' + monthArr.key.slice(2, 4); //利用「Quarter值」搭配「year」製造選項文字
-                                let labelText = monthArr.key + '/' + '<div class="q-chr">Q</div>' + q; //利用「Quarter值」搭配「year」製造選項文字
+                                let labelText = monthArr.key + '/' + '<div class="q-chr unclickable">Q</div>' + q; //利用「Quarter值」搭配「year」製造選項文字
                                 labelArr.push(labelText);
                             }
                         }
@@ -1352,6 +1352,12 @@ if (!window.location.href.includes('form-apply') &&
                             $('.search-input').val('');
                             $('.icon_32x.for-search-query').removeClass('js-clear-search');
                         }
+                        let quarterKey = $('[data-query=quarter]').find('.unclickable').not('.dropdown-arrow').not('.q-chr');
+                        let quarterFirstOption = $('[data-query=quarter]').parent().find('.label');
+                        $(quarterFirstOption).siblings('.custom-check').removeClass('js-selected');
+                        $(quarterFirstOption).eq(0).siblings('.custom-check').addClass('js-selected');
+                        $(quarterKey).html($(quarterFirstOption).html());
+                        $('[data-query=quarter]').removeClass('js-filtering');
                     }
                     //defaulting query conditions
                     let tDropdownBox = target.parent().find('.dropdown-box');
@@ -1432,6 +1438,7 @@ if (!window.location.href.includes('form-apply') &&
             function quarterQuery() {
                 $('.dropdown-box').each(function() {
                     if ($(this).attr('data-query') == 'quarter') {
+                        $(this).addClass('js-filtering');
                         let filterKey = $(this).children('.unclickable').not('.dropdown-arrow').text();
 
                         execute();
