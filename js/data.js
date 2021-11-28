@@ -817,16 +817,16 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
                             if (type == 'applicant') {
                                 $('[data-validation=master]').remove();
-                                $('.identity').text('企劃人員｜' + name);
+                                $('.identity').text('需求方｜' + name);
                             } else if (type == 'designer') {
                                 $('[data-validation=master]').remove();
                                 $('[data-validation=applicant]').remove();
-                                $('.identity').text('設計人員｜' + name);
+                                $('.identity').text('設計方｜' + name);
                             } else if (type == 'MASTER') {
                                 // $('.submit-box[data-validation=applicant]').remove();
                                 $('.card-box').eq(0).find('[data-validation=applicant]').remove();
                                 $('[data-validation=share]').remove();
-                                $('.identity').text('管理人員｜' + name);
+                                $('.identity').text('管理方｜' + name);
                             }
                         }
                     }
