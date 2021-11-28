@@ -636,6 +636,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         "user-name": $('#user-name').val() + ' ' + $('#user-mail').val(),
                         "code": $('#user-code').val(),
                         "brand-id": $('#brand-id').val()
+                        // "image": $('#file-upload')[0].files
                     }
                 }).then(response => {
                     console.log(response.data);
