@@ -294,8 +294,10 @@ th.prev.available:hover {
     border-radius: 0;
 }
 
-.daterangepicker td.off.ends.in-range {
+.daterangepicker td.off.ends,
+.daterangepicker td.off.ends:hover {
     background-image: none;
+    color: rgba(47, 90, 58, 0.4);
 }
 
 

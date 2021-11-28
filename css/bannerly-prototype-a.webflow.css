@@ -4472,6 +4472,31 @@ div::-webkit-scrollbar {
     width: 100%;
 }
 
+.p-img {
+    /* margin-right: 10%; */
+    /* margin-left: 5%;
+    max-width: 90%; */
+    max-width: none;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+    -webkit-transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.p-img:hover {
+    opacity: 1;
+}
+
+img.p-img {
+    margin: 0px;
+    opacity: 0;
+}
+
+img.p-img:hover {
+    opacity: 1;
+}
+
 .p-inline {
     display: inline-block;
     position: relative;
@@ -4495,6 +4520,7 @@ div::-webkit-scrollbar {
     width: 100%;
     margin-left: 28px;
     margin-bottom: 8px;
+    padding-left: 4px;
 }
 
 .p-img {

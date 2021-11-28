@@ -1904,7 +1904,7 @@ if (window.location.href.includes('read-me')) {
             $('[data-display=master]').remove();
             $('[data-display=applicant]').remove();
             $('.identity').text('設計方｜操作說明');
-        } else if (type == 'master') {
+        } else if (type == 'MASTER') {
             $('[data-display=applicant]').remove();
             $('[data-display=designer]').remove();
             $('.identity').text('管理方｜操作說明');
