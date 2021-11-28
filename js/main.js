@@ -16,6 +16,10 @@
 //畫面尺寸過小提醒
 window.addEventListener('resize', () => {
     screenToSmall();
+    let width = window.innerWidth;
+    if (width > 540) {
+        $('.portal-bg').addClass('js-hide');
+    }
 })
 
 $(document).ready(() => {
@@ -31,13 +35,13 @@ function screenToSmall() {
     if (valKey != null) {
         let width = window.innerWidth;
         if (width < 540) {
-            $('.portal-bg').css('display', 'flex');
-            $('.portal-bg div').css('display', 'none');
+            $('.portal-bg').removeClass('js-hide');
+            $('.portal-bg div').not('.inactive').css('display', 'none');
             $('.screensize-illus').css('display', 'block');
             $('.screensize-illus div').css('display', 'block');
         } else {
-            $('.portal-bg').css('display', 'none');
-            $('.portal-bg div').css('display', 'block');
+            // $('.portal-bg').addClass('js-hide');
+            $('.portal-bg div').not('.inactive').css('display', 'block');
             $('.screensize-illus').css('display', 'none');
             $('.screensize-illus div').css('display', 'none');
         }
@@ -108,7 +112,6 @@ $(document).ready(function() {
         }
     }
 
-    let width = window.innerWidth;
     $('.page-load-illus').css('display', 'block');
     setTimeout(() => {
         $('.page-load-illus').removeClass('js-hide');
@@ -117,7 +120,10 @@ $(document).ready(function() {
 
     let valKey = sessionStorage.getItem('key');
 
-    if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
+
+    if (window.location.href.includes('form-apply') ||
+        window.location.href.includes('custom-apply') ||
+        window.location.href.includes('read-me')) {
         if (valKey == null) {
             //redirect to home
             let address = window.location.href;
@@ -130,13 +136,27 @@ $(document).ready(function() {
                 window.location.replace(address);
             } else if (window.location.href.includes('form-apply')) {
                 if (address.indexOf('html') < 0) {
-                    address = address.replace('-apply', '');
+                    address = address.replace('form-apply', '');
                 } else if (address.indexOf('html') >= 0) {
-                    address = address.replace('-apply.html', '');
+                    address = address.replace('form-apply.html', '');
+                }
+                window.location.replace(address);
+            } else if (window.location.href.includes('read-me')) {
+                if (address.indexOf('html') < 0) {
+                    address = address.replace('read-me', '');
+                } else if (address.indexOf('html') >= 0) {
+                    address = address.replace('read-me.html', '');
                 }
                 window.location.replace(address);
             }
         } else if (valKey != null) {
+            if (window.location.href.includes('read-me')) {
+                $('.container.for-list').css({
+                    'bottom': '-100vh',
+                    'position': 'fixed'
+                });
+            }
+
             $('.topbar-box.suspend').addClass('js-hide');
             $('.container.for-form').css({
                 'opacity': '0',
@@ -164,13 +184,21 @@ $(document).ready(function() {
     }, 1500)
 
     setTimeout(() => {
-        if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
+        if (window.location.href.includes('form-apply') ||
+            window.location.href.includes('custom-apply') ||
+            window.location.href.includes('read-me')) {
             $('.page-load-illus').parent().addClass('js-hide');
             $('.topbar-box.suspend').removeClass('js-hide');
             $('.container.for-form').css({
                 'opacity': '1',
                 'transform': 'translateY(0px)'
             });
+            if (window.location.href.includes('read-me')) {
+                $('.container.for-list').css({
+                    'bottom': '0px',
+                    'position': 'absolute'
+                });
+            }
         } else {
             if (valKey == null) {
                 $('.portal.inactive').css('opacity', '0');
@@ -1863,10 +1891,26 @@ if (window.location.href.includes('form-apply')) {
 
 // ----------------------------------------------------------------------------------------------------
 
-//@Custom-apply 專屬區塊
-// if (window.location.href.includes('custom-apply')) {
-// console.log('x');
-// };
+// @read-me 專屬區塊
+if (window.location.href.includes('read-me')) {
+    //標題註記& 呈現內文安排
+    $(document).ready(() => {
+        let type = sessionStorage.getItem('type');
+        if (type == 'applicant') {
+            $('[data-display=master]').remove();
+            $('[data-display=designer]').remove();
+            $('.identity').text('需求方｜操作說明');
+        } else if (type == 'designer') {
+            $('[data-display=master]').remove();
+            $('[data-display=applicant]').remove();
+            $('.identity').text('設計方｜操作說明');
+        } else if (type == 'master') {
+            $('[data-display=applicant]').remove();
+            $('[data-display=designer]').remove();
+            $('.identity').text('管理方｜操作說明');
+        }
+    })
+};
 
 // ----------------------------------------------------------------------------------------------------
 

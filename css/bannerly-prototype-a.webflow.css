@@ -1922,6 +1922,45 @@ div::-webkit-scrollbar {
     /* display: none; */
 }
 
+.icon_56x {
+    width: 56px;
+    height: 56px;
+}
+
+.icon_56x.read-me {
+    background-image: url('../images/bi_question-circle-fill.svg');
+    background-position: 50% 50%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    /* left: calc(50vw + 288px); */
+    -webkit-transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 99;
+    text-decoration: none;
+    filter: grayscale(100%);
+    opacity: 0.4;
+}
+
+.icon_56x.read-me:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    bottom: 48px;
+}
+
+.icon_56x.read-me:hover::after {
+    content: "操作說明";
+    position: absolute;
+    bottom: -16px;
+    font-size: 12px;
+    width: 100%;
+    text-align: center;
+    color: #3B7A47;
+}
+
 .annotate.back-home {
     /* -webkit-transform: rotate(90deg);
     -ms-transform: rotate(90deg);
@@ -4427,7 +4466,7 @@ div::-webkit-scrollbar {
 
 .paragraph {
     padding: 0px 32px 24px;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 28px;
     color: #333;
     width: 100%;
@@ -4447,8 +4486,8 @@ div::-webkit-scrollbar {
     position: absolute;
     height: 12px;
     z-index: -1;
-    left:5%;
-    top:6px
+    left: 5%;
+    top: 6px
 }
 
 .p-h3 {

@@ -515,7 +515,8 @@ if (window.location.href.includes('form-apply')) {
 }
 
 //@Index output 專屬區塊
-if (!window.location.href.includes('form-apply') && !window.location.href.includes('custom-apply')) {
+if (!window.location.href.includes('form-apply') &&
+    !window.location.href.includes('custom-apply')) {
 
     //品牌代號dropdown 另行處理
     $('.dropdown-s').click(() => { sDrop(); });
@@ -636,7 +637,7 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         "user-name": $('#user-name').val() + ' ' + $('#user-mail').val(),
                         "code": $('#user-code').val(),
                         "brand-id": $('#brand-id').val()
-                        // "image": $('#file-upload')[0].files
+                            // "image": $('#file-upload')[0].files
                     }
                 }).then(response => {
                     console.log(response.data);
@@ -843,15 +844,15 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                         if (rows[i].c[2].v == valKey) {
                             if (rows[i].c[0].v == 'applicant') {
                                 $('[data-validation=master]').remove();
-                                $('.identity').text('企劃人員｜' + name);
+                                $('.identity').text('需求方｜' + name);
                             } else if (rows[i].c[0].v == 'designer') {
                                 $('[data-validation=master]').remove();
                                 $('[data-validation=applicant]').remove();
-                                $('.identity').text('設計人員｜' + name);
+                                $('.identity').text('設計方｜' + name);
                             } else if (rows[i].c[0].v == 'MASTER') {
                                 $('[data-validation=share]').remove();
                                 $('.card-box').eq(0).find('[data-validation=applicant]').remove();
-                                $('.identity').text('管理人員｜' + name);
+                                $('.identity').text('管理方｜' + name);
                             }
                         }
                     }
