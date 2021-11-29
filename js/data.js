@@ -592,6 +592,14 @@ if (!window.location.href.includes('form-apply') &&
             }, 1500);
         }
     })
+
+    // $('#btn').click(() => {
+    //     //php image upload
+    //     fetch('image-upload.php', {
+    //         method: "POST",
+    //         body: new FormData(document.getElementById('file-upload'))
+    //     })
+    // })
     $('[data-update=sign-up]').click((e) => {
         let target = e.target;
         let input = $(target).closest('.portal').find('[data-portal=sign-up]').find('input[type=text], input[type=email], input[type=password]');
@@ -631,6 +639,9 @@ if (!window.location.href.includes('form-apply') &&
         if ($('.inline-hinter:visible').length == 0) {
             $('.icon_32x.btn-icon').removeClass('sign-up').addClass('js-loading');
             setTimeout(() => {
+
+
+                //sheetDB POST
                 axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd?sheet=members', {
                     "data": {
                         "user-type": $('[data-name=user-type]:checked').attr('data-type'),
@@ -660,7 +671,7 @@ if (!window.location.href.includes('form-apply') &&
         } else {
             //find the first one of unfilled inputs
             let firstIndex = 0;
-            let sfBlock = $('.sign-up-section').find('.f-block');
+            let sfBlock = $('[data-portal="sign-up"]').find('.f-block');
             let sf;
             let checked = false;
             for (sf = 0; sf < sfBlock.length; sf++) {
@@ -670,7 +681,7 @@ if (!window.location.href.includes('form-apply') &&
                 }
             }
             console.log(firstIndex);
-            $('.sign-up-section')[0].scroll({
+            $('[data-portal="sign-up"]')[0].scroll({
                 top: 71.81 * firstIndex,
                 behavior: 'smooth',
                 block: "start",
@@ -682,6 +693,31 @@ if (!window.location.href.includes('form-apply') &&
                 $(target).removeClass("js-shake");
             }, 200);
         }
+
+        //sheet2api test  cannot post image neither
+        // var data = {
+        //     "user-type": $('[data-name=user-type]:checked').attr('data-type'),
+        //     "user-name": $('#user-name').val() + ' ' + $('#user-mail').val(),
+        //     "code": $('#user-code').val(),
+        //     "brand-id": $('#brand-id').val(),
+        //     // "image": $('#file-upload')[0].files
+        // };
+        // var url = 'https://sheet2api.com/v1/9nZsJjj6QoWn/申請站預設選項/members';
+        // fetch(url, {
+        //         method: 'POST',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //         },
+        //         body: JSON.stringify(data),
+        //     })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log('Success:', data);
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     });
+
     })
 
     $('.portal').find('input[type=text], input[type=email], input[type=password]').keydown((e) => {
