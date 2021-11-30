@@ -1939,8 +1939,8 @@ if (!window.location.href.includes('form-apply') &&
 
 
                         //img 放大鏡
-                        $('.img').each((i) => {
-                            $('.img').eq(i).mousemove((e) => {
+                        $('.img').not('.big').each((i) => {
+                            $('.img').not('.big').eq(i).mousemove((e) => {
                                 let target = e.target;
                                 let posX = e.clientX;
                                 let posY = e.clientY;
@@ -1980,9 +1980,19 @@ if (!window.location.href.includes('form-apply') &&
                                             'margin-top': Math.round(-(posY - imgY) * 1.75 + 28) + 'px',
                                         })
                                     }
+
+                                    $('.block-pool').eq(m).mouseleave(() => {
+                                        $('.block-pool').eq(m).find('.img').removeClass('db-size');
+                                    })
                                 });
                             })
+                            $('.img').not('.big').eq(i).mouseenter((e) => {
+                                $('.img').not('.big').removeClass('db-size');
+                                $('.img').not('.big').eq(i).addClass('db-size');
+                            })
                         })
+
+
 
                         $('div').not('.img, .img-magnifier').mouseenter(() => {
                             $('.img-magnifier').css('display', 'none');
