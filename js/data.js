@@ -136,6 +136,9 @@ if (window.location.href.includes('custom-apply')) {
             }
 
             let nameMail = sessionStorage.getItem('nameMail');
+            let space = nameMail.indexOf(' ');
+            let name = nameMail.slice(0, space + 1).trim();
+            let mail = nameMail.slice(space + 1, nameMail.length).trim();
             let brandID = $('#brand').parent().find('.js-selected').parent().attr('data-branddata');
 
             axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
@@ -149,7 +152,8 @@ if (window.location.href.includes('custom-apply')) {
                     "曝光年份": $('[data-year]').attr('data-year'),
                     "brandID": brandID,
                     ////送出前確認訊息
-                    "需求方": nameMail,
+                    "需求方": name,
+                    "需求方mail": mail,
                     "相關路徑": $("#path").val(),
                 }
             }).then(response => {
@@ -413,8 +417,10 @@ if (window.location.href.includes('form-apply')) {
             let sizeC = $('.col-right').eq(2).find('textarea');
 
             let nameMail = sessionStorage.getItem('nameMail');
+            let space = nameMail.indexOf(' ');
+            let name = nameMail.slice(0, space + 1).trim();
+            let mail = nameMail.slice(space + 1, nameMail.length).trim();
             let brandID = $('#brand').parent().find('.js-selected').parent().attr('data-branddata');
-            console.log(brandID);
 
             axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
                 "data": {
@@ -490,7 +496,8 @@ if (window.location.href.includes('form-apply')) {
                     "案型3-通路名稱": CecStr.toString(),
                     "案型3-通路data": CecData.toString(),
                     ////送出前確認訊息
-                    "需求方": nameMail,
+                    "需求方": name,
+                    "需求方mail": mail,
                     "相關路徑": $("#path").val(),
                 }
             }).then(response => {
@@ -1083,30 +1090,48 @@ if (!window.location.href.includes('form-apply') &&
                     // status.textContent = '製作中';
 
                     let cells = rows[rw].c;
-
-                    title.textContent = cells[0].v + '\u00a0\u00a0' + cells[1].v + cells[2].v;
-                    if (cells[3] != null) {
-                        title.textContent += ' (' + cells[3].v + ')';
-                    }
-                    let spaceA = cells[cells.length - 7].v.indexOf(' ');
-                    applicant.textContent = cells[cells.length - 7].v.slice(0, spaceA + 1).trim();
-                    if (cells[cells.length - 5] != null) {
-                        let spaceB = cells[cells.length - 5].v.indexOf(' ');
-                        designer.textContent = cells[cells.length - 5].v.slice(0, spaceB + 1).trim();
-                        if (cells[cells.length - 2] != null) {
-                            status.textContent = '已結案';
-                            status.classList.add('js-endcase');
-                        } else {
-                            status.textContent = '製作中';
+                    let cols = json.table.cols;
+                    // let tCells = rows[li].c;
+                    let i;
+                    for (i = 0; i < cols.length; i++) {
+                        //案件標題
+                        if (cols[i].label == '曝光日期') {
+                            $(title).text(cells[i].v);
                         }
-                    } else {
-                        designer.textContent = '未指派';
-                        designer.style.color = '#A9A9A9';
-                        status.textContent = '未發單';
-                        status.classList.add('js-tbc');
+                        if (cols[i].label == '主打品牌') {
+                            $(title).text($(title).text() + '\u00a0\u00a0' + cells[i].v);
+                        }
+                        if (cols[i].label == '活動類型') {
+                            $(title).text($(title).text() + cells[i].v);
+                        }
+                        if (cols[i].label == '急迫度' && cells[i] != null) {
+                            $(title).text($(title).text() + ' (' + cells[i].v + ')');
+                        }
+                        if (cols[i].label == '需求方') {
+                            $(applicant).text(cells[i].v);
+                        }
+                        if (cols[i].label == '設計方') {
+                            if (cells[i] != null) {
+                                $(designer).text(cells[i].v);
+                                $(status).text('製作中');
+                            } else if (cells[i] == null) {
+                                $(designer).text('未指派');
+                                $(designer).css('color', '#a9a9a9');
+                                $(status).text('未發單');
+                                $(status).addClass('js-tbc');
+                            }
+                        }
+                        if (cols[i].label == '結案' && cells[i] != null) {
+                            $(status).text('已結案');
+                            $(status).addClass('js-endcase');
+                        }
+                        if (cols[i].label == '曝光年份') {
+                            $(list).attr('data-year', cells[i].v);
+                        }
+                        if (cols[i].label == 'brandID') {
+                            $(list).attr('data-brand', cells[i].v);
+                        }
                     }
-                    list.dataset.year = cells[4].v;
-                    list.dataset.brand = cells[5].v;
                 }
             }
 
@@ -1661,13 +1686,23 @@ if (!window.location.href.includes('form-apply') &&
                                     });
 
                                     //針對已發單、已結案的案件，cta顯示「已發單、已結案」
-                                    if ($(lists[li]).find('.stats-chip').text() == '製作中' ||
-                                        $(lists[li]).find('.stats-chip').text() == '已結案') {
+                                    if ($(lists[li]).find('.stats-chip').text() == '製作中') {
                                         assignInactive();
-                                    }
-                                    if ($(lists[li]).find('.stats-chip').text() == '已結案') {
+                                    } else if ($(lists[li]).find('.stats-chip').text() == '已結案') {
                                         endCaseInactive();
                                     }
+                                    setTimeout(() => {
+                                        if ($('[data-output="designer"]').text() == '未指派') {
+                                            console.log('x')
+                                            endCaseInactive();
+                                            $('[data-update="end-case"]').html('確認結案<div class="icon_32x btn-icon end-case unclickable"></div>');
+                                            $('[data-update="end-case"]').css({
+                                                'maxWidth': 'none',
+                                            })
+                                            let disabledBtnHinter = '<div class="annotate dead-btn-hinter">本案尚未發單，無法結案</div>'
+                                            $('[data-update="end-case"]').parent().parent().append(disabledBtnHinter);
+                                        }
+                                    }, 100)
 
                                     let cols = json.table.cols;
                                     let tCells = rows[li].c;
@@ -2089,7 +2124,8 @@ if (!window.location.href.includes('form-apply') &&
                         }
 
                         //返回主畫面
-                        $('.back-home').click(function() {
+                        $('.back-home').click(() => {
+                            $('.dead-btn-hinter').remove();
                             $('.cta-flex.in-card').css('display', 'flex');
 
                             readyToAssign();
@@ -2208,7 +2244,12 @@ if (!window.location.href.includes('form-apply') &&
                                 }
                             })
                             newTimestamp = brand + '-' + newTimestamp;
-                            console.log(newTimestamp)
+                            // console.log(newTimestamp)
+
+                            let nameMail = $('#designer').val();
+                            let space = nameMail.indexOf(' ');
+                            let name = nameMail.slice(0, space + 1).trim();
+                            let mail = nameMail.slice(space + 1, nameMail.length).trim();
 
                             if ($('.hinter-box:visible').length == 0) {
                                 $('.icon_32x.btn-icon').removeClass('send').addClass('js-loading');
@@ -2218,7 +2259,8 @@ if (!window.location.href.includes('form-apply') &&
                                     let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
                                     axios.patch(targetRow, {
                                         "data": {
-                                            "設計方": $('#designer').val(),
+                                            "設計方": name,
+                                            "設計方mail": mail,
                                             "初稿交件日期": $('#ddl-1').val(),
                                             "完成日期": $('#ddl-2').val(),
                                             "timestamp": newTimestamp

@@ -1997,6 +1997,16 @@ div::-webkit-scrollbar {
     font-size: 16px;
 }
 
+.annotate.dead-btn-hinter {
+    display: block;
+    position: absolute;
+    /* margin-left: calc(-100% - 8px); */
+    left: 0px;
+    font-size: 16px;
+    color: rgb(128, 128, 128);
+    bottom: 12px;
+}
+
 .icon_32x.for-search-query {
     position: absolute;
     right: 12px;
