@@ -1079,11 +1079,22 @@ if (window.location.href.includes('form-apply')) {
                                     clearEC();
                                 } else {
                                     $(checker).addClass('js-selected');
+                                    $(tabs).css('color', 'rgba(47, 90, 58, 0.5)');
                                     $(tabs).each((b) => {
                                         if ($(tabs).eq(b).children('.label').attr('data-tab').indexOf(ecName) >= 0) {
                                             $(tabs).eq(b).addClass('js-show');
+                                            $(tabs).eq(b).css('color', 'rgba(47, 90, 58, 1)');
+                                            $(card).find('.col-right').find('.input[type="text"]').val('請輸入' + $(tabs).eq(b).find('.label').text() + '尺寸');
                                         }
                                     })
+                                    $(sizeGroup).each((s) => {
+                                        if ($(sizeGroup).eq(s).attr('data-group') == ecName) {
+                                            $(sizeGroup).removeClass('js-show');
+                                            $(sizeGroup).eq(s).addClass('js-show');
+                                        }
+                                    })
+                                    $(txtArea).removeClass('js-show');
+                                    $(txtArea).eq(t).addClass('js-show');
                                     return;
                                 }
 
@@ -1093,10 +1104,16 @@ if (window.location.href.includes('form-apply')) {
                                             $(sizeGroup).eq(s).find('.custom-check').removeClass('js-selected');
                                         }
                                     })
+                                    $(tabs).each((b) => {
+                                        if ($(tabs).eq(b).children('.label').attr('data-tab').indexOf(ecName) >= 0) {
+                                            $(tabs).eq(b).find('.as-counts').text('');
+                                        }
+                                    })
                                     $(card).find('.col-right').find('.input[type="text"]').val('')
                                     $(txtArea).eq(t).removeClass('js-show');
                                     $(txtArea).eq(t).text('');
                                     $(txtArea).eq(t).val('');
+                                    $(card).find('.as-tab.indicator').css('top', '0px');
                                 }
                             }
                         }
