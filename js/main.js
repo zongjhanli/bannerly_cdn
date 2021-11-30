@@ -1464,7 +1464,9 @@ if (window.location.href.includes('form-apply')) {
         // $('.anch-inner_circ').css('backgroundColor', '#3B7A47');
         $('.anch-inner_circ').css('display', 'none');
         $('.anch-inner_circ').eq(0).css('display', 'block');
-        $('[data-anch]').attr('href', '#'); //暫時放棄webflow scroll script，因下方bind events 有bug 無法解決
+        if (!window.location.href.includes('read-me')) {
+            $('[data-anch]').attr('href', '#'); //暫時放棄webflow scroll script，因下方bind events 有bug 無法解決
+        }
         $('body')[0].scrollIntoView({ //頁面重新整理預設回到頂端
             behavior: 'smooth',
             block: "start",
@@ -1921,6 +1923,56 @@ if (window.location.href.includes('read-me')) {
             $('[data-display=designer]').remove();
             $('.identity').text('管理方｜操作說明');
         }
+    })
+
+    $(document).ready(() => {
+        // $('.anch-inner_circ').css('backgroundColor', '#3B7A47');
+        if (!window.location.href.includes('read-me')) {
+            $('.anch-inner_circ').css('display', 'none');
+            $('.anch-inner_circ').eq(0).css('display', 'block');
+            $('[data-anch]').attr('href', '#'); //暫時放棄webflow scroll script，因下方bind events 有bug 無法解決
+        }
+    });
+
+    $('.container.for-list').scroll(() => {
+        $('h3').each((s) => {
+            let offsetTop = $('h3')[s].getBoundingClientRect().top;
+            let height = window.innerHeight;
+            if (offsetTop < height * 0.33 && offsetTop > 96) {
+                console.log($('h3')[s])
+
+                $('[data-anch]').each((a) => {
+                    if ($('[data-anch]').eq(a).attr('data-anch') == $('h3').eq(s).attr('id')) {
+                        $('[data-anch]').eq(a).addClass('w--current');
+                        $('.anch-inner_circ').css('display', 'none');
+                        $('.anch-inner_circ').eq(a).css('display', 'block');
+                    } else {
+                        $('[data-anch]').eq(a).removeClass('w--current');
+                        $('.anch-inner_circ').eq(a).css('display', 'none');
+                    }
+                })
+            }
+        })
+    })
+    $('[data-anch]').each((a) => {
+        $('[data-anch]').eq(a).click(() => {
+            if ($('[data-anch]').eq(a)) {
+                let s;
+                for (s = 0; s < $('h3').length; s++) {
+                    if ($('[data-anch]').eq(a).attr('data-anch') == $('h3').eq(s).attr('id')) {
+                        // console.log($('h3')[s])
+                        let offsetTop = $('h3')[s].getBoundingClientRect().top - '96';
+                        // console.log(offsetTop)
+
+                        $('.container.for-list')[0].scrollBy({
+                            top: offsetTop,
+                            block: 'start',
+                            behavior: 'smooth',
+                        });
+                    }
+                }
+            }
+        })
     })
 };
 

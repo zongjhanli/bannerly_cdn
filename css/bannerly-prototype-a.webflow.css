@@ -583,6 +583,13 @@ a.a-button.as-list {
     cursor: pointer;
 }
 
+.a-button.as_anchor.readme {
+    height: 40px;
+    min-width: 200px;
+    padding-right: 12px;
+    padding-left: 12px;
+}
+
 .a-button.as_anchor:hover {
     padding-left: 16px;
     color: grey;
@@ -1638,6 +1645,15 @@ div::-webkit-scrollbar {
     -webkit-flex: 0 0 auto;
     -ms-flex: 0 0 auto;
     flex: 0 0 auto;
+}
+
+.m-anchors.readme {
+    /* width: 200px; */
+    height: 180px;
+}
+
+.m-anchors.readme.upper {
+    z-index: 2;
 }
 
 .m-anchors.upper {

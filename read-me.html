@@ -15,7 +15,7 @@
     <link href="images/webclip.png" rel="apple-touch-icon">
 </head>
 
-<body class="body">
+<body data-scroll-time="0" class="body">
     <div class="portal-bg">
         <div class="page-load-illus"></div>
         <div class="screensize-illus" style="display:none">
@@ -29,9 +29,69 @@
             <div class="annotate back-home">返回</div>
         </a>
     </div>
-    <div class="container for-list" style="background-color:transparent;height: calc(100vh - 80px);overflow-y: scroll;padding-bottom: 72px;">
-        <div style="z-index:-1;position:fixed;bottom:0px;width: 576px;height: calc(100vh - 80px); background-color:#fff;border-top-left-radius: 32px;border-top-right-radius: 32px;"></div>
-        <div style="width: 576px;">
+    <div class="anch_locator">
+        <div class="side-cover left"></div>
+        <div class="side-cover right"></div>
+        <div class="m-anchors readme">
+            <div class="a-button as_anchor lower">
+                <div class="anch-line first"></div>
+                <div class="anch-circ on-ends"></div>
+                <div class="anch-line first piper"></div>
+            </div>
+            <div class="a-button as_anchor lower">
+                <div class="anch-line"></div>
+                <div class="anch-line piper"></div>
+            </div>
+            <div class="a-button as_anchor lower">
+                <div class="anch-line"></div>
+                <div class="anch-line piper"></div>
+            </div>
+            <div class="a-button as_anchor lower">
+                <div class="anch-line"></div>
+                <div class="anch-line piper"></div>
+            </div>
+            <div class="a-button as_anchor lower">
+                <div class="anch-line last"></div>
+                <div class="anch-circ on-ends"></div>
+                <div class="anch-line last piper"></div>
+            </div>
+        </div>
+        <div class="m-anchors readme upper">
+            <a href="#searching" data-anch="searching" class="a-button as_anchor readme w-inline-block">
+                <div class="anch-circ">
+                    <div class="anch-inner_circ"></div>
+                </div>
+                <div>案件搜尋</div>
+            </a>
+            <a href="#detail" data-anch="detail" class="a-button as_anchor readme w-inline-block">
+                <div class="anch-circ">
+                    <div class="anch-inner_circ"></div>
+                </div>
+                <div>案件詳情</div>
+            </a>
+            <a href="#custom-apply" data-anch="custom-apply" class="a-button as_anchor readme w-inline-block">
+                <div class="anch-circ">
+                    <div class="anch-inner_circ"></div>
+                </div>
+                <div>新件申請-簡易表單</div>
+            </a>
+            <a href="#form-apply" data-anch="form-apply" class="a-button as_anchor readme w-inline-block">
+                <div class="anch-circ">
+                    <div class="anch-inner_circ"></div>
+                </div>
+                <div>新件申請-詳細表單</div>
+            </a>
+            <a href="#automate" data-anch="automate" class="a-button as_anchor readme w-inline-block">
+                <div class="anch-circ">
+                    <div class="anch-inner_circ"></div>
+                </div>
+                <div class="text-block">自動化郵件通知</div>
+            </a>
+        </div>
+    </div>
+    <div class="container for-list" style="background-color:transparent;height: calc(100vh - 80px);overflow-y: scroll;padding-bottom: 72px;padding-top: 32px;">
+        <div style="z-index:-1;position:fixed;bottom:0px;width: 664px;height: calc(100vh - 80px); background-color:#fff;border-top-left-radius: 32px;border-top-right-radius: 32px;"></div>
+        <div style="width: 604px;">
             <h3 class="p-h3">Hi 👋 歡迎</h3>
             <div class="paragraph">
                 本系統為了優化設計案件申請流程而製作，主要針對（但不限於）作業量佔大宗的Banner案件。 您的帳號身份為
@@ -43,7 +103,7 @@
             <!--  -->
             <div class="a-divisional"></div>
             <!--  -->
-            <h3 class="p-h3">案件搜尋</h3>
+            <h3 id="searching" class="p-h3">案件搜尋</h3>
             <div class="paragraph">
                 <div class="p-inline">文字搜尋</div>
                 ── 除查找單一字詞外，可用空白鍵來同步進行多字詞查找。
@@ -65,22 +125,22 @@
             <!--  -->
             <div class="a-divisional"></div>
             <!--  -->
-            <h3 class="p-h3">案件細節檢閱</h3>
+            <h3 id="detail" class="p-h3">案件詳情</h3>
             <div class="paragraph">
                 <div class="p-inline quote">
-                    ddd
+                    當一案件被成功申請，後續的發單與結案動作需進入案件詳情頁面加以執行，此一區塊的功能將依不同的帳號權限有所調整。
                 </div>
             </div>
             <div class="paragraph">
                 <div data-display="applicant">
                     <div class="p-inline">發單</div>
                     <div class="p-inline access inactive">行使權限｜僅限管理方</div>
-                    <br> 新申請的案件將由管理方進行「發單」以指派予特定設計人員。
+                    <br> 管理方進行「發單」以將案件指派予特定設計人員。
                     <div class="p-img" style="background-image:url('../images/end-case.png');"><img class="p-img" src="images/end-case.png"></div>
                     <br>
                     <div class="p-inline">結案</div>
                     <div class="p-inline access active">行使權限｜僅限需求方</div>
-                    <br> 作為需求方，您有權限對已發單的案件進行「結案」。
+                    <br> 作為需求方，您有權限對您所負責品牌的相關案件進行「結案」。
                     <div class="p-img" style="background-image:url('../images/assign.png');"><img class="p-img" src="images/assign.png"></div>
                 </div>
                 <div data-display="designer">
@@ -113,7 +173,7 @@
             <!--  -->
             <div class="a-divisional"></div>
             <!--  -->
-            <h3 class="p-h3">新件申請－簡易表單
+            <h3 id="custom-apply" class="p-h3">新件申請－簡易表單
                 <div data-display="applicant" class="p-inline access active">行使權限｜僅限需求方</div>
                 <div data-display="designer" class="p-inline access inactive">行使權限｜僅限需求方</div>
                 <div data-display="master" class="p-inline access inactive">行使權限｜僅限需求方</div>
@@ -129,7 +189,7 @@
             <!--  -->
             <div class="a-divisional"></div>
             <!--  -->
-            <h3 class="p-h3">新件申請－詳細表單
+            <h3 id="form-apply" class="p-h3">新件申請－詳細表單
                 <div data-display="applicant" class="p-inline access active">行使權限｜僅限需求方</div>
                 <div data-display="designer" class="p-inline access inactive">行使權限｜僅限需求方</div>
                 <div data-display="master" class="p-inline access inactive">行使權限｜僅限需求方</div>
@@ -144,7 +204,6 @@
                 <br>每1案型含1套「文案、曝光商品及製作尺寸」，每次申請最多可含3種案型。
                 <div class="p-img" style="background-image:url('../images/swiper.jpg');"><img class="p-img" src="images/swiper.gif"></div>
                 <br>
-                <br>
                 <div class="p-inline">快速套用</div>
                 <br>填寫多重案型時，如遇文案、曝光商品或製作尺寸為無須變化的變量，可在填寫該變量時點選「快速套用」（例：某案件有2種案型，2種案型的文案、曝光商品皆有需求差異，但製作尺寸相同，需求方於製作尺寸的案型2即可點選快速套用）。
                 <div class="p-img" style="background-image:url('../images/thunder-apply.jpg');"><img class="p-img" src="images/thunder-apply.gif"></div>
@@ -153,6 +212,29 @@
                 <div class="p-inline">缺漏提示</div>
                 <br>點按送出表單，表單視窗將帶您至未填妥的欄位，即使該欄位在當下位於視線之外。
                 <div class="p-img" style="background-image:url('../images/track-unfilled.jpg');"><img class="p-img" src="images/track-unfilled.gif"></div> -->
+            </div>
+            <!--  -->
+            <div class="a-divisional"></div>
+            <!--  -->
+            <h3 id="automate" class="p-h3">自動化郵件通知</h3>
+            <div class="paragraph">
+                <div class="p-inline quote">
+                    本系統採用Google Sheet作為資料庫，並搭配Automate.io作為自動化輔助工具，在若干情境下資料庫的更動將觸發相關的郵件通知。（以下說明圖片擷取自Automate.io操作後台）
+                </div>
+            </div>
+            <div class="paragraph">
+                <div class="p-inline">新件申請</div>
+                <br>每當一新案件申請成功，相關人員將收到郵件通知。
+                <div class="p-img" style="background-image:url('../images/new-case.jpg');"><img class="p-img" src="images/new-case.jpg"></div>
+                <br>
+                <div class="p-inline">發單</div>
+                <br>每當管理方完成一次發單，相關人員將收到郵件通知（沿用此前部門慣用的信件格式）
+                <div class="p-img" style="background-image:url('../images/assign.jpg');"><img class="p-img" src="images/assign.jpg"></div>
+                <br>
+                <div class="p-inline">結案</div>
+                <br>每當需求方確認結案，相關人員將收到主旨前綴為「結案！」的郵件通知
+                <div class="p-img" style="background-image:url('../images/end-case.jpg');"><img class="p-img" src="images/end-case.jpg"></div>
+                <br>
             </div>
         </div>
     </div>
