@@ -1059,16 +1059,51 @@ if (window.location.href.includes('form-apply')) {
         })
     })
 
-    //每個ec被取消選取時清空已選的尺寸
-    // $('.label[data-ec]').each((l)=>{
-    //     $('.label[data-ec]').eq(l).click(()=>{
-
-    //     })
-    // })
 
     //tab indicator 在沒有ec tab顯現時隱藏
     $(document).click(() => {
-        $('[data-group=ecTabs]').each((t) => {
+        $('[data-group=ecTabs]').find('.custom-check').each((t) => {
+            let checker = $('[data-group=ecTabs]').find('.custom-check').eq(t);
+            setTimeout(() => {
+                if (!$(checker).hasClass('js-selected')) {
+                    let ecName = $(checker).siblings().attr('data-ec');
+                    let card = $(checker).closest('.card');
+                    let txtArea = $(card).find('textarea');
+                    let sizeGroup = $(card).find('.col-right').find('.drop-group');
+                    let tabs = $(card).find('.as-tab').not('.indicator');
+                    $(txtArea).each((t) => {
+                        if ($(txtArea).eq(t).attr('name').indexOf(ecName) >= 0) {
+                            if ($(txtArea).eq(t).val() != "") {
+                                let confirm = window.confirm('確定取消勾選' + ecName + '？已勾選的' + ecName + '尺寸將被清除！')
+                                if (confirm) {
+                                    clearEC();
+                                } else {
+                                    $(checker).addClass('js-selected');
+                                    $(tabs).each((b) => {
+                                        if ($(tabs).eq(b).children('.label').attr('data-tab').indexOf(ecName) >= 0) {
+                                            $(tabs).eq(b).addClass('js-show');
+                                        }
+                                    })
+                                    return;
+                                }
+
+                                function clearEC() {
+                                    $(sizeGroup).each((s) => {
+                                        if ($(sizeGroup).eq(s).attr('data-group') == ecName) {
+                                            $(sizeGroup).eq(s).find('.custom-check').removeClass('js-selected');
+                                        }
+                                    })
+                                    $(card).find('.col-right').find('.input[type="text"]').val('')
+                                    $(txtArea).eq(t).removeClass('js-show');
+                                    $(txtArea).eq(t).text('');
+                                    $(txtArea).eq(t).val('');
+                                }
+                            }
+                        }
+                    })
+                }
+            }, 10)
+
             if ($('[data-group=ecTabs]').eq(t).find('.js-selected').length == 0) {
                 $('[data-group=ecTabs]').eq(t).closest('.col-left').find('.indicator').css('display', 'none');
             }
