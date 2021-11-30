@@ -1376,8 +1376,15 @@ if (!window.location.href.includes('form-apply') &&
                     }
                 }
 
-                if ($('.dropdown-box[data-query]').hasClass('js-filtering')) {
+                if ($('.dropdown-box[data-query]').not('[data-query="quarter"]').hasClass('js-filtering') || $('.search-input').val() != "") {
                     $('.icon_32x.filter').addClass('js-filtering');
+                    if (!hinted) {
+                        mEnter();
+                        setTimeout(() => {
+                            mLeave();
+                        }, 1500)
+                        hinted = true;
+                    }
                 } else {
                     $('.icon_32x.filter').removeClass('js-filtering');
                 }
@@ -1385,15 +1392,6 @@ if (!window.location.href.includes('form-apply') &&
                 //「清除filter」 提示顯現
                 if ($('.icon_32x.filter').hasClass('js-filtering')) {
                     $('.icon_32x.filter').hover(mEnter, mLeave);
-                }
-                if (!hinted) {
-                    if ($('.js-filtering[data-query]').length == 1 || $('.search-input').val().length != 0) {
-                        mEnter();
-                        setTimeout(() => {
-                            mLeave();
-                        }, 1500)
-                        hinted = true;
-                    }
                 }
 
                 function mEnter() {
