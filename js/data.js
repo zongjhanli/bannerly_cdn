@@ -467,7 +467,7 @@ if (window.location.href.includes('form-apply')) {
                     "案型2-自定義1尺寸": $("#custom1-B").val(),
                     "案型2-自定義2尺寸": $("#custom2-B").val(),
                     "案型2-自定義3尺寸": $("#custom3-B").val(),
-                    "案型2-通路名稱": BecStr,
+                    "案型2-通路名稱": BecStr.toString(),
                     "案型2-通路data": BecData.toString(),
                     ////案型3
                     "案型3-活動文案": CcopywrightStr.toString(),
@@ -487,7 +487,7 @@ if (window.location.href.includes('form-apply')) {
                     "案型3-自定義1尺寸": $("#custom1-C").val(),
                     "案型3-自定義2尺寸": $("#custom2-C").val(),
                     "案型3-自定義3尺寸": $("#custom3-C").val(),
-                    "案型3-通路名稱": CecStr,
+                    "案型3-通路名稱": CecStr.toString(),
                     "案型3-通路data": CecData.toString(),
                     ////送出前確認訊息
                     "需求方": nameMail,
@@ -1926,24 +1926,25 @@ if (!window.location.href.includes('form-apply') &&
                                 }
 
                                 $('.block-pool').each((m) => {
-                                    if ($('.block-pool')[m] === target.parentElement) {
+                                    if ($('.block-pool')[m] == target.parentElement) {
                                         let pool = document.querySelectorAll('.block-pool')[m];
                                         let poolOffset = pool.getBoundingClientRect();
                                         let poolX = poolOffset.left;
                                         let poolY = poolOffset.top;
-                                        $('.img-magnifier').eq(m).css({
+                                        let tMagnifier = $('.block-pool').eq(m).find('.img-magnifier');
+                                        $(tMagnifier).css({
                                             'display': 'block',
-                                            'top': Math.round((posY - poolY) - 32) + 'px', //減去放大鏡本身的一半以及block-pool的一半
-                                            'left': Math.round((posX - poolX) - 32) + 'px',
+                                            'top': Math.round((posY - poolY) - 28) + 'px', //減去放大鏡本身的一半以及block-pool的一半
+                                            'left': Math.round((posX - poolX) - 28) + 'px',
                                         })
 
-                                        $('.img-magnifier').eq(m).find('.img.big').remove();
+                                        $(tMagnifier).find('.img.big').remove();
                                         let newImg = '<div class="img big"></div>';
-                                        $('.img-magnifier').eq(m).append(newImg);
-                                        $('.img-magnifier').eq(m).find('.img.big').css('backgroundImage', imgUrl);
-                                        $('.img-magnifier').eq(m).find('.img.big').css({
-                                            'margin-left': Math.round(-(posX - imgX) * 2.5 + 32) + 'px',
-                                            'margin-top': Math.round(-(posY - imgY) * 2.5 + 32) + 'px',
+                                        $(tMagnifier).append(newImg);
+                                        $(tMagnifier).find('.img.big').css('backgroundImage', imgUrl);
+                                        $(tMagnifier).find('.img.big').css({
+                                            'margin-left': Math.round(-(posX - imgX) * 1.75 + 28) + 'px',
+                                            'margin-top': Math.round(-(posY - imgY) * 1.75 + 28) + 'px',
                                         })
                                     }
                                 });

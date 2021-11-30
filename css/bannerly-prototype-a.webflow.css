@@ -4424,8 +4424,8 @@ div::-webkit-scrollbar {
     display: 'none';
     z-index: 999;
     position: absolute;
-    width: 64px;
-    height: 64px;
+    width: 56px;
+    height: 56px;
     border-radius: 100%;
     left: 0px;
     top: 0px;
@@ -4450,17 +4450,26 @@ div::-webkit-scrollbar {
     background-repeat: no-repeat;
     box-shadow: 0 4px 8px 0 rgba(51, 51, 51, 0.05);
     cursor: none;
+    -webkit-transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.img:hover {
+    /* transform: scale(2, 2); */
+    min-height: 136px;
+    min-width: 136px;
+    background-size: 136px;
 }
 
 .img.big {
     /* position: fixed; */
-    max-width: 170px;
-    max-height: 170px;
-    min-width: 170px;
-    min-height: 170px;
+    max-width: 238px;
+    max-height: 238px;
+    min-width: 238px;
+    min-height: 238px;
     margin-left: 0px;
     margin-top: 0px;
-    background-size: 170px;
+    background-size: 238px;
     pointer-events: none;
 }
 
