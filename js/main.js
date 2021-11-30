@@ -1059,6 +1059,13 @@ if (window.location.href.includes('form-apply')) {
         })
     })
 
+    //每個ec被取消選取時清空已選的尺寸
+    // $('.label[data-ec]').each((l)=>{
+    //     $('.label[data-ec]').eq(l).click(()=>{
+
+    //     })
+    // })
+
     //tab indicator 在沒有ec tab顯現時隱藏
     $(document).click(() => {
         $('[data-group=ecTabs]').each((t) => {
