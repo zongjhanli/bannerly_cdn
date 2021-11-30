@@ -17,7 +17,8 @@
 window.addEventListener('resize', () => {
     screenToSmall();
     let width = window.innerWidth;
-    if (width > 540) {
+    let valKey = sessionStorage.getItem('key');
+    if (width > 540 && valKey != null) {
         $('.portal-bg').addClass('js-hide');
     }
 })
@@ -26,8 +27,16 @@ $(document).ready(() => {
     screenToSmall();
 })
 
-$(document).click(() => {
-    screenToSmall();
+$('[data-update="sign-in"]').click(() => {
+    setTimeout(() => {
+        screenToSmall();
+    }, 10)
+})
+
+$('#password').keydown(() => {
+    setTimeout(() => {
+        screenToSmall();
+    }, 10)
 })
 
 function screenToSmall() {
@@ -2180,6 +2189,18 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
         })
 
         let timestamp = moment().format();
+
+        //solution found at https://stackoverflow.com/questions/14480345/how-to-get-the-nth-occurrence-in-a-string
+        function getPosition(string, subString, index) {
+            return string.split(subString, index).join(subString).length;
+        }
+        let secondColon = getPosition(timestamp, ':', 2);
+        timestamp = timestamp.slice(0, secondColon).replace('T', '').replaceAll('-', '').replace(':', '');
+        let brand = $('.js-selected').parent('[data-branddata]').attr('data-branddata');
+        // console.log(brand);
+        timestamp = brand + '-' + timestamp;
+        console.log(timestamp)
+
         $('.submit-box').attr('data-stamp', timestamp);
 
         if ($('.hinter-box:visible').length == 0) {

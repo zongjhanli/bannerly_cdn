@@ -1673,6 +1673,17 @@ if (!window.location.href.includes('form-apply') &&
                                     let tCells = rows[li].c;
                                     let i;
                                     for (i = 0; i < cols.length; i++) {
+                                        //分開處理空白的期限欄位
+                                        if (cols[i].label == '初稿交件日期' && tCells[i] == null) {
+                                            if ($("[data-output=ddl-1]").is('input')) {
+                                                $("[data-output=ddl-1]").val('');
+                                            }
+                                        }
+                                        if (cols[i].label == '完成日期' && tCells[i] == null) {
+                                            if ($("[data-output=ddl-2]").is('input')) {
+                                                $("[data-output=ddl-2]").val('');
+                                            }
+                                        }
                                         if (tCells[i] != null) {
                                             //標題output
                                             // $('[data-output=case-name]').text(tCells[0].v + '\u00a0\u00a0' + tCells[1].v + tCells[2].v);
@@ -1892,8 +1903,7 @@ if (!window.location.href.includes('form-apply') &&
                                 }
                             } // end of list for-loop
                         } //end of function OutputData()
-                        let magnifier = '<div class="img-magnifier"></div>';
-                        $('.block-pool').append(magnifier);
+
 
                         //img 放大鏡
                         $('.img').each((i) => {
@@ -1901,33 +1911,43 @@ if (!window.location.href.includes('form-apply') &&
                                 let target = e.target;
                                 let posX = e.clientX;
                                 let posY = e.clientY;
-                                let pool = document.querySelector('.block-pool');
-                                let poolOffset = pool.getBoundingClientRect();
-                                let poolX = poolOffset.left;
-                                let poolY = poolOffset.top;
+
                                 let offset = target.getBoundingClientRect();
                                 let imgX = offset.left;
                                 let imgY = offset.top;
                                 let imgUrl = $(target).css('backgroundImage');
-                                console.log('posX: ' + posX)
-                                console.log('imgX: ' + imgX)
-                                    // console.log(Math.round((posX - imgX)))
+                                // console.log('posX: ' + posX)
+                                // console.log('imgX: ' + imgX)
+                                // console.log(Math.round((posX - imgX)))
 
-                                $('.img-magnifier').css({
-                                    'display': 'block',
-                                    'top': Math.round((posY - poolY) - 32) + 'px', //減去放大鏡本身的一半以及block-pool的一半
-                                    'left': Math.round((posX - poolX) - 32) + 'px',
-                                })
+                                let magnifier = '<div class="img-magnifier"></div>';
+                                if ($(target).parent('.block-pool').find('.img-magnifier').length == 0) {
+                                    $(target).parent('.block-pool').append(magnifier);
+                                }
 
-                                $('.img-magnifier .img.big').remove();
-                                let newImg = '<div class="img big"></div>';
-                                $('.img-magnifier').append(newImg);
-                                $('.img-magnifier').find('.img.big').css('backgroundImage', imgUrl);
-                                $('.img-magnifier').find('.img.big').css({
-                                    'margin-left': Math.round(-(posX - imgX) * 2.5 + 32) + 'px',
-                                    'margin-top': Math.round(-(posY - imgY) * 2.5 + 32) + 'px',
-                                })
-                            });
+                                $('.block-pool').each((m) => {
+                                    if ($('.block-pool')[m] === target.parentElement) {
+                                        let pool = document.querySelectorAll('.block-pool')[m];
+                                        let poolOffset = pool.getBoundingClientRect();
+                                        let poolX = poolOffset.left;
+                                        let poolY = poolOffset.top;
+                                        $('.img-magnifier').eq(m).css({
+                                            'display': 'block',
+                                            'top': Math.round((posY - poolY) - 32) + 'px', //減去放大鏡本身的一半以及block-pool的一半
+                                            'left': Math.round((posX - poolX) - 32) + 'px',
+                                        })
+
+                                        $('.img-magnifier').eq(m).find('.img.big').remove();
+                                        let newImg = '<div class="img big"></div>';
+                                        $('.img-magnifier').eq(m).append(newImg);
+                                        $('.img-magnifier').eq(m).find('.img.big').css('backgroundImage', imgUrl);
+                                        $('.img-magnifier').eq(m).find('.img.big').css({
+                                            'margin-left': Math.round(-(posX - imgX) * 2.5 + 32) + 'px',
+                                            'margin-top': Math.round(-(posY - imgY) * 2.5 + 32) + 'px',
+                                        })
+                                    }
+                                });
+                            })
                         })
 
                         $('div').not('.img, .img-magnifier').mouseenter(() => {
@@ -2144,6 +2164,16 @@ if (!window.location.href.includes('form-apply') &&
                             $('.col-left').find('.a-button').not('.indicator').remove();
                             $('.col-right').find('[data-output]').remove();
                         })
+                        $(document).click(() => {
+                            setTimeout(() => {
+                                let input = $('[data-update=send]').closest('.card').find('input').not('.submit');
+                                input.each((i) => {
+                                    if ($(input).eq(i).val() != "") {
+                                        $(input).eq(i).closest('.f-block').find('.hinter-box').css('display', 'none');
+                                    }
+                                })
+                            }, 10)
+                        })
 
                         //更新表單
                         $('[data-update=send]').click((e) => {
@@ -2151,8 +2181,7 @@ if (!window.location.href.includes('form-apply') &&
                             let input = $(target).closest('.card').find('input').not('.submit');
                             input.each((i) => {
                                 // console.log($(input).eq(2).val())
-
-                                if (($(input).eq(i).val() == "")) {
+                                if ($(input).eq(i).val() == "") {
                                     $(input).eq(i).closest('.f-block').find('.hinter-box').css('display', 'block');
                                     $(input).eq(i).closest('.f-block').find('.hinter-box').addClass("js-shake");
                                     $(target).addClass("js-shake");
@@ -2163,8 +2192,26 @@ if (!window.location.href.includes('form-apply') &&
                                 }
                             })
 
+                            //Update timestamp
+                            let newTimestamp = moment().format();
+                            //solution found at https://stackoverflow.com/questions/14480345/how-to-get-the-nth-occurrence-in-a-string
+                            function getPosition(string, subString, index) {
+                                return string.split(subString, index).join(subString).length;
+                            }
+                            let secondColon = getPosition(newTimestamp, ':', 2);
+                            newTimestamp = newTimestamp.slice(0, secondColon).replace('T', '').replaceAll('-', '').replace(':', '');
+                            let brand;
+                            $(lists).each((l) => {
+                                if ($(lists).eq(l).css('position') == 'fixed') {
+                                    brand = $(lists).eq(l).attr('data-brand');
+                                }
+                            })
+                            newTimestamp = brand + '-' + newTimestamp;
+                            console.log(newTimestamp)
+
                             if ($('.hinter-box:visible').length == 0) {
                                 $('.icon_32x.btn-icon').removeClass('send').addClass('js-loading');
+
                                 setTimeout(() => {
                                     let timestamp = $('[data-output=list]').attr('data-stamp');
                                     let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
@@ -2172,7 +2219,8 @@ if (!window.location.href.includes('form-apply') &&
                                         "data": {
                                             "設計方": $('#designer').val(),
                                             "初稿交件日期": $('#ddl-1').val(),
-                                            "完成日期": $('#ddl-2').val()
+                                            "完成日期": $('#ddl-2').val(),
+                                            "timestamp": newTimestamp
                                         }
                                     }).then(response => {
                                         console.log(response.data);
