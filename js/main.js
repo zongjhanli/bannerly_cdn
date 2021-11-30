@@ -96,6 +96,9 @@ $(document).scroll(() => {
                 'marginLeft': '0px',
                 'backgroundSize': '24px'
             });
+            if (window.location.href.includes('read-me')) {
+                $('.back-home').css('top', '20px');
+            }
             $('.a-list.js-topbar').removeClass('to-ceiling');
         }
     }
