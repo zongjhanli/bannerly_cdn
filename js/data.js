@@ -122,6 +122,7 @@ if (window.location.href.includes('custom-apply')) {
     let submit = document.querySelector('input[type=submit]');
     submit.addEventListener('click', () => {
         $('.icon_32x.btn-icon').removeClass('submit').addClass('js-loading');
+        $('.submit-trigger').css('cursor', 'progress');
         setTimeout(() => {
             //reconstruct copywright value
             let AcopywrightStr = [];
@@ -370,6 +371,7 @@ if (window.location.href.includes('form-apply')) {
     let submit = document.querySelector('input[type=submit]');
     submit.addEventListener('click', () => {
         $('.icon_32x.btn-icon').removeClass('submit').addClass('js-loading');
+        $('.submit-trigger').css('cursor', 'progress');
         setTimeout(() => {
             //lookup ec names
             let tabBoxes = $('[data-box=tab]');
@@ -679,12 +681,38 @@ if (!window.location.href.includes('form-apply') &&
             }
         }
 
+        let latestID = 0;
+        //get latest id & ready to redefine lastest ID
+        let ssidCode = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
+        const sheetID = `gid=251577508`;
+        const endpointCode = `${gsUrl}${ssidCode}${query}${sheetID}`;
+        fetch(endpointCode)
+            .then(res => res.text())
+            .then(data => {
+                let jsData = data.substr(47).slice(0, -2);
+                let json = JSON.parse(jsData);
+                let rows = json.table.rows;
+                let cols = json.table.cols;
+
+                let i;
+                let iArr = [];
+                for (i = 1; i < rows.length; i++) {
+                    if (rows[i].c[0] != null) {
+                        iArr.push(rows[i].c[0].v)
+                    }
+                }
+                latestID = Math.max(...iArr)
+            })
+
         if ($('.inline-hinter:visible').length == 0) {
             $('.icon_32x.btn-icon').removeClass('sign-up').addClass('js-loading');
+            $(target).css('cursor', 'progress');
             setTimeout(() => {
+
                 //sheetDB POST
                 axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd?sheet=members', {
                     "data": {
+                        "id": latestID + 1,
                         "user-type": $('[data-name=user-type]:checked').attr('data-type'),
                         "user-name": $('#user-name').val() + ' ' + $('#user-mail').val(),
                         "code": $('#user-code').val(),
@@ -842,9 +870,9 @@ if (!window.location.href.includes('form-apply') &&
                     let iArr = [];
                     let validated = false;
                     for (i = 1; i < rows.length; i++) {
-                        if (rows[i].c[1] != null) {
+                        if (rows[i].c[2] != null) {
                             if ($(employee).val() != '') {
-                                let allNameMail = rows[i].c[1].v;
+                                let allNameMail = rows[i].c[2].v;
                                 let space = allNameMail.indexOf(' ');
                                 let at = allNameMail.indexOf('@');
                                 let name = allNameMail.slice(space, at).trim();
@@ -863,7 +891,7 @@ if (!window.location.href.includes('form-apply') &&
                         }, 200)
                     } else if (rows[iArr[0]] != null) {
                         if ($(password).val() != '') {
-                            if (rows[iArr[0]].c[2].v.indexOf($(password).val()) == 0) {
+                            if (rows[iArr[0]].c[3].v.indexOf($(password).val()) == 0) {
                                 validated = true;
                             } else {
                                 let hinter = '<div class="inline-hinter">密碼錯誤</div>';
@@ -881,19 +909,20 @@ if (!window.location.href.includes('form-apply') &&
                                 'bottom': '0px',
                                 'position': 'absolute'
                             });
-                            sessionStorage.setItem('type', rows[iArr[0]].c[0].v);
-                            sessionStorage.setItem('nameMail', rows[iArr[0]].c[1].v);
-                            sessionStorage.setItem('key', rows[iArr[0]].c[2].v);
-                            sessionStorage.setItem('brandID', rows[iArr[0]].c[3].v);
+                            sessionStorage.setItem('id', rows[iArr[0]].c[0].v);
+                            sessionStorage.setItem('type', rows[iArr[0]].c[1].v);
+                            sessionStorage.setItem('nameMail', rows[iArr[0]].c[2].v);
+                            sessionStorage.setItem('key', rows[iArr[0]].c[3].v);
+                            sessionStorage.setItem('brandID', rows[iArr[0]].c[4].v);
                             // console.log(rows[iArr[0]].c[0].v + ',' + rows[iArr[0]].c[1].v + ',' + rows[iArr[0]].c[2].v + ',' + rows[iArr[0]].c[3].v)
 
-                            let nameMail = rows[iArr[0]].c[1].v;
+                            let nameMail = rows[iArr[0]].c[2].v;
                             let space = nameMail.indexOf(' ');
                             let name = nameMail.slice(0, space + 1).trim();
 
-                            let type = rows[iArr[0]].c[0].v;
+                            let type = rows[iArr[0]].c[1].v;
 
-                            let brandID = rows[iArr[0]].c[3].v;
+                            let brandID = rows[iArr[0]].c[4].v;
 
                             if (type == 'applicant') {
                                 $('[data-validation=master]').remove();
@@ -918,16 +947,16 @@ if (!window.location.href.includes('form-apply') &&
                 let name = nameMail.slice(0, space + 1).trim();
                 let i;
                 for (i = 1; i < rows.length; i++) {
-                    if (rows[i].c[2] != null) {
-                        if (rows[i].c[2].v == valKey) {
-                            if (rows[i].c[0].v == 'applicant') {
+                    if (rows[i].c[2] != null && rows[i].c[3] != null) {
+                        if (rows[i].c[2].v == nameMail && rows[i].c[3].v == valKey) {
+                            if (rows[i].c[1].v == 'applicant') {
                                 $('[data-validation=master]').remove();
                                 $('.identity').text('需求方｜' + name);
-                            } else if (rows[i].c[0].v == 'designer') {
+                            } else if (rows[i].c[1].v == 'designer') {
                                 $('[data-validation=master]').remove();
                                 $('[data-validation=applicant]').remove();
                                 $('.identity').text('設計方｜' + name);
-                            } else if (rows[i].c[0].v == 'MASTER') {
+                            } else if (rows[i].c[1].v == 'MASTER') {
                                 $('[data-validation=share]').remove();
                                 $('.card-box').eq(0).find('[data-validation=applicant]').remove();
                                 $('.identity').text('管理方｜' + name);
@@ -969,196 +998,204 @@ if (!window.location.href.includes('form-apply') &&
                     }
                 }
             }
-        })
+            if (!window.location.href.includes('read-me')) {
+                $('.annotate.identity').click(() => {
+                    $('.portal-bg').removeClass('js-hide');
+                    $('.portal-title').css('display', 'flex');
+                    $('.portal').removeClass('js-hide').removeClass('inactive');
+                    $('.portal .f-block.in-combo').not('.config').css('display', 'none');
+                    $('.portal .f-block.in-combo.config').css('display', 'block');
+                    $('.portal .back-portal').css('display', 'block');
+                    $('[data-portal="sign-in"]').css('display', 'none');
+                    $('[data-portal="sign-up"]').css('display', 'block');
+                    $('[data-portal="sign-up"] .f-block').css('display', 'flex');
+                    $('.dropdown-box-s').css('display', 'flex');
+                    $('[data-portal="sign-up"] .submit-box').not('.config').css('display', 'none');
+                    $('[data-portal="sign-up"] .submit-box.config').css('display', 'flex');
+                    $('[data-portal="sign-up"] .submit-box.config .submit-trigger.configuring').css('display', 'flex');
 
-    if (!window.location.href.includes('read-me')) {
-        $('.annotate.identity').click(() => {
-            $('.portal-bg').removeClass('js-hide');
-            $('.portal-title').css('display', 'flex');
-            $('.portal').removeClass('js-hide').removeClass('inactive');
-            $('.portal .f-block.in-combo').not('.config').css('display', 'none');
-            $('.portal .f-block.in-combo.config').css('display', 'block');
-            $('.portal .back-portal').css('display', 'block');
-            $('[data-portal="sign-in"]').css('display', 'none');
-            $('[data-portal="sign-up"]').css('display', 'block');
-            $('[data-portal="sign-up"] .f-block').css('display', 'flex');
-            $('.dropdown-box-s').css('display', 'flex');
-            $('[data-portal="sign-up"] .submit-box').not('.config').css('display', 'none');
-            $('[data-portal="sign-up"] .submit-box.config').css('display', 'flex');
-            $('[data-portal="sign-up"] .submit-box.config .submit-trigger.configuring').css('display', 'flex');
+                    //抓取session storage已有資料
+                    let nameMail = sessionStorage.getItem('nameMail');
+                    let space = nameMail.indexOf(' ');
+                    let name = nameMail.slice(0, space + 1).trim();
+                    let mail = nameMail.slice(space, nameMail.length).trim();
+                    let userType = sessionStorage.getItem('type');
+                    let brandID = sessionStorage.getItem('brandID');
+                    $('#user-name').val(name);
+                    $('#user-mail').val(mail);
+                    if (userType == 'MASTER') {
+                        $('.literally-radio').parent().remove();
+                        $('.dropdown-box-s').parent().remove();
+                    } else {
+                        if (userType == 'applicant') {
+                            jQuery('[data-type="applicant"]').trigger('click');
+                            $('[data-type="applicant"]').siblings('span').css('color', 'rgba(47, 90, 58, 1)');
+                        } else if (userType == 'designer') {
+                            jQuery('[data-type="designer"]').trigger('click');
+                            $('[data-type="designer"]').siblings('span').css('color', 'rgba(47, 90, 58, 1)');
+                        }
+                        $('#brand-id').val(brandID)
+                        let label = $('#brand-id').parent().find('.label-s');
+                        let brandArr = brandID.split(',');
+                        // console.log(brandArr)
+                        $(label).each((l) => {
+                            if (brandArr.indexOf($(label).eq(l).text()) >= 0) {
+                                $(label).eq(l).siblings('.custom-check').addClass('js-selected');
+                            }
+                        })
+                    }
+                    // $('#user-code').val(valKey);
+                    // $('#dbcheck-code').val(valKey);
+                })
+                $('.back-portal').click(() => {
+                    let confirm = window.confirm('確認返回？資料更動將不會儲存！')
+                    if (confirm) {
+                        $('.portal-bg').addClass('js-hide');
+                    } else {
+                        return
+                    }
+                })
+                $('[data-update="config"]').click((e) => {
+                    let target = e.target;
+                    let input = $(target).closest('.portal').find('[data-portal=sign-up]').find('input[type=text], input[type=email], input[type=password]');
+                    input.each((i) => {
+                        if (($(input).eq(i).val() == "")) {
+                            let hinter = '<div class="inline-hinter">此欄必填</div>';
+                            $(input).eq(i).closest('.f-block').find('._12px-500').append(hinter);
+                            $(input).eq(i).closest('.f-block').addClass("js-shake");
+                            $(target).addClass("js-shake");
+                            setTimeout(function() {
+                                $(input).eq(i).closest('.f-block').removeClass("js-shake");
+                                $(target).removeClass("js-shake");
+                            }, 200);
+                        }
+                    })
+                    let radio = $(target).closest('.portal').find('input[type=radio]');
+                    // console.log($(radio).is(':checked'))
+                    if (!$(radio).eq(0).is(':checked') && !$(radio).eq(1).is(':checked')) {
+                        // $(radio).eq(0).closest('.f-block')[0].scrollIntoView()
+                        let hinter = '<div class="inline-hinter">此欄必填</div>';
+                        $(radio).eq(0).closest('.f-block').find('._12px-500').append(hinter);
+                        $(radio).eq(0).closest('.f-block').addClass("js-shake");
+                        $(target).addClass("js-shake");
+                        setTimeout(function() {
+                            $(radio).eq(0).closest('.f-block').removeClass("js-shake");
+                            $(target).removeClass("js-shake");
+                        }, 200);
+                    }
+                    //密碼須為6字符，並結合英數字（大小寫不限）
+                    if ($('#user-code').val() != "") {
+                        $('#user-code').each(function() {
+                            var validated = true;
+                            if ($(this).val().length < 6)
+                                validated = false;
+                            if (!/\d/.test($(this).val()))
+                                validated = false;
+                            if (!/[a-z]/.test($(this).val())) {
+                                validated = false;
+                            }
+                            if (/[^0-9a-z]/.test($(this).val())) {
+                                validated = false;
+                            }
+                            // $('div').text(validated ? "pass" : "fail");
+                            // use DOM traversal to select the correct div for this input above
+                            if (!validated) {
+                                let hinter = '<div class="inline-hinter">請輸入6位英數字</div>';
+                                $('#user-code').closest('.f-block').find('._12px-500').html('設定密碼' + hinter);
+                            } else if (validated = true) {
+                                console.log('password OK')
+                            }
+                        });
+                    }
 
-            //抓取session storage已有資料
-            let nameMail = sessionStorage.getItem('nameMail');
-            let space = nameMail.indexOf(' ');
-            let name = nameMail.slice(0, space + 1).trim();
-            let mail = nameMail.slice(space, nameMail.length).trim();
-            let userType = sessionStorage.getItem('type');
-            let brandID = sessionStorage.getItem('brandID');
-            $('#user-name').val(name);
-            $('#user-mail').val(mail);
-            if (userType == 'MASTER') {
-                $('.literally-radio').parent().remove();
-                $('.dropdown-box-s').parent().remove();
-            } else {
-                if (userType == 'applicant') {
-                    jQuery('[data-type="applicant"]').trigger('click');
-                    $('[data-type="applicant"]').siblings('span').css('color', 'rgba(47, 90, 58, 1)');
-                } else if (userType == 'designer') {
-                    jQuery('[data-type="designer"]').trigger('click');
-                    $('[data-type="designer"]').siblings('span').css('color', 'rgba(47, 90, 58, 1)');
-                }
-                $('#brand-id').val(brandID)
-                let label = $('#brand-id').parent().find('.label-s');
-                let brandArr = brandID.split(',');
-                // console.log(brandArr)
-                $(label).each((l) => {
-                    if (brandArr.indexOf($(label).eq(l).text()) >= 0) {
-                        $(label).eq(l).siblings('.custom-check').addClass('js-selected');
+                    //密碼double check
+                    if ($('#dbcheck-code').val() != "") {
+                        if ($('#dbcheck-code').val() != $('#user-code').val()) {
+                            let hinter = '<div class="inline-hinter">輸入錯誤</div>';
+                            $('#dbcheck-code').closest('.f-block').find('._12px-500').html('再次確認密碼' + hinter);
+                            // setTimeout(function() {
+                            //     $('#dbcheck-code').closest('.f-block').find('.inline-hinter').remove();
+                            // }, 1500);
+                        }
+                    }
+
+                    //email格式
+                    if ($('#user-mail').val() != "") {
+                        if ($('#user-mail').val().indexOf('@') < 0) {
+                            let hinter = '<div class="inline-hinter">格式錯誤</div>';
+                            $('#user-mail').closest('.f-block').find('._12px-500').html('公司郵箱' + hinter);
+                        }
+                    }
+
+                    if ($('.inline-hinter:visible').length == 0) {
+                        $('.icon_32x.btn-icon').removeClass('sign-up').addClass('js-loading');
+                        $(target).css('cursor', 'progress');
+                        setTimeout(() => {
+                            //sheetDB PATCH user info
+                            let id = sessionStorage.getItem('id');
+                            console.log('id:' + id)
+                            let targetRow = 'https://sheetdb.io/api/v1/mebkcye8qw7nd' + '/' + 'id' + '/' + id + '?sheet=members'
+                            axios.patch(targetRow, {
+                                "data": {
+                                    "user-type": $('[data-name=user-type]:checked').attr('data-type'),
+                                    "user-name": $('#user-name').val() + ' ' + $('#user-mail').val(),
+                                    "code": $('#user-code').val(),
+                                    "brand-id": $('#brand-id').val()
+                                }
+                            }).then(response => {
+                                console.log(response.data);
+
+                                //reset sessionStorage
+                                // sessionStorage.setItem('id', rows[iArr[0]].c[0].v);
+                                sessionStorage.setItem('type', $('[data-name=user-type]:checked').attr('data-type'));
+                                sessionStorage.setItem('nameMail', $('#user-name').val() + ' ' + $('#user-mail').val());
+                                sessionStorage.setItem('key', $('#user-code').val());
+                                sessionStorage.setItem('brandID', $('#brand-id').val());
+
+                                $('.icon_32x.btn-icon').remove();
+                                let reIco = '<div class="icon_32x btn-icon fit-right js-complete"></div>'
+                                $('.submit-trigger').html('修改成功' + reIco);
+
+                                //redirect
+                                let address = window.location.href;
+                                setTimeout(() => {
+                                    if (address.indexOf('html') < 0) {
+                                        address = address.replace('form-apply', '');
+                                    } else if (address.indexOf('html') >= 0) {
+                                        address = address.replace('form-apply.html', '');
+                                    }
+                                    window.location.replace(address);
+                                }, 1000)
+                            });
+                        }, 2000)
+                    } else {
+                        //find the first one of unfilled inputs
+                        let firstIndex = 0;
+                        let sfBlock = $('[data-portal="sign-up"]').find('.f-block');
+                        let sf;
+                        let checked = false;
+                        for (sf = 0; sf < sfBlock.length; sf++) {
+                            if (!checked && sfBlock.eq(sf).find('.inline-hinter').is(':visible')) {
+                                firstIndex += sf;
+                                checked = true;
+                            }
+                        }
+                        // console.log(firstIndex);
+                        $('[data-portal="sign-up"]')[0].scroll({
+                            top: 71.81 * firstIndex,
+                            behavior: 'smooth',
+                            block: "start",
+                            inline: "nearest"
+                        });
+
+                        $(target).addClass("js-shake");
+                        setTimeout(function() {
+                            $(target).removeClass("js-shake");
+                        }, 200);
                     }
                 })
             }
-            // $('#user-code').val(valKey);
-            // $('#dbcheck-code').val(valKey);
         })
-        $('.back-portal').click(() => {
-            let confirm = window.confirm('確認返回？資料更動將不會儲存！')
-            if (confirm) {
-                $('.portal-bg').addClass('js-hide');
-            } else {
-                return
-            }
-        })
-
-        $('[data-update="config"]').click((e) => {
-            let target = e.target;
-            let input = $(target).closest('.portal').find('[data-portal=sign-up]').find('input[type=text], input[type=email], input[type=password]');
-            input.each((i) => {
-                if (($(input).eq(i).val() == "")) {
-                    let hinter = '<div class="inline-hinter">此欄必填</div>';
-                    $(input).eq(i).closest('.f-block').find('._12px-500').append(hinter);
-                    $(input).eq(i).closest('.f-block').addClass("js-shake");
-                    $(target).addClass("js-shake");
-                    setTimeout(function() {
-                        $(input).eq(i).closest('.f-block').removeClass("js-shake");
-                        $(target).removeClass("js-shake");
-                    }, 200);
-                }
-            })
-            let radio = $(target).closest('.portal').find('input[type=radio]');
-            // console.log($(radio).is(':checked'))
-            if (!$(radio).eq(0).is(':checked') && !$(radio).eq(1).is(':checked')) {
-                // $(radio).eq(0).closest('.f-block')[0].scrollIntoView()
-                let hinter = '<div class="inline-hinter">此欄必填</div>';
-                $(radio).eq(0).closest('.f-block').find('._12px-500').append(hinter);
-                $(radio).eq(0).closest('.f-block').addClass("js-shake");
-                $(target).addClass("js-shake");
-                setTimeout(function() {
-                    $(radio).eq(0).closest('.f-block').removeClass("js-shake");
-                    $(target).removeClass("js-shake");
-                }, 200);
-            }
-            //密碼須為6字符，並結合英數字（大小寫不限）
-            if ($('#user-code').val() != "") {
-                $('#user-code').each(function() {
-                    var validated = true;
-                    if ($(this).val().length < 6)
-                        validated = false;
-                    if (!/\d/.test($(this).val()))
-                        validated = false;
-                    if (!/[a-z]/.test($(this).val())) {
-                        validated = false;
-                    }
-                    if (/[^0-9a-z]/.test($(this).val())) {
-                        validated = false;
-                    }
-                    // $('div').text(validated ? "pass" : "fail");
-                    // use DOM traversal to select the correct div for this input above
-                    if (!validated) {
-                        let hinter = '<div class="inline-hinter">請輸入6位英數字</div>';
-                        $('#user-code').closest('.f-block').find('._12px-500').html('設定密碼' + hinter);
-                    } else if (validated = true) {
-                        console.log('password OK')
-                    }
-                });
-            }
-
-            //密碼double check
-            if ($('#dbcheck-code').val() != "") {
-                if ($('#dbcheck-code').val() != $('#user-code').val()) {
-                    let hinter = '<div class="inline-hinter">輸入錯誤</div>';
-                    $('#dbcheck-code').closest('.f-block').find('._12px-500').html('再次確認密碼' + hinter);
-                    // setTimeout(function() {
-                    //     $('#dbcheck-code').closest('.f-block').find('.inline-hinter').remove();
-                    // }, 1500);
-                }
-            }
-
-            //email格式
-            if ($('#user-mail').val() != "") {
-                if ($('#user-mail').val().indexOf('@') < 0) {
-                    let hinter = '<div class="inline-hinter">格式錯誤</div>';
-                    $('#user-mail').closest('.f-block').find('._12px-500').html('公司郵箱' + hinter);
-                }
-            }
-
-            if ($('.inline-hinter:visible').length == 0) {
-                $('.icon_32x.btn-icon').removeClass('sign-up').addClass('js-loading');
-                setTimeout(() => {
-                    //sheetDB PATCH user info
-                    let nameMail = sessionStorage.getItem('nameMail');
-                    let targetRow = 'https://sheetdb.io/api/v1/mebkcye8qw7nd?sheet=members' + '/' + 'user-name' + '/' + nameMail
-                    axios.patch(targetRow, {
-                        "data": {
-                            "user-type": $('[data-name=user-type]:checked').attr('data-type'),
-                            "user-name": $('#user-name').val() + ' ' + $('#user-mail').val(),
-                            "code": $('#user-code').val(),
-                            "brand-id": $('#brand-id').val()
-                        }
-                    }).then(response => {
-                        console.log(response.data);
-                        $('.icon_32x.btn-icon').remove();
-                        let reIco = '<div class="icon_32x btn-icon fit-right js-complete"></div>'
-                        $('.submit-trigger').html('修改成功' + reIco);
-
-                        //redirect
-                        let address = window.location.href;
-                        setTimeout(() => {
-                            if (address.indexOf('html') < 0) {
-                                address = address.replace('form-apply', '');
-                            } else if (address.indexOf('html') >= 0) {
-                                address = address.replace('form-apply.html', '');
-                            }
-                            window.location.replace(address);
-                        }, 1000)
-                    });
-                }, 2000)
-            } else {
-                //find the first one of unfilled inputs
-                let firstIndex = 0;
-                let sfBlock = $('[data-portal="sign-up"]').find('.f-block');
-                let sf;
-                let checked = false;
-                for (sf = 0; sf < sfBlock.length; sf++) {
-                    if (!checked && sfBlock.eq(sf).find('.inline-hinter').is(':visible')) {
-                        firstIndex += sf;
-                        checked = true;
-                    }
-                }
-                // console.log(firstIndex);
-                $('[data-portal="sign-up"]')[0].scroll({
-                    top: 71.81 * firstIndex,
-                    behavior: 'smooth',
-                    block: "start",
-                    inline: "nearest"
-                });
-
-                $(target).addClass("js-shake");
-                setTimeout(function() {
-                    $(target).removeClass("js-shake");
-                }, 200);
-            }
-        })
-    }
 
     //Fetch下拉選單常用選項
     let ssidDrop = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
@@ -2484,6 +2521,7 @@ if (!window.location.href.includes('form-apply') &&
 
                             if ($('.hinter-box:visible').length == 0) {
                                 $('.icon_32x.btn-icon').removeClass('send').addClass('js-loading');
+                                $(target).css('cursor', 'progress');
 
                                 setTimeout(() => {
                                     let timestamp = $('[data-output=list]').attr('data-stamp');
@@ -2532,6 +2570,8 @@ if (!window.location.href.includes('form-apply') &&
                                 }, 200);
                             } else {
                                 $('.icon_32x.btn-icon').removeClass('end-case').addClass('js-loading');
+                                $(target).css('cursor', 'progress');
+
                                 setTimeout(() => {
                                     let timestamp = $('[data-output=list]').attr('data-stamp');
                                     let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp

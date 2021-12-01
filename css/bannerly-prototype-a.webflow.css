@@ -2541,11 +2541,16 @@ div::-webkit-scrollbar {
 }
 
 .annotate.identity {
+    cursor: pointer;
     background-color: #606060;
     color: white;
     position: absolute;
     left: calc(128px + 8px);
     /* 包含home-title 的padding */
+}
+
+.annotate.identity.readme {
+    cursor: default;
 }
 
 .annotate.case-note {
