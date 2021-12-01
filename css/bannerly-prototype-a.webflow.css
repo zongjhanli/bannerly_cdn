@@ -313,6 +313,12 @@ label {
     cursor: pointer;
 }
 
+
+/* .a-button.as_contained.submit-trigger.m-auth {
+    background-color: rgba(47, 90, 58, 0.2);
+    color: #2F5A3A;
+} */
+
 .a-button.as_contained.submit-trigger.signing-up,
 .a-button.as_contained.submit-trigger.signing-up:hover {
     width: 100%;

@@ -942,6 +942,7 @@ if (!window.location.href.includes('form-apply') &&
                                 $('[data-validation=applicant]').remove();
                                 $('.identity').text('設計方｜' + name);
                             } else if (type == 'MASTER') {
+                                $('[data-send="MASTER"]').css('display', 'none');
                                 // $('.submit-box[data-validation=applicant]').remove();
                                 $('.card-box').eq(0).find('[data-validation=applicant]').remove();
                                 $('[data-validation=share]').remove();
@@ -967,8 +968,9 @@ if (!window.location.href.includes('form-apply') &&
                                 $('[data-validation=applicant]').remove();
                                 $('.identity').text('設計方｜' + name);
                             } else if (rows[i].c[1].v == 'MASTER') {
-                                $('[data-validation=share]').remove();
+                                $('[data-send="MASTER"]').css('display', 'none');
                                 $('.card-box').eq(0).find('[data-validation=applicant]').remove();
+                                $('[data-validation=share]').remove();
                                 $('.identity').text('管理方｜' + name);
                             }
                         }
@@ -1938,9 +1940,10 @@ if (!window.location.href.includes('form-apply') &&
                                 if (target == lists[li]) {
                                     let brandID = sessionStorage.getItem('brandID');
                                     let brandData = $(lists).eq(li).attr('data-brand');
+
                                     if (brandID != 'ALL') {
                                         if (brandID.indexOf(brandData) < 0) {
-                                            $('.cta-flex.in-card').css('display', 'none');
+                                            $('[data-validation="applicant"]').css('display', 'none');
                                         }
                                     }
 
@@ -2017,6 +2020,13 @@ if (!window.location.href.includes('form-apply') &&
                                             if (cols[i].label == '需求方mail') {
                                                 $("[data-output='applicant']").text($("[data-output='applicant']").text() + ' ' + tCells[i].v);
                                             }
+                                            setTimeout(() => {
+                                                let nameMail = sessionStorage.getItem('nameMail');
+                                                let type = sessionStorage.getItem('type');
+                                                if ($("[data-output=applicant]").text() == nameMail && type == 'MASTER') {
+                                                    $('[data-send="MASTER"]').css('display', 'block');
+                                                }
+                                            }, 100)
                                             if (cols[i].label == '相關路徑') {
                                                 $("[data-output='path']").text(tCells[i].v);
                                             }
@@ -2430,6 +2440,8 @@ if (!window.location.href.includes('form-apply') &&
 
                         //返回主畫面
                         $('.back-home').click(() => {
+                            $('[data-send="MASTER"]').css('display', 'none');
+
                             $('.dead-btn-hinter').remove();
                             $('.cta-flex.in-card').css('display', 'flex');
 
