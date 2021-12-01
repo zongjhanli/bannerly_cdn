@@ -2162,9 +2162,11 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
     //date-range-picker 年份處理
     $('.date-input').change(() => {
         if ($('.date-input').val().length > 0) {
-            let year = $('.date-input').val().slice(0, 4);
-            $('.date-input').attr('data-year', year);
-            $('.date-input').val($('.date-input').val().replaceAll(year + '/', ''));
+            let year1 = $('.date-input').val().slice(0, 4);
+            let year2 = $('.date-input').val().slice(12, 16);
+            $('.date-input').attr('data-year', year2);
+            $('.date-input').val($('.date-input').val().replaceAll(year1 + '/', ''));
+            $('.date-input').val($('.date-input').val().replaceAll(year2 + '/', ''));
         }
     })
 
