@@ -116,7 +116,7 @@
         </div>
         <div class="section justify-top for-output">
             <div class="list-box">
-                <a href="read-me.html" target="_blank" class="icon_56x read-me"></a>
+                <a href="read-me.html" class="icon_56x read-me"></a>
                 <div class="empty-state">
                     <div class="empty-illus"></div>
                     <!-- <img src="images/page-load.svg"> -->
@@ -364,11 +364,21 @@
         </div>
     </div>
     <div class="cta-flex home-title">
-        <h2>設計申請站</h2>
-        <div class="annotate identity"></div>
-        <div class="hinter-box for-identity" style="display: none;">
-            <div class="_12px-500 for-hinter">修改基本資訊</div>
-            <div class="hinter-triangle"></div>
+        <h2 style="z-index: 1;">設計申請站</h2>
+        <div data-query="null" data-drop="single" class="home dropdown-box">
+            <div class="annotate identity"></div>
+            <div data-drop="single" class="drop-card for-identity js-collapsed">
+                <div class="drop-group js-hide js-show">
+                    <div class="a-button as-list">
+                        <div data-action="config" class="label full-touch for-identity">修改資料</div>
+                        <div class="icon_20x config"></div>
+                    </div>
+                    <div class="a-button as-list">
+                        <div data-action="sign-out" class="label full-touch for-identity">登出</div>
+                        <div class="icon_20x sign-out"></div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- <a data-validation="applicant" href="form-apply.html" class="a-button as_contained new-case w-inline-block">
             <div class="icon-24x new-case"></div>
@@ -426,6 +436,7 @@
                         <div class="icon_20x for-custom-input for-portal js-return"></div>
                     </div>
                 </div>
+                <div class="_12px-500" style="color:#808080">*為節省開發資源，忘記密碼請聯繫管理方協助</div>
                 <div class="submit-box for-portal">
                     <div data-update="sign-in" class="a-button as_contained submit-trigger signing-in">
                         登入系統

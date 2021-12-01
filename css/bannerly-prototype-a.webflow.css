@@ -1339,6 +1339,12 @@ a.a-button.as-list {
     line-height: 40px;
 }
 
+.label.full-touch.for-identity {
+    font-size: 15px;
+    line-height: 40px;
+    color: #333;
+}
+
 .label.full-touch.tick-left {
     padding-left: 36px;
     text-align: left;
@@ -2388,6 +2394,30 @@ div::-webkit-scrollbar {
     cursor: pointer;
 }
 
+.icon_20x.config {
+    position: absolute;
+    right: 10px;
+    background-color: transparent;
+    background-image: url('../images/carbon_user-avatar.svg');
+    background-position: 50% 50%;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
+.icon_20x.sign-out {
+    position: absolute;
+    right: 10px;
+    background-color: transparent;
+    background-image: url('../images/uil_sign-out-alt.svg');
+    background-position: 50% 50%;
+    background-size: 20px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    margin-top: 4px;
+}
+
 .icon_20x.dropdown {
     position: absolute;
     top: 8px;
@@ -2549,11 +2579,23 @@ div::-webkit-scrollbar {
 
 .annotate.identity {
     cursor: pointer;
-    background-color: #606060;
+    background-color: #333;
     color: white;
     position: absolute;
-    left: calc(128px + 8px);
-    /* 包含home-title 的padding */
+    left: 128px;
+    bottom: 6px;
+    font-size: 14px;
+    line-height: 22px;
+    padding-top: 3px;
+    margin-bottom: -1px;
+}
+
+.home.dropdown-box {
+    display: block;
+    position: absolute;
+    margin-left: 0px;
+    max-width: 260px;
+    z-index: 0;
 }
 
 .annotate.identity.readme {
@@ -3356,6 +3398,12 @@ div::-webkit-scrollbar {
     box-shadow: 0 4px 8px 0 hsla(0, 0%, 89.8%, 0.8);
     -webkit-transition: all 200ms cubic-bezier(.165, .84, .44, 1), border-width 0ms linear;
     transition: all 200ms cubic-bezier(.165, .84, .44, 1), border-width 0ms linear;
+}
+
+.drop-card.for-identity {
+    max-width: 118px;
+    margin-left: 124px;
+    top: 32px;
 }
 
 .drop-card-s {
@@ -4437,6 +4485,7 @@ div::-webkit-scrollbar {
 .page-load-illus.js-hide {
     transform: scale(0.8, 0.8);
     opacity: 0;
+    max-height: 0px;
 }
 
 .q-chr {

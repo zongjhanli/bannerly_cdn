@@ -528,14 +528,14 @@ if (!window.location.href.includes('form-apply') &&
     !window.location.href.includes('custom-apply')) {
 
     //修改基本資料hover
-    $('.identity').hover(
-        function() {
-            $('.identity').parent().find('.hinter-box').css('display', 'block');
-        },
-        function() {
-            $('.identity').parent().find('.hinter-box').css('display', 'none');
-        }
-    );
+    // $('.identity').hover(
+    //     function() {
+    //         $('.identity').parent().find('.hinter-box').css('display', 'block');
+    //     },
+    //     function() {
+    //         $('.identity').parent().find('.hinter-box').css('display', 'none');
+    //     }
+    // );
 
     //品牌代號dropdown 另行處理
     $('.dropdown-s').click(() => { sDrop(); });
@@ -1008,8 +1008,9 @@ if (!window.location.href.includes('form-apply') &&
                     }
                 }
             }
+            //identity action區塊
             if (!window.location.href.includes('read-me')) {
-                $('.annotate.identity').click(() => {
+                $('[data-action="config"]').click(() => {
                     $('.portal-bg').removeClass('js-hide');
                     $('.portal-title').css('display', 'flex');
                     $('.portal').removeClass('js-hide').removeClass('inactive');
@@ -1202,6 +1203,22 @@ if (!window.location.href.includes('form-apply') &&
                         setTimeout(function() {
                             $(target).removeClass("js-shake");
                         }, 200);
+                    }
+                })
+
+                $('[data-action="sign-out"]').click(() => {
+                    let confirm = window.confirm('確認登出？');
+                    if (confirm) {
+                        sessionStorage.clear();
+                        let address = window.location.href;
+                        setTimeout(() => {
+                            if (address.indexOf('html') < 0) {
+                                address = address.replace('custom-apply', '');
+                            } else if (address.indexOf('html') >= 0) {
+                                address = address.replace('custom-apply.html', '');
+                            }
+                            window.location.replace(address);
+                        }, 1000)
                     }
                 })
             }
