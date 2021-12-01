@@ -325,6 +325,12 @@ label {
     cursor: pointer;
 }
 
+.a-button.as_contained.submit-trigger.configuring,
+.a-button.as_contained.submit-trigger.configuring:hover {
+    width: 100%;
+    cursor: pointer;
+}
+
 .a-button.as_contained.submit {
     z-index: 0;
     display: none;
@@ -375,7 +381,9 @@ label {
 .a-button.as_contained.for-portal.sign-in.js-btn2text,
 .a-button.as_contained.for-portal.sign-in.js-btn2text:hover,
 .a-button.as_contained.for-portal.sign-up.js-btn2text,
-.a-button.as_contained.for-portal.sign-up.js-btn2text:hover {
+.a-button.as_contained.for-portal.sign-up.js-btn2text:hover,
+.a-button.as_contained.for-portal.config.js-btn2text,
+.a-button.as_contained.for-portal.config.js-btn2text:hover {
     background-color: transparent;
     color: #2F5A3A;
     min-width: 76px;
