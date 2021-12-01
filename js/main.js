@@ -2163,7 +2163,8 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
     $('.date-input').change(() => {
         if ($('.date-input').val().length > 0) {
             let year1 = $('.date-input').val().slice(0, 4);
-            let year2 = $('.date-input').val().slice(12, 16);
+            let year2 = $('.date-input').val().slice(12, 17);
+            // console.log(year2)
             $('.date-input').attr('data-year', year2);
             $('.date-input').val($('.date-input').val().replaceAll(year1 + '/', ''));
             $('.date-input').val($('.date-input').val().replaceAll(year2 + '/', ''));
