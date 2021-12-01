@@ -635,19 +635,53 @@ if (!window.location.href.includes('form-apply') &&
                 $(target).removeClass("js-shake");
             }, 200);
         }
-        if ($('#dbcheck-code').val() != $('#user-code').val()) {
-            let hinter = '<div class="inline-hinter">輸入錯誤</div>';
-            $('#dbcheck-code').closest('.f-block').find('._12px-500').html('再次確認密碼' + hinter);
-            // setTimeout(function() {
-            //     $('#dbcheck-code').closest('.f-block').find('.inline-hinter').remove();
-            // }, 1500);
+        //密碼須為6字符，並結合英數字（大小寫不限）
+        if ($('#user-code').val() != "") {
+            $('#user-code').each(function() {
+                var validated = true;
+                if ($(this).val().length < 6)
+                    validated = false;
+                if (!/\d/.test($(this).val()))
+                    validated = false;
+                if (!/[a-z]/.test($(this).val())) {
+                    validated = false;
+                }
+                if (/[^0-9a-z]/.test($(this).val())) {
+                    validated = false;
+                }
+                // $('div').text(validated ? "pass" : "fail");
+                // use DOM traversal to select the correct div for this input above
+                if (!validated) {
+                    let hinter = '<div class="inline-hinter">請輸入6位英數字</div>';
+                    $('#user-code').closest('.f-block').find('._12px-500').html('設定密碼' + hinter);
+                } else if (validated = true) {
+                    console.log('password OK')
+                }
+            });
+        }
+
+        //密碼double check
+        if ($('#dbcheck-code').val() != "") {
+            if ($('#dbcheck-code').val() != $('#user-code').val()) {
+                let hinter = '<div class="inline-hinter">輸入錯誤</div>';
+                $('#dbcheck-code').closest('.f-block').find('._12px-500').html('再次確認密碼' + hinter);
+                // setTimeout(function() {
+                //     $('#dbcheck-code').closest('.f-block').find('.inline-hinter').remove();
+                // }, 1500);
+            }
+        }
+
+        //email格式
+        if ($('#user-mail').val() != "") {
+            if ($('#user-mail').val().indexOf('@') < 0) {
+                let hinter = '<div class="inline-hinter">格式錯誤</div>';
+                $('#user-mail').closest('.f-block').find('._12px-500').html('公司郵箱' + hinter);
+            }
         }
 
         if ($('.inline-hinter:visible').length == 0) {
             $('.icon_32x.btn-icon').removeClass('sign-up').addClass('js-loading');
             setTimeout(() => {
-
-
                 //sheetDB POST
                 axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd?sheet=members', {
                     "data": {
@@ -687,7 +721,7 @@ if (!window.location.href.includes('form-apply') &&
                     checked = true;
                 }
             }
-            console.log(firstIndex);
+            // console.log(firstIndex);
             $('[data-portal="sign-up"]')[0].scroll({
                 top: 71.81 * firstIndex,
                 behavior: 'smooth',
@@ -812,7 +846,8 @@ if (!window.location.href.includes('form-apply') &&
                             if ($(employee).val() != '') {
                                 let allNameMail = rows[i].c[1].v;
                                 let space = allNameMail.indexOf(' ');
-                                let name = allNameMail.slice(0, space + 1).trim();
+                                let at = allNameMail.indexOf('@');
+                                let name = allNameMail.slice(space, at).trim();
                                 if (name == $(employee).val()) {
                                     iArr.push(i);
                                 }
@@ -917,20 +952,20 @@ if (!window.location.href.includes('form-apply') &&
                 if (rows[r].c[nameMail] != null) {
                     //TBC output applicant query
                     if (rows[r].c[userType].v == 'applicant') {
-                        // space = rows[r].c[nameMail].v.indexOf(' ');
-                        // let applicantName = rows[r].c[nameMail].v.slice(0, space + 1).trim();
-                        // let applicantQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + applicantName + '</div><div class="custom-check tick-right min-size"></div></div>'
-                        // $('[data-query=applicant]').find('.drop-group').append(applicantQueryOption);
+                        space = rows[r].c[nameMail].v.indexOf(' ');
+                        let applicantName = rows[r].c[nameMail].v.slice(0, space + 1).trim();
+                        let applicantQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + applicantName + '</div><div class="custom-check tick-right min-size"></div></div>'
+                        $('[data-query=applicant]').find('.drop-group').append(applicantQueryOption);
                     }
                     //TBC output designer assign options & designer query
                     if (rows[r].c[userType].v == 'MASTER' || rows[r].c[userType].v == 'designer') {
-                        // let designerOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[nameMail].v + '</div><div class="custom-check tick-right"></div></div>'
-                        // $('#designer').closest('.dropdown-box').find('.drop-group').append(designerOption);
+                        let designerOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[nameMail].v + '</div><div class="custom-check tick-right"></div></div>'
+                        $('#designer').closest('.dropdown-box').find('.drop-group').append(designerOption);
 
-                        // let space = rows[r].c[nameMail].v.indexOf(' ');
-                        // let designerName = rows[r].c[nameMail].v.slice(0, space + 1).trim();
-                        // let designerQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + designerName + '</div><div class="custom-check tick-right min-size"></div></div>'
-                        // $('[data-query=designer]').find('.drop-group').append(designerQueryOption);
+                        let space = rows[r].c[nameMail].v.indexOf(' ');
+                        let designerName = rows[r].c[nameMail].v.slice(0, space + 1).trim();
+                        let designerQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + designerName + '</div><div class="custom-check tick-right min-size"></div></div>'
+                        $('[data-query=designer]').find('.drop-group').append(designerQueryOption);
                     }
                 }
             }
@@ -954,36 +989,36 @@ if (!window.location.href.includes('form-apply') &&
             let brandID = 0;
             let brandIDarr = [];
             for (i = 0; i < cols.length; i++) {
-                if (rows[0].c[i].v == '設計方') {
-                    designer += i;
-                }
-                if (rows[0].c[i].v == '需求方') {
-                    applicant += i;
-                }
+                // if (rows[0].c[i].v == '設計方') {
+                //     designer += i;
+                // }
+                // if (rows[0].c[i].v == '需求方') {
+                //     applicant += i;
+                // }
                 if (rows[0].c[i].v == '品牌列表-data') {
                     brandID += i;
                 }
             }
             let r;
             for (r = 1; r < rows.length; r++) {
-                if (rows[r].c[designer] != null) {
-                    //output designer list for admin
-                    let designerOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[designer].v + '</div><div class="custom-check tick-right"></div></div>'
-                    $('#designer').closest('.dropdown-box').find('.drop-group').append(designerOption);
+                // if (rows[r].c[designer] != null) {
+                //     //output designer list for admin
+                //     let designerOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[designer].v + '</div><div class="custom-check tick-right"></div></div>'
+                //     $('#designer').closest('.dropdown-box').find('.drop-group').append(designerOption);
 
-                    //output designer query
-                    let space = rows[r].c[designer].v.indexOf(' ');
-                    let designerName = rows[r].c[designer].v.slice(0, space + 1).trim();
-                    let designerQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + designerName + '</div><div class="custom-check tick-right min-size"></div></div>'
-                    $('[data-query=designer]').find('.drop-group').append(designerQueryOption);
-                }
-                if (rows[r].c[applicant] != null) {
-                    //output applicant query
-                    space = rows[r].c[applicant].v.indexOf(' ');
-                    let applicantName = rows[r].c[applicant].v.slice(0, space + 1).trim();
-                    let applicantQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + applicantName + '</div><div class="custom-check tick-right min-size"></div></div>'
-                    $('[data-query=applicant]').find('.drop-group').append(applicantQueryOption);
-                }
+                //     //output designer query
+                //     let space = rows[r].c[designer].v.indexOf(' ');
+                //     let designerName = rows[r].c[designer].v.slice(0, space + 1).trim();
+                //     let designerQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + designerName + '</div><div class="custom-check tick-right min-size"></div></div>'
+                //     $('[data-query=designer]').find('.drop-group').append(designerQueryOption);
+                // }
+                // if (rows[r].c[applicant] != null) {
+                //     //output applicant query
+                //     space = rows[r].c[applicant].v.indexOf(' ');
+                //     let applicantName = rows[r].c[applicant].v.slice(0, space + 1).trim();
+                //     let applicantQueryOption = '<div class="a-button as-list min-size"><div class="label full-touch min-size">' + applicantName + '</div><div class="custom-check tick-right min-size"></div></div>'
+                //     $('[data-query=applicant]').find('.drop-group').append(applicantQueryOption);
+                // }
                 if (rows[r].c[brandID] != null) {
                     //output brand-id (sign-up)
                     brandIDarr.push(rows[r].c[brandID].v);
