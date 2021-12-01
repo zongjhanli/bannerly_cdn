@@ -2100,8 +2100,16 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
     })
 
 
-    //基本資訊填畢即更新topbar標題
-    $('#Info').find('.card').click(function() {
+    //基本資訊填畢即更新同步topbar標題
+    $('#Info').find('.card').click(() => {
+        syncTitle();
+    })
+
+    $('.js-custom-input').change(() => {
+        syncTitle();
+    })
+
+    function syncTitle() {
         setTimeout(() => {
             let titleReady = false;
             let titleBlock = $('#Info').find('.f-block[data-required=true]');
@@ -2128,7 +2136,7 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                 $('._18px-700.for-topbar').text('新件申請');
             }
         }, 10)
-    })
+    }
 
     //按下enter後防止（瀏覽器預設）送出表單
     $(document).ready(function() {

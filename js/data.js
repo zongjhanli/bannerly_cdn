@@ -527,6 +527,16 @@ if (window.location.href.includes('form-apply')) {
 if (!window.location.href.includes('form-apply') &&
     !window.location.href.includes('custom-apply')) {
 
+    //修改基本資料hover
+    $('.identity').hover(
+        function() {
+            $('.identity').parent().find('.hinter-box').css('display', 'block');
+        },
+        function() {
+            $('.identity').parent().find('.hinter-box').css('display', 'none');
+        }
+    );
+
     //品牌代號dropdown 另行處理
     $('.dropdown-s').click(() => { sDrop(); });
     $('.portal-bg').click((e) => {
