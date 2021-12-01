@@ -20,6 +20,8 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
             let brandData = 0; //品牌列表-data
             let ecName = 0; //通路列表
             let ecData = 0; //通路列表-data
+            let caseFormat = 0;
+            let theme = 0;
             for (i = 0; i < cols.length; i++) {
                 // if (rows[0].c[i].v == '需求方') {
                 //     applicant += i;
@@ -29,6 +31,12 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                 }
                 if (rows[0].c[i].v == '品牌列表-data') {
                     brandData += i;
+                }
+                if (rows[0].c[i].v == '活動類型') {
+                    caseFormat += i;
+                }
+                if (rows[0].c[i].v == '指定氛圍') {
+                    theme += i;
                 }
                 if (rows[0].c[i].v == '通路列表') {
                     ecName += i;
@@ -65,8 +73,16 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                         $('#brand').parent().find('.drop-group').append(brandOption);
                     }
                 }
+                if (rows[r].c[caseFormat] != null) {
+                    let formatOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[caseFormat].v + '</div><div class="custom-check tick-right"></div></div>';
+                    $('#case-format').parent().find('.drop-group').append(formatOption);
+                }
                 //@Form-apply 專屬段落
                 if (window.location.href.includes('form-apply')) {
+                    if (rows[r].c[theme] != null) {
+                        let themeOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[theme].v + '</div><div class="custom-check tick-right"></div></div>';
+                        $('#theme').parent().find('.drop-group').append(themeOption);
+                    }
                     if (rows[r].c[ecName] != null && rows[r].c[ecData] != null) {
                         //左側tabBox裡面新增選項
                         let tab = '<div class="a-button as-tab js-hide"><div data-tab="' + rows[r].c[ecData].v + '" class="label full-touch js-exclude">' + rows[r].c[ecName].v + '</div><div class="_12px-500 as-counts in-tab">0</div></div>'
@@ -148,7 +164,8 @@ if (window.location.href.includes('custom-apply')) {
                     ////基本資訊
                     "曝光日期": $('#date-exposure_range').val(),
                     "主打品牌": $('#brand').val(),
-                    "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
+                    "活動類型": $('#case-format').val(),
+                    // "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
                     "急迫度": $("[name=urgency]").siblings(".w--redirected-checked").siblings(".label").text().slice(3, 4),
                     "曝光年份": $('[data-year]').attr('data-year'),
                     "brandID": brandID,
@@ -430,13 +447,15 @@ if (window.location.href.includes('form-apply')) {
                     ////基本資訊
                     "曝光日期": $('#date-exposure_range').val(),
                     "主打品牌": $('#brand').val(),
-                    "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
+                    "活動類型": $('#case-format').val(),
+                    // "活動類型": $("[name=case-format]").siblings(".w--redirected-checked").siblings("[name=case-format]").val(),
                     "急迫度": $("[name=urgency]").siblings(".w--redirected-checked").siblings(".label").text().slice(3, 4),
                     "曝光年份": $('[data-year]').attr('data-year'),
                     "brandID": brandID,
                     ////主視覺
                     "指定色調": $("[name=color-tone]").siblings(".w--redirected-checked").siblings("[name=color-tone]").val(),
-                    "指定氛圍": $("[name=theme]").siblings(".w--redirected-checked").siblings("[name=theme]").val(),
+                    "指定氛圍": $('#theme').val(),
+                    // "指定氛圍": $("[name=theme]").siblings(".w--redirected-checked").siblings("[name=theme]").val(),
                     ////案型1
                     "案型1-活動文案": AcopywrightStr.toString(),
                     //

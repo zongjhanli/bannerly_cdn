@@ -2105,29 +2105,32 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
         syncTitle();
     })
 
-    $('.js-custom-input').change(() => {
-        syncTitle();
-    })
+    // $('.js-custom-input').change(() => {
+    //     syncTitle();
+    // })
 
     function syncTitle() {
         setTimeout(() => {
-            let titleReady = false;
+            // let titleReady = false;
+            let readyNum = 0;
             let titleBlock = $('#Info').find('.f-block[data-required=true]');
-            if (titleBlock.find('input[type=text]').val() != '' && titleBlock.find('.w--redirected-checked').length > 0) {
-                titleReady = true;
-            } else {
-                titleReady = false;
-            }
+            // if (titleBlock.find('input[type=text]').val() != '' && titleBlock.find('.w--redirected-checked').length > 0) {
+            $(titleBlock).each((t) => {
+                if ($(titleBlock).eq(t).find('input[type=text]').val() != '') {
+                    readyNum += 1;
+                }
+            })
 
-            if (titleReady) {
+            if (readyNum == 3) {
                 let date = $(titleBlock).eq(0).find('input').val();
                 let brand = $(titleBlock).eq(1).find('input').val();
-                let type = $(titleBlock).eq(2).find('.w--redirected-checked').siblings('input').val();
+                let format = $(titleBlock).eq(2).find('input').val();
+                // let format = $(titleBlock).eq(2).find('.w--redirected-checked').siblings('input').val();
                 let urgency = $('#Info').find('.f-block').eq(3).find('.w--redirected-checked').siblings('span').text();
                 if (urgency != "") {
                     urgency = ' (' + urgency.slice(0, 1) + ')';
                 }
-                $('._18px-700.for-topbar').text(date + '\u00a0\u00a0' + brand + type + urgency);
+                $('._18px-700.for-topbar').text(date + '\u00a0\u00a0' + brand + format + urgency);
                 $('._18px-700.for-topbar').css('fontSize', '16px');
                 setTimeout(() => {
                     $('._18px-700.for-topbar').css('fontSize', '18px');

@@ -123,7 +123,7 @@
     </div>
     <div class="w-form">
         <form data-name="Detail Entries" name="wf-form-Detail-Entries" id="wf-form-Detail-Entries" method="post" class="container for-form">
-            <div id="Info" data-scroll="mid" class="section justify-top">
+            <div id="Info" data-scroll="mid" class="section justify-top" style="z-index: 2;">
                 <div class="card-box">
                     <div class="card">
                         <div class="card-cap">
@@ -141,7 +141,7 @@
                                 <div class="hinter-triangle in-card"></div>
                             </div>
                         </div>
-                        <div data-required="true" class="f-block">
+                        <div data-required="true" class="f-block" style="z-index: 2;">
                             <div class="_12px-500">主打品牌*</div>
                             <div class="dropdown-box"><input type="text" class="input as-text js-custom-input dropdown w-input" autocomplete="off" maxlength="256" name="brand" data-name="brand" data-drop="single" placeholder="輸入品牌名稱" id="brand">
                                 <div class="icon-36x dropdown-arrow unclickable"></div>
@@ -154,8 +154,15 @@
                                 <div class="hinter-triangle in-card"></div>
                             </div>
                         </div>
-                        <div data-required="true" class="f-block">
-                            <div class="_12px-500">活動類型*</div><label class="input as-chip w-radio">
+                        <div data-required="true" class="f-block" style="z-index: 1;">
+                            <div class="_12px-500">活動類型*</div>
+                            <div class="dropdown-box"><input type="text" class="input as-text js-custom-input dropdown w-input" autocomplete="off" maxlength="256" name="case-format" data-name="case-format" data-drop="single" placeholder="輸入活動類型" id="case-format">
+                                <div class="icon-36x dropdown-arrow unclickable"></div>
+                                <div data-drop="single" class="drop-card shortest js-collapsed">
+                                    <div class="drop-group js-hide js-show"></div>
+                                </div>
+                            </div>
+                            <!-- <label class="input as-chip w-radio">
                 <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="case-format" id="鋪底BN" name="case-format" value="鋪底BN" style="opacity:0;position:absolute;z-index:-1"><span for="鋪底BN" class="label w-form-label">鋪底BN</span>
               </label><label class="input as-chip w-radio">
                 <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="case-format" id="外廣BN" name="case-format" value="外廣BN" style="opacity:0;position:absolute;z-index:-1"><span for="外廣BN" class="label w-form-label">外廣BN</span>
@@ -167,13 +174,13 @@
                             <div class="custom-input-box"><input type="text" data-required="false" class="input as-text js-custom-input js-length-10 w-input" autocomplete="off" maxlength="256" name="custom--case-format" data-name="custom--case-format" placeholder="自訂活動類型" id="custom--case-format">
                                 <div class="icon_20x for-custom-input js-return"></div>
                                 <div class="_12px-500 js-limit-hinter">限N字符</div>
-                            </div>
+                            </div> -->
                             <div class="hinter-box in-card">
                                 <div class="_12px-500 for-hinter">此欄必填</div>
                                 <div class="hinter-triangle in-card"></div>
                             </div>
                         </div>
-                        <div class="f-block">
+                        <div class="f-block" style="z-index: 0;">
                             <div class="_12px-500">急迫度</div><label class="w-checkbox input full-chip">
                 <div class="w-checkbox-input w-checkbox-input--inputType-custom custom-check tick-right"></div><input type="checkbox" id="urgency" name="urgency" data-name="urgency" style="opacity:0;position:absolute;z-index:-1">
                 <div class="check-border"></div><span for="urgency" class="label full-touch w-form-label">急件</span>
@@ -184,11 +191,39 @@
                     <div class="shadow full"></div>
                 </div>
             </div>
-            <div id="Visual" data-scroll="mid" class="section justify-top">
+            <div id="Visual" data-scroll="mid" class="section justify-top" style="z-index: 2;">
                 <div class="card-box">
                     <div class="card">
                         <div class="card-cap">
                             <div class="_16px-500 cap-title">主視覺</div>
+                        </div>
+                        <div data-required="true" class="f-block">
+                            <div class="_12px-500">指定氛圍*</div>
+                            <div class="dropdown-box"><input type="text" class="input as-text js-custom-input dropdown w-input" autocomplete="off" maxlength="256" name="theme" data-name="theme" data-drop="single" placeholder="輸入指定氛圍" id="theme">
+                                <div class="icon-36x dropdown-arrow unclickable"></div>
+                                <div data-drop="single" class="drop-card shortest js-collapsed">
+                                    <div class="drop-group js-hide js-show"></div>
+                                </div>
+                            </div>
+                            <!-- <label class="input as-chip w-radio">
+                <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="theme" name="theme" value="節慶時事" style="opacity:0;position:absolute;z-index:-1"><span for="節慶時事-2" class="label w-form-label">節慶時事</span>
+              </label><label class="input as-chip w-radio">
+                <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="theme" id="溫馨可愛" name="theme" value="溫馨可愛" style="opacity:0;position:absolute;z-index:-1"><span for="溫馨可愛" class="label w-form-label">溫馨可愛</span>
+              </label><label class="input as-chip w-radio">
+                <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="theme" id="雅緻簡潔" name="theme" value="雅緻簡潔" style="opacity:0;position:absolute;z-index:-1"><span for="雅緻簡潔" class="label w-form-label">雅緻簡潔</span>
+              </label><label class="input as-chip w-radio">
+                <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="theme" id="促購感" name="theme" value="促購感" style="opacity:0;position:absolute;z-index:-1"><span for="促購感" class="label w-form-label">促購感</span>
+              </label><label class="input as-chip js-toggle w-radio">
+                <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="theme" name="theme" value="" data-custom="radio-btn" style="opacity:0;position:absolute;z-index:-1"><span for="" class="label w-form-label">Custom</span>
+              </label>
+              <div class="custom-input-box"><input type="text" data-required="false" class="input as-text js-custom-input js-length-10 w-input" autocomplete="off" maxlength="256" name="custom--theme" data-name="custom--theme" placeholder="自訂指定氛圍" id="custom--theme">
+                <div class="icon_20x for-custom-input js-return"></div>
+                <div class="_12px-500 js-limit-hinter">限N字符</div>
+            </div> -->
+                            <div class="hinter-box in-card">
+                                <div class="_12px-500 for-hinter">此欄必填</div>
+                                <div class="hinter-triangle in-card"></div>
+                            </div>
                         </div>
                         <div data-required="true" class="f-block color-radio">
                             <div class="_12px-500">指定色調*</div><label data-custom="color-picker" class="input as-chip color w-radio">
@@ -219,27 +254,6 @@
                                     <div data-color="#000" class="swatch"></div>
                                 </div>
                                 <div class="custom-input-box color-code"><input type="text" class="input as-text js-custom-input js-length-06 w-input" autocomplete="off" maxlength="256" name="custom--color" data-name="custom--color" placeholder="輸入色碼或名稱" id="custom--color"></div>
-                            </div>
-                        </div>
-                        <div data-required="true" class="f-block">
-                            <div class="_12px-500">指定氛圍*</div><label class="input as-chip w-radio">
-                <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="theme" name="theme" value="節慶時事" style="opacity:0;position:absolute;z-index:-1"><span for="節慶時事-2" class="label w-form-label">節慶時事</span>
-              </label><label class="input as-chip w-radio">
-                <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="theme" id="溫馨可愛" name="theme" value="溫馨可愛" style="opacity:0;position:absolute;z-index:-1"><span for="溫馨可愛" class="label w-form-label">溫馨可愛</span>
-              </label><label class="input as-chip w-radio">
-                <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="theme" id="雅緻簡潔" name="theme" value="雅緻簡潔" style="opacity:0;position:absolute;z-index:-1"><span for="雅緻簡潔" class="label w-form-label">雅緻簡潔</span>
-              </label><label class="input as-chip w-radio">
-                <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="theme" id="促購感" name="theme" value="促購感" style="opacity:0;position:absolute;z-index:-1"><span for="促購感" class="label w-form-label">促購感</span>
-              </label><label class="input as-chip js-toggle w-radio">
-                <div class="w-form-formradioinput w-form-formradioinput--inputType-custom custom-check w-radio-input"></div><input type="radio" data-name="theme" name="theme" value="" data-custom="radio-btn" style="opacity:0;position:absolute;z-index:-1"><span for="" class="label w-form-label">Custom</span>
-              </label>
-                            <div class="hinter-box in-card">
-                                <div class="_12px-500 for-hinter">此欄必填</div>
-                                <div class="hinter-triangle in-card"></div>
-                            </div>
-                            <div class="custom-input-box"><input type="text" data-required="false" class="input as-text js-custom-input js-length-10 w-input" autocomplete="off" maxlength="256" name="custom--theme" data-name="custom--theme" placeholder="自訂指定氛圍" id="custom--theme">
-                                <div class="icon_20x for-custom-input js-return"></div>
-                                <div class="_12px-500 js-limit-hinter">限N字符</div>
                             </div>
                         </div>
                     </div>
@@ -311,7 +325,7 @@
                     </script>
                 </div>
             </div>
-            <div id="Swiped" data-scroll="mid" class="section swiping-area">
+            <div id="Swiped" data-scroll="mid" class="section swiping-area" style="z-index: 1;">
                 <div id="Copywright" data-scroll="mid" class="section justify-top in-swiped">
                     <div class="swiped">
                         <div data-handle="true" class="card-box">
@@ -731,7 +745,7 @@
                     </div>
                 </div>
             </div>
-            <div id="Submit" data-scroll="mid" class="section justify-top">
+            <div id="Submit" data-scroll="mid" class="section justify-top" style="z-index: 0;">
                 <div class="greyer-back"></div>
                 <div class="card-box">
                     <div class="card">

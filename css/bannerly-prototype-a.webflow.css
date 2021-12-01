@@ -3445,7 +3445,7 @@ div::-webkit-scrollbar {
 }
 
 .drop-card.shorter {
-    max-height: 262px;
+    max-height: 216px;
 }
 
 .drop-card.shortest {
