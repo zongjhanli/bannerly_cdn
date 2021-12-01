@@ -1987,6 +1987,9 @@ if (!window.location.href.includes('form-apply') &&
                                             if (cols[i].label == '需求方') {
                                                 $("[data-output='applicant']").text(tCells[i].v);
                                             }
+                                            if (cols[i].label == '需求方mail') {
+                                                $("[data-output='applicant']").text($("[data-output='applicant']").text() + ' ' + tCells[i].v);
+                                            }
                                             if (cols[i].label == '相關路徑') {
                                                 $("[data-output='path']").text(tCells[i].v);
                                             }
@@ -1995,6 +1998,13 @@ if (!window.location.href.includes('form-apply') &&
                                                     $("[data-output=designer]").val(tCells[i].v);
                                                 } else {
                                                     $("[data-output=designer]").text(tCells[i].v);
+                                                }
+                                            }
+                                            if (cols[i].label == '設計方mail') {
+                                                if ($("[data-output=designer]").is('input')) {
+                                                    $("[data-output=designer]").val($("[data-output=designer]").val() + ' ' + tCells[i].v);
+                                                } else {
+                                                    $("[data-output=designer]").text($("[data-output=designer]").text() + ' ' + tCells[i].v);
                                                 }
                                             }
                                             if (cols[i].label == '初稿交件日期') {

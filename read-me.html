@@ -29,7 +29,7 @@
             <div class="annotate back-home">返回</div>
         </a>
     </div>
-    <div class="anch_locator">
+    <!-- <div class="anch_locator">
         <div class="side-cover left"></div>
         <div class="side-cover right"></div>
         <div class="m-anchors readme">
@@ -88,12 +88,12 @@
                 <div class="text-block">自動化郵件通知</div>
             </a>
         </div>
-    </div>
+    </div> -->
     <div class="container for-list" style="background-color:transparent;height: calc(100vh - 80px);overflow-y: scroll;padding-bottom: 72px;padding-top: 32px;">
         <div style="z-index:-1;position:fixed;bottom:0px;width: 664px;height: calc(100vh - 80px); background-color:#fff;border-top-left-radius: 32px;border-top-right-radius: 32px;"></div>
         <div style="width: 604px;">
-            <h3 class="p-h3">Hi 👋 歡迎</h3>
-            <div class="paragraph">
+            <h3 class="p-h3 js-exclude">Hi 👋 歡迎</h3>
+            <div class="paragraph js-exclude">
                 本系統為了優化設計案件申請流程而製作，主要針對（但不限於）作業量佔大宗的Banner案件。 您的帳號身份為
                 <div data-display="applicant" class="p-inline">「需求方」</div>
                 <div data-display="designer" class="p-inline">「設計方」</div>
@@ -103,8 +103,11 @@
             <!--  -->
             <div class="a-divisional"></div>
             <!--  -->
-            <h3 id="searching" class="p-h3">案件搜尋</h3>
-            <div class="paragraph">
+            <h3 id="searching" class="p-h3">
+                案件搜尋
+                <div class="p-inline arrow"></div>
+            </h3>
+            <div class="paragraph js-collapsed">
                 <div class="p-inline">文字搜尋</div>
                 ── 除查找單一字詞外，可用空白鍵來同步進行多字詞查找。
                 <br>
@@ -125,13 +128,16 @@
             <!--  -->
             <div class="a-divisional"></div>
             <!--  -->
-            <h3 id="detail" class="p-h3">案件詳情</h3>
-            <div class="paragraph">
+            <h3 id="detail" class="p-h3">
+                案件詳情
+                <div class="p-inline arrow"></div>
+            </h3>
+            <div class="paragraph js-collapsed">
                 <div class="p-inline quote">
                     當一案件被成功申請，後續的發單與結案動作需進入案件詳情頁面加以執行，此一區塊的功能將依不同的帳號權限有所調整。
                 </div>
-            </div>
-            <div class="paragraph">
+                <br>
+                <br>
                 <div data-display="applicant">
                     <div class="p-inline">發單</div>
                     <div class="p-inline access inactive">行使權限｜僅限管理方</div>
@@ -173,12 +179,14 @@
             <!--  -->
             <div class="a-divisional"></div>
             <!--  -->
-            <h3 id="custom-apply" class="p-h3">新件申請－簡易表單
-                <div data-display="applicant" class="p-inline access active">行使權限｜僅限需求方</div>
-                <div data-display="designer" class="p-inline access inactive">行使權限｜僅限需求方</div>
-                <div data-display="master" class="p-inline access inactive">行使權限｜僅限需求方</div>
+            <h3 id="custom-apply" class="p-h3">
+                新件申請－簡易表單
+                <div data-display="applicant" class="p-inline access active unclickable">行使權限｜僅限需求方</div>
+                <div data-display="designer" class="p-inline access inactive unclickable">行使權限｜僅限需求方</div>
+                <div data-display="master" class="p-inline access inactive unclickable">行使權限｜僅限需求方</div>
+                <div class="p-inline arrow"></div>
             </h3>
-            <div class="paragraph">
+            <div class="paragraph js-collapsed">
                 <div class="p-inline quote">
                     僅需填寫案件基本資料即可申請，需求方另以其他形式向設計方溝通製作細節（如ppt簡報或於email當中以純文字敘述）。
                     <div class="p-inline important">
@@ -190,16 +198,17 @@
             <div class="a-divisional"></div>
             <!--  -->
             <h3 id="form-apply" class="p-h3">新件申請－詳細表單
-                <div data-display="applicant" class="p-inline access active">行使權限｜僅限需求方</div>
-                <div data-display="designer" class="p-inline access inactive">行使權限｜僅限需求方</div>
-                <div data-display="master" class="p-inline access inactive">行使權限｜僅限需求方</div>
+                <div data-display="applicant" class="p-inline access active unclickable">行使權限｜僅限需求方</div>
+                <div data-display="designer" class="p-inline access inactive unclickable">行使權限｜僅限需求方</div>
+                <div data-display="master" class="p-inline access inactive unclickable">行使權限｜僅限需求方</div>
+                <div class="p-inline arrow"></div>
             </h3>
-            <div class="paragraph">
+            <div class="paragraph js-collapsed">
                 <div class="p-inline quote">
                     填寫詳細的需求細節，表單中含各種欄位來輔助需求方溝通製作細節。此頁面重新設計自過往的Banner申請表單（.excel），並針對填寫效率及失誤率進行優化。
                 </div>
-            </div>
-            <div class="paragraph">
+                <br>
+                <br>
                 <div class="p-inline">擴增案型</div>
                 <br>每1案型含1套「文案、曝光商品及製作尺寸」，每次申請最多可含3種案型。
                 <div class="p-img" style="background-image:url('../images/swiper.jpg');"><img class="p-img" src="images/swiper.gif"></div>
@@ -216,13 +225,16 @@
             <!--  -->
             <div class="a-divisional"></div>
             <!--  -->
-            <h3 id="automate" class="p-h3">自動化郵件通知</h3>
-            <div class="paragraph">
+            <h3 id="automate" class="p-h3">
+                自動化郵件通知
+                <div class="p-inline arrow"></div>
+            </h3>
+            <div class="paragraph js-collapsed">
                 <div class="p-inline quote">
                     本系統採用Google Sheet作為資料庫，並搭配Automate.io作為自動化輔助工具，在若干情境下資料庫的更動將觸發相關的郵件通知。（以下說明圖片擷取自Automate.io操作後台）
                 </div>
-            </div>
-            <div class="paragraph">
+                <br>
+                <br>
                 <div class="p-inline">新件申請</div>
                 <br>每當一新案件申請成功，相關人員將收到郵件通知。
                 <div class="p-img" style="background-image:url('../images/new-case.jpg');"><img class="p-img" src="images/new-case.jpg"></div>

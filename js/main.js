@@ -1985,55 +1985,79 @@ if (window.location.href.includes('read-me')) {
         }
     })
 
-    $(document).ready(() => {
-        // $('.anch-inner_circ').css('backgroundColor', '#3B7A47');
-        if (!window.location.href.includes('read-me')) {
-            $('.anch-inner_circ').css('display', 'none');
-            $('.anch-inner_circ').eq(0).css('display', 'block');
-            $('[data-anch]').attr('href', '#'); //暫時放棄webflow scroll script，因下方bind events 有bug 無法解決
+    //expander
+    let expander = $('.p-h3').not('.js-exclude');
+    $(expander).click((e) => {
+        let target = e.target;
+        $('.paragraph').not('.js-exclude').addClass('js-collapsed');
+        $('.p-inline.arrow').removeClass('js-rotated');
+        if ($(target).next('.paragraph').not('.js-exclude').hasClass('js-collapsed')) {
+            $(target).next('.paragraph').not('.js-exclude').removeClass('js-collapsed');
+            $(target).find('.arrow').addClass('js-rotated');
         }
-    });
-
-    $('.container.for-list').scroll(() => {
-        $('h3').each((s) => {
-            let offsetTop = $('h3')[s].getBoundingClientRect().top;
-            let height = window.innerHeight;
-            if (offsetTop < height * 0.33 && offsetTop > 96) {
-                console.log($('h3')[s])
-
-                $('[data-anch]').each((a) => {
-                    if ($('[data-anch]').eq(a).attr('data-anch') == $('h3').eq(s).attr('id')) {
-                        $('[data-anch]').eq(a).addClass('w--current');
-                        $('.anch-inner_circ').css('display', 'none');
-                        $('.anch-inner_circ').eq(a).css('display', 'block');
-                    } else {
-                        $('[data-anch]').eq(a).removeClass('w--current');
-                        $('.anch-inner_circ').eq(a).css('display', 'none');
-                    }
-                })
-            }
-        })
     })
-    $('[data-anch]').each((a) => {
-        $('[data-anch]').eq(a).click(() => {
-            if ($('[data-anch]').eq(a)) {
-                let s;
-                for (s = 0; s < $('h3').length; s++) {
-                    if ($('[data-anch]').eq(a).attr('data-anch') == $('h3').eq(s).attr('id')) {
-                        // console.log($('h3')[s])
-                        let offsetTop = $('h3')[s].getBoundingClientRect().top - '96';
-                        // console.log(offsetTop)
 
-                        $('.container.for-list')[0].scrollBy({
-                            top: offsetTop,
-                            block: 'start',
-                            behavior: 'smooth',
-                        });
-                    }
-                }
-            }
-        })
-    })
+    // $('.paragraph').each((p) => {
+    //     if (!$('.paragraph').eq(p).hasClass('js-collapsed')) {
+    //         $('.paragraph').eq(p).prev('.p-h3').click((e) => {
+    //             let target = e.target;
+    //             console.log($(target))
+    //             $('.paragraph').not('.js-exclude').addClass('js-collapsed');
+    //             $('.p-inline.arrow').removeClass('js-rotated');
+    //         })
+    //     }
+    // })
+
+    // anchor
+    // $(document).ready(() => {
+    //     // $('.anch-inner_circ').css('backgroundColor', '#3B7A47');
+    //     if (!window.location.href.includes('read-me')) {
+    //         $('.anch-inner_circ').css('display', 'none');
+    //         $('.anch-inner_circ').eq(0).css('display', 'block');
+    //         $('[data-anch]').attr('href', '#'); //暫時放棄webflow scroll script，因下方bind events 有bug 無法解決
+    //     }
+    // });
+
+    // $('.container.for-list').scroll(() => {
+    //     $('h3').each((s) => {
+    //         let offsetTop = $('h3')[s].getBoundingClientRect().top;
+    //         let height = window.innerHeight;
+    //         if (offsetTop < height * 0.33 && offsetTop > 96) {
+    //             console.log($('h3')[s])
+
+    //             $('[data-anch]').each((a) => {
+    //                 if ($('[data-anch]').eq(a).attr('data-anch') == $('h3').eq(s).attr('id')) {
+    //                     $('[data-anch]').eq(a).addClass('w--current');
+    //                     $('.anch-inner_circ').css('display', 'none');
+    //                     $('.anch-inner_circ').eq(a).css('display', 'block');
+    //                 } else {
+    //                     $('[data-anch]').eq(a).removeClass('w--current');
+    //                     $('.anch-inner_circ').eq(a).css('display', 'none');
+    //                 }
+    //             })
+    //         }
+    //     })
+    // })
+    // $('[data-anch]').each((a) => {
+    //     $('[data-anch]').eq(a).click(() => {
+    //         if ($('[data-anch]').eq(a)) {
+    //             let s;
+    //             for (s = 0; s < $('h3').length; s++) {
+    //                 if ($('[data-anch]').eq(a).attr('data-anch') == $('h3').eq(s).attr('id')) {
+    //                     // console.log($('h3')[s])
+    //                     let offsetTop = $('h3')[s].getBoundingClientRect().top - '96';
+    //                     // console.log(offsetTop)
+
+    //                     $('.container.for-list')[0].scrollBy({
+    //                         top: offsetTop,
+    //                         block: 'start',
+    //                         behavior: 'smooth',
+    //                     });
+    //                 }
+    //             }
+    //         }
+    //     })
+    // })
 };
 
 // ----------------------------------------------------------------------------------------------------

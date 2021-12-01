@@ -4526,6 +4526,12 @@ div::-webkit-scrollbar {
     width: 100%;
 }
 
+.paragraph.js-collapsed {
+    overflow: hidden;
+    max-height: 0px;
+    padding: 0px;
+}
+
 .p-img {
     /* margin-right: 10%; */
     /* margin-left: 5%;
@@ -4556,6 +4562,27 @@ img.p-img:hover {
     position: relative;
     font-weight: bold;
     text-align: center;
+}
+
+.p-inline.arrow {
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    right: 56px;
+    top: 4px;
+    background-image: url('../images/akar-icons_circle-chevron-down-fill_1.svg');
+    background-size: 32px;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    z-index: -1;
+}
+
+.p-inline.arrow.js-rotated {
+    transform: rotate(180deg);
+}
+
+.p-inline.arrow::before {
+    background-color: transparent;
 }
 
 .p-inline.quote {
@@ -4638,6 +4665,7 @@ img.p-img:hover {
 }
 
 .p-h3 {
+    position: relative;
     text-align: left;
     width: 100%;
     margin-left: 28px;
