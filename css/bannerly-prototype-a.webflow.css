@@ -1027,6 +1027,7 @@ a.a-button.as-list {
     overflow: visible;
     background-color: transparent;
     opacity: 0;
+    border-width: 0px;
 }
 
 .container.output:hover {
@@ -2200,6 +2201,7 @@ div::-webkit-scrollbar {
     margin-left: -22px;
     cursor: default;
     pointer-events: none;
+    border-radius: 0px 0px 16px 16px;
 }
 
 .timing-notes.js-hide {
@@ -2267,7 +2269,7 @@ div::-webkit-scrollbar {
 }
 
 .a-list:hover {
-    overflow: hidden;
+    /* overflow: hidden; */
     padding-right: 2px;
     padding-left: 22px;
     background-color: #f3f7f4;
@@ -2275,6 +2277,7 @@ div::-webkit-scrollbar {
     color: #2f5a3a;
     height: 84px;
     padding-bottom: 32px;
+    margin-bottom: 8px;
 }
 
 .a-list.js-topbar {
@@ -2285,7 +2288,7 @@ div::-webkit-scrollbar {
     padding-right: 0px;
     padding-left: 20px;
     animation-name: font;
-    animation-delay: 0.1s;
+    /* animation-delay: 0.1s; */
     animation-duration: 0.2s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
@@ -3912,6 +3915,14 @@ div::-webkit-scrollbar {
     transition: all 200ms cubic-bezier(.165, .84, .44, 1);
 }
 
+.hinter-box.follow-cursor {
+    position: absolute;
+    z-index: 999;
+    opacity: 0;
+    top: 4px;
+    left: -52px;
+}
+
 .hinter-box.for-identity {
     left: 140px;
     bottom: 0px;
@@ -3971,6 +3982,12 @@ div::-webkit-scrollbar {
 }
 
 .hinter-triangle.in-card {
+    left: auto;
+    top: 8px;
+    right: -3px;
+}
+
+.hinter-triangle.follow-cursor {
     left: auto;
     top: 8px;
     right: -3px;

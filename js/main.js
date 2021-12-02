@@ -959,10 +959,12 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 function() {
                     if (!$(this).hasClass('js-topbar')) {
                         $(this).find('.timing-notes').removeClass('js-hide');
+                        $(this).find('.a-divisional').css('display', 'none');
                     }
                 },
                 function() {
                     $(this).find('.timing-notes').addClass('js-hide');
+                    $(this).find('.a-divisional').css('display', 'block');
                 }
             )
             $('.a-list').eq(a).click((e) => {
@@ -972,24 +974,43 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                 }
             })
         })
-    }, 1000)
 
-    setTimeout(() => {
-        $(".for-timestamp").each((i) => {
-            $(".for-timestamp").eq(i).click(() => {
-                var $temp = $(this);
-                $("body").append($temp);
-                $temp.val($(this).html()).select();
-                $(document).execCommand("copy");
-                $temp.remove();
+        //copy text (using a temp input)
+        $(document).ready(function() {
+            let hinter = '<div class="hinter-box follow-cursor"><div class="_12px-500 for-hinter">複製文字</div><div class="hinter-triangle follow-cursor"></div></div>';
+            $(".for-timestamp").each((i) => {
+                $(".for-timestamp").eq(i).click((e) => {
+                    let target = e.target
+                    copyText(target);
+                })
+                $(".for-timestamp").eq(i).hover(
+                    function() {
+                        $(this).parent().append(hinter);
+                        setTimeout(() => {
+                            $('.hinter-box.follow-cursor').css('opacity', '1')
+                        }, 100)
+                    },
+                    function() {
+                        $('.hinter-box.follow-cursor').remove();
+                    }
+                )
             })
+
+            function copyText(el) {
+                var tempInput = document.createElement("input");
+                tempInput.value = el.textContent;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+
+                document.execCommand("copy");
+                document.body.removeChild(tempInput);
+
+                // alert("Copied the text: " + TempText.value);
+            }
         })
     }, 1000)
 
-    //copy text
-    function copyText() {
 
-    }
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -2171,9 +2192,9 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                 }
                 $('._18px-700.for-topbar').text(date + '\u00a0\u00a0' + brand + format + urgency);
                 $('._18px-700.for-topbar').css('fontSize', '16px');
-                setTimeout(() => {
-                    $('._18px-700.for-topbar').css('fontSize', '18px');
-                }, 200)
+                // setTimeout(() => {
+                $('._18px-700.for-topbar').css('fontSize', '18px');
+                // }, 200)
             } else {
                 $('._18px-700.for-topbar').text('新件申請');
             }
