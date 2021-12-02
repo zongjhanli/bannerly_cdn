@@ -3636,6 +3636,11 @@ div::-webkit-scrollbar {
     line-height: 24px;
 }
 
+
+/* .output.as-textarea.copiable {
+    cursor: copy;
+} */
+
 .output.as-textarea:hover {
     box-shadow: none;
 }
@@ -3925,12 +3930,20 @@ div::-webkit-scrollbar {
     transition: all 200ms cubic-bezier(.165, .84, .44, 1);
 }
 
-.hinter-box.follow-cursor {
+.hinter-box.cp-timestamp {
     position: absolute;
     z-index: 999;
     opacity: 0;
     top: 4px;
     left: -52px;
+}
+
+.hinter-box.cp-output {
+    position: absolute;
+    z-index: 999;
+    opacity: 0;
+    top: 24px;
+    left: -72px;
 }
 
 .hinter-box.for-identity {
@@ -3997,7 +4010,7 @@ div::-webkit-scrollbar {
     right: -3px;
 }
 
-.hinter-triangle.follow-cursor {
+.hinter-triangle.cp-timestamp {
     left: auto;
     top: 8px;
     right: -3px;

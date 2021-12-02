@@ -979,21 +979,44 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
         //copy text (using a temp input)
         $(document).ready(function() {
-            let hinter = '<div class="hinter-box follow-cursor"><div class="_12px-500 for-hinter">複製文字</div><div class="hinter-triangle follow-cursor"></div></div>';
+            let hinterA = '<div class="hinter-box cp-timestamp"><div class="_12px-500 for-hinter">複製文字</div><div class="hinter-triangle cp-timestamp"></div></div>';
             $(".for-timestamp").each((i) => {
                 $(".for-timestamp").eq(i).click((e) => {
                     let target = e.target
                     copyText(target);
+                    $('.hinter-box.cp-timestamp ._12px-500').text('已複製');
+                    $('.hinter-box.cp-timestamp').css('left', '-40px');
                 })
                 $(".for-timestamp").eq(i).hover(
                     function() {
-                        $(this).parent().append(hinter);
+                        $(this).parent().append(hinterA);
                         setTimeout(() => {
-                            $('.hinter-box.follow-cursor').css('opacity', '1')
+                            $('.hinter-box.cp-timestamp').css('opacity', '1');
                         }, 100)
                     },
                     function() {
-                        $('.hinter-box.follow-cursor').remove();
+                        $('.hinter-box.cp-timestamp').remove();
+                    }
+                )
+            })
+            let hinterB = '<div class="hinter-box cp-output"><div class="_12px-500 for-hinter">複製文字</div><div class="hinter-triangle cp-timestamp"></div></div>';
+            let copiable = $('div[data-output="applicant"] , div[data-output="designer"] , div[data-output="path"]');
+            $(copiable).each((i) => {
+                $(copiable).eq(i).click((e) => {
+                    let target = e.target
+                    copyText(target);
+                    $('.hinter-box.cp-output ._12px-500').text('已複製');
+                    $('.hinter-box.cp-output').css('left', '-64px');
+                })
+                $(copiable).eq(i).hover(
+                    function() {
+                        $(this).parent().append(hinterB);
+                        setTimeout(() => {
+                            $('.hinter-box.cp-output').css('opacity', '1');
+                        }, 100)
+                    },
+                    function() {
+                        $('.hinter-box.cp-output').remove();
                     }
                 )
             })
@@ -1001,6 +1024,20 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             function copyText(el) {
                 var tempInput = document.createElement("input");
                 tempInput.value = el.textContent;
+                //若複製email
+                if (tempInput.value.includes('@')) {
+                    let space = $(tempInput).val().indexOf(' ');
+                    $(tempInput).val($(tempInput).val().slice(space, $(tempInput).val().length));
+                }
+                //若mac使用者複製相關路徑
+                let isMacLike = /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+                let isIOS = /(iPhone|iPod|iPad)/i.test(navigator.platform);
+                console.log('isMacLike:' + isMacLike + ',isIOS:' + isIOS);
+                if (isMacLike || isIOS) {
+                    $(tempInput).val($(tempInput).val().replace('P:\\', '/Volumes/品牌營銷處/'));
+                    $(tempInput).val($(tempInput).val().replaceAll('\\', '/'));
+                }
+
                 document.body.appendChild(tempInput);
                 tempInput.select();
 
