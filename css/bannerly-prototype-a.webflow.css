@@ -4644,6 +4644,7 @@ img.p-img:hover {
     background-repeat: no-repeat;
     background-position: 50% 50%;
     z-index: -1;
+    pointer-events: none;
 }
 
 .p-inline.arrow.js-rotated {
