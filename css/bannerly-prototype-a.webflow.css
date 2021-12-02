@@ -2288,7 +2288,7 @@ div::-webkit-scrollbar {
     padding-right: 0px;
     padding-left: 20px;
     animation-name: font;
-    /* animation-delay: 0.1s; */
+    animation-delay: 0s;
     animation-duration: 0.2s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
@@ -2309,7 +2309,7 @@ div::-webkit-scrollbar {
 
 @keyframes font {
     0% {
-        font-size: 14px;
+        font-size: 15px;
         padding-left: 20px;
     }
     100% {
@@ -2323,6 +2323,10 @@ div::-webkit-scrollbar {
     padding-left: 20px;
     background-color: #fff;
     padding-bottom: 0px;
+}
+
+.a-list:hover ._14px-500 {
+    font-size: 15px;
 }
 
 .filter-query {

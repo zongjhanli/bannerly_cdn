@@ -960,13 +960,13 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     if (!$(this).hasClass('js-topbar')) {
                         $(this).find('.timing-notes').removeClass('js-hide');
                         $(this).find('.a-divisional').css('display', 'none');
-                        $(this).find('._14px-500').css('fontSize', '15px');
+                        // $(this).find('._14px-500').css('fontSize', '15px'); //與css keyframe animation (font)互相衝突
                     }
                 },
                 function() {
                     $(this).find('.timing-notes').addClass('js-hide');
                     $(this).find('.a-divisional').css('display', 'block');
-                    $(this).find('._14px-500').css('fontSize', '14px');
+                    // $(this).find('._14px-500').css('fontSize', '14px');
                 }
             )
             $('.a-list').eq(a).click((e) => {
