@@ -960,11 +960,13 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
                     if (!$(this).hasClass('js-topbar')) {
                         $(this).find('.timing-notes').removeClass('js-hide');
                         $(this).find('.a-divisional').css('display', 'none');
+                        $(this).find('._14px-500').css('fontSize', '15px');
                     }
                 },
                 function() {
                     $(this).find('.timing-notes').addClass('js-hide');
                     $(this).find('.a-divisional').css('display', 'block');
+                    $(this).find('._14px-500').css('fontSize', '14px');
                 }
             )
             $('.a-list').eq(a).click((e) => {
@@ -2188,7 +2190,8 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                 // let format = $(titleBlock).eq(2).find('.w--redirected-checked').siblings('input').val();
                 let urgency = $('#Info').find('.f-block').eq(3).find('.w--redirected-checked').siblings('span').text();
                 if (urgency != "") {
-                    urgency = ' (' + urgency.slice(0, 1) + ')';
+                    // urgency = ' (' + urgency.slice(0, 1) + ')';
+                    urgency = '！' + urgency.slice(0, 1);
                 }
                 $('._18px-700.for-topbar').text(date + '\u00a0\u00a0' + brand + format + urgency);
                 $('._18px-700.for-topbar').css('fontSize', '16px');

@@ -1435,7 +1435,8 @@ if (!window.location.href.includes('form-apply') &&
                             $(title).text($(title).text() + cells[i].v);
                         }
                         if (cols[i].label == '急迫度' && cells[i] != null) {
-                            $(title).text($(title).text() + ' (' + cells[i].v + ')');
+                            // $(title).text($(title).text() + ' (' + cells[i].v + ')');
+                            $(title).text($(title).text() + '！' + cells[i].v);
                         }
                         if (cols[i].label == '需求方') {
                             $(applicant).text(cells[i].v);

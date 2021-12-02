@@ -2196,7 +2196,7 @@ div::-webkit-scrollbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(47, 90, 58, 0.1);
+    background-color: rgba(0, 92, 21, 0.06);
     padding-left: 24px;
     margin-left: -22px;
     cursor: default;
@@ -2643,6 +2643,8 @@ div::-webkit-scrollbar {
     border-radius: 4px;
     padding: 2px 8px;
     font-size: 12px;
+    -webkit-transition: all 200ms ease;
+    transition: all 200ms ease;
 }
 
 .annotate.identity {
@@ -2656,6 +2658,10 @@ div::-webkit-scrollbar {
     line-height: 22px;
     padding-top: 3px;
     margin-bottom: -1px;
+}
+
+.annotate.identity:hover {
+    transform: scale(0.96, 0.96);
 }
 
 .home.dropdown-box {
