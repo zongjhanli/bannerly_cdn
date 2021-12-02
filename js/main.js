@@ -2195,9 +2195,9 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                 }
                 $('._18px-700.for-topbar').text(date + '\u00a0\u00a0' + brand + format + urgency);
                 $('._18px-700.for-topbar').css('fontSize', '16px');
-                // setTimeout(() => {
-                $('._18px-700.for-topbar').css('fontSize', '18px');
-                // }, 200)
+                setTimeout(() => {
+                    $('._18px-700.for-topbar').css('fontSize', '18px');
+                }, 200)
             } else {
                 $('._18px-700.for-topbar').text('新件申請');
             }
