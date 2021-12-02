@@ -951,6 +951,45 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
             $(this).siblings('.custom-check').addClass('j-selected');
         }
     })
+
+    //a-list timeing-notes
+    setTimeout(() => {
+        $('.a-list').each((a) => {
+            $('.a-list').eq(a).hover(
+                function() {
+                    if (!$(this).hasClass('js-topbar')) {
+                        $(this).find('.timing-notes').removeClass('js-hide');
+                    }
+                },
+                function() {
+                    $(this).find('.timing-notes').addClass('js-hide');
+                }
+            )
+            $('.a-list').eq(a).click((e) => {
+                let target = e.target;
+                if (!$(target).hasClass('for-timestamp')) {
+                    $(target).find('.timing-notes').addClass('js-hide');
+                }
+            })
+        })
+    }, 1000)
+
+    setTimeout(() => {
+        $(".for-timestamp").each((i) => {
+            $(".for-timestamp").eq(i).click(() => {
+                var $temp = $(this);
+                $("body").append($temp);
+                $temp.val($(this).html()).select();
+                $(document).execCommand("copy");
+                $temp.remove();
+            })
+        })
+    }, 1000)
+
+    //copy text
+    function copyText() {
+
+    }
 }
 
 // ----------------------------------------------------------------------------------------------------

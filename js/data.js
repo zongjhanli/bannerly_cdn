@@ -1367,6 +1367,7 @@ if (!window.location.href.includes('form-apply') &&
                 listing(rw);
 
                 function listing() {
+                    //main
                     let list = document.createElement('div');
                     let divLine = document.createElement('div');
                     let title = document.createElement('div');
@@ -1374,12 +1375,6 @@ if (!window.location.href.includes('form-apply') &&
                     let applicant = document.createElement('div');
                     let designer = document.createElement('div');
                     let status = document.createElement('div');
-                    statsBox.appendChild(applicant);
-                    statsBox.appendChild(designer);
-                    statsBox.appendChild(status);
-                    list.appendChild(divLine);
-                    list.appendChild(title);
-                    list.appendChild(statsBox);
 
                     list.classList.add('a-list');
                     divLine.classList.add('a-divisional', 'for_list', 'unclickable');
@@ -1387,7 +1382,34 @@ if (!window.location.href.includes('form-apply') &&
                     statsBox.classList.add('stats-flex', 'in-list', 'unclickable')
                     applicant.classList.add('_14px-500', 'as-stats');
                     designer.classList.add('_14px-500', 'as-stats');
-                    status.classList.add('stats-chip')
+                    status.classList.add('stats-chip');
+
+                    //timing-notes
+                    let timingNotes = document.createElement('div');
+                    let timestamp = document.createElement('div');
+                    let ddlBox = document.createElement('div');
+                    let ddl1 = document.createElement('div');
+                    let ddl2 = document.createElement('div');
+
+                    timingNotes.classList.add('timing-notes', 'js-hide');
+                    timestamp.classList.add('_12px-500', 'for-timestamp');
+                    ddlBox.classList.add('ddl-box');
+                    ddl1.classList.add('_12px-500', 'for-ddl');
+                    ddl2.classList.add('_12px-500', 'for-ddl');
+
+                    timingNotes.appendChild(timestamp);
+                    timingNotes.appendChild(ddlBox);
+                    ddlBox.appendChild(ddl1);
+                    ddlBox.appendChild(ddl2);
+
+                    statsBox.appendChild(applicant);
+                    statsBox.appendChild(designer);
+                    statsBox.appendChild(status);
+                    list.appendChild(divLine);
+                    list.appendChild(title);
+                    list.appendChild(statsBox);
+                    list.appendChild(timingNotes);
+
                     listBox.insertBefore(list, null);
                     list.dataset.output = "list";
 
@@ -1422,11 +1444,19 @@ if (!window.location.href.includes('form-apply') &&
                             if (cells[i] != null) {
                                 $(designer).text(cells[i].v);
                                 $(status).text('製作中');
+                                //設計方 <-> 設計單號 的g-sheet欄位順序不可調換
+                                $(timestamp).html('設計單號 ' + cells[i + 5].v);
+                                $(ddl1).html('初稿日期 ' + cells[i + 2].v.slice(5, cells[i + 2].v.length));
+                                $(ddl2).html('完稿日期 ' + cells[i + 3].v.slice(5, cells[i + 3].v.length));
                             } else if (cells[i] == null) {
                                 $(designer).text('未指派');
                                 $(designer).css('color', '#a9a9a9');
                                 $(status).text('未發單');
                                 $(status).addClass('js-tbc');
+                                // $(timestamp).html('設計單號 <div class="_12px-500 timing-null">待發單</div>');
+                                $(timestamp).html('');
+                                $(ddl1).html('初稿日期 <div class="_12px-500 timing-null">待指定</div>');
+                                $(ddl2).html('完稿日期 <div class="_12px-500 timing-null">待指定</div>');
                             }
                         }
                         if (cols[i].label == '結案' && cells[i] != null) {
