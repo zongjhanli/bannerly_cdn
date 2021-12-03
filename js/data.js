@@ -965,19 +965,24 @@ if (!window.location.href.includes('form-apply') &&
 
                             let brandID = rows[iArr[0]].c[4].v;
 
+                            let gear = '<div class="icon_20x gear"></div>'
+
                             if (type == 'applicant') {
                                 $('[data-validation=master]').remove();
-                                $('.identity').text('需求方｜' + name);
+                                $('.member-name').text(name);
+                                $('.identity').html('需求方' + gear);
                             } else if (type == 'designer') {
                                 $('[data-validation=master]').remove();
                                 $('[data-validation=applicant]').remove();
-                                $('.identity').text('設計方｜' + name);
+                                $('.member-name').text(name);
+                                $('.identity').html('設計方' + gear);
                             } else if (type == 'MASTER') {
                                 $('[data-send="MASTER"]').css('display', 'none');
                                 // $('.submit-box[data-validation=applicant]').remove();
                                 $('.card-box').eq(0).find('[data-validation=applicant]').remove();
                                 $('[data-validation=share]').remove();
-                                $('.identity').text('管理方｜' + name);
+                                $('.member-name').text(name);
+                                $('.identity').html('管理方' + gear);
                             }
                         }
                     }
@@ -987,22 +992,27 @@ if (!window.location.href.includes('form-apply') &&
                 let nameMail = sessionStorage.getItem('nameMail');
                 let space = nameMail.indexOf(' ');
                 let name = nameMail.slice(0, space + 1).trim();
+                let gear = '<div class="icon_20x gear"></div>'
+
                 let i;
                 for (i = 1; i < rows.length; i++) {
                     if (rows[i].c[2] != null && rows[i].c[3] != null) {
                         if (rows[i].c[2].v == nameMail && rows[i].c[3].v == valKey) {
                             if (rows[i].c[1].v == 'applicant') {
                                 $('[data-validation=master]').remove();
-                                $('.identity').text('需求方｜' + name);
+                                $('.member-name').text(name);
+                                $('.identity').html('需求方' + gear);
                             } else if (rows[i].c[1].v == 'designer') {
                                 $('[data-validation=master]').remove();
                                 $('[data-validation=applicant]').remove();
-                                $('.identity').text('設計方｜' + name);
+                                $('.member-name').text(name);
+                                $('.identity').html('設計方' + gear);
                             } else if (rows[i].c[1].v == 'MASTER') {
                                 $('[data-send="MASTER"]').css('display', 'none');
                                 $('.card-box').eq(0).find('[data-validation=applicant]').remove();
                                 $('[data-validation=share]').remove();
-                                $('.identity').text('管理方｜' + name);
+                                $('.member-name').text(name);
+                                $('.identity').html('管理方' + gear);
                             }
                         }
                     }

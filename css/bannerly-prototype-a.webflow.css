@@ -2446,6 +2446,20 @@ div::-webkit-scrollbar {
     height: 20px;
 }
 
+.icon_20x.gear {
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 6px;
+    top: 4px;
+    background-color: transparent;
+    background-image: url('../images/bi_gear-fill.svg');
+    background-position: 40% 50%;
+    background-size: 16px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
 .icon_20x.form-apply {
     position: absolute;
     right: 10px;
@@ -2657,29 +2671,43 @@ div::-webkit-scrollbar {
     cursor: pointer;
     background-color: #333;
     color: white;
-    position: absolute;
-    left: 128px;
-    bottom: 6px;
+    position: relative;
+    display: inline-block;
+    bottom: 4px;
     font-size: 14px;
-    line-height: 22px;
     padding-top: 3px;
-    margin-bottom: -1px;
-}
-
-.annotate.identity:hover {
-    transform: scale(0.96, 0.96);
-}
-
-.home.dropdown-box {
-    display: block;
-    position: absolute;
-    margin-left: 0px;
-    max-width: 260px;
-    z-index: 0;
+    margin-left: 4px;
+    min-width: 80px;
+    max-width: 80px;
 }
 
 .annotate.identity.readme {
     cursor: default;
+    position: absolute;
+    min-width: 130px;
+    max-width: 130px;
+    bottom: 6px;
+    margin-left: 8px;
+}
+
+.home.dropdown-box {
+    cursor: pointer;
+    display: block;
+    position: relative;
+    margin-left: 0px;
+    max-width: 164px;
+    z-index: 0;
+    -webkit-transition: all 200ms ease;
+    transition: all 200ms ease;
+}
+
+.home.dropdown-box:hover {
+    transform: scale(0.98, 0.98);
+}
+
+.home.dropdown-box h2 {
+    position: relative;
+    display: inline-block;
 }
 
 .annotate.case-note {
@@ -3481,9 +3509,9 @@ div::-webkit-scrollbar {
 }
 
 .drop-card.for-identity {
-    max-width: 118px;
-    margin-left: 124px;
-    top: 32px;
+    max-width: 160px;
+    margin-left: -2px;
+    top: 36px;
 }
 
 .drop-card-s {
