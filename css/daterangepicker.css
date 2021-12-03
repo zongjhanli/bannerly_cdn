@@ -417,6 +417,7 @@ th.prev.available:hover {
     border-top: 1px solid rgba(47, 90, 58, 0.1);
     line-height: 12px;
     vertical-align: middle;
+    height: 48px;
 }
 
 
@@ -431,7 +432,8 @@ th.prev.available:hover {
     line-height: 24px;
     position: absolute;
     left: 0px;
-    bottom: 8px;
+    margin-top: 2px;
+    /* bottom: 8px; */
 }
 
 .daterangepicker .drp-selected::before {
@@ -444,10 +446,10 @@ th.prev.available:hover {
 .daterangepicker .drp-buttons .btn {
     display: inline-block;
     font-size: 16px;
-    padding: 0px 14px;
-    line-height: 36px;
+    padding: 0px 12px;
+    line-height: 32px;
     border-radius: 8px;
-    margin: 12px 12px 12px 0px;
+    margin: 8px 8px 8px 0px;
 }
 
 

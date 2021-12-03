@@ -1,5 +1,5 @@
-//@Form-apply @Custom-apply 共用區塊 （專屬@Form-apply段落另外註記）
-if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
+//@form-type-a @form-type-b 共用區塊 （專屬@form-type-a段落另外註記）
+if (window.location.href.includes('form-type-a') || window.location.href.includes('form-type-b')) {
 
     //Fetch 下拉選單常用選項
     const gsUrl = 'https://docs.google.com/spreadsheets/d';
@@ -80,8 +80,8 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                     let formatOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[caseFormat].v + '</div><div class="custom-check tick-right"></div></div>';
                     $('#case-format').parent().find('.drop-group').append(formatOption);
                 }
-                //@Form-apply 專屬段落
-                if (window.location.href.includes('form-apply')) {
+                //@form-type-a 專屬段落
+                if (window.location.href.includes('form-type-a')) {
                     if (rows[r].c[theme] != null) {
                         let themeOption = '<div class="a-button as-list"><div class="label full-touch">' + rows[r].c[theme].v + '</div><div class="custom-check tick-right"></div></div>';
                         $('#theme').parent().find('.drop-group').append(themeOption);
@@ -109,8 +109,8 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
                     }
                 }
             }
-            //@Form-apply 專屬段落
-            if (window.location.href.includes('form-apply')) {
+            //@form-type-a 專屬段落
+            if (window.location.href.includes('form-type-a')) {
                 //右側dropGroup裡面「依照通路」新增尺寸選項
                 for (r = 1; r < rows.length; r++) {
                     let newSizeGroup = $('.col-right').find('.drop-group');
@@ -136,8 +136,8 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
         })
 }
 
-//@Custom-apply input 專屬區塊
-if (window.location.href.includes('custom-apply')) {
+//@form-type-b input 專屬區塊
+if (window.location.href.includes('form-type-b')) {
     let submit = document.querySelector('input[type=submit]');
     submit.addEventListener('click', () => {
         $('.icon_32x.btn-icon').removeClass('submit').addClass('js-loading');
@@ -187,9 +187,9 @@ if (window.location.href.includes('custom-apply')) {
                 let address = window.location.href;
                 setTimeout(() => {
                     if (address.indexOf('html') < 0) {
-                        address = address.replace('custom-apply', '');
+                        address = address.replace('form-type-b', '');
                     } else if (address.indexOf('html') >= 0) {
-                        address = address.replace('custom-apply.html', '');
+                        address = address.replace('form-type-b.html', '');
                     }
                     window.location.replace(address);
                 }, 1000)
@@ -198,8 +198,8 @@ if (window.location.href.includes('custom-apply')) {
     })
 }
 
-//@Form-apply input 專屬區塊
-if (window.location.href.includes('form-apply')) {
+//@form-type-a input 專屬區塊
+if (window.location.href.includes('form-type-a')) {
 
     // //Github API via Personal Auth
     // setTimeout(() => {
@@ -538,9 +538,9 @@ if (window.location.href.includes('form-apply')) {
                 let address = window.location.href;
                 setTimeout(() => {
                     if (address.indexOf('html') < 0) {
-                        address = address.replace('form-apply', '');
+                        address = address.replace('form-type-a', '');
                     } else if (address.indexOf('html') >= 0) {
-                        address = address.replace('form-apply.html', '');
+                        address = address.replace('form-type-a.html', '');
                     }
                     window.location.replace(address);
                 }, 1000)
@@ -550,8 +550,8 @@ if (window.location.href.includes('form-apply')) {
 }
 
 //@Index output 專屬區塊
-if (!window.location.href.includes('form-apply') &&
-    !window.location.href.includes('custom-apply')) {
+if (!window.location.href.includes('form-type-a') &&
+    !window.location.href.includes('form-type-b')) {
 
     //修改基本資料hover
     // $('.identity').hover(
@@ -770,9 +770,9 @@ if (!window.location.href.includes('form-apply') &&
                     let address = window.location.href;
                     setTimeout(() => {
                         if (address.indexOf('html') < 0) {
-                            address = address.replace('form-apply', '');
+                            address = address.replace('form-type-a', '');
                         } else if (address.indexOf('html') >= 0) {
-                            address = address.replace('form-apply.html', '');
+                            address = address.replace('form-type-a.html', '');
                         }
                         window.location.replace(address);
                     }, 1000)
@@ -1231,9 +1231,9 @@ if (!window.location.href.includes('form-apply') &&
                                 let address = window.location.href;
                                 setTimeout(() => {
                                     if (address.indexOf('html') < 0) {
-                                        address = address.replace('form-apply', '');
+                                        address = address.replace('form-type-a', '');
                                     } else if (address.indexOf('html') >= 0) {
-                                        address = address.replace('form-apply.html', '');
+                                        address = address.replace('form-type-a.html', '');
                                     }
                                     window.location.replace(address);
                                 }, 1000)
@@ -1273,9 +1273,9 @@ if (!window.location.href.includes('form-apply') &&
                         let address = window.location.href;
                         setTimeout(() => {
                             if (address.indexOf('html') < 0) {
-                                address = address.replace('custom-apply', '');
+                                address = address.replace('form-type-b', '');
                             } else if (address.indexOf('html') >= 0) {
-                                address = address.replace('custom-apply.html', '');
+                                address = address.replace('form-type-b.html', '');
                             }
                             window.location.replace(address);
                         }, 1000)
@@ -2027,16 +2027,6 @@ if (!window.location.href.includes('form-apply') &&
                             for (li = 0; li < lists.length; li++) {
 
                                 if (target == lists[li]) {
-                                    let brandID = sessionStorage.getItem('brandID');
-                                    let brandData = $(lists).eq(li).attr('data-brand');
-
-                                    if (brandID != 'ALL') {
-                                        if (brandID.indexOf(brandData) < 0) {
-                                            $('[data-validation="applicant"]').css('display', 'none');
-                                        }
-                                    }
-
-
                                     $(lists[li]).addClass('js-topbar'); //css animation has @keyframe
                                     $(lists[li]).find('.stats-flex').addClass('js-topbar'); //css animation has @keyframe
                                     $(lists[li]).find('._14px-500.as-stats').css('opacity', '0');
@@ -2110,10 +2100,30 @@ if (!window.location.href.includes('form-apply') &&
                                                 $("[data-output='applicant']").text($("[data-output='applicant']").text() + ' ' + tCells[i].v);
                                             }
                                             setTimeout(() => {
+                                                //管理方若點擊自己所點入的申請案件
                                                 let nameMail = sessionStorage.getItem('nameMail');
                                                 let type = sessionStorage.getItem('type');
                                                 if ($("[data-output=applicant]").text() == nameMail && type == 'MASTER') {
                                                     $('[data-send="MASTER"]').css('display', 'block');
+                                                }
+
+                                                //核對需求方身份已決定是否顯示「結案」功能
+                                                let brandID = sessionStorage.getItem('brandID');
+                                                // let brandData = $(lists).eq(li).attr('data-brand');
+
+                                                //以brandID核對
+                                                // if (brandID != 'ALL') {
+                                                //     if (brandID.indexOf(brandData) < 0) {
+                                                //         $('[data-validation="applicant"]').css('display', 'none');
+                                                //     }
+                                                // }
+
+                                                //以需求方核對 -> 核對點入查看的身份是否等同當初該案的申請者，因需求方的負責品牌可能會調動，故不以brandID做核對
+                                                if (brandID != 'ALL') {
+                                                    if ($('[data-output="applicant"]').text() != nameMail) {
+                                                        console.log(nameMail + $('[data-output="applicant"]').text())
+                                                        $('[data-validation="applicant"]').css('display', 'none');
+                                                    }
                                                 }
                                             }, 100)
                                             if (cols[i].label == '相關路徑') {
@@ -2689,9 +2699,9 @@ if (!window.location.href.includes('form-apply') &&
                                         let address = window.location.href;
                                         setTimeout(() => {
                                             if (address.indexOf('html') < 0) {
-                                                address = address.replace('custom-apply', '');
+                                                address = address.replace('form-type-b', '');
                                             } else if (address.indexOf('html') >= 0) {
-                                                address = address.replace('custom-apply.html', '');
+                                                address = address.replace('form-type-b.html', '');
                                             }
                                             window.location.replace(address);
                                         }, 1000)
@@ -2734,9 +2744,9 @@ if (!window.location.href.includes('form-apply') &&
                                         let address = window.location.href;
                                         setTimeout(() => {
                                             if (address.indexOf('html') < 0) {
-                                                address = address.replace('custom-apply', '');
+                                                address = address.replace('form-type-b', '');
                                             } else if (address.indexOf('html') >= 0) {
-                                                address = address.replace('custom-apply.html', '');
+                                                address = address.replace('form-type-b.html', '');
                                             }
                                             window.location.replace(address);
                                         }, 1000)
@@ -2754,9 +2764,9 @@ if (!window.location.href.includes('form-apply') &&
                                         console.log(response.data);
                                         let address = window.location.href;
                                         if (address.indexOf('html') < 0) {
-                                            address = address.replace('custom-apply', '');
+                                            address = address.replace('form-type-b', '');
                                         } else if (address.indexOf('html') >= 0) {
-                                            address = address.replace('custom-apply.html', '');
+                                            address = address.replace('form-type-b.html', '');
                                         }
                                         window.location.replace(address);
                                     });

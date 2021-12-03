@@ -133,24 +133,24 @@ $(document).ready(function() {
     let valKey = sessionStorage.getItem('key');
 
 
-    if (window.location.href.includes('form-apply') ||
-        window.location.href.includes('custom-apply') ||
+    if (window.location.href.includes('form-type-a') ||
+        window.location.href.includes('form-type-b') ||
         window.location.href.includes('read-me')) {
         if (valKey == null) {
             //redirect to home
             let address = window.location.href;
-            if (window.location.href.includes('custom-apply')) {
+            if (window.location.href.includes('form-type-b')) {
                 if (address.indexOf('html') < 0) {
-                    address = address.replace('custom-apply', '');
+                    address = address.replace('form-type-b', '');
                 } else if (address.indexOf('html') >= 0) {
-                    address = address.replace('custom-apply.html', '');
+                    address = address.replace('form-type-b.html', '');
                 }
                 window.location.replace(address);
-            } else if (window.location.href.includes('form-apply')) {
+            } else if (window.location.href.includes('form-type-a')) {
                 if (address.indexOf('html') < 0) {
-                    address = address.replace('form-apply', '');
+                    address = address.replace('form-type-a', '');
                 } else if (address.indexOf('html') >= 0) {
-                    address = address.replace('form-apply.html', '');
+                    address = address.replace('form-type-a.html', '');
                 }
                 window.location.replace(address);
             } else if (window.location.href.includes('read-me')) {
@@ -202,8 +202,8 @@ $(document).ready(function() {
     }, 1500)
 
     setTimeout(() => {
-        if (window.location.href.includes('form-apply') ||
-            window.location.href.includes('custom-apply') ||
+        if (window.location.href.includes('form-type-a') ||
+            window.location.href.includes('form-type-b') ||
             window.location.href.includes('read-me')) {
             $('.page-load-illus').parent().addClass('js-hide');
             $('.topbar-box.suspend').removeClass('js-hide');
@@ -949,7 +949,7 @@ $(document).click(function(e) {
 // ----------------------------------------------------------------------------------------------------
 
 //@Index 專屬區塊
-if (!window.location.href.includes('form-apply') && !window.location.href.includes('custom-apply')) {
+if (!window.location.href.includes('form-type-a') && !window.location.href.includes('form-type-b')) {
 
     //Result dropDown Label 點擊響應
     //!!!待解，jQuery不接受'js-'開頭的class name???
@@ -1068,8 +1068,8 @@ if (!window.location.href.includes('form-apply') && !window.location.href.includ
 
 // ----------------------------------------------------------------------------------------------------
 
-//@Form-apply專屬區塊
-if (window.location.href.includes('form-apply')) {
+//@form-type-a專屬區塊
+if (window.location.href.includes('form-type-a')) {
 
     //消除scroll stuck
     $('#Swiped').scroll((e) => {
@@ -1573,7 +1573,7 @@ if (window.location.href.includes('form-apply')) {
         }); //end of ecTabsCol click event
     } //end of ecTabsCol loop
 
-    //@form-apply hinter 響應
+    //@form-type-a hinter 響應
     //ec size 預設為不可點按
     window.addEventListener("load", () => {
         let dropInputs = document.querySelectorAll(".input.dropdown");
@@ -1636,7 +1636,7 @@ if (window.location.href.includes('form-apply')) {
             hinter.style.display = "none";
         });
     }
-    //end of @form-apply hinter 響應
+    //end of @form-type-a hinter 響應
 
     //anchor dot breathing
     $(document).ready(() => {
@@ -2195,8 +2195,8 @@ if (window.location.href.includes('read-me')) {
 // ----------------------------------------------------------------------------------------------------
 
 
-//@Form-apply、@Custom-apply 共用區塊
-if (window.location.href.includes('form-apply') || window.location.href.includes('custom-apply')) {
+//@form-type-a、@form-type-b 共用區塊
+if (window.location.href.includes('form-type-a') || window.location.href.includes('form-type-b')) {
 
     //back-home觸發前彈跳提醒視窗
     // $(document).click(()=>{
