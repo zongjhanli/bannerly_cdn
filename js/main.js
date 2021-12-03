@@ -414,7 +414,9 @@ document.addEventListener("click", (e) => {
         !target.parentElement.parentElement.classList.contains("f-block") &&
         !target.parentElement.parentElement.classList.contains("drop-group-s") &&
         !target.parentElement.parentElement.classList.contains("div-266h") &&
-        !target.parentElement.parentElement.parentElement.parentElement.classList.contains("for-query")) {
+        !target.parentElement.parentElement.parentElement.parentElement.classList.contains("for-query") &&
+        !target.parentElement.parentElement.parentElement.parentElement.classList.contains("for-actions")) {
+
         let tChecker = target.parentElement.querySelector(".custom-check");
         let tBtn = target.parentElement;
         let tGroup = target.parentElement.parentElement;

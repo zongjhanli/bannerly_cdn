@@ -48,23 +48,26 @@ if (window.location.href.includes('form-apply') || window.location.href.includes
 
             let brandID = sessionStorage.getItem('brandID');
             if (brandID != 'ALL') {
+                brandID += ',GI';
                 brandID = brandID.split(',');
+            } else if (brandID == 'ALL') {
+                brandID = ['ALL'];
             }
 
             let r;
             for (r = 1; r < rows.length; r++) {
                 if (rows[r].c[brand] != null) {
-                    if (rows[r].c[brandData] != null || brandID == 'ALL') {
+                    if (rows[r].c[brandData] != null || brandID[0] == 'ALL') {
                         let brandOption;
                         let id;
                         for (id = 0; id < brandID.length; id++) {
-                            if (brandID == 'ALL' || brandID[id] == rows[r].c[brandData].v) {
+                            if (brandID[0] == 'ALL' || brandID[id] == rows[r].c[brandData].v) {
                                 if (!rows[r].c[brand].v.includes('*')) {
                                     brandOption = '<div class="a-button as-list" data-brandData="' + rows[r].c[brandData].v + '"><div class="label full-touch">' + rows[r].c[brand].v + '</div><div class="custom-check tick-right"></div></div>';
                                 }
                             }
                         }
-                        if (brandID == 'ALL') {
+                        if (brandID[0] == 'ALL') {
                             if (rows[r].c[brand].v.includes('*')) {
                                 rows[r].c[brand].v = rows[r].c[brand].v.replace('*', '');
                                 brandOption = '<div class="a-button as-list drop-div"><div class="label drop-div">' + rows[r].c[brand].v + '</div></div>';
@@ -302,8 +305,12 @@ if (window.location.href.includes('form-apply')) {
 
             let brandID = sessionStorage.getItem('brandID');
             if (brandID != 'ALL') {
+                brandID += ',GI';
                 brandID = brandID.split(',');
+            } else if (brandID == 'ALL') {
+                brandID = ['ALL'];
             }
+            // console.log(brandID)
 
             setTimeout(function() {
                 $('#Product').find('.drop-group').each((d) => {
@@ -311,7 +318,7 @@ if (window.location.href.includes('form-apply')) {
                     for (id = 0; id < brandID.length; id++) {
                         let i;
                         for (i = 0; i < $(imgArr).length; i++) {
-                            if (imgArr[i].indexOf(brandID[id]) >= 0 || brandID == 'ALL') {
+                            if (imgArr[i].indexOf(brandID[id]) == 0 || brandID[0] == 'ALL') {
                                 let option = '<div class="a-button as-list"><div class="label full-touch">' + imgArr[i] + '</div><div class="custom-check tick-right"></div></div>'
                                 $('#Product').find('.drop-group').eq(d).append(option);
                             }
@@ -611,15 +618,20 @@ if (!window.location.href.includes('form-apply') &&
         $('#validation').focus();
         $('.portal').css('paddingBottom', '72px');
     })
-    $('.back-portal').click(() => {
-        $('.portal').addClass('inactive');
-        $('[data-portal=sign-up]').css('display', 'none');
-        $('[data-portal=sign-in]').css('display', 'none');
-        $('.sign-up').not('.icon_32x').parent().css('display', 'block');
-        $('.sign-in').parent().css('display', 'block');
-        $('.sign-up').not('.icon_32x').removeClass('js-btn2text');
-        $('.sign-in').removeClass('js-btn2text');
-        $('.back-portal').css('display', 'none');
+    $('.back-portal').click((e) => {
+        let target = e.target;
+        setTimeout(() => {
+            if (!$(target).hasClass('for-config')) {
+                $('.portal').addClass('inactive');
+                $('[data-portal=sign-up]').css('display', 'none');
+                $('[data-portal=sign-in]').css('display', 'none');
+                $('.sign-up').not('.icon_32x').parent().css('display', 'block');
+                $('.sign-in').parent().css('display', 'block');
+                $('.sign-up').not('.icon_32x').removeClass('js-btn2text');
+                $('.sign-in').removeClass('js-btn2text');
+                $('.back-portal').css('display', 'none');
+            }
+        }, 10)
     })
     $('#dbcheck-code').change(() => {
         if ($('#dbcheck-code').val() != $('#user-code').val()) {
@@ -1038,6 +1050,7 @@ if (!window.location.href.includes('form-apply') &&
                     $('.portal .f-block.in-combo').not('.config').css('display', 'none');
                     $('.portal .f-block.in-combo.config').css('display', 'block');
                     $('.portal .back-portal').css('display', 'block');
+                    $('.portal .back-portal').addClass('for-config');
                     $('[data-portal="sign-in"]').css('display', 'none');
                     $('[data-portal="sign-up"]').css('display', 'block');
                     $('[data-portal="sign-up"] .f-block').css('display', 'flex');
@@ -1071,7 +1084,7 @@ if (!window.location.href.includes('form-apply') &&
                         let brandArr = brandID.split(',');
                         // console.log(brandArr)
                         $(label).each((l) => {
-                            if (brandArr.indexOf($(label).eq(l).text()) >= 0) {
+                            if (brandArr.indexOf($(label).eq(l).text()) == 0) {
                                 $(label).eq(l).siblings('.custom-check').addClass('js-selected');
                             }
                         })
@@ -1079,14 +1092,17 @@ if (!window.location.href.includes('form-apply') &&
                     // $('#user-code').val(valKey);
                     // $('#dbcheck-code').val(valKey);
                 })
-                $('.back-portal').click(() => {
-                    let confirm = window.confirm('確認返回？資料更動將不會儲存！')
-                    if (confirm) {
-                        $('.portal-bg').addClass('js-hide');
-                    } else {
-                        return
-                    }
-                })
+                setTimeout(() => {
+                    $('.back-portal').click((e) => {
+                        let target = e.target;
+                        if ($(target).hasClass('for-config')) {
+                            let confirm = window.confirm('確認返回？資料更動將不會儲存！')
+                            if (confirm) {
+                                $('.portal-bg').addClass('js-hide');
+                            }
+                        }
+                    })
+                }, 10)
                 $('[data-update="config"]').click((e) => {
                     let target = e.target;
                     let input = $(target).closest('.portal').find('[data-portal=sign-up]').find('input[type=text], input[type=email], input[type=password]');
