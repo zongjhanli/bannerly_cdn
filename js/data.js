@@ -971,11 +971,15 @@ if (!window.location.href.includes('form-apply') &&
                                 $('[data-validation=master]').remove();
                                 $('.member-name').text(name);
                                 $('.identity').html('需求方' + gear);
+                                let currWidth = 'calc(' + $('.member-name').css('width') + ' + ' + $('.identity').css('width') + ' + ' + '14px)';
+                                $('.drop-card.for-identity').css('maxWidth', currWidth);
                             } else if (type == 'designer') {
                                 $('[data-validation=master]').remove();
                                 $('[data-validation=applicant]').remove();
                                 $('.member-name').text(name);
                                 $('.identity').html('設計方' + gear);
+                                let currWidth = 'calc(' + $('.member-name').css('width') + ' + ' + $('.identity').css('width') + ' + ' + '14px)';
+                                $('.drop-card.for-identity').css('maxWidth', currWidth);
                             } else if (type == 'MASTER') {
                                 $('[data-send="MASTER"]').css('display', 'none');
                                 // $('.submit-box[data-validation=applicant]').remove();
@@ -983,6 +987,8 @@ if (!window.location.href.includes('form-apply') &&
                                 $('[data-validation=share]').remove();
                                 $('.member-name').text(name);
                                 $('.identity').html('管理方' + gear);
+                                let currWidth = 'calc(' + $('.member-name').css('width') + ' + ' + $('.identity').css('width') + ' + ' + '14px)';
+                                $('.drop-card.for-identity').css('maxWidth', currWidth);
                             }
                         }
                     }
@@ -1002,17 +1008,24 @@ if (!window.location.href.includes('form-apply') &&
                                 $('[data-validation=master]').remove();
                                 $('.member-name').text(name);
                                 $('.identity').html('需求方' + gear);
+                                let currWidth = 'calc(' + $('.member-name').css('width') + ' + ' + $('.identity').css('width') + ' + ' + '14px)';
+                                $('.drop-card.for-identity').css('maxWidth', currWidth);
                             } else if (rows[i].c[1].v == 'designer') {
                                 $('[data-validation=master]').remove();
                                 $('[data-validation=applicant]').remove();
                                 $('.member-name').text(name);
                                 $('.identity').html('設計方' + gear);
+                                let currWidth = 'calc(' + $('.member-name').css('width') + ' + ' + $('.identity').css('width') + ' + ' + '14px)';
+                                $('.drop-card.for-identity').css('maxWidth', currWidth);
                             } else if (rows[i].c[1].v == 'MASTER') {
                                 $('[data-send="MASTER"]').css('display', 'none');
                                 $('.card-box').eq(0).find('[data-validation=applicant]').remove();
                                 $('[data-validation=share]').remove();
                                 $('.member-name').text(name);
                                 $('.identity').html('管理方' + gear);
+                                let currWidth = 'calc(' + $('.member-name').css('width') + ' + ' + $('.identity').css('width') + ' + ' + '14px)';
+                                // console.log(currWidth)
+                                $('.drop-card.for-identity').css('maxWidth', currWidth);
                             }
                         }
                     }

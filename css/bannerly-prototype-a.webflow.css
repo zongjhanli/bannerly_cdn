@@ -345,6 +345,8 @@ label {
 
 .a-button.as_contained.new-case.dropdown-box,
 .a-button.as_contained.new-case.dropdown-box:hover {
+    position: absolute;
+    right: 8px;
     border-radius: 12px;
     min-width: 114px;
     width: auto;
@@ -2647,9 +2649,9 @@ div::-webkit-scrollbar {
     margin-right: auto;
     margin-left: auto;
     -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
+    -webkit-justify-content: flex-start;
     -ms-flex-pack: justify;
-    justify-content: space-between;
+    justify-content: flex-start;
     -webkit-box-align: center;
     -webkit-align-items: center;
     -ms-flex-align: center;
@@ -2692,13 +2694,19 @@ div::-webkit-scrollbar {
 
 .home.dropdown-box {
     cursor: pointer;
-    display: block;
+    display: inline;
     position: relative;
     margin-left: 0px;
     max-width: 164px;
     z-index: 0;
     -webkit-transition: all 200ms ease;
     transition: all 200ms ease;
+}
+
+.home.dropdown-box.readme,
+.home.dropdown-box.readme:hover {
+    cursor: default;
+    transform: scale(1, 1);
 }
 
 .home.dropdown-box:hover {
@@ -3509,7 +3517,7 @@ div::-webkit-scrollbar {
 }
 
 .drop-card.for-identity {
-    max-width: 160px;
+    max-width: 100%;
     margin-left: -2px;
     top: 36px;
 }
