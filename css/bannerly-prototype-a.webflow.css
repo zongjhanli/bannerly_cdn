@@ -3636,10 +3636,9 @@ div::-webkit-scrollbar {
     line-height: 24px;
 }
 
-
-/* .output.as-textarea.copiable {
+.output.as-textarea.copiable {
     cursor: copy;
-} */
+}
 
 .output.as-textarea:hover {
     box-shadow: none;
@@ -4839,7 +4838,7 @@ img.p-img:hover {
     width: 100%;
     margin-left: 28px;
     padding-left: 4px;
-    opacity: 0.72;
+    opacity: 0.64;
     height: 72px;
     line-height: 72px;
     margin-top: 0px;

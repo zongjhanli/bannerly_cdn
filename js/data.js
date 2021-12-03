@@ -869,7 +869,7 @@ if (!window.location.href.includes('form-apply') &&
                     $('#validation').focus();
                 })
 
-                $('[data-update=sign-in]').click((e) => {
+                $('[data-update="sign-in"]').click((e) => {
                     validating();
                 })
 
@@ -920,7 +920,7 @@ if (!window.location.href.includes('form-apply') &&
                         }, 200)
                     } else if (rows[iArr[0]] != null) {
                         if ($(password).val() != '') {
-                            if (rows[iArr[0]].c[3].v.indexOf($(password).val()) == 0) {
+                            if (rows[iArr[0]].c[3].v == $(password).val()) {
                                 validated = true;
                             } else {
                                 let hinter = '<div class="inline-hinter">密碼錯誤</div>';
