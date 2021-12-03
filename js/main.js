@@ -2098,6 +2098,10 @@ if (window.location.href.includes('read-me')) {
         }
     })
 
+    //#品牌權限  applicant需求方 顯示「品牌代號」
+    let brandID = sessionStorage.getItem('brandID');
+    $('.brand').text(brandID);
+
     //expander
     let expander = $('.p-h3').not('.js-exclude');
     $(expander).click((e) => {
