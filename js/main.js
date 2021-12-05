@@ -623,10 +623,10 @@ document.addEventListener("click", (e) => {
                         }
                     }
 
-                    tSizeInput.placeholder = '請輸入' + shownTabs[0].firstElementChild.textContent + '尺寸';
+                    tSizeInput.placeholder = '選擇或輸入' + shownTabs[0].firstElementChild.textContent + '尺寸';
                 }
             } else if (shownTabs.length == 0) {
-                tSizeInput.placeholder = '請輸入尺寸';
+                tSizeInput.placeholder = '選擇或輸入尺寸';
             }
         }
 
@@ -1203,7 +1203,7 @@ if (window.location.href.includes('form-type-a')) {
                                         if ($(tabs).eq(b).children('.label').attr('data-tab').indexOf(ecName) >= 0) {
                                             $(tabs).eq(b).addClass('js-show');
                                             $(tabs).eq(b).css('color', 'rgba(47, 90, 58, 1)');
-                                            $(card).find('.col-right').find('.input[type="text"]').val('請輸入' + $(tabs).eq(b).find('.label').text() + '尺寸');
+                                            $(card).find('.col-right').find('.input[type="text"]').val('選擇或輸入' + $(tabs).eq(b).find('.label').text() + '尺寸');
                                         }
                                     })
                                     $(sizeGroup).each((s) => {
@@ -1546,7 +1546,7 @@ if (window.location.href.includes('form-type-a')) {
                     let tabName = shownTab.firstElementChild.textContent;
                     let tSizeInput = tCol.nextElementSibling.querySelector('[data-dropfor=size]');
                     if (target == shownTab.firstElementChild) {
-                        tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
+                        tSizeInput.placeholder = '選擇或輸入' + tabName + '尺寸';
                     }
 
                     let tTextAreas =
@@ -1958,7 +1958,7 @@ if (window.location.href.includes('form-type-a')) {
 
                                         let tSizeInput = tCardBox.querySelectorAll('.input.dropdown')[1];
                                         let tabName = shownTabs[0].firstElementChild.textContent;
-                                        tSizeInput.placeholder = '請輸入' + tabName + '尺寸';
+                                        tSizeInput.placeholder = '選擇或輸入' + tabName + '尺寸';
                                     }
                                 }
                             }
