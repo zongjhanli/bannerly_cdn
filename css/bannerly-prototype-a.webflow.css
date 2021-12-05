@@ -4619,10 +4619,10 @@ div::-webkit-scrollbar {
 .wider-hint {
     text-align: center;
     position: absolute;
-    bottom: -52px;
+    bottom: -40px;
     left: 0%;
     right: 0%;
-    color: #999;
+    color: #808080;
 }
 
 .page-load-illus.js-hide {
