@@ -3674,7 +3674,8 @@ div::-webkit-scrollbar {
     line-height: 24px;
 }
 
-.output.as-textarea.copiable {
+.output.as-textarea.copiable,
+.output.as-text.copiable {
     cursor: copy;
 }
 
