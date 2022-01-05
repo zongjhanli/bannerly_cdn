@@ -65,7 +65,7 @@ function screenToSmall() {
         // console.log(mobile)
         // return check;
         if (mobile == false) {
-            console.log($('#mobileHinter'))
+            // console.log($('#mobileHinter'))
             $('#mobileHinter').css('display', 'none');
         } else {
             $('#desktopHinter').css('display', 'none');

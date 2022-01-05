@@ -923,6 +923,7 @@ if (!window.location.href.includes('form-type-a') &&
                             }
                         }
                     }
+                    console.log(iArr[0])
                     if (rows[iArr[0]] == null) {
                         let hinter = '<div class="inline-hinter">此帳號不存在</div>';
                         $(employee).closest('.f-block').find('._12px-500').append(hinter);
@@ -2327,7 +2328,7 @@ if (!window.location.href.includes('form-type-a') &&
                                     let ecDatasC = tCells[ecDataC].v.split(',');
                                     let totalSizeC = 0;
                                     let sc;
-                                    for (sa = 0; sc < sizeIndexC.length; sc++) {
+                                    for (sc = 0; sc < sizeIndexC.length; sc++) {
                                         let tabBtn = '<div class="a-button as-tab"><div data-ec="' + ecDatasC[sa] + '" class="label full-touch">' + ecNamesC[sc] + '</div><div class="_12px-500 as-counts in-tab">' + ((tCells[sizeIndexC[sc]].v.match(/\n/g) || []).length + 1) + '</div></div>';
                                         let sizeOutput = '<div data-output="' + ecDatasC[sc] + '" class="output as-textarea bulk">' + tCells[sizeIndexC[sc]].v.replaceAll('\n', '<br>') + '</div>';
                                         $('.height-extended').eq(2).append(sizeOutput);
