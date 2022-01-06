@@ -859,6 +859,7 @@ if (!window.location.href.includes('form-type-a') &&
             let json = JSON.parse(jsData);
             let rows = json.table.rows;
             let cols = json.table.cols;
+            console.log(cols)
 
             if (valKey == null) {
                 $('#validation').keyup((e) => {
@@ -1036,15 +1037,15 @@ if (!window.location.href.includes('form-type-a') &&
             let userType = 0;
             let nameMail = 0;
             for (i = 0; i < cols.length; i++) {
-                if (rows[0].c[i].v == 'user-type') {
+                if (cols[i].label == 'user-type') {
                     userType += i;
                 }
-                if (rows[0].c[i].v == 'user-name') {
+                if (cols[i].label == 'user-name') {
                     nameMail += i;
                 }
             }
             let r;
-            for (r = 1; r < rows.length; r++) {
+            for (r = 0; r < rows.length; r++) {
                 if (rows[r].c[nameMail] != null) {
                     //TBC output applicant query
                     if (rows[r].c[userType].v == 'applicant') {
@@ -2061,7 +2062,6 @@ if (!window.location.href.includes('form-type-a') &&
                                     }
                                     setTimeout(() => {
                                         if ($('[data-output="designer"]').text() == '未指派') {
-                                            console.log('x')
                                             endCaseInactive();
                                             $('[data-update="end-case"]').html('確認結案<div class="icon_32x btn-icon end-case unclickable"></div>');
                                             $('[data-update="end-case"]').css({
@@ -2122,7 +2122,7 @@ if (!window.location.href.includes('form-type-a') &&
                                                 //以需求方核對 -> 核對點入查看的身份是否等同當初該案的申請者，因需求方的負責品牌可能會調動，故不以brandID做核對
                                                 if (brandID != 'ALL') {
                                                     if ($('[data-output="applicant"]').text() != nameMail) {
-                                                        console.log(nameMail + $('[data-output="applicant"]').text())
+                                                        // console.log(nameMail + $('[data-output="applicant"]').text())
                                                         $('[data-validation="applicant"]').css('display', 'none');
                                                     }
                                                 }
@@ -2328,16 +2328,19 @@ if (!window.location.href.includes('form-type-a') &&
                                     let ecDatasC = tCells[ecDataC].v.split(',');
                                     let totalSizeC = 0;
                                     let sc;
-                                    for (sa = 0; sc < sizeIndexC.length; sc++) {
-                                        let tabBtn = '<div class="a-button as-tab"><div data-ec="' + ecDatasC[sc] + '" class="label full-touch">' + ecNamesC[sc] + '</div><div class="_12px-500 as-counts in-tab">' + ((tCells[sizeIndexC[sc]].v.match(/\n/g) || []).length + 1) + '</div></div>';
-                                        let sizeOutput = '<div data-output="' + ecDatasC[sc] + '" class="output as-textarea bulk">' + tCells[sizeIndexC[sc]].v.replaceAll('\n', '<br>') + '</div>';
-                                        $('.height-extended').eq(2).append(sizeOutput);
-                                        $('.side-184w').eq(2).append(tabBtn);
-                                        $('.height-extended').eq(2).find('.as-textarea').css('display', 'none');
-                                        $('.height-extended').eq(2).find('.as-textarea').eq(0).css('display', 'block');
-                                        $('.side-184w').eq(2).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
-                                        $('.side-184w').eq(2).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
-                                        totalSizeC += (tCells[sizeIndexC[sc]].v.match(/\n/g) || []).length + 1;
+                                    for (sc = 0; sc < sizeIndexC.length; sc++) {
+                                        // console.log(tCells[sizeIndexC[1]]);
+                                        if (tCells[sizeIndexC[sc]].v != null) {
+                                            let tabBtn = '<div class="a-button as-tab"><div data-ec="' + ecDatasC[sc] + '" class="label full-touch">' + ecNamesC[sc] + '</div><div class="_12px-500 as-counts in-tab">' + ((tCells[sizeIndexC[sc]].v.match(/\n/g) || []).length + 1) + '</div></div>';
+                                            let sizeOutput = '<div data-output="' + ecDatasC[sc] + '" class="output as-textarea bulk">' + tCells[sizeIndexC[sc]].v.replaceAll('\n', '<br>') + '</div>';
+                                            $('.height-extended').eq(2).append(sizeOutput);
+                                            $('.side-184w').eq(2).append(tabBtn);
+                                            $('.height-extended').eq(2).find('.as-textarea').css('display', 'none');
+                                            $('.height-extended').eq(2).find('.as-textarea').eq(0).css('display', 'block');
+                                            $('.side-184w').eq(2).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
+                                            $('.side-184w').eq(2).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
+                                            totalSizeC += (tCells[sizeIndexC[sc]].v.match(/\n/g) || []).length + 1;
+                                        }
                                     }
                                     $('[data-output=S-count2-C]').text($('[data-output=S-count2-C]').text() + '/ ' + totalSizeC + '尺寸');
                                 }
@@ -2617,6 +2620,8 @@ if (!window.location.href.includes('form-type-a') &&
                             $('.a-button.as-tab.indicator').css('top', '0px');
                             $('.col-left').find('.a-button').not('.indicator').remove();
                             $('.col-right').find('[data-output]').remove();
+
+                            $('[data-validation="applicant"]').css('display', 'flex');
                         })
                         $(document).click(() => {
                             setTimeout(() => {
