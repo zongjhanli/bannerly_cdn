@@ -911,7 +911,7 @@ if (!window.location.href.includes('form-type-a') &&
                     let i;
                     let iArr = [];
                     let validated = false;
-                    for (i = 1; i < rows.length; i++) {
+                    for (i = 0; i < rows.length; i++) {
                         if (rows[i].c[2] != null) {
                             if ($(employee).val() != '') {
                                 let allNameMail = rows[i].c[2].v;
