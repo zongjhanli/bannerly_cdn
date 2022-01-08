@@ -1481,6 +1481,30 @@ div::-webkit-scrollbar {
     /* Hide scrollbar for Chrome, Safari and Opera */
 }
 
+
+/* 登入區域scrollbar */
+
+.portal-block-group {
+    -ms-overflow-style: none;
+    scrollbar-width: 4px;
+}
+
+.portal-block-group::-webkit-scrollbar-thumb {
+    background: #8080807c;
+    border-radius: 2px;
+    /* border-radius: 4px; */
+}
+
+.portal-block-group::-webkit-scrollbar {
+    width: 4px;
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    background: transparent;
+}
+
+.portal-block-group::-webkit-scrollbar {
+    display: block;
+}
+
 .body.for-input {
     background-color: #e5e5e5;
 }
