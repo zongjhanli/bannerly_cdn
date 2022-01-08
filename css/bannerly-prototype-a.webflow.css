@@ -412,11 +412,30 @@ label {
     min-width: 76px;
     height: 24px;
     text-align: left;
-    margin-left: -20px;
+    margin-left: -40px;
     padding-left: 20px;
     padding-right: 20px;
+    margin-top: -12px;
+    margin-bottom: 8px;
     transform: scale(1, 1);
     font-size: 18px;
+}
+
+.pssrd-unseen {
+    position: absolute;
+    right: 12px;
+    bottom: 8px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    background-image: url('../images/akar-icons_eye-slashed.svg');
+    background-position: 50% 50%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.pssrd-unseen.js-toggle-pssrd {
+    background-image: url('../images/akar-icons_eye-open.svg');
 }
 
 .a-button.as_contained.has-icon {
@@ -4945,3 +4964,5 @@ img.p-img:hover {
     font-style: normal;
     font-display: swap;
 }
+
+;

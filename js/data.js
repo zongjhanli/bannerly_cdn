@@ -553,6 +553,28 @@ if (window.location.href.includes('form-type-a')) {
 if (!window.location.href.includes('form-type-a') &&
     !window.location.href.includes('form-type-b')) {
 
+
+    //密碼顯隱
+    const togglePasswords = document.querySelectorAll('#togglePassword');
+    const passwords = document.querySelectorAll('.pssrd');
+
+    for (const togglePassword of togglePasswords) {
+        togglePassword.addEventListener('click', () => {
+            // toggle the type attribute
+            for (const password of passwords) {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+            }
+
+            // toggle the eye / eye slash icon
+            $(togglePasswords).toggleClass('js-toggle-pssrd');
+            // $('#togglePassword').each((p) => {
+            //         $('#togglePassword').eq(p).toggleClass('js-toggle-pssrd');
+            //     })
+            // togglePassword.classList.toggle('js-toggle-pssrd');
+        });
+    }
+
     //修改基本資料hover
     // $('.identity').hover(
     //     function() {

@@ -441,20 +441,21 @@
                     <div class="a-button as_contained for-portal sign-in">登入</div>
                 </div>
                 <div class="f-block in-combo config" style="display: none;">
-                    <div class="a-button as_contained for-portal config js-btn2text">修改資料</div>
+                    <div class="a-button as_contained for-portal config js-btn2text" style="margin-left: -20px; width: 128px;">修改資料</div>
                 </div>
             </div>
             <div class="icon-24x back-portal"></div>
             <div data-portal="sign-in" class="portal-block-group">
                 <div class="f-block">
-                    <div class="_12px-500">帳號名稱（郵箱前綴）</div>
-                    <input type="text" class="input as-text js-custom-input w-input" autocomplete="on" maxlength="256" name="employee" data-name="employee" placeholder="請選擇" id="employee">
+                    <div class="_12px-500">您的帳號</div>
+                    <input type="text" class="input as-text js-custom-input w-input" autocomplete="on" maxlength="256" name="employee" data-name="employee" placeholder="E-mail地址" id="employee">
                 </div>
                 <div class="f-block">
                     <div class="_12px-500">密碼</div>
                     <div class="input-embed w-embed">
-                        <input type="text" class="input as-text" autocomplete="off" maxlength="6" name="password" data-name="password" id="password" placeholder="6位英數字">
+                        <input type="password" class="input as-text pssrd" autocomplete="off" maxlength="6" name="password" data-name="password" id="password" placeholder="6位英數字">
                         <div class="icon_20x for-custom-input for-portal js-return"></div>
+                        <i class="pssrd-unseen" id="togglePassword"></i>
                     </div>
                 </div>
                 <div class="_12px-500" style="color:#808080">*為節省開發資源，忘記密碼請聯繫管理方協助</div>
@@ -494,11 +495,13 @@
                 </div>
                 <div class="f-block">
                     <div class="_12px-500">設定密碼</div>
-                    <div class="input-embed w-embed"><input type="password" class="input as-text" autocomplete="off" maxlength="6" name="user-code" data-name="user-code" id="user-code" placeholder="6位英數字"></div>
+                    <div class="input-embed w-embed"><input type="text" class="input as-text pssrd" autocomplete="off" maxlength="6" name="user-code" data-name="user-code" id="user-code" placeholder="6位英數字（不限大小寫）"></div>
+                    <i class="pssrd-unseen js-toggle-pssrd" id="togglePassword"></i>
                 </div>
                 <div class="f-block">
                     <div class="_12px-500">再次確認密碼</div>
-                    <div class="input-embed w-embed"><input type="password" class="input as-text" autocomplete="off" maxlength="6" name="dbcheck-code" data-name="dbcheck-code" id="dbcheck-code" placeholder="6位英數字"></div>
+                    <div class="input-embed w-embed"><input type="text" class="input as-text pssrd" autocomplete="off" maxlength="6" name="dbcheck-code" data-name="dbcheck-code" id="dbcheck-code" placeholder="6位英數字（不限大小寫）"></div>
+                    <i class="pssrd-unseen js-toggle-pssrd" id="togglePassword"></i>
                 </div>
                 <!-- <div class="f-block">
                     <div class="_12px-500">上傳檔案</div>
