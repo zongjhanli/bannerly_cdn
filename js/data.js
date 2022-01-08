@@ -946,7 +946,7 @@ if (!window.location.href.includes('form-type-a') &&
                             }
                         }
                     }
-                    console.log(iArr[0])
+                    // console.log(iArr[0])
                     if (rows[iArr[0]] == null) {
                         let hinter = '<div class="inline-hinter">此帳號不存在</div>';
                         $(employee).closest('.f-block').find('._12px-500').append(hinter);
