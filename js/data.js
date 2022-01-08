@@ -940,7 +940,8 @@ if (!window.location.href.includes('form-type-a') &&
                                 let space = allNameMail.indexOf(' ');
                                 let at = allNameMail.indexOf('@');
                                 let name = allNameMail.slice(space, at).trim();
-                                if (name == $(employee).val()) {
+                                let fullMail = allNameMail.slice(space, allNameMail.length).trim();
+                                if (name == $(employee).val() || fullMail == $(employee).val()) {
                                     iArr.push(i);
                                 }
                             }
