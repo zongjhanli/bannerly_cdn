@@ -938,17 +938,20 @@ a.a-button.as-list {
 
 .f-block.portal-title {
     position: absolute;
-    top: -72px;
+    top: -96px;
     left: 0px;
 }
 
-.f-block.portal-title h2 {
+.f-block.portal-title h2,
+.f-block.portal-title h1 {
     width: 288px;
     text-align: center;
     margin-bottom: 4px;
+    color: #333;
 }
 
-.f-block.portal-title ._12px-500 {
+.f-block.portal-title ._12px-500,
+.f-block.portal-title ._14px-500 {
     width: 288px;
     text-align: center;
     color: #333;
