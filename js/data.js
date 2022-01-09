@@ -410,16 +410,16 @@ if (window.location.href.includes('form-type-a')) {
             let CecData = Array.from(Clabels, (x) => x.dataset.tab);
 
             let noteA = '';
-            if ($("#C-4-A").text() != '') {
-                noteA = '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-A").text() + '</div>';
+            if ($("#C-4-A").val() != '') {
+                noteA = '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-A").val() + '</div>';
             }
             let noteB = '';
-            if ($("#C-4-B").text() != '') {
-                noteB = '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-B").text() + '</div>';
+            if ($("#C-4-B").val() != '') {
+                noteB = '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-B").val() + '</div>';
             }
             let noteC = '';
-            if ($("#C-4-C").text() != '') {
-                noteC = '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-C").text() + '</div>';
+            if ($("#C-4-C").val() != '') {
+                noteC = '<div class="annotate case-note">註</div>' + '<div class="case-note">' + $("#C-4-C").val() + '</div>';
             }
 
             //reconstruct copywright value
@@ -2479,10 +2479,10 @@ if (!window.location.href.includes('form-type-a') &&
 
                         //隱藏空白的案型card
                         setTimeout(() => {
-                                let copyWright = $("[data-output='C-A'], [data-output='C-B'], [data-output='C-C']");
-                                $(copyWright).each((c) => {
-                                    if ($(copyWright).eq(c).text().length == 0) {
-                                        $(copyWright).eq(c).closest('.card-box').css('display', 'none');
+                                let outputCards = $("[data-output='theme'], [data-output='C-A'], [data-output='C-B'], [data-output='C-C']");
+                                $(outputCards).each((c) => {
+                                    if ($(outputCards).eq(c).text().length == 0) {
+                                        $(outputCards).eq(c).closest('.card-box').css('display', 'none');
                                     }
                                 })
                             }, 1)
@@ -2626,6 +2626,11 @@ if (!window.location.href.includes('form-type-a') &&
                             $("[data-output=designer]").not('input').css('color', 'rgba(47, 90, 58, 1)');
                             $("[data-output=ddl-1]").not('input').css('color', 'rgba(47, 90, 58, 1)');
                             $("[data-output=ddl-2]").not('input').css('color', 'rgba(47, 90, 58, 1)');
+
+                            //visual area
+                            $("[data-output='theme']").text('');
+                            $("[data-output='color-tone']").text('');
+
                             //pd count area
                             $('[data-output=P-count-A], [data-output=P-count-B], [data-output=P-count-C]').text('0');
 
