@@ -4,7 +4,7 @@ if (window.location.href.includes('form-type-a') || window.location.href.include
     //Fetch 下拉選單常用選項
     const gsUrl = 'https://docs.google.com/spreadsheets/d';
     const query = `/gviz/tq?`; //google visualisation 
-    let ssidDrop = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
+    let ssidDrop = '/13ZXxOJNfMb-0fKTBOEhC_Wk-58wPy66jqUdLpZ06NT4';
     const endpointDrop = `${gsUrl}${ssidDrop}${query}`;
     fetch(endpointDrop)
         .then(res => res.text())
@@ -161,7 +161,7 @@ if (window.location.href.includes('form-type-b')) {
             let mail = nameMail.slice(space + 1, nameMail.length).trim();
             let brandID = $('#brand').parent().find('.js-selected').parent().attr('data-branddata');
 
-            axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
+            axios.post('https://sheetdb.io/api/v1/0cbs32hywu5nr', {
                 "data": {
                     "timestamp": $('.submit-box').attr('data-stamp'),
                     ////基本資訊
@@ -287,7 +287,7 @@ if (window.location.href.includes('form-type-a')) {
     const gsUrl = 'https://docs.google.com/spreadsheets/d';
     const query = `/gviz/tq?`; //google visualisation 
     // G-sheet 讀取圖片名稱
-    let ssidPD = '/1--Bm763Gd8DNq6egYKQgHyewISd7gn3vZzDisb8NUbQ';
+    let ssidPD = '/1lM_IMjvrvossjraz6kI5JF4sDaxfGLY9ThAMeE4nAck';
     const endpointPD = `${gsUrl}${ssidPD}${query}`;
     fetch(endpointPD)
         .then(res => res.text())
@@ -448,7 +448,7 @@ if (window.location.href.includes('form-type-a')) {
             let mail = nameMail.slice(space + 1, nameMail.length).trim();
             let brandID = $('#brand').parent().find('.js-selected').parent().attr('data-branddata');
 
-            axios.post('https://sheetdb.io/api/v1/fx6gemwyky94h', {
+            axios.post('https://sheetdb.io/api/v1/0cbs32hywu5nr', {
                 "data": {
                     "timestamp": $('.submit-box').attr('data-stamp'),
                     ////基本資訊
@@ -746,8 +746,8 @@ if (!window.location.href.includes('form-type-a') &&
 
         let latestID = 0;
         //get latest id & ready to redefine lastest ID
-        let ssidCode = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
-        const sheetID = `gid=251577508`;
+        let ssidCode = '/13ZXxOJNfMb-0fKTBOEhC_Wk-58wPy66jqUdLpZ06NT4';
+        const sheetID = `gid=568247817`;
         const endpointCode = `${gsUrl}${ssidCode}${query}${sheetID}`;
         fetch(endpointCode)
             .then(res => res.text())
@@ -773,7 +773,7 @@ if (!window.location.href.includes('form-type-a') &&
             setTimeout(() => {
 
                 //sheetDB POST
-                axios.post('https://sheetdb.io/api/v1/mebkcye8qw7nd?sheet=members', {
+                axios.post('https://sheetdb.io/api/v1/k5kqwflbl94nj?sheet=members', {
                     "data": {
                         "id": latestID + 1,
                         "user-type": $('[data-name=user-type]:checked').attr('data-type'),
@@ -870,9 +870,9 @@ if (!window.location.href.includes('form-type-a') &&
         }
     })
 
-    // https://docs.google.com/spreadsheets/d/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0/edit#gid=251577508
-    let ssidCode = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
-    const sheetID = `gid=251577508`;
+    // https://docs.google.com/spreadsheets/d/13ZXxOJNfMb-0fKTBOEhC_Wk-58wPy66jqUdLpZ06NT4/edit#gid=568247817
+    let ssidCode = '/13ZXxOJNfMb-0fKTBOEhC_Wk-58wPy66jqUdLpZ06NT4';
+    const sheetID = `gid=568247817`;
     const endpointCode = `${gsUrl}${ssidCode}${query}${sheetID}`;
     fetch(endpointCode)
         .then(res => res.text())
@@ -1230,7 +1230,7 @@ if (!window.location.href.includes('form-type-a') &&
                             //sheetDB PATCH user info
                             let id = sessionStorage.getItem('id');
                             console.log('id:' + id)
-                            let targetRow = 'https://sheetdb.io/api/v1/mebkcye8qw7nd' + '/' + 'id' + '/' + id + '?sheet=members'
+                            let targetRow = 'https://sheetdb.io/api/v1/k5kqwflbl94nj' + '/' + 'id' + '/' + id + '?sheet=members'
                             axios.patch(targetRow, {
                                 "data": {
                                     "user-type": $('[data-name=user-type]:checked').attr('data-type'),
@@ -1310,7 +1310,7 @@ if (!window.location.href.includes('form-type-a') &&
         })
 
     //Fetch下拉選單常用選項
-    let ssidDrop = '/1BFUMvMbYGRe8zQaiCBfQMrL6KoFBqi29Kh9_YcZphY0';
+    let ssidDrop = '/13ZXxOJNfMb-0fKTBOEhC_Wk-58wPy66jqUdLpZ06NT4';
     const endpointDrop = `${gsUrl}${ssidDrop}${query}`;
     fetch(endpointDrop)
         .then(res => res.text())
@@ -1415,7 +1415,7 @@ if (!window.location.href.includes('form-type-a') &&
         })
 
     //Fetch案件資料
-    let ssidList = '/1Jdm46l4ggZhEi44v2Y9ws6PaWHWnXnDFol9-HvETnLg';
+    let ssidList = '/10X3m73TPe_I33Hya9RGS5P7YJ7G3eLiGshTnNublxDM';
     const endpointList = `${gsUrl}${ssidList}${query}`;
     fetch(endpointList)
         .then(res => res.text())
@@ -2707,7 +2707,7 @@ if (!window.location.href.includes('form-type-a') &&
 
                                 setTimeout(() => {
                                     let timestamp = $('[data-output=list]').attr('data-stamp');
-                                    let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
+                                    let targetRow = 'https://sheetdb.io/api/v1/0cbs32hywu5nr' + '/' + 'timestamp' + '/' + timestamp
                                     axios.patch(targetRow, {
                                         "data": {
                                             "設計方": name,
@@ -2756,7 +2756,7 @@ if (!window.location.href.includes('form-type-a') &&
 
                                 setTimeout(() => {
                                     let timestamp = $('[data-output=list]').attr('data-stamp');
-                                    let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
+                                    let targetRow = 'https://sheetdb.io/api/v1/0cbs32hywu5nr' + '/' + 'timestamp' + '/' + timestamp
                                     axios.patch(targetRow, {
                                         "data": {
                                             "結案": "true"
@@ -2792,7 +2792,7 @@ if (!window.location.href.includes('form-type-a') &&
                             let confirm = window.confirm('確定刪除本案件? 刪除後不可復原!');
                             if (confirm) {
                                 let timestamp = $('[data-output=list]').attr('data-stamp');
-                                let targetRow = 'https://sheetdb.io/api/v1/fx6gemwyky94h' + '/' + 'timestamp' + '/' + timestamp
+                                let targetRow = 'https://sheetdb.io/api/v1/0cbs32hywu5nr' + '/' + 'timestamp' + '/' + timestamp
                                 axios.delete(targetRow)
                                     .then(response => {
                                         console.log(response.data);
