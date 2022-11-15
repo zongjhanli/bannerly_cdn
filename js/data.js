@@ -881,7 +881,6 @@ if (!window.location.href.includes('form-type-a') &&
             let json = JSON.parse(jsData);
             let rows = json.table.rows;
             let cols = json.table.cols;
-            console.log(cols)
 
             if (valKey == null) {
                 $('#validation').keyup((e) => {
@@ -1024,9 +1023,8 @@ if (!window.location.href.includes('form-type-a') &&
                 let space = nameMail.indexOf(' ');
                 let name = nameMail.slice(0, space + 1).trim();
                 let gear = '<div class="icon_20x gear"></div>'
-
                 let i;
-                for (i = 1; i < rows.length; i++) {
+                for (i = 0; i < rows.length; i++) {
                     if (rows[i].c[2] != null && rows[i].c[3] != null) {
                         if (rows[i].c[2].v == nameMail && rows[i].c[3].v == valKey) {
                             if (rows[i].c[1].v == 'applicant') {
@@ -1049,7 +1047,6 @@ if (!window.location.href.includes('form-type-a') &&
                                 $('.member-name').text(name);
                                 $('.identity').html('管理方' + gear);
                                 let currWidth = 'calc(' + $('.member-name').css('width') + ' + ' + $('.identity').css('width') + ' + ' + '14px)';
-                                // console.log(currWidth)
                                 $('.drop-card.for-identity').css('maxWidth', currWidth);
                             }
                         }
@@ -2083,17 +2080,17 @@ if (!window.location.href.includes('form-type-a') &&
                                     } else if ($(lists[li]).find('.stats-chip').text() == '已結案') {
                                         endCaseInactive();
                                     }
-                                    setTimeout(() => {
-                                        if ($('[data-output="designer"]').text() == '未指派') {
-                                            endCaseInactive();
-                                            $('[data-update="end-case"]').html('確認結案<div class="icon_32x btn-icon end-case unclickable"></div>');
-                                            $('[data-update="end-case"]').css({
-                                                'maxWidth': 'none',
-                                            })
-                                            let disabledBtnHinter = '<div class="annotate dead-btn-hinter">本案尚未發單，無法結案</div>'
-                                            $('[data-update="end-case"]').parent().parent().append(disabledBtnHinter);
-                                        }
-                                    }, 100)
+                                    // setTimeout(() => {
+                                    //     if ($('[data-output="designer"]').text() == '未指派') {
+                                    //         endCaseInactive();
+                                    //         $('[data-update="end-case"]').html('確認結案<div class="icon_32x btn-icon end-case unclickable"></div>');
+                                    //         $('[data-update="end-case"]').css({
+                                    //             'maxWidth': 'none',
+                                    //         })
+                                    //         let disabledBtnHinter = '<div class="annotate dead-btn-hinter">本案尚未發單，無法結案</div>'
+                                    //         $('[data-update="end-case"]').parent().parent().append(disabledBtnHinter);
+                                    //     }
+                                    // }, 100)
 
                                     let cols = json.table.cols;
                                     let tCells = rows[li].c;
@@ -2270,6 +2267,7 @@ if (!window.location.href.includes('form-type-a') &&
                                             }
                                             if (cols[i].label == '案型2-通路data') {
                                                 ecDataB += i;
+
                                             }
                                             //案型3 output
                                             if (cols[i].label == '案型3-活動文案') {
@@ -2330,7 +2328,10 @@ if (!window.location.href.includes('form-type-a') &&
 
                                     //案型2-製作尺寸 + ec tab
                                     let ecNamesB = tCells[ecNameB].v.split(','); //values truned into an array
-                                    let ecDatasB = tCells[ecDataB].v.split(',');
+                                    let ecDatasB;
+                                    if (tCells[ecDataB].v != null) {
+                                    ecDatasB = tCells[ecDataB].v.split(',');
+                                    }
                                     let totalSizeB = 0;
                                     let sb;
                                     for (sb = 0; sb < sizeIndexB.length; sb++) {
@@ -2348,12 +2349,13 @@ if (!window.location.href.includes('form-type-a') &&
 
                                     //案型3-製作尺寸 + ec tab
                                     let ecNamesC = tCells[ecNameC].v.split(','); //values truned into an array
-                                    let ecDatasC = tCells[ecDataC].v.split(',');
+                                    let ecDatasC;
+                                    if (tCells[ecDataC].v != null) {
+                                    ecDatasC = tCells[ecDataC].v.split(',');
+                                    }
                                     let totalSizeC = 0;
                                     let sc;
                                     for (sc = 0; sc < sizeIndexC.length; sc++) {
-                                        // console.log(tCells[sizeIndexC[1]]);
-                                        if (tCells[sizeIndexC[sc]].v != null) {
                                             let tabBtn = '<div class="a-button as-tab"><div data-ec="' + ecDatasC[sc] + '" class="label full-touch">' + ecNamesC[sc] + '</div><div class="_12px-500 as-counts in-tab">' + ((tCells[sizeIndexC[sc]].v.match(/\n/g) || []).length + 1) + '</div></div>';
                                             let sizeOutput = '<div data-output="' + ecDatasC[sc] + '" class="output as-textarea bulk">' + tCells[sizeIndexC[sc]].v.replaceAll('\n', '<br>') + '</div>';
                                             $('.height-extended').eq(2).append(sizeOutput);
@@ -2363,7 +2365,6 @@ if (!window.location.href.includes('form-type-a') &&
                                             $('.side-184w').eq(2).find('.as-tab').not('.indicator').css('color', 'rgba(47, 90, 58, 0.5)');
                                             $('.side-184w').eq(2).find('.as-tab').not('.indicator').eq(0).css('color', 'rgba(47, 90, 58, 1)');
                                             totalSizeC += (tCells[sizeIndexC[sc]].v.match(/\n/g) || []).length + 1;
-                                        }
                                     }
                                     $('[data-output=S-count2-C]').text($('[data-output=S-count2-C]').text() + '/ ' + totalSizeC + '尺寸');
                                 }
@@ -2667,7 +2668,6 @@ if (!window.location.href.includes('form-type-a') &&
                             let target = e.target;
                             let input = $(target).closest('.card').find('input').not('.submit');
                             input.each((i) => {
-                                // console.log($(input).eq(2).val())
                                 if ($(input).eq(i).val() == "") {
                                     $(input).eq(i).closest('.f-block').find('.hinter-box').css('display', 'block');
                                     $(input).eq(i).closest('.f-block').find('.hinter-box').addClass("js-shake");
@@ -2694,7 +2694,6 @@ if (!window.location.href.includes('form-type-a') &&
                                 }
                             })
                             newTimestamp = brand + '-' + newTimestamp;
-                            // console.log(newTimestamp)
 
                             let nameMail = $('#designer').val();
                             let space = nameMail.indexOf(' ');
@@ -2720,7 +2719,7 @@ if (!window.location.href.includes('form-type-a') &&
                                         console.log(response.data);
                                         $('.icon_32x.btn-icon').remove();
                                         let reIco = '<div class="icon_32x btn-icon js-complete"></div>'
-                                        $('.submit-trigger').html('發單成功' + reIco);
+                                        $('.submit-trigger').eq(0).html('發單成功' + reIco);
                                         setTimeout(() => {
                                                 $(lists).each((l) => {
                                                     if ($(lists).eq(l).css('position') == 'fixed') {
